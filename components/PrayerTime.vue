@@ -77,10 +77,10 @@ onMounted(fetchPrayerTimes)
 
         <p v-else class="loading">Loading prayer times...</p>
       </div>
+
     </div>
   </div>
 </template>
-
 
 <style scoped>
 
@@ -117,7 +117,8 @@ onMounted(fetchPrayerTimes)
 .time-prayer-content {
   text-align: center;
   background: linear-gradient(190deg, #c38b1a 0%, #c68414 50%, #F5F5F5 10%);
-  box-shadow: rgba(149, 157, 165, 0.4) 0 8px 24px;
+
+  box-shadow: rgba(390, 157, 165, 0.4) 0 8px 24px;
   border-radius: 8px;
 }
 

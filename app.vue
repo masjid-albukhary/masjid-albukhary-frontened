@@ -10,7 +10,6 @@
   --background-color: #F5F5F5;
   --text-color: #121214;
   --spacing-unit: 1rem;
-
 }
 
 </style>
