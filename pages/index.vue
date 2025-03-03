@@ -1,17 +1,11 @@
 <script setup lang="ts">
 
+import PrayerTime from "~/components/PrayerTime.vue";
 </script>
 
 <template>
-  welcome to aiu
+  <PrayerTime/>
 </template>
 
 <style scoped>
-:root {
-  --primary-color: #c38b1a;
-  --secondary-color: #c68414;
-  --background-color: #F5F5F5;
-  --text-color: #121214;
-}
-
 </style>
