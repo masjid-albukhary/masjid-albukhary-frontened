@@ -1,59 +1,170 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import {ref, onMounted} from 'vue'
 
 const city = 'Kuala Lumpur'
 const country = 'Malaysia'
 const method = 2
 const prayerTimes = ref(null)
 
-// Function to fetch prayer times
+const mainPrayers = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"]
+
 const fetchPrayerTimes = async () => {
   try {
     const response = await fetch(
         `https://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}&method=${method}`
     )
     const data = await response.json()
-    prayerTimes.value = data.data.timings
+
+    prayerTimes.value = Object.keys(data.data.timings)
+        .filter(prayer => mainPrayers.includes(prayer))
+        .reduce((obj, prayer) => {
+          obj[prayer] = data.data.timings[prayer]
+          return obj
+        }, {})
   } catch (error) {
     console.error('Failed to fetch prayer times:', error)
   }
 }
 
-// Function to format time (12-hour AM/PM)
 const formatTime = (time) => {
-  return new Date(`1970-01-01T${time}Z`).toLocaleTimeString([], {
+  return new Date(`1970-01-01T${time}`).toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
     hour12: true,
   });
 }
 
-// Function to add minutes for prayer time (e.g., 10 minutes after Azan)
 const addMinutes = (time, minutes) => {
-  const date = new Date(`1970-01-01T${time}Z`);
+  const date = new Date(`1970-01-01T${time}`);
   date.setMinutes(date.getMinutes() + minutes);
-  return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true });
+  return date.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", hour12: true});
 };
 
 onMounted(fetchPrayerTimes)
 </script>
 
 <template>
-  <div class="p-6 bg-white shadow-md rounded-xl">
-    <h2 class="text-xl font-semibold text-center">Prayer & Azan Times - {{ city }}</h2>
-    <ul v-if="prayerTimes" class="mt-4 space-y-2">
-      <li v-for="(time, prayer) in prayerTimes" :key="prayer" class="flex justify-between border-b pb-2">
-        <div class="flex flex-col">
-          <span class="font-medium">{{ prayer }}</span>
-          <small class="text-gray-500">Azan: {{ formatTime(time) }}</small>
-          <small class="text-gray-600">Prayer: {{ addMinutes(time, 10) }}</small>
+  <div class="prayer-time">
+    <div class="container">
+      <div class="image-container">
+        <img
+            src="../public/images/Masjid-Al-Bukhary.png"
+            alt="Masjid Al-Bukhary"
+            class="prayer-time-image"
+            loading="lazy"
+        />
+      </div>
+
+      <div class="time-prayer-content">
+        <h2 class="prayer-time-title">Prayer Azan Times - {{ city }}</h2>
+
+        <div v-if="prayerTimes" class="prayer-times-table">
+          <div class="table-header">
+            <span class="table-title">Name of Salat</span>
+            <span class="table-title">Azan</span>
+            <span class="table-title">Prayer</span>
+          </div>
+          <div
+              v-for="(time, prayer) in prayerTimes"
+              :key="prayer"
+              class="table-row"
+          >
+            <span class="table-data">{{ prayer }}</span>
+            <span class="table-data">{{ formatTime(time) }}</span>
+            <span class="table-data">{{ addMinutes(time, 10) }}</span>
+          </div>
         </div>
-      </li>
-    </ul>
-    <p v-else class="text-center text-gray-500">Loading prayer times...</p>
+
+        <p v-else class="loading">Loading prayer times...</p>
+      </div>
+    </div>
   </div>
 </template>
 
+
 <style scoped>
-/* Tailwind styles */
+
+.prayer-time {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-unit);
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-unit);
+  align-items: center;
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+}
+
+.prayer-time-image {
+  display: flex;
+  width: 100%;
+  max-width: 400px;
+  height: 500px;
+  border-radius: 8px;
+  margin: 2.5rem auto;
+  box-shadow: rgba(149, 157, 165, 0.6) 0 8px 24px;
+}
+
+.time-prayer-content {
+  text-align: center;
+  background: linear-gradient(190deg, #c38b1a 0%, #c68414 50%, #F5F5F5 10%);
+  box-shadow: rgba(149, 157, 165, 0.4) 0 8px 24px;
+  border-radius: 8px;
+}
+
+.prayer-time-title {
+  font-size: 1.5rem;
+  margin-bottom: var(--spacing-unit);
+  color: var(--primary-color);
+}
+
+.prayer-times-table {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.table-header,
+.table-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.table-header {
+  font-weight: bold;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+}
+
+.table-data {
+  flex: 1;
+  text-align: center;
+}
+
+.loading {
+  font-style: italic;
+  color: var(--text-color);
+}
+
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .prayer-time-image {
+    width: 100%;
+    height: auto;
+  }
+}
 </style>
