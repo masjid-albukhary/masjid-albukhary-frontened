@@ -1,8 +1,32 @@
-<script setup>
-import { ref, onMounted } from 'vue';
+<script setup lang="ts">
+import {ref, onMounted} from 'vue';
+
+interface Link {
+  link: string,
+  label: string,
+  icon: string,
+}
 
 const isLinksVisible = ref(false);
 const isMobile = ref(false);
+
+const links: Link[] = [
+  {
+    link: "/home",
+    label: "Home",
+    icon: "mdi-home",
+  },
+  {
+    link: "/about",
+    label: "About",
+    icon: "mdi-info",
+  },
+  {
+    link: "/contact",
+    label: "Contact",
+    icon: "mdi-account",
+  }
+]
 
 function toggleLinksVisibility() {
   isLinksVisible.value = !isLinksVisible.value;
@@ -23,23 +47,24 @@ onMounted(() => {
       <div class="logo-container">
         <div class="logo">
           <a href="https://commercedc.com.my/">
-            <img src="/images/masjid_albukary_logo.png" alt="AIU Logo" />
+            <img src="/images/masjid_albukary_logo.png" alt="AIU Logo"/>
           </a>
         </div>
         <button v-if="isMobile" @click="toggleLinksVisibility" class="menu-toggle-btn">
-          <UIcon name="uil-bars" />
+          <UIcon name="uil-bars"/>
         </button>
-      </div>
-
-      <div class="header-title">
-        <h2>Al Bukhary Mosque</h2>
       </div>
 
       <nav v-if="isLinksVisible || !isMobile" class="navigation-menu">
         <ul class="navigation-links">
-          <li><router-link to="/home">Home</router-link></li>
-          <li><router-link to="/about">About</router-link></li>
-          <li><router-link to="/">Log In</router-link></li>
+          <li v-for="link in links">
+            <router-link :to="link.link">
+              <UIcon
+                  :name="link.icon"
+              />
+              {{ link.label }}
+            </router-link>
+          </li>
         </ul>
       </nav>
     </div>
@@ -48,9 +73,10 @@ onMounted(() => {
 
 <style scoped>
 .header-container {
-  background-color: var(--text-hover);
+  background-color: var(--background-color);
   padding: 0.5rem 1rem;
-  max-height: 500px;
+  max-height: 300px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0 7px 29px 0;
 }
 
 .header-wrapper {
@@ -61,8 +87,8 @@ onMounted(() => {
 }
 
 .logo img {
-  width: 150px;
-  height: 120px;
+  width: 100px;
+  height: 70px;
 }
 
 .header-title h2 {
@@ -96,6 +122,12 @@ onMounted(() => {
   margin-right: 0.5rem;
   border-radius: 0.5rem;
   color: var(--secondary-color);
+}
+
+.navigation-links li:last-child {
+  background: var(--primary-color);
+  color: var(--text-hover);
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
 .navigation-links li:hover {

@@ -3,7 +3,7 @@
 </template>
 
 
-<style scoped>
+<style >
 :root {
   --primary-color: #c38b1a;
   --secondary-color: #c68414;
