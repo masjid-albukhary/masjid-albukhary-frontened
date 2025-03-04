@@ -126,7 +126,7 @@ onMounted(() => {
 
 .navigation-links li:last-child {
   background: var(--primary-color);
-  color: var(--text-hover);
+  color: var(--text-hover) !important;
   transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
