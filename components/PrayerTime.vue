@@ -46,6 +46,7 @@ onMounted(fetchPrayerTimes)
 <template>
   <div class="prayer-time">
     <div class="container">
+
       <div class="image-container">
         <img
             src="../public/images/Masjid-Al-Bukhary.png"
@@ -85,11 +86,13 @@ onMounted(fetchPrayerTimes)
 <style scoped>
 
 .prayer-time {
+  width: 100%;
+  height: 100vh;
   max-width: 1200px;
   margin: 0 auto;
   padding: var(--spacing-unit);
-  background-color: var(--background-color);
-  color: var(--text-color);
+  color: var(--text-prayer-color);
+  align-content: center;
 }
 
 .container {
@@ -104,28 +107,31 @@ onMounted(fetchPrayerTimes)
   justify-content: center;
 }
 
+
 .prayer-time-image {
-  display: flex;
   width: 100%;
-  max-width: 400px;
-  height: 500px;
-  border-radius: 8px;
-  margin: 2.5rem auto;
-  box-shadow: rgba(149, 157, 165, 0.6) 0 8px 24px;
+  max-width: 450px;
+  height: 425px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.prayer-time-image:hover {
+  transform: scale(1.05);
 }
 
 .time-prayer-content {
   text-align: center;
   background: linear-gradient(190deg, #c38b1a 0%, #c68414 50%, #F5F5F5 10%);
-
-  box-shadow: rgba(390, 157, 165, 0.4) 0 8px 24px;
   border-radius: 8px;
 }
 
 .prayer-time-title {
   font-size: 1.5rem;
-  margin-bottom: var(--spacing-unit);
-  color: var(--primary-color);
+  color: var(--text-prayer-color);
+  margin: var(--spacing-unit);
 }
 
 .prayer-times-table {
@@ -139,13 +145,16 @@ onMounted(fetchPrayerTimes)
   display: flex;
   justify-content: space-between;
   padding: 1rem;
-  border-bottom: 2px solid var(--primary-color);
+  border-bottom: 2px dotted var(--text-prayer-color);
+}
+
+.table-row:last-child {
+  border-bottom: none;
 }
 
 .table-header {
   font-weight: bold;
-  background-color: var(--primary-color);
-  color: var(--text-color);
+  color: var(--text-prayer-color);
 }
 
 .table-data {
@@ -155,7 +164,7 @@ onMounted(fetchPrayerTimes)
 
 .loading {
   font-style: italic;
-  color: var(--text-color);
+  color: var(--text-prayer-color);
 }
 
 @media (max-width: 768px) {
