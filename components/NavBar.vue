@@ -121,7 +121,7 @@ onMounted(() => {
   padding: 0.3rem;
   margin-right: 0.5rem;
   border-radius: 0.5rem;
-  color: var(--secondary-color);
+  color: var(--primary-color);
 }
 
 .navigation-links li:last-child {
@@ -131,8 +131,7 @@ onMounted(() => {
 }
 
 .navigation-links li:hover {
-  background-color: var(--secondary-color);
-  color: var(--text-hover);
+  color: var(--secondary-color);
   transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 

@@ -25,7 +25,7 @@ const aboutItem = [
 
 <template>
   <div class="about-section">
-    <h1 class="about-title">about sectionTitle </h1>
+    <h1 class="about-title">Masjid Al Bukhary Kuala Lumpur Official</h1>
     <div class="about-grid" v-for="item in aboutItem" :key="item.id">
       <template v-if="item.id % 2 !== 0">
         <div class="text-content">
@@ -66,11 +66,10 @@ const aboutItem = [
 
 .about-grid {
   width: 85%;
-  margin: 0 auto;
+  margin: 2rem auto;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 3rem;
-  align-items: center;
 }
 
 .about-title,
@@ -88,7 +87,7 @@ const aboutItem = [
   text-align: justify;
   font-size: 1.1rem;
   line-height: 1.6;
-  color: var(--text-color);
+  color: var(--secondary-color);
 }
 
 .image-content {
@@ -101,7 +100,7 @@ const aboutItem = [
 .image-content img {
   width: 100%;
   max-width: 500px;
-  height: auto;
+  height: 500px;
   object-fit: cover;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
