@@ -134,12 +134,15 @@ const generalInfo: GeneralInfo[] = [
           <img src="../public/images/bank-muamalat-logo.png" alt="bank muamalat logo" class="bank-img"/>
           <h4>Account No:9823793924023</h4>
         </div>
+
       </div>
 
       <hr class="divider">
+
       <div class="footer-bottom">
         <p>&copy; Copyright <a href="https://aiu.edu.my/">Al Bukhary Mosque {{ currentYear }}</a></p>
       </div>
+
     </div>
   </div>
 </template>
@@ -193,6 +196,7 @@ const generalInfo: GeneralInfo[] = [
   margin: 20px;
 }
 
+
 .box span {
   font-size: 3rem;
   color: var(--primary-color);
@@ -200,6 +204,13 @@ const generalInfo: GeneralInfo[] = [
 
 .box > p {
   color: var(--primary-color);
+}
+
+@media (max-width: 800px) {
+  .box {
+    text-align: start;
+    margin: 0 5rem;
+  }
 }
 
 .divider {
@@ -255,13 +266,12 @@ const generalInfo: GeneralInfo[] = [
   height: 70px;
 }
 
-.bank-details h4{
+.bank-details h4 {
   font-size: 1rem;
   color: var(--primary-color);
 }
 
 @media (max-width: 800px) {
-
   .container-form div {
     margin: 3rem 0;
   }
@@ -290,5 +300,19 @@ const generalInfo: GeneralInfo[] = [
 
 a:hover {
   color: var(--secondary-color);
+}
+
+@media (max-width: 1200px) {
+  .footer-bottom {
+    margin: 0 3rem;
+  }
+
+  .footer-bottom a {
+    color: var(--primary-color);
+  }
+
+  a:hover {
+    color: var(--secondary-color);
+  }
 }
 </style>
