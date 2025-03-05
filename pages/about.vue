@@ -8,6 +8,7 @@ import NavBar from "~/components/NavBar.vue";
   <BookingStructure/>
   <PrayerTime/>
   <About/>
+  <Footer/>
 </template>
 
 <style scoped>

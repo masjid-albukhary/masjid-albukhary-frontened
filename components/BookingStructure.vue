@@ -73,7 +73,7 @@ const booking_steps = [
   margin-bottom: var(--text-size-h2);
   font-size: var(--text-size-h2);
   padding-top: 2rem;
-  color: var(--text-hover);
+  color: var(--primary-color);
 }
 
 .booking-structure .booking-structure-list {
@@ -88,7 +88,7 @@ const booking_steps = [
   gap: 0.75rem;
   margin-bottom: 1rem;
   font-size: 1.3rem;
-  color: var(--text-hover);
+  color: var(--primary-color);
 }
 
 .booking-structure-icon {
