@@ -12,7 +12,7 @@ const booking_steps = [
   },
   {
     step: 3,
-    content: "If approved, you will receive a confirmation email.",
+    content: "If approved, contact you through WhatsApp message .",
     icon: "mdi-email-check"
   },
   {
@@ -26,6 +26,7 @@ const booking_steps = [
 <template>
   <section class="booking-structure">
     <h2 class="booking-structure-title">How to Book a Hall</h2>
+
     <div class="container">
       <div class="steps-booking-structure-container">
         <ul class="booking-structure-list">
@@ -39,6 +40,7 @@ const booking_steps = [
         <img src="/images/booking-image.png" alt="booking-structure-image" class="booking-structure-image">
       </div>
     </div>
+
     <router-link to="/" class="booking-structure-btn">
       <UIcon name="mdi-register" class="register-icon" />
       Book Now
@@ -52,15 +54,18 @@ const booking_steps = [
   width: 100%;
   background-color: var(--bg-color);
   max-width: 1200px;
-  margin: 5rem auto;
+  margin: 3rem auto;
   padding: 0 1rem;
   text-align: center;
 }
 
 .booking-structure .container {
+  width: 90%;
+  margin: 0 auto;
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 2rem;
+  align-items: center;
 }
 
 .booking-structure h2 {
@@ -68,7 +73,7 @@ const booking_steps = [
   margin-bottom: var(--text-size-h2);
   font-size: var(--text-size-h2);
   padding-top: 2rem;
-  color: var(--primary-color);
+  color: var(--text-hover);
 }
 
 .booking-structure .booking-structure-list {
@@ -80,15 +85,16 @@ const booking_steps = [
 .booking-structure li {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
   margin-bottom: 1rem;
-  font-size: var(--text-size-h6);
+  font-size: 1.3rem;
   color: var(--text-hover);
 }
 
 .booking-structure-icon {
   color: var(--primary-color);
-  margin-right: 1rem;
+  margin-right: 0.75rem;
+  font-size: 1.25rem;
 }
 
 .booking-structure-btn {
@@ -120,14 +126,42 @@ const booking_steps = [
 .booking-structure-image {
   width: 100%;
   max-width: 300px;
-  max-height: 300px;
   height: auto;
   margin: 0 auto;
+  display: block;
+}
+
+@media (max-width: 1024px) {
+  .booking-structure .container {
+    grid-template-columns: 1fr;
+    text-align: start;
+  }
+
+  .booking-structure-btn {
+    font-size: 0.95rem;
+    padding: 0.65rem 1.25rem;
+  }
+
+  .booking-structure-image {
+    max-width: 250px;
+  }
 }
 
 @media (max-width: 768px) {
-  .booking-structure .container {
-    grid-template-columns: 1fr;
+  .booking-structure h2 {
+    font-size: 1.75rem;
+  }
+
+  .booking-structure li {
+    font-size: 1rem;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .booking-structure-icon {
+    font-size: 1.5rem;
+    margin-right: 0;
   }
 
   .booking-structure-btn {
@@ -147,6 +181,10 @@ const booking_steps = [
 
   .booking-structure-btn {
     width: 100%;
+    max-width: 200px;
+  }
+
+  .booking-structure-image {
     max-width: 200px;
   }
 }
