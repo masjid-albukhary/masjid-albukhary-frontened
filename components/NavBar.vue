@@ -115,7 +115,6 @@ onMounted(() => {
   transition: 0.3s ease-in-out;
 }
 
-
 .navigation-links li {
   display: inline-block;
   padding: 0.3rem;
