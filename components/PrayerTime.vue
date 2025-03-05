@@ -100,10 +100,18 @@ onMounted(() => {
 
         <div v-if="formattedPrayerTimes" class="time-prayer-container">
           <div v-for="prayer in formattedPrayerTimes" :key="prayer.name" class="prayer-time-box">
-            <span class="time-data">{{ prayer.name }}</span>
+            <span class="time-data">
+              <span>
+                <UIcon
+                    name="mdi-mosque"
+                    class="mosque-icon"
+                />
+              </span>
+              {{ prayer.name }}</span>
             <hr class="prayer-time-divider"/>
-            <span class="time-data">{{ prayer.original }}</span>
-            <span class="time-data">{{ prayer.adjusted }}</span>
+            <span class="time-data">
+              {{ prayer.original }}
+            </span>
           </div>
         </div>
 
@@ -121,15 +129,17 @@ onMounted(() => {
   margin: 0 auto;
   padding: var(--spacing-unit);
   color: var(--text-prayer-color);
-  display: block;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
 .prayer-time > h2 {
-  font-size: var(--text-size-h2) !important;
+  font-size: var(--text-size-h2);
   color: var(--primary-color);
   margin: 1rem auto 1rem 3rem;
+  text-align: start;
 }
 
 .container {
@@ -144,25 +154,26 @@ onMounted(() => {
   grid-template-columns: 1fr 2fr 1fr;
   align-items: center;
   gap: var(--spacing-unit);
+  text-align: center;
 }
 
 .time-box span {
   color: var(--primary-color);
-  font-size: 5rem !important;
+  font-size: 4rem;
 }
 
 .time-box h3,
 .time-box h4 {
-  color: var(--primary-color) !important;
+  color: var(--primary-color);
   z-index: 1002;
 }
 
 .time-box h3 {
-  font-size: var(--text-size-h3) !important;
+  font-size: var(--text-size-h3);
 }
 
 .time-box h4 {
-  font-size: 5rem !important;
+  font-size: 4rem;
 }
 
 .time-prayer-content {
@@ -172,7 +183,7 @@ onMounted(() => {
   background-size: cover;
   background-position: center;
   border-radius: 25px;
-  min-height: 400px;
+  min-height: 350px;
   overflow: hidden;
   z-index: 1;
 }
@@ -188,11 +199,11 @@ onMounted(() => {
   z-index: -1;
 }
 
-
 .prayer-time-title {
   font-size: var(--text-size-h2);
   color: var(--text-prayer-color);
   margin: var(--spacing-unit);
+  text-align: center;
 }
 
 .time-prayer-container {
@@ -201,6 +212,14 @@ onMounted(() => {
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   gap: var(--spacing-unit);
   margin: 1rem auto;
+}
+
+@media screen and (max-width: 800px) {
+  .time-prayer-container {
+    width: 90%;
+    display: grid;
+    grid-template-columns:  1fr;
+  }
 }
 
 .prayer-time-box {
@@ -212,7 +231,7 @@ onMounted(() => {
   background-color: var(--text-prayer-color);
   color: var(--text-color);
   border-radius: var(--primary-border-radius);
-  padding: var(--spacing-unit) 0;
+  padding: var(--spacing-unit);
 }
 
 .prayer-time-box span {
@@ -222,10 +241,14 @@ onMounted(() => {
   margin: 0 auto;
 }
 
+.mosque-icon {
+  margin-right: 1rem !important;
+}
+
 .prayer-time-divider {
-  border-bottom: 2px solid var(--text-color);
+  border-bottom: 3px solid var(--text-color);
   width: 100%;
-  margin: .5rem auto;
+  margin: 0.5rem auto;
 }
 
 .loading {
@@ -236,6 +259,43 @@ onMounted(() => {
 @media (max-width: 768px) {
   .container {
     grid-template-columns: 1fr;
+  }
+
+  .time-box {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .time-box span {
+    font-size: 3rem;
+  }
+
+  .time-box h3, .time-box h4 {
+    font-size: 3rem;
+  }
+
+  .time-prayer-content {
+    min-height: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .prayer-time > h2 {
+    font-size: var(--text-size-h3);
+    margin: 1rem auto;
+  }
+
+  .time-box span {
+    font-size: 2.5rem;
+  }
+
+  .time-box h3,
+  .time-box h4 {
+    font-size: 2.5rem;
+  }
+
+  .time-prayer-content {
+    min-height: 200px;
   }
 }
 </style>
