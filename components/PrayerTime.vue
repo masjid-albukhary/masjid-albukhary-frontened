@@ -1,38 +1,38 @@
 <script setup>
-import {ref, onMounted} from 'vue'
+import {ref, computed, onMounted} from 'vue';
 
-const city = 'Kuala Lumpur'
-const country = 'Malaysia'
-const method = 2
-const prayerTimes = ref(null)
+const city = ref('Kuala Lumpur');
+const country = ref('Malaysia');
+const method = ref(2);
+const prayerTimes = ref(null);
+const currentTime = ref(new Date().toLocaleTimeString());
 
-const mainPrayers = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"]
+const mainPrayers = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
 
 const fetchPrayerTimes = async () => {
   try {
     const response = await fetch(
-        `https://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}&method=${method}`
-    )
-    const data = await response.json()
+        `https://api.aladhan.com/v1/timingsByCity?city=${city.value}&country=${country.value}&method=${method.value}`
+    );
+    const {data} = await response.json();
 
-    prayerTimes.value = Object.keys(data.data.timings)
-        .filter(prayer => mainPrayers.includes(prayer))
-        .reduce((obj, prayer) => {
-          obj[prayer] = data.data.timings[prayer]
-          return obj
-        }, {})
+    prayerTimes.value = mainPrayers.reduce((times, prayer) => {
+      if (data.timings[prayer]) {
+        times[prayer] = data.timings[prayer];
+      }
+      return times;
+    }, {});
   } catch (error) {
-    console.error('Failed to fetch prayer times:', error)
+    console.error('Failed to fetch prayer times:', error);
   }
-}
+};
 
-const formatTime = (time) => {
-  return new Date(`1970-01-01T${time}`).toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  });
-}
+const formatTime = (time) =>
+    new Date(`1970-01-01T${time}`).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
 
 const addMinutes = (time, minutes) => {
   const date = new Date(`1970-01-01T${time}`);
@@ -40,59 +40,96 @@ const addMinutes = (time, minutes) => {
   return date.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", hour12: true});
 };
 
-onMounted(fetchPrayerTimes)
+const updateTime = () => {
+  currentTime.value = new Date().toLocaleTimeString();
+};
+
+const formattedPrayerTimes = computed(() => {
+  if (!prayerTimes.value) return null;
+  return Object.entries(prayerTimes.value).map(([prayer, time]) => ({
+    name: prayer,
+    original: formatTime(time),
+    adjusted: addMinutes(time, 10),
+  }));
+});
+
+const getFormattedDate = () => {
+  const today = new Date();
+  return today.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+};
+
+const currentDate = ref(getFormattedDate());
+
+onMounted(() => {
+  setInterval(() => {
+    currentDate.value = getFormattedDate();
+  }, 86400000);
+});
+
+onMounted(() => {
+  fetchPrayerTimes();
+  setInterval(updateTime, 1000);
+});
 </script>
 
 <template>
   <div class="prayer-time">
+    <h2 class="title">Prayer Time</h2>
     <div class="container">
-
-      <div class="image-container">
-        <img
-            src="../public/images/Masjid-Al-Bukhary.png"
-            alt="Masjid Al-Bukhary"
-            class="prayer-time-image"
-            loading="lazy"
-        />
-      </div>
-
       <div class="time-prayer-content">
-        <h2 class="prayer-time-title">Prayer Azan Times - {{ city }}</h2>
+        <div class="time-box">
 
-        <div v-if="prayerTimes" class="prayer-times-table">
-          <div class="table-header">
-            <span class="table-title">Name of Salat</span>
-            <span class="table-title">Azan</span>
-            <span class="table-title">Prayer</span>
+          <span class="icon-box">
+            <UIcon name="mdi-mosque"/>
+          </span>
+
+          <div class="time-prayer-title">
+            <h3 class="prayer-time-title">{{ city }}</h3>
+            <h4>{{ currentTime }}</h4>
+            <h3>{{ currentDate }}</h3>
           </div>
-          <div
-              v-for="(time, prayer) in prayerTimes"
-              :key="prayer"
-              class="table-row"
-          >
-            <span class="table-data">{{ prayer }}</span>
-            <span class="table-data">{{ formatTime(time) }}</span>
-            <span class="table-data">{{ addMinutes(time, 10) }}</span>
+
+          <span class="icon-box">
+            <UIcon name="mdi-mosque"/>
+          </span>
+        </div>
+
+        <div v-if="formattedPrayerTimes" class="time-prayer-container">
+          <div v-for="prayer in formattedPrayerTimes" :key="prayer.name" class="prayer-time-box">
+            <span class="time-data">{{ prayer.name }}</span>
+            <hr class="prayer-time-divider"/>
+            <span class="time-data">{{ prayer.original }}</span>
+            <span class="time-data">{{ prayer.adjusted }}</span>
           </div>
         </div>
 
         <p v-else class="loading">Loading prayer times...</p>
       </div>
-
     </div>
   </div>
 </template>
 
 <style scoped>
-
 .prayer-time {
   width: 100%;
   height: 100vh;
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: var(--spacing-unit);
   color: var(--text-prayer-color);
-  align-content: center;
+  display: block;
+  align-items: center;
+  justify-content: center;
+}
+
+.prayer-time > h2 {
+  font-size: var(--text-size-h2) !important;
+  color: var(--primary-color);
+  margin: 1rem auto 1rem 3rem;
 }
 
 .container {
@@ -102,64 +139,93 @@ onMounted(fetchPrayerTimes)
   align-items: center;
 }
 
-.image-container {
-  display: flex;
-  justify-content: center;
+.time-box {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: center;
+  gap: var(--spacing-unit);
 }
 
-
-.prayer-time-image {
-  width: 100%;
-  max-width: 450px;
-  height: 425px;
-  object-fit: cover;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease-in-out;
+.time-box span {
+  color: var(--primary-color);
+  font-size: 5rem !important;
 }
 
-.prayer-time-image:hover {
-  transform: scale(1.05);
+.time-box h3,
+.time-box h4 {
+  color: var(--primary-color) !important;
+  z-index: 1002;
+}
+
+.time-box h3 {
+  font-size: var(--text-size-h3) !important;
+}
+
+.time-box h4 {
+  font-size: 5rem !important;
 }
 
 .time-prayer-content {
+  position: relative;
   text-align: center;
-  background: linear-gradient(190deg, #c38b1a 0%, #c68414 50%, #F5F5F5 10%);
-  border-radius: 8px;
+  background-image: url("../public/images/Masjid-Al-Bukhary-1.png");
+  background-size: cover;
+  background-position: center;
+  border-radius: 25px;
+  min-height: 400px;
+  overflow: hidden;
+  z-index: 1;
 }
 
+.time-prayer-content::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
+
+
 .prayer-time-title {
-  font-size: 1.5rem;
+  font-size: var(--text-size-h2);
   color: var(--text-prayer-color);
   margin: var(--spacing-unit);
 }
 
-.prayer-times-table {
+.time-prayer-container {
+  width: 90%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: var(--spacing-unit);
+  margin: 1rem auto;
+}
+
+.prayer-time-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  max-width: 500px;
+  background-color: var(--text-prayer-color);
+  color: var(--text-color);
+  border-radius: var(--primary-border-radius);
+  padding: var(--spacing-unit) 0;
+}
+
+.prayer-time-box span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: 0 auto;
 }
 
-.table-header,
-.table-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 1rem;
-  border-bottom: 2px dotted var(--text-prayer-color);
-}
-
-.table-row:last-child {
-  border-bottom: none;
-}
-
-.table-header {
-  font-weight: bold;
-  color: var(--text-prayer-color);
-}
-
-.table-data {
-  flex: 1;
-  text-align: center;
+.prayer-time-divider {
+  border-bottom: 2px solid var(--text-color);
+  width: 100%;
+  margin: .5rem auto;
 }
 
 .loading {
@@ -170,11 +236,6 @@ onMounted(fetchPrayerTimes)
 @media (max-width: 768px) {
   .container {
     grid-template-columns: 1fr;
-  }
-
-  .prayer-time-image {
-    width: 100%;
-    height: auto;
   }
 }
 </style>
