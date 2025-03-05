@@ -50,11 +50,6 @@ const media: Media[] = [
     icon: "mdi-instagram"
   },
   {
-    name: "Twitter",
-    link: "https://www.twitter.com",
-    icon: "mdi-twitter"
-  },
-  {
     name: "YouTube",
     link: "https://www.youtube.com",
     icon: "mdi-youtube"
@@ -73,12 +68,12 @@ const generalInfo: GeneralInfo[] = [
     icon: "mdi-location"
   },
   {
-    label: "Phone Number: (60) 4774 7300",
+    label: "(60) 4774 7300",
     link: "tel:+6047747300",
     icon: "ic-baseline-phone",
   },
   {
-    label: "Email: info@aiu.edu.my",
+    label: "info@am.org",
     link: "mailto:info@aiu.edu.my",
     icon: "ic-baseline-email",
   }
@@ -153,7 +148,7 @@ const generalInfo: GeneralInfo[] = [
 <style scoped>
 .footer {
   padding: 1em 0;
-  background-color: var(--primary-color);
+  background-color: var(--background-color);
 }
 
 .main-container {
@@ -200,27 +195,28 @@ const generalInfo: GeneralInfo[] = [
 
 .box span {
   font-size: 3rem;
-  color: var(--text-color);
+  color: var(--primary-color);
 }
 
 .box > p {
-  color: var(--text-color);
+  color: var(--primary-color);
 }
 
 .divider {
   margin: 1rem 0;
-  border: 2px solid var(--text-color);
+  border: 2px solid var(--primary-color);
 }
 
 .links,
-.others-links-section {
+.others-links-section,
+.bank-details {
   margin: 0 5rem;
 }
 
 .links h2,
 .bank-details h2,
 .others-links-section h2 {
-  color: var(--text-color);
+  color: var(--primary-color);
   font-size: 1.5rem;
   margin: 15px 0;
 }
@@ -234,19 +230,19 @@ const generalInfo: GeneralInfo[] = [
 
 .links ul li a span,
 .others-links-section li a span {
-  color: var(--text-color);
+  color: var(--primary-color);
   margin-right: .5rem;
 }
 
 .links ul li a,
 .others-links-section li a {
-  color: var(--text-color);
+  color: var(--primary-color);
   margin-right: .5rem;
 }
 
 .links ul li a:hover,
 .others-links-section li a:hover {
-  color: var(--text-color);
+  color: var(--primary-color);
   transition: .3s ease-in-out;
 }
 
@@ -259,58 +255,16 @@ const generalInfo: GeneralInfo[] = [
   height: 70px;
 }
 
+.bank-details h4{
+  font-size: 1rem;
+  color: var(--primary-color);
+}
+
 @media (max-width: 800px) {
 
   .container-form div {
     margin: 3rem 0;
   }
-}
-
-.subscribe-input input {
-  padding: .5rem;
-  font-size: 1rem;
-  width: 12rem;
-  border: 1px solid var(--text-color);
-  border-radius: 5px;
-}
-
-.subscribe-button button {
-  padding: .5rem;
-  font-size: 1rem;
-  background-color: var(--text-color);
-  color: var(--primary-color);
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.subscribe-button button:hover {
-  background-color: var(--text-color);
-  transition: .3s ease-in-out;
-}
-
-.social-icons ul {
-  display: flex;
-  justify-content: space-between;
-  gap: 0 10px;
-  margin: 20px 0;
-}
-
-.social-icons ul li {
-  width: 3rem;
-  height: 3rem;
-  text-align: center;
-  font-size: 1.5rem;
-  padding: 5px;
-  border: 2px solid var(--text-color);
-  border-radius: 50%;
-  color: var(--text-color);
-}
-
-.social-icons ul li:hover {
-  color: var(--text-color);
-  border: 2px solid var(--text-color);
-  transition: .3s ease-in-out;
 }
 
 @media (max-width: 1200px) {
@@ -326,15 +280,15 @@ const generalInfo: GeneralInfo[] = [
 .footer-bottom {
   text-align: start;
   font-size: 1.2rem;
-  color: var(--text-color);
+  color: var(--primary-color);
   padding: 2rem 0;
 }
 
 .footer-bottom a {
-  color: var(--text-color);
+  color: var(--primary-color);
 }
 
 a:hover {
-  color: var(--text-color);
+  color: var(--secondary-color);
 }
 </style>
