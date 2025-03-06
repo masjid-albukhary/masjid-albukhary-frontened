@@ -5,14 +5,13 @@
 
 <style>
 :root {
-
-  --primary-color: #d4a525;
-  --secondary-color: #c38b1a;
-  --background-color: #111111;
+  --primary-color: #244c54;
+  --secondary-color: #234b53;
+  --background-color: #224a52;
   --bg-color: #eeeeee;
-  --text-color: #eeeeee;
-  --text-hover: #f5f5f5;
-  --text-prayer-color: #1e265a;
+  --text-color: #f5f5f5;
+  --text-hover: #ffffff;
+  --text-prayer-color: #244c54;
 
   --spacing-unit: 1rem;
   --primary-border-radius: 15px;

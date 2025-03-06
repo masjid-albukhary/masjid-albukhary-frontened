@@ -204,11 +204,11 @@ const generalInfo: GeneralInfo[] = [
 
 .box span {
   font-size: 3rem;
-  color: var(--primary-color);
+  color: var(--text-color);
 }
 
 .box > p {
-  color: var(--primary-color);
+  color: var(--text-color);
 }
 
 @media (max-width: 800px) {
@@ -220,7 +220,7 @@ const generalInfo: GeneralInfo[] = [
 
 .divider {
   margin: 1rem 0;
-  border: 2px solid var(--primary-color);
+  border: 2px solid var(--text-color);
 }
 
 .links,
@@ -232,7 +232,7 @@ const generalInfo: GeneralInfo[] = [
 .links h2,
 .bank-details h2,
 .others-links-section h2 {
-  color: var(--primary-color);
+  color: var(--text-color);
   font-size: 1.5rem;
   margin: 15px 0;
 }
@@ -246,19 +246,19 @@ const generalInfo: GeneralInfo[] = [
 
 .links ul li a span,
 .others-links-section li a span {
-  color: var(--primary-color);
+  color: var(--text-color);
   margin-right: .5rem;
 }
 
 .links ul li a,
 .others-links-section li a {
-  color: var(--primary-color);
+  color: var(--text-color);
   margin-right: .5rem;
 }
 
 .links ul li a:hover,
 .others-links-section li a:hover {
-  color: var(--primary-color);
+  color: var(--text-color);
   transition: .3s ease-in-out;
 }
 
@@ -273,7 +273,7 @@ const generalInfo: GeneralInfo[] = [
 
 .bank-details h4 {
   font-size: 1rem;
-  color: var(--primary-color);
+  color: var(--text-color);
 }
 
 @media (max-width: 800px) {
@@ -295,16 +295,16 @@ const generalInfo: GeneralInfo[] = [
 .footer-bottom {
   text-align: start;
   font-size: 1.2rem;
-  color: var(--primary-color);
+  color: var(--text-color);
   padding: 2rem 0;
 }
 
 .footer-bottom a {
-  color: var(--primary-color);
+  color: var(--text-color);
 }
 
 a:hover {
-  color: var(--secondary-color);
+  color: var(--text-color);
 }
 
 @media (max-width: 1200px) {
@@ -313,11 +313,11 @@ a:hover {
   }
 
   .footer-bottom a {
-    color: var(--primary-color);
+    color: var(--text-color);
   }
 
   a:hover {
-    color: var(--secondary-color);
+    color: var(--text-hover);
   }
 }
 </style>
