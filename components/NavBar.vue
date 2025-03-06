@@ -22,6 +22,11 @@ const links: Link[] = [
     icon: "mdi-info",
   },
   {
+    link: "/news",
+    label: "News",
+    icon: "mdi-book",
+  },
+  {
     link: "/contact",
     label: "Contact",
     icon: "mdi-account",
