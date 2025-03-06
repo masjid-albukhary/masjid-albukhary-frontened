@@ -215,7 +215,7 @@ async function handleSubmit() {
 
       <div class="booking-form">
 
-        <h2>Please fill this Form</h2>
+        <h2>Please fill this Booking Form</h2>
 
         <form @submit.prevent="handleSubmit">
           <div class="booking-form">
