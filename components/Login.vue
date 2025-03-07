@@ -1,6 +1,6 @@
 <script setup>
-import {reactive, watch} from 'vue';
 
+import {reactive, ref, watch} from 'vue';
 import {z} from 'zod';
 
 const loginQuestions = [
@@ -10,7 +10,6 @@ const loginQuestions = [
     placeholder: "Enter your username",
     required: true,
     id: "username",
-    icon: "user"
   },
   {
     label: "Password",
@@ -18,52 +17,34 @@ const loginQuestions = [
     placeholder: "Enter your password",
     required: true,
     id: "password",
-    icon: "lock"
   },
   {
     label: "Confirm Password",
     type: "password",
     placeholder: "Re-enter your password",
     required: true,
-    id: "confirmPassword",
-    icon: "lock"
-  }
+    id: "confirm_password",
+  },
 ];
 
 const formSchema = z.object({
   username: z
       .string()
-      .min(4, 'Username must be at least 4 characters long')
-      .max(20, 'Username must not exceed 20 characters'),
-
+      .min(8, 'First username must be at least 8 characters long'),
   password: z
+      .string(),
+  confirm_password: z
       .string()
-      .min(8, 'Password must be at least 8 characters long')
-      .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-      .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
-      .regex(/[0-9]/, 'Password must contain at least one number')
-      .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character'),
+      .refine(value => value === form["password"], "Passwords must match"),
 
-  confirmPassword: z
-      .string()
-}).refine(data => data.password === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"]
 });
 
-const form = reactive({
-  username: "",
-  password: "",
-  confirmPassword: ""
-});
-const errors = reactive({
-  username: "",
-  password: "",
-  confirmPassword: ""
-});
+const form = reactive({});
+const errors = reactive({});
 
 loginQuestions.forEach((question) => {
-  watch(() => form[question.id], () => validateField(question.id));
+  form[question.id] = "";
+  errors[question.id] = "";
 });
 
 function validateField(field) {
@@ -79,6 +60,8 @@ function validateField(field) {
 loginQuestions.forEach((question) => {
   watch(() => form[question.id], () => validateField(question.id));
 });
+
+const isPopupVisible = ref(false)
 
 async function handleSubmit() {
   form.Date = new Date().toLocaleDateString("en-GB");
@@ -96,27 +79,33 @@ async function handleSubmit() {
         formDataObj.append(key, value);
       }
 
-
-      const response = await api.post("/maintenance-requests/", formDataObj);
+      const response = await api.post("//", formDataObj);
       console.log("Response Data:", response.data);
       Object.keys(form).forEach((key) => (form[key] = ""));
+      isPopupVisible.value = true;
       location.reload()
     } catch (error) {
+      isPopupVisible.value = false;
       console.error("Error occurred:", error);
       if (error.response) {
         console.error("Backend Error:", error.response.data);
         alert(`Error: ${error.response.data.detail || "Unable to submit the form."}`);
+        isPopupVisible.value = false;
         // console.log("Response Data:", response.data.value);
       } else if (error.request) {
         console.error("No response from the server:", error.request);
         alert("Server is not responding. Please try again later.");
+        isPopupVisible.value = false;
       } else {
         console.error("Request Setup Error:", error.message);
         alert("An error occurred while submitting the form. Please try again.");
+        isPopupVisible.value = false;
       }
+      isPopupVisible.value = false;
     }
   } else {
     console.log('Validation Errors:', validationResults.error.errors);
+    isPopupVisible.value = false;
     alert("Please correct the errors in the form.");
   }
 }
