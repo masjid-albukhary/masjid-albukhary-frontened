@@ -201,7 +201,6 @@ const generalInfo: GeneralInfo[] = [
   margin: 20px;
 }
 
-
 .box span {
   font-size: 3rem;
   color: var(--text-color);
@@ -209,6 +208,13 @@ const generalInfo: GeneralInfo[] = [
 
 .box > p {
   color: var(--text-color);
+}
+
+.box span:hover,
+.box > p:hover,
+.box a:hover {
+  color: var(--text-hover);
+  transition: color 0.3s ease-in-out;
 }
 
 @media (max-width: 800px) {
@@ -256,9 +262,11 @@ const generalInfo: GeneralInfo[] = [
   margin-right: .5rem;
 }
 
+.links ul li a span:hover,
+.others-links-section li a span:hover,
 .links ul li a:hover,
 .others-links-section li a:hover {
-  color: var(--text-color);
+  color: var(--text-hover);
   transition: .3s ease-in-out;
 }
 
