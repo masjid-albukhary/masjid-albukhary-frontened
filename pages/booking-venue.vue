@@ -4,6 +4,7 @@
 
 <template>
   <NavBar/>
+  <BookingStructure/>
   <BookingForm/>
   <Footer/>
 </template>

@@ -41,7 +41,7 @@ const booking_steps = [
       </div>
     </div>
 
-    <router-link to="/" class="booking-structure-btn">
+    <router-link to="/booking-venue.vue" class="booking-structure-btn">
       <UIcon name="mdi-register" class="register-icon" />
       Book Now
     </router-link>
@@ -89,12 +89,19 @@ const booking_steps = [
   margin-bottom: 1rem;
   font-size: 1.3rem;
   color: var(--primary-color);
+  text-align: justify;
 }
 
 .booking-structure-icon {
   color: var(--primary-color);
   margin-right: 0.75rem;
   font-size: 1.25rem;
+}
+
+@media (max-width: 800px) {
+  .booking-structure-icon{
+    display: none;
+  }
 }
 
 .booking-structure-btn {
