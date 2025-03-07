@@ -6,10 +6,10 @@ import News from "~/components/News.vue";
 
 <template>
   <NavBar/>
-  <News/>
-  <BookingStructure/>
-  <PrayerTime/>
   <About/>
+  <News/>
+  <PrayerTime/>
+  <BookingStructure/>
   <Footer/>
 </template>
 

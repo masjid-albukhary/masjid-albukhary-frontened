@@ -4,20 +4,19 @@
 const aboutItem = [
   {
     id: 1,
-    title: "about.aboutUs.title",
-    content: "about.aboutUs.content",
+    title: "Our Vision",
+    content: "To be a beacon of Islamic knowledge, spirituality, and community service, fostering unity and inclusivity while upholding the principles of faith, education, and social welfare.",
     image: "images/Masjid-Al-Bukhary.png",
   },
   {
     id: 2,
-    title: "about.vision.title",
-    content: "about.vision.content",
-    image: "images/Masjid-Al-Bukhary.png",
-  },
-  {
-    id: 3,
-    title: "about.mission.title",
-    content: "about.mission.content",
+    title: "Our Mission",
+    content: "" +
+        "Spiritual Growth: Provide a welcoming space for prayer, worship, and reflection, promoting a deep connection with Allah." +
+        "Education & Knowledge: Offer Islamic teachings, Quranic studies, and community learning programs to nurture faith and understanding." +
+        "Community Service: Engage in charitable activities, supporting those in need and strengthening community bonds." +
+        "Youth & Leadership Development: Empower the younger generation with guidance, mentorship, and leadership programs." +
+        "Interfaith Harmony: Promote mutual respect and understanding among diverse communities through dialogue and collaboration.",
     image: "images/Masjid-Al-Bukhary.png",
   },
 ];
