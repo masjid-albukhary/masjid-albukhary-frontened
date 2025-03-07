@@ -124,7 +124,7 @@ onMounted(() => {
 <style scoped>
 .prayer-time {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   max-width: 1000px;
   margin: 0 auto;
   padding: var(--spacing-unit);
