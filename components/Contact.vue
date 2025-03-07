@@ -45,7 +45,6 @@ const contactQuestions = [
   }
 ]
 
-
 const formSchema = z.object({
   name: z
       .string()
@@ -54,12 +53,12 @@ const formSchema = z.object({
       .string()
       .email('Invalid email format')
       .regex(/@gmail\.com$/, "Must be a valid email ending with '@gmail.com'"),
-  subject: z
-      .string()
-      .min(8, 'First name must be at least 8 characters long'),
   phone: z
       .string()
       .regex(/^\d{8,15}$/, 'Invalid phone number'),
+  subject: z
+      .string()
+      .min(8, 'First name must be at least 8 characters long'),
   message: z
       .string()
       .min(20, 'Detail must be at least 20 characters long')
@@ -87,9 +86,6 @@ contactQuestions.forEach((question) => {
   watch(() => form[question.id], () => validateField(question.id));
 });
 
-
-const isPopupVisible = ref(false)
-
 async function handleSubmit() {
   form.Date = new Date().toLocaleDateString("en-GB");
 
@@ -110,30 +106,23 @@ async function handleSubmit() {
       const response = await api.post("/maintenance-requests/", formDataObj);
       console.log("Response Data:", response.data);
       Object.keys(form).forEach((key) => (form[key] = ""));
-      isPopupVisible.value = true;
       location.reload()
     } catch (error) {
-      isPopupVisible.value = false;
       console.error("Error occurred:", error);
       if (error.response) {
         console.error("Backend Error:", error.response.data);
         alert(`Error: ${error.response.data.detail || "Unable to submit the form."}`);
-        isPopupVisible.value = false;
         // console.log("Response Data:", response.data.value);
       } else if (error.request) {
         console.error("No response from the server:", error.request);
         alert("Server is not responding. Please try again later.");
-        isPopupVisible.value = false;
       } else {
         console.error("Request Setup Error:", error.message);
         alert("An error occurred while submitting the form. Please try again.");
-        isPopupVisible.value = false;
       }
-      isPopupVisible.value = false;
     }
   } else {
     console.log('Validation Errors:', validationResults.error.errors);
-    isPopupVisible.value = false;
     alert("Please correct the errors in the form.");
   }
 }
@@ -336,8 +325,8 @@ async function handleSubmit() {
 
 .contact-form textarea {
   width: 205%;
-  min-height: 4rem;
-  max-height: 4rem;
+  min-height: 5rem;
+  max-height: 5rem;
   padding: 0.5rem;
   border: 2px solid #EEEEEE;
   border-radius: 5px;
