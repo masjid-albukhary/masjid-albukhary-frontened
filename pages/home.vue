@@ -5,6 +5,7 @@
 <template>
   <NavBar/>
   <PrayerTime/>
+  <MapSection/>
   <Footer/>
 </template>
 
