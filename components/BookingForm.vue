@@ -225,7 +225,7 @@ async function handleSubmit() {
               <label class="question-title" :for="question.label">{{ question.label }}</label>
 
               <input
-                  v-if="question.type === 'text'||question.type === 'email' || question.type === 'file' || question.type === 'date'"
+                  v-if="['text','email', 'file', 'date'].includes(question.type)"
                   :type="question.type"
                   v-model="form[question.id]"
                   :placeholder="question.placeholder"
