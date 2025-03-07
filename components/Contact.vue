@@ -1,123 +1,66 @@
 <script setup>
 import {reactive, ref, watch} from 'vue';
 import {z} from 'zod';
-import Popup from '~/components/SubmitBookingPopup.vue';
 
-const bookingQuestions = [
+const contactQuestions = [
   {
-    label: "Contact Person Name",
+    label: "Name",
     type: "text",
-    placeholder: "First Name",
+    placeholder: "Enter your full name",
     required: true,
-    id: "contact_person_first_name",
+    id: "name",
+    icon: "user"
   },
   {
-    label: "Contact Person Name",
-    type: "text",
-    placeholder: "Last Name",
-    required: true,
-    id: "contact_person_last_name",
-  },
-  {
-    label: "Email",
+    label: "Email Address",
     type: "email",
     placeholder: "Enter your email",
     required: true,
     id: "email",
+    icon: "mail"
   },
   {
-    label: "Contact Number",
-    type: "text",
-    placeholder: "Enter contact number",
-    required: true,
-    id: "phone",
-  },
-  {
-    label: "Address",
-    type: "text",
-    placeholder: "Address",
-    required: true,
-    id: "address",
-  },
-  {
-    label: "Postal Code",
-    type: "text",
-    placeholder: "Enter postal code",
-    required: true,
-    id: "postal_code",
-  },
-  {
-    label: "Date of Nikah",
-    type: "date",
-    placeholder: "DD-Month-YYYY (e.g., 10 Sept 2022)",
-    required: true,
-    id: "date_of_nikah",
-  },
-  {
-    label: "Choose your time slot",
-    type: "radio",
-    options: [
-      {value: "10 AM", label: "10 AM"},
-      {value: "11 AM", label: "11 AM"},
-      {value: "2 PM (Mon-Thurs)", label: "2 PM (Mon-Thurs)"},
-      {value: "3 PM (Mon-Thurs)", label: "3 PM (Mon-Thurs)"},
-    ],
-    required: true,
-    placeholder: "Choose your time slot",
-    id: "time_slot",
-  },
-  {
-    label: "Select Venue",
-    type: "select",
-    options: [
-      {value: "venue_1", label: "Venue 1"},
-      {value: "venue_2", label: "Venue 2"},
-      {value: "other", label: "Other"},
-    ],
-    required: true,
-    id: "venue",
-    placeholder: "Select an option",
-  },
-  {
-    label: "Other Requests/Inquiries",
-    type: "file",
-    required: true,
-    placeholder: "Upload any requests or inquiries",
-    id: "supporting_inquiries",
-  },
-  {
-    label: "Other Requests/Inquiries",
-    type: "textarea",
-    placeholder: "Enter any requests or inquiries",
+    label: "Phone Number",
+    type: "tel",
+    placeholder: "Enter your phone number",
     required: false,
-    id: "other_requests",
+    id: "phone",
+    icon: "phone"
   },
-];
+  {
+    label: "Subject",
+    type: "text",
+    placeholder: "Enter subject",
+    required: false,
+    id: "subject",
+    icon: "edit"
+  },
+  {
+    label: "Message",
+    type: "textarea",
+    placeholder: "Type your message here...",
+    required: true,
+    id: "message",
+    icon: "message-circle"
+  }
+]
+
 
 const formSchema = z.object({
-  contact_person_first_name: z
+  name: z
       .string()
       .min(8, 'First name must be at least 8 characters long'),
-  contact_person_last_name: z
-      .string()
-      .min(8, 'Last Name must be at least 8 characters long'),
   email: z
       .string()
       .email('Invalid email format')
       .regex(/@gmail\.com$/, "Must be a valid email ending with '@gmail.com'"),
+  subject: z
+      .string()
+      .min(8, 'First name must be at least 8 characters long'),
   phone: z
       .string()
       .regex(/^\d{8,15}$/, 'Invalid phone number'),
-  address: z.string()
-      .min(8, 'Address must be at least 8 characters long'),
-  postal_code: z
-      .string()
-      .regex(/^\d{4,8}$/, 'Invalid postal code'),
-  date_of_nikah: z.string().optional(),
-  time_slot: z.string().optional(),
-  venue: z.string().optional(),
-  evidence_photo: z.any().optional(),
-  other_requests: z
+  message: z
       .string()
       .min(20, 'Detail must be at least 20 characters long')
 });
@@ -125,7 +68,7 @@ const formSchema = z.object({
 const form = reactive({});
 const errors = reactive({});
 
-bookingQuestions.forEach((question) => {
+contactQuestions.forEach((question) => {
   form[question.id] = "";
   errors[question.id] = "";
 });
@@ -140,18 +83,10 @@ function validateField(field) {
   }
 }
 
-bookingQuestions.forEach((question) => {
+contactQuestions.forEach((question) => {
   watch(() => form[question.id], () => validateField(question.id));
 });
 
-const evidence_photo = ref(null);
-
-const handleFileUpload = (event, inputDetails) => {
-  if (inputDetails.type !== 'file') {
-    return;
-  }
-  evidence_photo.value = event.target.files[0];
-};
 
 const isPopupVisible = ref(false)
 
@@ -170,11 +105,7 @@ async function handleSubmit() {
         }
         formDataObj.append(key, value);
       }
-      formDataObj.delete('evidence_photo')
 
-      if (evidence_photo.value) {
-        formDataObj.append('evidence_photo', evidence_photo.value)
-      }
 
       const response = await api.post("/maintenance-requests/", formDataObj);
       console.log("Response Data:", response.data);
@@ -210,42 +141,41 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <div class="contact-section">
+  <section class="contact-section">
     <div class="container">
 
-      <div class="booking-form">
+      <div class="contact-info-container">
 
-        <h2>Please fill this Form</h2>
+        <div class="contact-image-container">
+          <img src="../public/images/contact-image.jpg" alt="contact-png" class="contact-image"/>
+        </div>
+
+        <div class="contact-info">
+          <h3>Get on touch with us</h3>
+          <span>
+            Reach out to us with any questions or concerns you may have, and we’ll be happy to help
+          </span>
+        </div>
+
+      </div>
+
+      <div class="contact-form">
+
+        <h2>Your Details</h2>
 
         <form @submit.prevent="handleSubmit">
-          <div class="booking-form">
-            <div class="info" v-for="(question, index) in bookingQuestions " :key="index">
+          <div class="contact-form">
+            <div class="info" v-for="(question, index) in contactQuestions " :key="index">
               <label class="question-title" :for="question.label">{{ question.label }}</label>
 
               <input
-                  v-if="question.type === 'text'||question.type === 'email' || question.type === 'file' || question.type === 'date'"
+                  v-if="question.type === 'text'||question.type === 'email' ||question.type === 'tel'"
                   :type="question.type"
                   v-model="form[question.id]"
                   :placeholder="question.placeholder"
                   :id="question.label"
-                  :accept="question.type === 'file' ? '.doc,.docx,.pdf,.jpg,.jpeg,.png,.gif' : ''"
-                  @change="(e) => handleFileUpload(e, question)"
                   @input="validateField(question.id)"
               />
-
-
-              <select
-                  v-if="question.type === 'select' ||  question.type === 'radio'"
-                  v-model="form[question.id]"
-                  :id="question.label"
-                  @change="validateField(question.id)"
-              >
-                <option value="" disabled>{{ question.placeholder }}</option>
-                <option v-for="option in question.options" :key="option.value" :value="option.value">{{
-                    option.label
-                  }}
-                </option>
-              </select>
 
               <span v-if="errors[question.id]" class="error">{{ errors[question.id] }}</span>
 
@@ -261,49 +191,89 @@ async function handleSubmit() {
           </div>
 
           <div>
-            <button @click.once="isPopupVisible = true" class="maintenance-submit" type="submit">Submit</button>
-            <Popup :show="isPopupVisible" @update:show="isPopupVisible = $event">
-            </Popup>
+            <button @click.once="isPopupVisible = true" class="contact-submit" type="submit">Send Message</button>
           </div>
 
         </form>
       </div>
 
     </div>
-  </div>
+  </section>
 </template>
 
 <style scoped>
 
 .contact-section {
-  margin: 3rem 7rem;
-  border: 2px solid var(--secondary-color);
-  border-radius: 0 30px 30px 0;
-  box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px 0;
+  background-color: var(--bg-color);
+  width: 100%;
+  margin: 3rem auto;
+  padding: 5rem 0;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  flex-wrap: wrap;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 @media (max-width: 800px) {
   .contact-section {
     margin: 0.5rem;
   }
+
+  .container {
+    grid-template-columns: 1fr;
+    max-width: 1200px;
+  }
 }
 
-.container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  max-width: 1200px;
+.contact-image-container .contact-image {
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
+  height: 100%;
+  object-fit: cover;
+  align-content: center;
+}
+
+.contact-info-container {
+  display: block;
+  align-items: center;
+  text-align: center;
+}
+
+.contact-info-container div {
+  text-align: center;
+  align-items: center;
+  margin: 3rem auto;
+}
+
+.contact-info-container .contact-info h3 {
+  color: var(--secondary-color);
+  font-size: var(--text-size-h6);
+}
+
+.contact-info-container .contact-info span {
+  color: var(--text-hover);
+  font-size: 1rem;
 }
 
 
-.container .booking-form {
+.container .contact-form {
   flex: 1;
-  padding: 0 2.5rem;
+  padding: 0 2rem;
 }
 
 @media (max-width: 800px) {
   .container div {
     display: block;
+  }
+
+  .container .contact-form {
+    flex: 1;
+    padding: 1rem;
   }
 }
 
@@ -329,14 +299,14 @@ async function handleSubmit() {
   text-align: justify;
 }
 
-.booking-form > h2 {
+.contact-form > h2 {
   font-size: 1.5rem;
   color: var(--primary-color);
   text-align: center;
   padding: 1rem 0;
 }
 
-.booking-form {
+.contact-form {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
@@ -350,13 +320,13 @@ async function handleSubmit() {
   display: block;
 }
 
-.booking-form .question-title {
+.contact-form .question-title {
   font-size: 1rem;
   color: var(--primary-color);
 }
 
-.booking-form input,
-.booking-form select {
+.contact-form input,
+.contact-form select {
   width: 100%;
   padding: 0.5rem;
   border: 2px solid #EEEEEE;
@@ -364,7 +334,7 @@ async function handleSubmit() {
   outline: none;
 }
 
-.booking-form textarea {
+.contact-form textarea {
   width: 205%;
   min-height: 4rem;
   max-height: 4rem;
@@ -380,30 +350,33 @@ async function handleSubmit() {
 }
 
 @media (max-width: 1200px) {
-  .booking-form textarea {
+  .contact-form textarea {
     width: calc(100% - .5rem);
   }
 }
 
 @media (max-width: 800px) {
-  .booking-form textarea {
+  .contact-formcontact-form textarea {
     width: calc(100% - .5rem);
   }
 }
 
-.maintenance-submit {
-  margin-top: 1rem;
+.contact-submit {
+  width: 90%;
+  margin: 2rem auto;
   padding: .5rem 2rem;
   display: flex;
   font-size: 1rem;
-  border-radius: 1rem;
+  border-radius: 1rem 0;
   background-color: var(--primary-color);
-  color: var(--primary-color);
+  color: var(--text-color);
+  text-align: center;
 }
 
-.maintenance-submit:hover {
-  background-color: var(--primary-color);
-  transition: .3s ease-in-out;
+.contact-submit:hover {
+  background-color: var(--secondary-color);
+  color: var(--text-hover);
+  transition: background-color .3s ease-in-out, color .3s ease-in-out;
 }
 
 </style>
