@@ -128,7 +128,7 @@ onMounted(() => {
   max-width: 1000px;
   margin: 0 auto;
   padding: var(--spacing-unit);
-  color: var(--text-prayer-color);
+  color: var(--text-color);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -158,13 +158,13 @@ onMounted(() => {
 }
 
 .time-box span {
-  color: var(--primary-color);
+  color: var(--text-color);
   font-size: 4rem;
 }
 
 .time-box h3,
 .time-box h4 {
-  color: var(--primary-color);
+  color: var(--text-color);
   z-index: 1002;
 }
 
@@ -201,7 +201,7 @@ onMounted(() => {
 
 .prayer-time-title {
   font-size: var(--text-size-h2);
-  color: var(--text-prayer-color);
+  color: var(--text-color);
   margin: var(--spacing-unit);
   text-align: center;
 }
@@ -228,7 +228,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   width: 100%;
-  background-color: var(--text-prayer-color);
+  background-color: var(--primary-color);
   color: var(--text-color);
   border-radius: var(--primary-border-radius);
   padding: var(--spacing-unit);
@@ -253,7 +253,7 @@ onMounted(() => {
 
 .loading {
   font-style: italic;
-  color: var(--text-prayer-color);
+  color: var(--text-color);
 }
 
 @media (max-width: 768px) {
