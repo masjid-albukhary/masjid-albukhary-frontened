@@ -51,13 +51,19 @@ const formSchema = z.object({
   path: ["confirmPassword"]
 });
 
-
-const form = reactive({});
-const errors = reactive({});
+const form = reactive({
+  username: "",
+  password: "",
+  confirmPassword: ""
+});
+const errors = reactive({
+  username: "",
+  password: "",
+  confirmPassword: ""
+});
 
 loginQuestions.forEach((question) => {
-  form[question.id] = "";
-  errors[question.id] = "";
+  watch(() => form[question.id], () => validateField(question.id));
 });
 
 function validateField(field) {
@@ -120,6 +126,7 @@ async function handleSubmit() {
 <template>
   <section class="login-section">
     <div class="login-container">
+
       <div class="login-info-container">
         <div class="login-image-container">
           <img src="../public/images/login.png" alt="Login Image" class="login-image" />
@@ -130,12 +137,14 @@ async function handleSubmit() {
           <router-link to="/sign-up">Sign Up</router-link>
         </div>
       </div>
+
       <div class="login-form-container">
         <h2>Welcome Back</h2>
         <form @submit.prevent="handleSubmit">
           <div class="form-group" v-for="(question, index) in loginQuestions" :key="index">
             <label :for="question.label" class="question-title">{{ question.label }}</label>
             <input
+
                 v-if="['text', 'password'].includes(question.type)"
                 :type="question.type"
                 v-model="form[question.id]"
@@ -145,7 +154,7 @@ async function handleSubmit() {
             />
             <span v-if="errors[question.id]" class="error">{{ errors[question.id] }}</span>
           </div>
-          <button class="login-submit" type="submit">Send Message</button>
+          <button class="login-submit" type="submit">Log In</button>
         </form>
       </div>
     </div>
@@ -169,7 +178,7 @@ async function handleSubmit() {
   grid-template-columns: 1fr 1fr;
   max-width: 1000px;
   margin: 0 auto;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  box-shadow: rgba(149, 157, 165, 0.3) 0 8px 24px;
   padding: 2rem;
   background-color: white;
   border-radius: 8px;
@@ -197,9 +206,10 @@ async function handleSubmit() {
   font-size: 1.2rem;
 }
 
-.login-info a {
+.login-info a ,
+.login-info span {
   text-decoration: none;
-  font-weight: bold;
+  font-weight: normal;
   color: var(--primary-color);
 }
 
