@@ -3,7 +3,9 @@
 </script>
 
 <template>
-
+  <NavBar/>
+  <PrayerTime/>
+  <Footer/>
 </template>
 
 <style scoped>
