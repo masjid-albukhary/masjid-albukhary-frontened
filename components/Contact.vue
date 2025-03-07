@@ -195,7 +195,7 @@ async function handleSubmit() {
 .contact-section {
   background-color: var(--bg-color);
   width: 100%;
-  margin: 3rem auto;
+  margin: 0 auto;
   padding: 5rem 0;
 }
 
