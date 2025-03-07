@@ -100,7 +100,7 @@ onMounted(() => {
   font-size: 1.5rem;
   font-weight: normal;
   text-transform: uppercase;
-  color: var(--primary-color);
+  color: var(--text-color);
 }
 
 .navigation-links {
@@ -125,16 +125,22 @@ onMounted(() => {
   padding: 0.3rem;
   margin-right: 0.5rem;
   border-radius: 0.5rem;
-  color: var(--primary-color);
-}
-
-.navigation-links li:last-child {
-  background: var(--primary-color);
-  color: var(--text-hover) !important;
-  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  color: var(--text-color);
 }
 
 .navigation-links li:hover {
+  color: var(--text-hover);
+  transition: color 0.3s ease-in-out;
+}
+
+.navigation-links li:last-child {
+  background: var(--text-color);
+  color: var(--primary-color);
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.navigation-links li:hover:last-child {
+  background-color: var(--text-hover);
   color: var(--secondary-color);
   transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
