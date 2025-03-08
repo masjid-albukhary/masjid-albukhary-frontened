@@ -1,6 +1,5 @@
 <script setup lang="ts">
 
-
 const aboutItem = [
   {
     id: 1,
@@ -20,11 +19,35 @@ const aboutItem = [
     image: "images/Masjid-Al-Bukhary.png",
   },
 ];
+
 </script>
 
 <template>
-  <div class="about-section">
+
+  <section class="about-section">
     <h1 class="about-title">Masjid Al Bukhary Kuala Lumpur Official</h1>
+    <div class="about-content">
+
+      <div class="description">
+        <h3>Get know more about Albukhary Foundation</h3>
+        <p class="description-text">
+          One simple act of kindness that took place four decades ago marked the beginning of Albukhary Foundation’s
+          journey. When Syed Mokhtar brought home his first salary of RM1,500 as a rice trader in 1974, his mother,
+          Sharifah Rokiah, reminded him that while they lived a humble life, there were others in the community who were
+          poorer. She encouraged him to keep half for the family, and distribute the remaining RM750 to 15 needy
+          families in their community.
+        </p>
+      </div>
+
+      <div class="video-container">
+        <video ref="videoPlayer" class="video" controls>
+          <source src="../public/videos/about-albukhary-masjid.mp4" type="video/mp4"/>
+        </video>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-section">
     <div class="about-grid" v-for="item in aboutItem" :key="item.id">
       <template v-if="item.id % 2 !== 0">
         <div class="text-content">
@@ -45,14 +68,17 @@ const aboutItem = [
         </div>
       </template>
     </div>
-  </div>
+
+  </section>
 </template>
 
 <style scoped>
-.about-section {
+section {
   margin: 5rem auto;
   max-width: 1200px;
   padding: 0 1rem;
+  display: block;
+  height: 100%;
 }
 
 .about-title {
@@ -63,8 +89,124 @@ const aboutItem = [
   margin-bottom: 2rem;
 }
 
+.about-content {
+  background-image: url("../public/images/masjid-about-bg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin: 5rem auto;
+  box-shadow: rgba(149, 157, 165, 0.5) 0 8px 24px;
+  padding: 2rem 4rem;
+}
+
+.video-container {
+  max-width: 800px;
+  margin: auto;
+  text-align: center;
+}
+
+.video {
+  width: 450px;
+  height: 400px;
+  border-radius: 20px;
+  margin: -5rem auto 0 auto;
+  background-color: var(--primary-color);
+  border: none;
+  overflow: hidden;
+}
+
+.about-content h3 {
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  margin-bottom: 2rem;
+}
+
+.about-content p {
+  text-align: justify;
+  font-size: 1rem;
+  color: var(--primary-color);
+}
+
+
+@media (max-width: 1024px) {
+  .about-title {
+    font-size: 1.5rem;
+  }
+
+  .about-content {
+    display: block;
+    margin: 5rem auto;
+  }
+
+  .video-container {
+    margin: 3rem auto;
+  }
+
+  .video {
+    width: 450px;
+    height: 400px;
+    margin: 0 auto -5rem auto;
+  }
+
+  .about-content h3 {
+    font-size: 1.2rem;
+    margin: 2rem auto;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .about-title {
+    font-size: 1.5rem;
+  }
+
+  .about-content {
+    display: block;
+    gap: 0 2rem;
+    margin: auto;
+    padding: 1rem;
+  }
+
+  .video {
+    width: 450px;
+    height: 400px;
+    margin: 0 auto -5rem auto;
+  }
+
+  .about-content h3 {
+    font-size: 1.2rem;
+    margin: 2rem auto;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .about-title {
+    font-size: 1.5rem;
+  }
+
+  .about-content {
+    display: block;
+    margin: 5rem auto;
+    padding: 1rem;
+  }
+
+  .video {
+    width: 450px;
+    height: 400px;
+    margin: 0 auto -5rem auto;
+  }
+
+  .about-content h3 {
+    font-size: 1.2rem;
+    margin: 2rem auto;
+  }
+}
+
 .about-grid {
-  width: 85%;
+  width: 90%;
   margin: 2rem auto;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -98,8 +240,8 @@ const aboutItem = [
 
 .image-content img {
   width: 100%;
-  max-width: 500px;
-  height: 500px;
+  max-width: 450px;
+  height: 400px;
   object-fit: cover;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -111,6 +253,11 @@ const aboutItem = [
 }
 
 @media (max-width: 1024px) {
+
+  .about-content {
+    display: block;
+  }
+
   .about-grid {
     gap: 2rem;
     width: 90%;
@@ -138,7 +285,6 @@ const aboutItem = [
     grid-template-columns: 1fr;
     gap: 1.5rem;
     width: 100%;
-    text-align: center;
   }
 
   .about-section {
@@ -179,6 +325,7 @@ const aboutItem = [
 
   .item-description {
     font-size: 0.95rem;
+    text-align: justify;
   }
 
   .image-content img {
