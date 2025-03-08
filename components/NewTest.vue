@@ -57,29 +57,16 @@ function closePopup() {
       </div>
     </div>
     <div class="buttons">
-      <button @click="prevPage" class="nav-button">
-        <UIcon
-            name="mdi-arrow-left"
-        />
-      </button>
-      <button @click="nextPage" class="nav-button">
-        <UIcon
-            name="mdi-arrow-right"
-        />
-      </button>
+      <button @click="prevPage" class="nav-button">‹</button>
+      <button @click="nextPage" class="nav-button">›</button>
     </div>
 
     <div v-if="selectedImage" class="popup-overlay">
       <div class="popup-content">
-        <span class="close-btn" @click="closePopup">
-          <UIcon
-              name="mdi-close"
-          /></span>
-
+        <span class="close-btn" @click="closePopup">✖</span>
         <img :src="selectedImage.src" :alt="selectedImage.alt" class="popup-image" />
       </div>
     </div>
-
   </section>
 </template>
 
@@ -132,26 +119,24 @@ h1 {
   display: flex;
   justify-content: center;
   margin-top: 1.5rem;
-  gap: 2rem;
 }
 
 .nav-button {
-  padding: 0.5rem 1rem;
-  font-size: 1.2rem;
+  padding: 0.5rem 1.5rem;
+  font-size: 1.5rem;
   background-color: var(--primary-color);
-  color: var(--text-color);
+  color: white;
   border: none;
-  outline: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: color 0.3s ease-in-out ,background-color 0.3s ease-in-out ;
+  transition: 0.3s;
 }
 
 .nav-button:hover {
   background-color: var(--secondary-color);
-  color: var(--text-color);
 }
 
+/* Popup Modal */
 .popup-overlay {
   position: fixed;
   top: 0;
@@ -170,23 +155,29 @@ h1 {
   background: white;
   padding: 1rem;
   border-radius: 10px;
-  max-width: 80%;
-  max-height: 80%;
+  max-width: 90%;
+  max-height: 90%;
 }
 
 .popup-image {
-  max-width: 90%;
+  max-width: 100%;
   max-height: 80vh;
   border-radius: 5px;
 }
 
+/* Close Button */
 .close-btn {
   position: absolute;
   top: 10px;
   right: 15px;
   font-size: 1.5rem;
+  font-weight: bold;
   cursor: pointer;
-  color: var(--primary-color);
+  color: #333;
+}
+
+.close-btn:hover {
+  color: red;
 }
 
 @media (max-width: 768px) {

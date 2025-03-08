@@ -3,7 +3,10 @@
 </script>
 
 <template>
-
+  <NavBar/>
+  <Landing/>
+  <Gallery/>
+  <Footer/>
 </template>
 
 <style scoped>
