@@ -42,6 +42,16 @@ const links: Link[] = [
     icon: "mdi-home",
   },
   {
+    link: "/facilities",
+    label: "Facilities",
+    icon: "mdi-office-building"
+  },
+  {
+    link: "/gallery",
+    label: "Gallery",
+    icon: "mdi-folder-multiple-image"
+  },
+  {
     link: "/contact",
     label: "Contact",
     icon: "mdi-account",
