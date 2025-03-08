@@ -83,10 +83,14 @@ onMounted(() => {
 
 <style scoped>
 .header-container {
-  background-color: var(--background-color);
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
   padding: 0.5rem 1rem;
-  max-height: 300px;
-  box-shadow: rgba(100, 100, 111, 0.2) 0 7px 29px 0;
+  max-height: 100px;
+  background-color: var(--primary-color);
+  z-index: 1001;
 }
 
 .header-wrapper {
