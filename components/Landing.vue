@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, onMounted, onUnmounted} from 'vue';
+import { ref, computed, onMounted, onUnmounted } from "vue";
 
 interface LandingItems {
   id: number;
@@ -10,9 +10,12 @@ interface LandingItems {
 }
 
 const landingItems: LandingItems[] = [
-  {id: 1, title: "Masjid 1", content: "This is the first masjid description.", color: "#3498db", url: "string"},
-  {id: 2, title: "Masjid 2", content: "This is the second masjid description.", color: "#2ecc71", url: "string"},
-  {id: 3, title: "Masjid 3", content: "This is the third masjid description.", color: "#e74c3c", url: "string"}
+  { id: 1, title: "Masjid 1", content: "This is the first masjid description.", color: "#3498db", url: "string" },
+  { id: 2, title: "Masjid 2", content: "This is the second masjid description.", color: "#2ecc71", url: "string" },
+  { id: 3, title: "Masjid 3", content: "This is the third masjid description.", color: "#e74c3c", url: "string" },
+  { id: 4, title: "Masjid 4", content: "This is the fourth masjid description.", color: "#f1c40f", url: "string" },
+  { id: 5, title: "Masjid 5", content: "This is the fifth masjid description.", color: "#9b59b6", url: "string" },
+  { id: 6, title: "Masjid 6", content: "This is the sixth masjid description.", color: "#34495e", url: "string" },
 ];
 
 const activeIndex = ref(0);
@@ -30,8 +33,25 @@ const goToItem = (index: number) => {
   activeIndex.value = index;
 };
 
+const getVisibleBullets = computed(() => {
+  const totalItems = landingItems.length;
+  const maxBullets = 3;
+
+  if (totalItems <= maxBullets) {
+    return landingItems.map((item, index) => ({ ...item, index }));
+  }
+
+  let start = Math.max(0, activeIndex.value - 1);
+  start = Math.min(start, totalItems - maxBullets);
+
+  return landingItems.slice(start, start + maxBullets).map((item, i) => ({
+    ...item,
+    index: start + i,
+  }));
+});
+
 onMounted(() => {
-  intervalId = setInterval(nextItem, 10000);
+  intervalId = setInterval(nextItem, 5000);
 });
 
 onUnmounted(() => {
@@ -47,31 +67,26 @@ onUnmounted(() => {
       <div class="landing-card">
         <h1 class="title">Landing Page</h1>
         <h2 class="sub-title">{{ landingItems[activeIndex].title }}</h2>
-        <p class="content"> {{ landingItems[activeIndex].content }}</p>
+        <p class="content">{{ landingItems[activeIndex].content }}</p>
       </div>
 
       <div class="pagination">
         <span @click="prevItem" class="nav-btn">
-
-          <UIcon
-              name="mdi-chevron-left"          />
-
+          <UIcon name="mdi-chevron-left" />
         </span>
 
         <div class="dots">
           <span
-              v-for="(item, index) in landingItems"
+              v-for="item in getVisibleBullets"
               :key="item.id"
               class="dot"
-              :class="{ active: index === activeIndex }"
-              @click="goToItem(index)">
-          </span>
+              :class="{ active: item.index === activeIndex }"
+              @click="goToItem(item.index)"
+          ></span>
         </div>
 
         <span @click="nextItem" class="nav-btn">
-          <UIcon
-              name="mdi-chevron-right"
-          />
+          <UIcon name="mdi-chevron-right" />
         </span>
       </div>
     </div>
@@ -80,12 +95,13 @@ onUnmounted(() => {
 
 <style scoped>
 section {
+  height: 100%;
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  background-image: url("../public/images/masjid-1.png");
+  background-image: url("../public/images/masjid-4.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -106,7 +122,7 @@ section {
   justify-content: center;
 }
 
-/* Responsive Design */
+
 @media (max-width: 1024px) {
   .landing-container {
     width: 80%;
