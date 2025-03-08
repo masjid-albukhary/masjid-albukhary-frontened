@@ -31,7 +31,7 @@ const booking_steps = [
       <div class="steps-booking-structure-container">
         <ul class="booking-structure-list">
           <li v-for="step in booking_steps" :key="step.step">
-            <UIcon :name="step.icon" class="booking-structure-icon" />
+            <UIcon :name="step.icon" class="booking-structure-icon"/>
             <span>{{ step.content }}</span>
           </li>
         </ul>
@@ -42,7 +42,7 @@ const booking_steps = [
     </div>
 
     <router-link to="/booking-venue.vue" class="booking-structure-btn">
-      <UIcon name="mdi-register" class="register-icon" />
+      <UIcon name="mdi-register" class="register-icon"/>
       Book Now
     </router-link>
   </section>
@@ -50,8 +50,9 @@ const booking_steps = [
 
 
 <style scoped>
-.booking-structure {
+section {
   width: 100%;
+  min-height: 100vh;
   background-color: var(--bg-color);
   max-width: 1200px;
   margin: 3rem auto;
@@ -99,7 +100,7 @@ const booking_steps = [
 }
 
 @media (max-width: 800px) {
-  .booking-structure-icon{
+  .booking-structure-icon {
     display: none;
   }
 }

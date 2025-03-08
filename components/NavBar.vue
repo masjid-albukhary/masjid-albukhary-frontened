@@ -57,7 +57,7 @@ onMounted(() => {
       <div class="logo-container">
         <div class="logo">
           <a href="https://commercedc.com.my/">
-            <img src="/images/masjid_albukary_logo.png" alt="AIU Logo"/>
+            <img src="/images/masjid_albukary_logo.png" alt="masjid Albukary  Logo"/>
           </a>
         </div>
         <button v-if="isMobile" @click="toggleLinksVisibility" class="menu-toggle-btn">
