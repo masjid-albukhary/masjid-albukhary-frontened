@@ -22,7 +22,7 @@ const currentYear = new Date().getFullYear();
 
 const links: Link[] = [
   {
-    link: "/index",
+    link: "/",
     label: "Home",
     icon: "mdi-home",
   },
