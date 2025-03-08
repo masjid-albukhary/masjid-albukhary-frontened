@@ -12,7 +12,7 @@ const isMobile = ref(false);
 
 const links: Link[] = [
   {
-    link: "/home",
+    link: "/index",
     label: "Home",
     icon: "mdi-home",
   },

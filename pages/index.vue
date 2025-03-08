@@ -1,11 +1,15 @@
 <script setup lang="ts">
 
-import PrayerTime from "~/components/PrayerTime.vue";
 </script>
 
 <template>
+  <NavBar/>
+  <Landing/>Q
   <PrayerTime/>
+  <MapSection/>
+  <Footer/>
 </template>
 
 <style scoped>
+
 </style>
