@@ -4,6 +4,7 @@
 
 <template>
   <NavBar/>
+  <Landing/>
   <PrayerTime/>
   <MapSection/>
   <Footer/>
