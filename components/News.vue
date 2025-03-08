@@ -110,6 +110,7 @@ const lastNewsItem = news[news.length - 1];
   padding: 2rem;
   background-color: var(--bg-color);
   width: 100%;
+  height: 100%;
 }
 
 .news-section .news-main-title {
