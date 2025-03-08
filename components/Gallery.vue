@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import {computed, ref} from "vue";
 
 interface Image {
   id: number;
@@ -7,20 +7,39 @@ interface Image {
   alt: string;
 }
 
+interface Video {
+  id: number;
+  src: string;
+  alt: string;
+}
+
 const images: Image[] = [
-  { id: 1, src: "/images/masjid-about-bg.png", alt: "Masjid About 1" },
-  { id: 2, src: "/images/masjid-about-bg.png", alt: "Masjid About 2" },
-  { id: 3, src: "/images/masjid-about-bg.png", alt: "Masjid About 3" },
-  { id: 4, src: "/images/masjid-about-bg.png", alt: "Masjid About 4" },
-  { id: 5, src: "/images/masjid-about-bg.png", alt: "Masjid About 5" },
+  {id: 1, src: "/images/masjid-about-bg.png", alt: "Masjid About 1"},
+  {id: 2, src: "/images/masjid-about-bg.png", alt: "Masjid About 2"},
+  {id: 3, src: "/images/masjid-about-bg.png", alt: "Masjid About 3"},
+  {id: 4, src: "/images/masjid-about-bg.png", alt: "Masjid About 4"},
+  {id: 5, src: "/images/masjid-about-bg.png", alt: "Masjid About 5"},
+];
+
+const videos: Video[] = [
+  {id: 1, src: "videos/about-albukhary-masjid.mp4", alt: "Masjid Video 1"},
+  {id: 2, src: "videos/about-albukhary-masjid.mp4", alt: "Masjid Video 2"},
+  {id: 3, src: "videos/about-albukhary-masjid.mp4", alt: "Masjid Video 3"},
+  {id: 4, src: "videos/about-albukhary-masjid.mp4", alt: "Masjid Video 4"},
+  {id: 5, src: "videos/about-albukhary-masjid.mp4", alt: "Masjid Video 5"},
 ];
 
 const currentIndex = ref(0);
 const itemsPerPage = ref(3);
-const selectedImage = ref<Image | null>(null); // Store the clicked image
+const selectedImage = ref<Image | null>(null);
+const selectedVideo = ref<Video | null>(null);
 
 const visibleImages = computed(() => {
   return images.slice(currentIndex.value, currentIndex.value + itemsPerPage.value);
+});
+
+const visibleVideos = computed(() => {
+  return videos.slice(currentIndex.value, currentIndex.value + itemsPerPage.value);
 });
 
 function nextPage() {
@@ -45,15 +64,17 @@ function openPopup(image: Image) {
 
 function closePopup() {
   selectedImage.value = null;
+  selectedVideo.value = null;
 }
 </script>
+
 
 <template>
   <section class="images-gallery">
     <h1>Masjid Albukhary Gallery</h1>
     <div class="container">
       <div class="card" v-for="image in visibleImages" :key="image.id" @click="openPopup(image)">
-        <img :src="image.src" :alt="image.alt" class="card-image" />
+        <img :src="image.src" :alt="image.alt" class="card-image"/>
       </div>
     </div>
     <div class="buttons">
@@ -76,8 +97,33 @@ function closePopup() {
               name="mdi-close"
           /></span>
 
-        <img :src="selectedImage.src" :alt="selectedImage.alt" class="popup-image" />
+        <img :src="selectedImage.src" :alt="selectedImage.alt" class="popup-image"/>
       </div>
+    </div>
+
+  </section>
+
+  <section class="video-gallery">
+
+    <div class="container">
+      <div class="card" v-for="video in visibleVideos" :key="video.id">
+        <video ref="videoPlayer" class="card-video" controls>
+          <source :src="video.src" type="video/mp4"/>
+        </video>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button @click="prevPage" class="nav-button">
+        <UIcon
+            name="mdi-arrow-left"
+        />
+      </button>
+      <button @click="nextPage" class="nav-button">
+        <UIcon
+            name="mdi-arrow-right"
+        />
+      </button>
     </div>
 
   </section>
@@ -120,12 +166,20 @@ h1 {
   width: 100%;
   height: auto;
   border-radius: 5px;
-  transform: skew(10deg,5deg);
+  box-shadow: rgba(149, 157, 165, 0.2) 0 8px 24px;
+  transform: skew(10deg, 5deg);
   transition: transform 0.2s ease-in-out;
 }
 
-.card-image:hover {
+.card-image:hover{
   transform: scale(1.05);
+}
+
+.card-video{
+  width: 350px;
+  height: 300px;
+  border-radius: 5px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0 8px 24px;
 }
 
 .buttons {
@@ -142,9 +196,9 @@ h1 {
   color: var(--text-color);
   border: none;
   outline: none;
-  border-radius: 5px;
+  border-radius: 1rem;
   cursor: pointer;
-  transition: color 0.3s ease-in-out ,background-color 0.3s ease-in-out ;
+  transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
 
 .nav-button:hover {
@@ -200,4 +254,12 @@ h1 {
     flex: 1 1 100%;
   }
 }
+
+
+.video-gallery {
+  background-image: url("../public/images/masjid-about-bg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 </style>
