@@ -5,6 +5,7 @@ import AdminNavBar from "~/components/AdminNavBar.vue";
 
 <template>
   <AdminNavBar/>
+  <NewsForm/>
 </template>
 
 <style scoped>
