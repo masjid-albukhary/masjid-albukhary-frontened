@@ -168,7 +168,7 @@ async function handleSubmit() {
 
       <div class="news-form">
 
-        <h2>Please fill this Form</h2>
+        <h2>This is  News Form</h2>
 
         <form @submit.prevent="handleSubmit">
           <div class="news-form">
@@ -227,10 +227,11 @@ async function handleSubmit() {
 <style scoped>
 
 .news-form-section {
-  margin: 3rem 7rem;
+  margin: 2rem 1rem;
   border: 2px solid var(--secondary-color);
   border-radius: 0 30px 30px 0;
   box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px 0;
+  background-color: white;
 }
 
 @media (max-width: 800px) {
