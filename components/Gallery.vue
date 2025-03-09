@@ -11,6 +11,7 @@ interface Video {
   id: number;
   src: string;
   alt: string;
+  url: string;
 }
 
 const images: Image[] = [
@@ -22,11 +23,36 @@ const images: Image[] = [
 ];
 
 const videos: Video[] = [
-  {id: 1, src: "videos/about-albukhary-masjid.mp4", alt: "Masjid Video 1"},
-  {id: 2, src: "videos/about-albukhary-masjid.mp4", alt: "Masjid Video 2"},
-  {id: 3, src: "videos/about-albukhary-masjid.mp4", alt: "Masjid Video 3"},
-  {id: 4, src: "videos/about-albukhary-masjid.mp4", alt: "Masjid Video 4"},
-  {id: 5, src: "videos/about-albukhary-masjid.mp4", alt: "Masjid Video 5"},
+  {
+    id: 1,
+    src: "/images/masjid-about-bg.png",
+    alt: "Masjid Video 1",
+    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
+  },
+  {
+    id: 2,
+    src: "/images/masjid-about-bg.png",
+    alt: "Masjid Video 2",
+    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
+  },
+  {
+    id: 3,
+    src: "/images/masjid-about-bg.png",
+    alt: "Masjid Video 3",
+    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
+  },
+  {
+    id: 4,
+    src: "/images/masjid-about-bg.png",
+    alt: "Masjid Video 4",
+    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
+  },
+  {
+    id: 5,
+    src: "/images/masjid-about-bg.png",
+    alt: "Masjid Video 5",
+    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
+  },
 ];
 
 const currentIndex = ref(0);
@@ -71,12 +97,18 @@ function closePopup() {
 
 <template>
   <section class="images-gallery">
-    <h1>Masjid Albukhary Gallery</h1>
-    <div class="container">
+    <h1>
+      <UIcon
+          name="mdi-folder-multiple-image"
+      />
+      Masjid Albukhary Images Gallery</h1>
+
+    <div class="images-gallery-container">
       <div class="card" v-for="image in visibleImages" :key="image.id" @click="openPopup(image)">
         <img :src="image.src" :alt="image.alt" class="card-image"/>
       </div>
     </div>
+
     <div class="buttons">
       <button @click="prevPage" class="nav-button">
         <UIcon
@@ -104,28 +136,31 @@ function closePopup() {
   </section>
 
   <section class="video-gallery">
-
-    <div class="container">
+    <h1>
+      <UIcon
+          name="mdi-movie-open-play"
+      />
+      Masjid Albukhary Video Gallery</h1>
+    <div class="video-gallery-container">
       <div class="card" v-for="video in visibleVideos" :key="video.id">
-        <video ref="videoPlayer" class="card-video" controls>
-          <source :src="video.src" type="video/mp4"/>
-        </video>
+        <a :href="video.url" target="_blank" class="video-link">
+          <img :src="video.src" :alt="video.alt" class="card-video"/>
+          <div class="overlay">
+            <UIcon name="mdi-play-circle-outline" class="play-icon"/>
+            <p class="video-title">{{ video.alt }}</p>
+          </div>
+        </a>
       </div>
     </div>
 
     <div class="buttons">
       <button @click="prevPage" class="nav-button">
-        <UIcon
-            name="mdi-arrow-left"
-        />
+        <UIcon name="mdi-arrow-left"/>
       </button>
       <button @click="nextPage" class="nav-button">
-        <UIcon
-            name="mdi-arrow-right"
-        />
+        <UIcon name="mdi-arrow-right"/>
       </button>
     </div>
-
   </section>
 </template>
 
@@ -144,7 +179,7 @@ h1 {
   margin-bottom: 2rem;
 }
 
-.container {
+.images-gallery-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -171,15 +206,8 @@ h1 {
   transition: transform 0.2s ease-in-out;
 }
 
-.card-image:hover{
+.card-image:hover {
   transform: scale(1.05);
-}
-
-.card-video{
-  width: 350px;
-  height: 300px;
-  border-radius: 5px;
-  box-shadow: rgba(149, 157, 165, 0.2) 0 8px 24px;
 }
 
 .buttons {
@@ -243,6 +271,7 @@ h1 {
   color: var(--primary-color);
 }
 
+
 @media (max-width: 768px) {
   .card {
     flex: 1 1 45%;
@@ -255,11 +284,77 @@ h1 {
   }
 }
 
-
 .video-gallery {
-  background-image: url("../public/images/masjid-about-bg.png");
+  background-image: url("../public/images/masjid-video-bg.png");
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.video-gallery {
+  padding: 2rem;
+  text-align: center;
+}
+
+.video-gallery-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.card {
+  position: relative;
+  width: 300px;
+  height: 250px;
+  border-radius: 5px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.video-link {
+  display: block;
+  position: relative;
+}
+
+.card-video {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.card:hover .card-video {
+  transform: scale(1.1);
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.card:hover .overlay {
+  opacity: 1;
+}
+
+.play-icon {
+  font-size: 3rem;
+  color: white;
+}
+
+.video-title {
+  color: white;
+  font-size: 1.2rem;
+  margin-top: 10px;
 }
 
 </style>
