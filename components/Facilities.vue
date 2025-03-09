@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import {computed, ref} from "vue";
 
-interface Video {
+interface Facility {
   id: number;
   src: string;
   alt: string;
   url: string;
 }
 
-const facilities: Video[] = [
+const facilities: Facility[] = [
   {
     id: 1,
     src: "/images/masjid-about-bg.png",
@@ -66,29 +66,30 @@ function prevPage() {
 
 </script>
 
-
 <template>
 
   <section class="facilities">
     <h1>
       <UIcon
           name="mdi-office-building"
-      />Our Facilities</h1>
+      />
+      Our Facilities
+    </h1>
     <div class="facilities-container">
-      <div class="card" v-for="video in visibleFacilities" :key="video.id">
-        <a :href="video.url" target="_blank" class="video-link">
-          <img :src="video.src" :alt="video.alt" class="card-facilities"/>
-          <div class="overlay">
-            <UIcon name="mdi-office-building" class="facilities-icon"/>
-            <p class="facilities-title">
-              <UIcon
-                  name="mdi-information-outline"
-              />
-              Learn More
-            </p>
+      <div class="card" v-for="facility in visibleFacilities" :key="facility.id">
+        <img
+            :src="facility.src"
+            :alt="facility.alt"
+            class="card-facilities"
+        />
+        <div class="overlay">
+          <UIcon name="mdi-office-building" class="facilities-icon"/>
+          <NuxtLink :to="`/facilities/${facility.id}`" class="facilities-title">
+            <UIcon name="mdi-information-outline" />
+            Learn More
+          </NuxtLink>
 
-          </div>
-        </a>
+        </div>
       </div>
     </div>
 
@@ -138,11 +139,6 @@ h1 {
   height: 250px;
   overflow: hidden;
   cursor: pointer;
-}
-
-.video-link {
-  display: block;
-  position: relative;
 }
 
 .card-facilities {
@@ -207,7 +203,7 @@ h1 {
 
 @media (max-width: 768px) {
   .card {
-    flex: 1 1 45%;
+    flex: 1 1 calc(50% - 1rem);
   }
 }
 
@@ -216,6 +212,7 @@ h1 {
     flex: 1 1 100%;
   }
 }
+
 
 .facilities {
   background: var(--bg-color);
