@@ -111,6 +111,7 @@ section {
   text-align: center;
   background: var(--bg-color);
   max-width: 1200px;
+  margin: 4rem auto;
 }
 
 h1 {
@@ -128,14 +129,13 @@ h1 {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1rem;
 }
 
 .card {
+  flex: 1 1 calc(33.33% - 1rem);
+  max-width: 400px;
   position: relative;
-  width: 300px;
   height: 250px;
-  border-radius: 5px;
   overflow: hidden;
   cursor: pointer;
 }
@@ -148,12 +148,7 @@ h1 {
 .card-facilities {
   width: 100%;
   height: 100%;
-  border-radius: 5px;
   transition: transform 0.3s ease-in-out;
-}
-
-.card:hover .card-facilities {
-  transform: scale(1.1);
 }
 
 .overlay {
@@ -161,7 +156,7 @@ h1 {
   top: 0;
   left: 0;
   width: 100%;
-  height: 105%;
+  height: 100%;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
