@@ -1,66 +1,60 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import Popup from "~/components/ImagesFormPopup.vue";
+import { ref, onMounted, onUnmounted } from 'vue';
+import ImageUploadPopup from "~/components/ImageUploadPopup.vue";
+import VideoUploadPopup from "~/components/VideoUploadPopup.vue";
 
 interface Link {
   link?: string;
   label: string;
   icon: string;
-  popup?: boolean;
+  popup?: "image" | "video"; // Distinguish between popups
 }
 
 const isLinksVisible = ref(false);
 const isMobile = ref(false);
-const isPopupVisible = ref(false);
+const isImagePopupVisible = ref(false);
+const isVideoPopupVisible = ref(false);
 
 const links: Link[] = [
-  {
-    link: "/admin",
-    label: "Admin",
-    icon: "mdi-user",
-  },
-  {
-    link: "/admin/news-form",
-    label: "News Form",
-    icon: "mdi-file-document",
-  },
-  {
-    link: "/admin/facility-form",
-    label: "Facility Form",
-    icon: "mdi-domain",
-  },
-  {
-    label: "Upload Image",
-    icon: "mdi-camera",
-    popup: true
-  },
-  {
-    link: "",
-    label: "Logout",
-    icon: "mdi-logout",
-  }
+  { link: "/admin", label: "Admin", icon: "mdi-user" },
+  { link: "/admin/news-form", label: "News Form", icon: "mdi-file-document" },
+  { link: "/admin/facility-form", label: "Facility Form", icon: "mdi-domain" },
+  { label: "Upload Image", icon: "mdi-camera", popup: "image" },
+  { label: "Upload Video", icon: "mdi-video", popup: "video" },
+  { link: "", label: "Logout", icon: "mdi-logout" }
 ];
 
 function toggleLinksVisibility() {
   isLinksVisible.value = !isLinksVisible.value;
-  console.log('Links visibility toggled:', isLinksVisible.value);
 }
 
-function togglePopup() {
-  isPopupVisible.value = !isPopupVisible.value;
+function togglePopup(type: "image" | "video") {
+  if (type === "image") {
+    isImagePopupVisible.value = !isImagePopupVisible.value;
+  } else {
+    isVideoPopupVisible.value = !isVideoPopupVisible.value;
+  }
+  isLinksVisible.value = false; // Close menu in mobile view
 }
 
 onMounted(() => {
-  isMobile.value = window.innerWidth <= 1200;
-  window.addEventListener('resize', () => {
+  const updateMobileState = () => {
     isMobile.value = window.innerWidth <= 1200;
+  };
+
+  window.addEventListener('resize', updateMobileState);
+  updateMobileState(); // Initial check
+
+  onUnmounted(() => {
+    window.removeEventListener('resize', updateMobileState);
   });
 });
 </script>
 
 <template>
   <div class="header-container">
-    <Popup :show="isPopupVisible" @update:show="isPopupVisible = $event" />
+    <ImageUploadPopup :show="isImagePopupVisible" @update:show="isImagePopupVisible = $event" />
+    <VideoUploadPopup :show="isVideoPopupVisible" @update:show="isVideoPopupVisible = $event" />
 
     <div class="header-wrapper">
       <div class="logo-container">
@@ -77,7 +71,7 @@ onMounted(() => {
       <nav v-if="isLinksVisible || !isMobile" class="navigation-menu">
         <ul class="navigation-links">
           <li v-for="link in links" :key="link.label">
-            <button v-if="link.popup" @click="togglePopup" class="popup-button">
+            <button v-if="link.popup" @click="togglePopup(link.popup)" class="popup-button">
               <UIcon :name="link.icon" />
               {{ link.label }}
             </button>
