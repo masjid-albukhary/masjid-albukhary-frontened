@@ -33,7 +33,7 @@ const bookingQuestions = [
 const formSchema = z.object({
   name_field: z.string().min(8, 'Name field name must be at least 8 characters long'),
   alert_field: z.string().min(8, 'Alert field name must be at least 8 characters long'),
-  upload_image: z.any().optional()
+  upload_image: z.any().optional("Upload must be a file")
 });
 
 const form = reactive(Object.fromEntries(bookingQuestions.map(q => [q.id, ''])));

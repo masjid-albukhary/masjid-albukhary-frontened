@@ -40,7 +40,8 @@ const bookingQuestions = [
 const formSchema = z.object({
   name_field: z.string().min(8, 'Name field name must be at least 8 characters long'),
   alert_field: z.string().min(8, 'Alert field name must be at least 8 characters long'),
-  upload_image: z.any("Upload must be a file").optional()
+  video_link: z.string().url('Invalid URL format').optional(),
+  upload_image: z.any().optional("Upload must be a file")
 });
 
 const form = reactive(Object.fromEntries(bookingQuestions.map(q => [q.id, ''])));
@@ -99,7 +100,7 @@ async function handleSubmit() {
             <div class="info" v-for="(question, index) in bookingQuestions" :key="index">
               <label class="question-title" :for="question.label">{{ question.label }}</label>
               <input
-                  v-if="['text', 'email', 'file'].includes(question.type)"
+                  v-if="['text', 'url', 'file'].includes(question.type)"
                   :type="question.type"
                   v-model="form[question.id]"
                   :placeholder="question.placeholder"
