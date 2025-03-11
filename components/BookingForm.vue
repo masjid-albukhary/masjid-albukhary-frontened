@@ -308,11 +308,18 @@ async function handleSubmit() {
   .container div {
     display: block;
   }
+  .container .booking-form {
+    padding: 0 .5rem;
+  }
+
 }
 
 @media (max-width: 1200px) {
   .container {
     display: block;
+  }
+  .container .booking-form {
+    padding: 0 1rem;
   }
 }
 
