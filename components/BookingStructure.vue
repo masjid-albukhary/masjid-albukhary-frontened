@@ -103,6 +103,9 @@ section {
   .booking-structure-icon {
     display: none;
   }
+  .booking-structure .booking-structure-list {
+    padding: 1rem 0;
+  }
 }
 
 .booking-structure-btn {
