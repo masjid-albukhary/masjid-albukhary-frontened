@@ -16,9 +16,6 @@ const isImagePopupVisible = ref(false);
 const isVideoPopupVisible = ref(false);
 
 const links: Link[] = [
-  { link: "/admin", label: "Admin", icon: "mdi-user" },
-  { link: "/admin/news-form", label: "News Form", icon: "mdi-file-document" },
-  { link: "/admin/facility-form", label: "Facility Form", icon: "mdi-domain" },
   { label: "Upload Image", icon: "mdi-camera", popup: "image" },
   { label: "Upload Video", icon: "mdi-video", popup: "video" },
   { link: "", label: "Logout", icon: "mdi-logout" }
@@ -53,6 +50,7 @@ onMounted(() => {
 
 <template>
   <div class="header-container">
+
     <ImageUploadPopup :show="isImagePopupVisible" @update:show="isImagePopupVisible = $event" />
     <VideoUploadPopup :show="isVideoPopupVisible" @update:show="isVideoPopupVisible = $event" />
 
@@ -63,18 +61,23 @@ onMounted(() => {
             <img src="/images/masjid_albukary_logo.png" alt="AIU Logo"/>
           </a>
         </div>
+
         <button v-if="isMobile" @click="toggleLinksVisibility" class="menu-toggle-btn">
           <UIcon name="uil-bars"/>
         </button>
+
       </div>
 
       <nav v-if="isLinksVisible || !isMobile" class="navigation-menu">
+
         <ul class="navigation-links">
           <li v-for="link in links" :key="link.label">
+
             <button v-if="link.popup" @click="togglePopup(link.popup)" class="popup-button">
               <UIcon :name="link.icon" />
               {{ link.label }}
             </button>
+
             <router-link v-else :to="link.link">
               <UIcon :name="link.icon" />
               {{ link.label }}
