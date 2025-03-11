@@ -7,7 +7,7 @@ interface Link {
   link?: string;
   label: string;
   icon: string;
-  popup?: "image" | "video"; // Distinguish between popups
+  popup?: "image" | "video";
 }
 
 const isLinksVisible = ref(false);
@@ -34,7 +34,7 @@ function togglePopup(type: "image" | "video") {
   } else {
     isVideoPopupVisible.value = !isVideoPopupVisible.value;
   }
-  isLinksVisible.value = false; // Close menu in mobile view
+  isLinksVisible.value = false;
 }
 
 onMounted(() => {
@@ -43,7 +43,7 @@ onMounted(() => {
   };
 
   window.addEventListener('resize', updateMobileState);
-  updateMobileState(); // Initial check
+  updateMobileState();
 
   onUnmounted(() => {
     window.removeEventListener('resize', updateMobileState);
