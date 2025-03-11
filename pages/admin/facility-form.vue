@@ -2,7 +2,6 @@
 
 import AdminNavBar from "~/components/AdminNavBar.vue";
 import AdminSideBar from "~/components/AdminSideBar.vue";
-import FacilityForm from "~/components/FacilityForm.vue";
 </script>
 
 <template>
@@ -49,7 +48,6 @@ main {
   .admin-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
   }
 }
 </style>

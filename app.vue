@@ -12,6 +12,7 @@
   --text-color: #ffffff;
   --text-hover: #b5b9bf;
 
+  --transition: all 0.3s ease-in-out;
   --spacing-unit: 1rem;
   --primary-border-radius: 15px;
 

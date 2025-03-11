@@ -168,7 +168,7 @@ async function handleSubmit() {
 
       <div class="news-form">
 
-        <h2>This is  News Form</h2>
+        <h2>This is  Facility Form</h2>
 
         <form @submit.prevent="handleSubmit">
           <div class="news-form">
