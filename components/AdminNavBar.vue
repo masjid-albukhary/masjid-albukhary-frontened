@@ -106,13 +106,6 @@ onMounted(() => {
   height: 70px;
 }
 
-.header-title h2 {
-  font-size: 1.5rem;
-  font-weight: normal;
-  text-transform: uppercase;
-  color: var(--text-color);
-}
-
 .navigation-links {
   display: inline-flex;
   list-style: none;
@@ -136,6 +129,11 @@ onMounted(() => {
   margin-right: 0.5rem;
   border-radius: 0.5rem;
   color: var(--text-color);
+}
+
+.navigation-links li:hover{
+  color: var(--text-hover);
+  transition: color 0.3s ease-in-out;
 }
 
 .navigation-links li:last-child {
