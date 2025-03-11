@@ -105,7 +105,7 @@ async function handleSubmit() {
                   v-model="form[question.id]"
                   :placeholder="question.placeholder"
                   :id="question.label"
-                  :accept="question.type === 'file' ? ',.jpg,.jpeg,.png' : ''"
+                  :accept="question.type === 'file' ? '.jpg,.jpeg,.png' : ''"
                   @change="(e) => handleFileUpload(e, question)"
                   @input="validateField(question.id)"
               />
