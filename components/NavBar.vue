@@ -98,9 +98,8 @@ onMounted(() => {
   left: 0;
   width: 100%;
   padding: 0.5rem 1rem;
-  max-height: 100px;
   background-color: var(--primary-color);
-  z-index: 1001;
+  z-index: 1002;
 }
 
 .header-wrapper {
