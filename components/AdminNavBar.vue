@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import {ref, onMounted} from 'vue';
+import { ref, onMounted } from 'vue';
+import Popup from "~/components/ImagesFormPopup.vue";
 
 interface Link {
-  link: string,
-  label: string,
-  icon: string,
+  link?: string;
+  label: string;
+  icon: string;
+  popup?: boolean;
 }
 
 const isLinksVisible = ref(false);
 const isMobile = ref(false);
+const isPopupVisible = ref(false);
 
 const links: Link[] = [
   {
@@ -19,23 +22,32 @@ const links: Link[] = [
   {
     link: "/admin/news-form",
     label: "News Form",
-    icon: "mdi-user",
+    icon: "mdi-file-document",
   },
   {
     link: "/admin/facility-form",
     label: "Facility Form",
-    icon: "mdi-user",
+    icon: "mdi-domain",
+  },
+  {
+    label: "Upload Image",
+    icon: "mdi-camera",
+    popup: true
   },
   {
     link: "",
     label: "Logout",
-    icon: "mdi-account",
+    icon: "mdi-logout",
   }
-]
+];
 
 function toggleLinksVisibility() {
   isLinksVisible.value = !isLinksVisible.value;
   console.log('Links visibility toggled:', isLinksVisible.value);
+}
+
+function togglePopup() {
+  isPopupVisible.value = !isPopupVisible.value;
 }
 
 onMounted(() => {
@@ -48,6 +60,8 @@ onMounted(() => {
 
 <template>
   <div class="header-container">
+    <Popup :show="isPopupVisible" @update:show="isPopupVisible = $event" />
+
     <div class="header-wrapper">
       <div class="logo-container">
         <div class="logo">
@@ -62,11 +76,13 @@ onMounted(() => {
 
       <nav v-if="isLinksVisible || !isMobile" class="navigation-menu">
         <ul class="navigation-links">
-          <li v-for="link in links">
-            <router-link :to="link.link">
-              <UIcon
-                  :name="link.icon"
-              />
+          <li v-for="link in links" :key="link.label">
+            <button v-if="link.popup" @click="togglePopup" class="popup-button">
+              <UIcon :name="link.icon" />
+              {{ link.label }}
+            </button>
+            <router-link v-else :to="link.link">
+              <UIcon :name="link.icon" />
               {{ link.label }}
             </router-link>
           </li>
@@ -120,17 +136,12 @@ onMounted(() => {
   transition: 0.3s ease-in-out;
 }
 
-.navigation-links li {
+.navigation-links li{
   display: inline-block;
   padding: 0.3rem;
   margin-right: 0.5rem;
   border-radius: 0.5rem;
   color: var(--text-color);
-}
-
-.navigation-links li:hover {
-  color: var(--text-hover);
-  transition: color 0.3s ease-in-out;
 }
 
 .navigation-links li:last-child {
