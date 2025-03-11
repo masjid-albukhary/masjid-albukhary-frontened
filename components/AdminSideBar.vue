@@ -5,9 +5,10 @@ const router = useRouter()
 
 const links = [
   { link: "/admin", label: "Admin", icon: "mdi-user" },
-  { link: '/admin/facility-form', label: 'Facility Form', icon: 'mdi-office-building' },
-  { link: "/admin/news-form", label: "News Form", icon: "mdi-file-document" },
   { link: "/admin/booking-dashboard", label: "Booking Overview", icon: "mdi-mosque" },
+  { link: '/admin/facility-form', label: 'Facility Form', icon: 'mdi-office-building' },
+  { link: '/admin/activity-form', label: 'Activity Form', icon: 'mdi-office-building' },
+  { link: "/admin/news-form", label: "News Form", icon: "mdi-file-document" },
   { link: '', label: 'Logout', icon: 'mdi-logout', action: 'logout' }
 ]
 
