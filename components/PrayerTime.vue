@@ -123,9 +123,7 @@ onMounted(() => {
 
 <style scoped>
 .prayer-time {
-  width: 100%;
-  min-height: 100vh;
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: var(--spacing-unit);
   color: var(--text-color);
@@ -136,13 +134,15 @@ onMounted(() => {
 }
 
 .prayer-time > h2 {
-  font-size: var(--text-size-h2);
+  font-size: 2.5rem;
   color: var(--primary-color);
-  margin: 1rem auto 1rem 3rem;
-  text-align: start;
+  margin: 1rem auto;
+  text-align: center;
 }
 
 .container {
+  width: 80%;
+  margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: var(--spacing-unit);
