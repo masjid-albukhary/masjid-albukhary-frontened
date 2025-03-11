@@ -4,7 +4,6 @@
 
 <template>
   <NavBar/>
-  <Landing/>
   <Gallery/>
   <Footer/>
 </template>
