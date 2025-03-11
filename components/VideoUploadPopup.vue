@@ -6,8 +6,6 @@ const props = defineProps({show: Boolean});
 const emit = defineEmits(['update:show']);
 const closePopup = () => emit('update:show', false);
 
-import { z } from 'zod';
-
 const bookingQuestions = [
   {
     label: 'Name Field',
@@ -40,14 +38,10 @@ const bookingQuestions = [
 ];
 
 const formSchema = z.object({
-  name_field: z.string().min(3, 'Name field must be at least 3 characters long'),
-  alert_field: z.string().min(3, 'Alert field must be at least 3 characters long'),
-  video_link: z.string().url('Invalid URL format').optional(),
-  upload_image: z
-      .instanceof(FileList, { message: "Upload must be a file" })
-      .optional(),
+  name_field: z.string().min(8, 'Name field name must be at least 8 characters long'),
+  alert_field: z.string().min(8, 'Alert field name must be at least 8 characters long'),
+  upload_image: z.any("Upload must be a file").optional()
 });
-
 
 const form = reactive(Object.fromEntries(bookingQuestions.map(q => [q.id, ''])));
 const errors = reactive(Object.fromEntries(bookingQuestions.map(q => [q.id, ''])));
