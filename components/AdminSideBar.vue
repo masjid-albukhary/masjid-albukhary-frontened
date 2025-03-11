@@ -7,6 +7,7 @@ const links = [
   { link: "/admin", label: "Admin", icon: "mdi-user" },
   { link: '/admin/facility-form', label: 'Facility Form', icon: 'mdi-office-building' },
   { link: "/admin/news-form", label: "News Form", icon: "mdi-file-document" },
+  { link: "/admin/booking-dashboard", label: "Booking Overview", icon: "mdi-mosque" },
   { link: '', label: 'Logout', icon: 'mdi-logout', action: 'logout' }
 ]
 
