@@ -11,41 +11,13 @@ const isLinksVisible = ref(false);
 const isMobile = ref(false);
 
 const links: Link[] = [
-  {
-    link: "/",
-    label: "Home",
-    icon: "mdi-home",
-  },
-  {
-    link: "/about",
-    label: "About",
-    icon: "mdi-info",
-  },
-  {
-    link: "/news",
-    label: "News",
-    icon: "mdi-book",
-  },
-  {
-    link: "/booking-venue",
-    label: "Booking Venue",
-    icon: "mdi-home",
-  },
-  {
-    link: "/facilities",
-    label: "Facilities",
-    icon: "mdi-office-building"
-  },
-  {
-    link: "/gallery",
-    label: "Gallery",
-    icon: "mdi-folder-multiple-image"
-  },
-  {
-    link: "/contact",
-    label: "Contact",
-    icon: "mdi-account",
-  }
+  { link: "/", label: "Home", icon: "mdi-home" },
+  { link: "/about", label: "About", icon: "mdi-information" },
+  { link: "/news", label: "News", icon: "mdi-newspaper-variant" },
+  { link: "/booking-venue", label: "Booking Venue", icon: "mdi-calendar-check" },
+  { link: "/facilities", label: "Facilities", icon: "mdi-domain" },
+  { link: "/gallery", label: "Gallery", icon: "mdi-image-multiple" },
+  { link: "/contact", label: "Contact", icon: "mdi-email" }
 ]
 
 function toggleLinksVisibility() {
