@@ -2,6 +2,7 @@
 
 import AdminNavBar from "~/components/AdminNavBar.vue";
 import AdminSideBar from "~/components/AdminSideBar.vue";
+import AdminOverview from "~/components/AdminOverview.vue";
 </script>
 
 <template>
@@ -11,7 +12,7 @@ import AdminSideBar from "~/components/AdminSideBar.vue";
       <AdminSideBar/>
     </aside>
     <main>
-      Facility Form
+      <AdminOverview/>
     </main>
   </section>
   <AdminFooter/>
