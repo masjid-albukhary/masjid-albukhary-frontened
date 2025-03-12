@@ -9,7 +9,6 @@ const links = [
   { link: "/admin/facility-form", label: "Facility Form", icon: "mdi-domain" },
   { link: "/admin/activity-form", label: "Activity Form", icon: "mdi-run" },
   { link: "/admin/news-form", label: "News Form", icon: "mdi-newspaper-variant" },
-  { link: "", label: "Logout", icon: "mdi-logout", action: "logout" }
 ];
 
 const handleLogout = () => {
