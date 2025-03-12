@@ -21,17 +21,13 @@ import AdminSideBar from "~/components/AdminSideBar.vue";
 .admin-container {
   display: grid;
   grid-template-columns: 1fr 4fr;
-  gap: 20px;
 }
 
 .news-aside {
   display: flex;
   z-index: 1001;
+  height: 100vh;
   background-color: var(--bg-color);
-}
-
-main {
-  padding: 20px;
 }
 
 @media (max-width: 1024px) {
