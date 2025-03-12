@@ -4,13 +4,13 @@ import { useRouter } from 'nuxt/app'
 const router = useRouter()
 
 const links = [
-  { link: "/admin", label: "Admin", icon: "mdi-user" },
-  { link: "/admin/booking-dashboard", label: "Booking Overview", icon: "mdi-mosque" },
-  { link: '/admin/facility-form', label: 'Facility Form', icon: 'mdi-office-building' },
-  { link: '/admin/activity-form', label: 'Activity Form', icon: 'mdi-office-building' },
-  { link: "/admin/news-form", label: "News Form", icon: "mdi-file-document" },
-  { link: '', label: 'Logout', icon: 'mdi-logout', action: 'logout' }
-]
+  { link: "/admin", label: "Admin", icon: "mdi-account-cog" },
+  { link: "/admin/booking-dashboard", label: "Booking Overview", icon: "mdi-calendar-check" },
+  { link: "/admin/facility-form", label: "Facility Form", icon: "mdi-domain" },
+  { link: "/admin/activity-form", label: "Activity Form", icon: "mdi-run" },
+  { link: "/admin/news-form", label: "News Form", icon: "mdi-newspaper-variant" },
+  { link: "", label: "Logout", icon: "mdi-logout", action: "logout" }
+];
 
 const handleLogout = () => {
   console.log('Logging out...')
