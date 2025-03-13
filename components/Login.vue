@@ -121,7 +121,7 @@ async function handleSubmit() {
           <img src="../public/images/login.png" alt="Login Image" class="login-image" />
         </div>
         <div class="login-info">
-          <router-link to="/home">Home</router-link>
+          <router-link to="/">Home</router-link>
           <span> | </span>
           <router-link to="/sign-up">Sign Up</router-link>
         </div>
