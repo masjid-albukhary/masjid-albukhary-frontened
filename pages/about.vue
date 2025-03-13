@@ -6,9 +6,8 @@ import NavBar from "~/components/NavBar.vue";
 <template>
   <NavBar/>
   <landing/>
-  <News/>
   <About/>
-  <News/>
+  <Contact/>
   <Footer/>
 </template>
 
