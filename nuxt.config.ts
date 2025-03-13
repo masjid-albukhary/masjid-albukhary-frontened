@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxt/ui'],
   app: {
-    baseURL: process.env.NODE_ENV === 'development' ? '' : '/FrontEnd/',
+    baseURL: process.env.NODE_ENV === 'development' ? '' : '/masjid-albukhary-frontened/',
   },
   nitro: {
     preset: 'github_pages'
