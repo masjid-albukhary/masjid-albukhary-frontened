@@ -210,7 +210,7 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <div class="contact-section">
+  <div class="booking-form-section">
     <div class="container">
 
       <div class="booking-form">
@@ -277,69 +277,60 @@ async function handleSubmit() {
 </template>
 
 <style scoped>
-
-.contact-section {
-  margin: 3rem 7rem;
+.booking-form-section {
+  margin: 3rem auto;
+  padding: 1rem;
   border: 2px solid var(--secondary-color);
   border-radius: 0 30px 30px 0;
   box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px 0;
+  max-width: 1200px;
 }
 
 @media (max-width: 800px) {
-  .contact-section {
-    margin: 0.5rem;
+  .booking-form-section {
+    margin: 1rem;
+    border-radius: 10px;
   }
 }
 
 .container {
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
-  max-width: 1200px;
-}
-
-
-.container .booking-form {
-  flex: 1;
-  padding: 0 2.5rem;
-}
-
-@media (max-width: 800px) {
-  .container div {
-    display: block;
-  }
-  .container .booking-form {
-    padding: 0 .5rem;
-  }
-
+  justify-content: space-between;
 }
 
 @media (max-width: 1200px) {
   .container {
-    display: block;
-  }
-  .container .booking-form {
-    padding: 0 1rem;
+    flex-direction: column;
   }
 }
 
+.container .booking-form {
+  flex: 1;
+  padding: 1rem;
+  min-width: 300px;
+}
+
+.container .description {
+  flex: 1;
+  padding: 1rem;
+  min-width: 300px;
+  text-align: center;
+}
+
 .container .description h2 {
-  font-size: 1.2rem;
-  padding: .5rem 0;
+  font-size: 1.4rem;
   font-weight: bold;
   color: var(--primary-color);
-  text-align: center;
 }
 
 .container .description p {
   font-size: 1rem;
-  padding: 1rem 0;
-  font-weight: normal;
   color: var(--primary-color);
   text-align: justify;
 }
 
-.booking-form > h2 {
+.booking-form h2 {
   font-size: 1.5rem;
   color: var(--primary-color);
   text-align: center;
@@ -349,15 +340,13 @@ async function handleSubmit() {
 .booking-form {
   display: flex;
   flex-wrap: wrap;
-  flex-direction: row;
   gap: 1rem;
-  margin-top: 0.5rem !important;
+  justify-content: center;
 }
 
 .info {
-  flex-basis: calc(50% - 10px);
-  box-sizing: border-box;
-  display: block;
+  flex: 1 1 calc(50% - 10px);
+  min-width: 280px;
 }
 
 .booking-form .question-title {
@@ -366,7 +355,8 @@ async function handleSubmit() {
 }
 
 .booking-form input,
-.booking-form select {
+.booking-form select,
+.booking-form textarea {
   width: 100%;
   padding: 0.5rem;
   border: 2px solid #EEEEEE;
@@ -375,13 +365,8 @@ async function handleSubmit() {
 }
 
 .booking-form textarea {
-  width: 205%;
   min-height: 4rem;
-  max-height: 4rem;
-  padding: 0.5rem;
-  border: 2px solid #EEEEEE;
-  border-radius: 5px;
-  outline: none;
+  max-height: 6rem;
 }
 
 .error {
@@ -389,34 +374,23 @@ async function handleSubmit() {
   font-size: 1rem;
 }
 
-@media (max-width: 1200px) {
-  .booking-form textarea {
-    width: calc(100% - .5rem);
-  }
-}
-
-@media (max-width: 800px) {
-  .booking-form textarea {
-    width: calc(100% - .5rem);
-  }
-}
-
 .book-submit {
-  width: 90%;
+  width: 100%;
+  max-width: 300px;
   margin: 2rem auto;
-  padding: .5rem 2rem;
-  display: flex;
+  padding: 0.75rem;
+  display: block;
   font-size: 1rem;
   border-radius: 1rem 0;
   background-color: var(--primary-color);
   color: var(--text-color);
   text-align: center;
+  cursor: pointer;
 }
 
 .book-submit:hover {
   background-color: var(--secondary-color);
   color: var(--text-hover);
-  transition: background-color .3s ease-in-out, color .3s ease-in-out;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
-
 </style>
