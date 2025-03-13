@@ -7,7 +7,7 @@ export default defineNuxtConfig({
     preference: 'light'
   },
   app: {
-    baseURL: process.env.NODE_ENV === 'development' ? '' : '/masjid-albukhary-frontend/',
+    baseURL: process.env.NODE_ENV === 'development' ? '' :  '/masjid-albukhary-frontend/',
   },
   nitro: {
     preset: 'github_pages'
