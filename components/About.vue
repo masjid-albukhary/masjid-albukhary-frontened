@@ -108,13 +108,15 @@ section {
 }
 
 .video {
-  width: 450px;
-  height: 400px;
+  width: 100%;
+  max-width: 450px;
+  height: auto;
+  aspect-ratio: 16/9;
   border-radius: 20px;
-  margin: -5rem auto 0 auto;
   background-color: var(--primary-color);
   border: none;
   overflow: hidden;
+  margin-top: -8rem;
 }
 
 .about-content h3 {
@@ -129,7 +131,6 @@ section {
   color: var(--primary-color);
 }
 
-
 @media (max-width: 1024px) {
   .about-title {
     font-size: 1.5rem;
@@ -137,7 +138,7 @@ section {
 
   .about-content {
     display: block;
-    margin: 5rem auto;
+    padding: 2rem;
   }
 
   .video-container {
@@ -145,63 +146,56 @@ section {
   }
 
   .video {
-    width: 450px;
-    height: 400px;
-    margin: 0 auto -5rem auto;
+    max-width: 100%;
+    margin-top: 0;
   }
 
   .about-content h3 {
     font-size: 1.2rem;
-    margin: 2rem auto;
+    margin-bottom: 1.5rem;
   }
 }
 
 @media (max-width: 768px) {
-
   .about-title {
     font-size: 1.5rem;
   }
 
   .about-content {
     display: block;
-    gap: 0 2rem;
-    margin: auto;
+    gap: 0;
     padding: 1rem;
   }
 
   .video {
-    width: 450px;
-    height: 400px;
-    margin: 0 auto -5rem auto;
+    max-width: 100%;
+    margin-top: 0;
+
   }
 
   .about-content h3 {
     font-size: 1.2rem;
-    margin: 2rem auto;
   }
 }
 
 @media (max-width: 480px) {
-
   .about-title {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
 
   .about-content {
     display: block;
-    margin: 5rem auto;
     padding: 1rem;
   }
 
   .video {
-    width: 450px;
-    height: 400px;
-    margin: 0 auto -5rem auto;
+    max-width: 100%;
+    margin-top: 0;
+
   }
 
   .about-content h3 {
-    font-size: 1.2rem;
-    margin: 2rem auto;
+    font-size: 1.1rem;
   }
 }
 
@@ -241,7 +235,8 @@ section {
 .image-content img {
   width: 100%;
   max-width: 450px;
-  height: 400px;
+  height: auto;
+  aspect-ratio: 16/9;
   object-fit: cover;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -253,7 +248,6 @@ section {
 }
 
 @media (max-width: 1024px) {
-
   .about-content {
     display: block;
   }
@@ -276,7 +270,7 @@ section {
   }
 
   .image-content img {
-    max-width: 450px;
+    max-width: 100%;
   }
 }
 
@@ -306,7 +300,7 @@ section {
   }
 
   .image-content img {
-    max-width: 400px;
+    max-width: 100%;
   }
 }
 
@@ -329,7 +323,7 @@ section {
   }
 
   .image-content img {
-    max-width: 350px;
+    max-width: 100%;
   }
 }
 </style>
