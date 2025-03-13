@@ -51,8 +51,6 @@ const handleLogout = () => {
   height: 100vh;
   background-color: var(--background-color);
   padding: 20px;
-  display: flex;
-  flex-direction: column;
 }
 
 .admin-title {

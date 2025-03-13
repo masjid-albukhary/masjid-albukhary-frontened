@@ -122,7 +122,7 @@ async function handleSubmit() {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 1001;
   padding: 1rem;
 }
 
@@ -213,5 +213,4 @@ async function handleSubmit() {
   color: var(--text-hover);
   transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
-
 </style>
