@@ -2,6 +2,7 @@ name: Deploy App to github pages
 
 on:
   push:
+
     branches: ["master"]
 
   workflow_dispatch:
