@@ -57,7 +57,7 @@ const news: News[] = [
 
 const groupedNews = [];
 for (let i = 0; i < news.length - 1; i += 3) {
-  groupedNews.push(news.slice(i, i + 3));
+  groupedNews.push(news.slice(i, i + 2));
 }
 const lastNewsItem = news[news.length - 1];
 
@@ -111,6 +111,7 @@ const lastNewsItem = news[news.length - 1];
   background-color: var(--bg-color);
   max-width: 1200px;
   height: 100%;
+  margin: 0 auto;
 }
 
 .news-section .news-main-title {
