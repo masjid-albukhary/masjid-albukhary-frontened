@@ -6,16 +6,4 @@ export default defineNuxtConfig({
     colorMode: {
         preference: 'light'
     },
-    pages: true,
-    app: {
-        baseURL: process.env.NODE_ENV === 'development' ? '' : '/masjid-albukhary-frontend/',
-    },
-    nitro: {
-        preset: 'github_pages'
-    },
-    runtimeConfig: {
-        public: {
-            isDev: process.env.NODE_ENV === 'development',
-        },
-    },
 })
