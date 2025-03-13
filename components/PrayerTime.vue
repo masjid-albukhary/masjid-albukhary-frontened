@@ -141,10 +141,10 @@ onMounted(() => {
 }
 
 .container {
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: var(--spacing-unit);
   align-items: center;
 }
@@ -209,51 +209,28 @@ onMounted(() => {
 .time-prayer-container {
   width: 90%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: var(--spacing-unit);
   margin: 1rem auto;
-}
-
-@media screen and (max-width: 800px) {
-  .time-prayer-container {
-    width: 90%;
-    display: grid;
-    grid-template-columns:  1fr;
-  }
-}
-
-.prayer-time-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  background-color: var(--primary-color);
-  color: var(--text-color);
-  border-radius: var(--primary-border-radius);
   padding: var(--spacing-unit);
 }
 
-.prayer-time-box span {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
+.prayer-time-box {
+  background-color: var(--primary-color);
+  gap: var(--spacing-unit);
+  padding: var(--spacing-unit);
+  border-radius: 1rem;
 }
 
-.mosque-icon {
-  margin-right: 1rem !important;
-}
+@media screen and (max-width: 800px) {
+  .container {
+    width: 100%;
+  }
 
-.prayer-time-divider {
-  border-bottom: 3px solid var(--text-color);
-  width: 100%;
-  margin: 0.5rem auto;
-}
-
-.loading {
-  font-style: italic;
-  color: var(--text-color);
+  .time-prayer-container {
+    width: 90%;
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 768px) {
