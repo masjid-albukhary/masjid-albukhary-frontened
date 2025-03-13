@@ -26,7 +26,6 @@ import AdminSideBar from "~/components/AdminSideBar.vue";
 
 .news-aside {
   display: flex;
-  z-index: 1001;
   background-color: var(--bg-color);
 }
 
