@@ -52,16 +52,14 @@ const booking_steps = [
 <style scoped>
 section {
   width: 100%;
-  min-height: 100vh;
   background-color: var(--bg-color);
-  max-width: 1200px;
-  margin: 3rem auto;
+  margin: 1rem auto;
   padding: 0 1rem;
   text-align: center;
 }
 
 .booking-structure .container {
-  width: 90%;
+  max-width: 1200px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -95,17 +93,7 @@ section {
 
 .booking-structure-icon {
   color: var(--primary-color);
-  margin-right: 0.75rem;
   font-size: 1.25rem;
-}
-
-@media (max-width: 800px) {
-  .booking-structure-icon {
-    display: none;
-  }
-  .booking-structure .booking-structure-list {
-    padding: 1rem 0;
-  }
 }
 
 .booking-structure-btn {
@@ -114,9 +102,7 @@ section {
   justify-content: center;
   background-color: var(--primary-color);
   padding: 0.75rem 1.5rem;
-  width: auto;
   color: var(--bg-color);
-  text-align: center;
   border-radius: 8px;
   text-decoration: none;
   font-size: 1rem;
@@ -158,6 +144,16 @@ section {
   }
 }
 
+@media (max-width: 800px) {
+  .booking-structure-icon {
+    display: none;
+  }
+
+  .booking-structure .booking-structure-list {
+    padding: 1rem 0;
+  }
+}
+
 @media (max-width: 768px) {
   .booking-structure h2 {
     font-size: 1.75rem;
@@ -170,14 +166,13 @@ section {
     text-align: center;
   }
 
-  .booking-structure-icon {
-    font-size: 1.5rem;
-    margin-right: 0;
-  }
-
   .booking-structure-btn {
     padding: 0.5rem 1rem;
     font-size: 0.9rem;
+  }
+
+  .booking-structure-image {
+    max-width: 220px;
   }
 }
 
