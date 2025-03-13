@@ -6,7 +6,6 @@
   <NavBar/>
   <Landing/>
   <PrayerTime/>
-
   <BookingStructure/>
   <MapSection/>
   <Footer/>
