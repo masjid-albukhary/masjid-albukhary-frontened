@@ -11,31 +11,31 @@ interface Facility {
 const facilities: Facility[] = [
   {
     id: 1,
-    src: "/images/masjid-about-bg.png",
+    src: "images/masjid-about-bg.png",
     alt: "Masjid Video 1",
     url: "https://www.youtube.com/watch?v=4pku9EburYQ"
   },
   {
     id: 2,
-    src: "/images/masjid-about-bg.png",
+    src: "images/masjid-about-bg.png",
     alt: "Masjid Video 2",
     url: "https://www.youtube.com/watch?v=4pku9EburYQ"
   },
   {
     id: 3,
-    src: "/images/masjid-about-bg.png",
+    src: "images/masjid-about-bg.png",
     alt: "Masjid Video 3",
     url: "https://www.youtube.com/watch?v=4pku9EburYQ"
   },
   {
     id: 4,
-    src: "/images/masjid-about-bg.png",
+    src: "images/masjid-about-bg.png",
     alt: "Masjid Video 4",
     url: "https://www.youtube.com/watch?v=4pku9EburYQ"
   },
   {
     id: 5,
-    src: "/images/masjid-about-bg.png",
+    src: "images/masjid-about-bg.png",
     alt: "Masjid Video 5",
     url: "https://www.youtube.com/watch?v=4pku9EburYQ"
   },
