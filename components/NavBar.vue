@@ -79,6 +79,8 @@ onMounted(() => {
   justify-content: space-between;
   flex-wrap: wrap;
   align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .logo img {
