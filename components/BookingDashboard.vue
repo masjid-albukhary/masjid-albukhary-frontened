@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import {computed, onMounted, ref} from 'vue';
 import {useNuxtApp} from "#app";
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
-
-let {$axios} = useNuxtApp()
 
 interface StudentRequest {
   id: number
@@ -96,27 +92,6 @@ const handlePageChange = (newPage: number) => {
   }
 };
 
-const generatePDF = () => {
-  const doc = new jsPDF();
-  doc.text(` Report on Student Maintenance Room Requests- ${selectedFilter.value.toUpperCase()}`, 14, 10);
-
-  const filteredData = filteredRows.value.map((request, index) => [
-    index + 1,
-    request.student,
-    request.room_number,
-    request.nationality,
-    request.phone,
-    request.gender,
-    request.status
-  ]);
-
-  autoTable(doc, {
-    head: [['#', 'Name', 'Room No', 'Nationality', 'Phone', 'Gender', 'Status']],
-    body: filteredData,
-  });
-
-  doc.save(` Maintenance requests-${selectedFilter.value}.pdf`);
-};
 
 // onMounted(() => {
 //   fetchData();
@@ -147,7 +122,7 @@ const generatePDF = () => {
               </div>
 
               <div class="download-btn-wrapper">
-                <button @click="generatePDF" class="download-button">Download Report</button>
+                <button @click="" class="download-button">Download Report</button>
               </div>
 
             </div>
