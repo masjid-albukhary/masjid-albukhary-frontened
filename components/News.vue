@@ -12,46 +12,6 @@ interface News {
 }
 
 const news: News[] = [
-  {
-    id: 1,
-    title: "Community Iftar Gathering",
-    description: "Join us for a communal Iftar at Al Bukhary Mosque this Friday.",
-    date: "2025-03-06",
-    link: "/",
-    image: "/images/booking-image.png",
-    category: "Event",
-    author: "Admin",
-  },
-  {
-    id: 2,
-    title: "New Library Section Opened",
-    description: "The mosque's library now includes a new section for Islamic studies and children's books.",
-    date: "2025-02-28",
-    link: "/",
-    image: "/images/booking-image.png",
-    category: "Update",
-    author: "Library Team",
-  },
-  {
-    id: 3,
-    title: "Ramadan Timetable Released",
-    description: "Check out the updated prayer and fasting schedule for Ramadan 2025.",
-    date: "2025-02-25",
-    link: "/",
-    image: "/images/booking-image.png",
-    category: "Announcement",
-    author: "Mosque Management",
-  },
-  {
-    id: 4,
-    title: "Volunteer Opportunities Available",
-    description: "We are looking for volunteers to assist with mosque activities and charity events.",
-    date: "2025-02-20",
-    link: "/",
-    image: "/images/booking-image.png",
-    category: "Event",
-    author: "Community Outreach",
-  },
 
 ];
 
