@@ -53,7 +53,7 @@ const booking_steps = [
 section {
   width: 100%;
   background-color: var(--bg-color);
-  margin: 1rem auto;
+  margin: 0 auto;
   padding: 0 1rem;
   text-align: center;
 }
