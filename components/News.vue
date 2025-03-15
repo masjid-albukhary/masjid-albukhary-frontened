@@ -5,52 +5,150 @@ interface News {
   id: number;
   src: string;
   alt: string;
-  url: string;
+  name: string;
+  summary: string;
+  description: string;
+  location: string;
+  contact: {
+    phone: string;
+    email: string;
+  };
+  category: string;
+  capacity: number;
+  price: number;
+  availability: {
+    day: string;
+    time: string;
+  }[];
+  amenities: string[];
+  bookingUrl: string;
+  tags: string[];
+  status: "Available" | "Booked";
 }
 
-const news: News[] = [
+const news= [
   {
     id: 1,
+    name: "Masjid Event Hall",
+    description: "A beautifully designed hall for community prayers and events.",
+    category: "Religious Space",
     src: "images/masjid-about-bg.png",
     alt: "Masjid Video 1",
-    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
+    bookingUrl: "https://www.youtube.com/watch?v=4pku9EburYQ",
+    location: "456 Mosque Road, Downtown",
+    capacity: 200,
+    price: 150,
+    availability: [
+      { day: "Monday-Friday", time: "8:00 AM - 10:00 PM" },
+      { day: "Saturday-Sunday", time: "9:00 AM - 11:00 PM" },
+    ],
+    amenities: ["Prayer Mats", "Sound System", "Air Conditioning", "Parking"],
+    contact: { phone: "+987654321", email: "info@masjid.com" },
+    tags: ["religious", "masjid", "prayer", "event"],
+    status: "Available",
   },
   {
     id: 2,
-    src: "images/masjid-about-bg.png",
-    alt: "Masjid Video 2",
-    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
+    name: "Community Sports Complex",
+    description: "A modern sports complex with facilities for football, basketball, and tennis.",
+    category: "Sports Facility",
+    src: "images/sports-complex.jpg",
+    alt: "Sports Complex",
+    url: "https://www.example.com/sports-complex",
+    location: "123 Stadium Road, City Center",
+    capacity: 500,
+    price: 200,
+    availability: [
+      { day: "Monday-Friday", time: "6:00 AM - 10:00 PM" },
+      { day: "Saturday-Sunday", time: "7:00 AM - 11:00 PM" },
+    ],
+    amenities: ["Locker Rooms", "Floodlights", "Seating Area", "Cafeteria"],
+    bookingUrl: "https://www.example.com/book-sports-complex",
+    contact: { phone: "+123456789", email: "contact@sportscomplex.com" },
+    tags: ["sports", "fitness", "stadium", "community"],
+    status: "Available",
   },
   {
     id: 3,
-    src: "images/masjid-about-bg.png",
-    alt: "Masjid Video 3",
-    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
+    name: "Public Library Conference Room",
+    description: "A quiet and professional space for meetings, workshops, and study sessions.",
+    category: "Library",
+    src: "images/library-room.jpg",
+    alt: "Library Conference Room",
+    url: "https://www.example.com/library-room",
+    location: "789 Book Street, Knowledge Town",
+    capacity: 50,
+    price: 50,
+    availability: [
+      { day: "Monday-Friday", time: "9:00 AM - 8:00 PM" },
+      { day: "Saturday", time: "10:00 AM - 6:00 PM" },
+    ],
+    amenities: ["Wi-Fi", "Projector", "Whiteboard", "Bookshelf Access"],
+    bookingUrl: "https://www.example.com/book-library-room",
+    contact: { phone: "+112233445", email: "library@knowledge.com" },
+    tags: ["library", "conference", "study", "workshop"],
+    status: "Booked",
   },
   {
     id: 4,
-    src: "images/masjid-about-bg.png",
-    alt: "Masjid Video 4",
-    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
+    name: "City Hall Banquet Hall",
+    description: "A grand hall for weddings, banquets, and formal events.",
+    category: "Banquet Hall",
+    src: "images/banquet-hall.jpg",
+    alt: "City Hall Banquet",
+    url: "https://www.example.com/city-hall-banquet",
+    location: "222 City Square, Metropolitan Area",
+    capacity: 300,
+    price: 500,
+    availability: [
+      { day: "Monday-Saturday", time: "12:00 PM - 11:00 PM" },
+    ],
+    amenities: ["Catering", "Stage", "Lighting System", "Parking"],
+    bookingUrl: "https://www.example.com/book-banquet-hall",
+    contact: { phone: "+556677889", email: "events@cityhall.com" },
+    tags: ["banquet", "wedding", "event", "reception"],
+    status: "Available",
   },
   {
     id: 5,
-    src: "images/masjid-about-bg.png",
-    alt: "Masjid Video 5",
-    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
+    name: "Tech Innovation Hub",
+    description: "A co-working space designed for startups, entrepreneurs, and developers.",
+    category: "Co-Working Space",
+    src: "images/tech-hub.jpg",
+    alt: "Tech Innovation Hub",
+    url: "https://www.example.com/tech-hub",
+    location: "88 Silicon Valley, Tech District",
+    capacity: 100,
+    price: 100,
+    availability: [
+      { day: "Monday-Friday", time: "8:00 AM - 10:00 PM" },
+    ],
+    amenities: ["High-Speed Wi-Fi", "Meeting Rooms", "Coffee Bar", "Tech Support"],
+    bookingUrl: "https://www.example.com/book-tech-hub",
+    contact: { phone: "+998877665", email: "support@techhub.com" },
+    tags: ["coworking", "startup", "tech", "workspace"],
+    status: "Available",
   },
   {
-    id: 5,
-    src: "images/masjid-about-bg.png",
-    alt: "Masjid Video 5",
-    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
-  },
-  {
-    id: 5,
-    src: "images/masjid-about-bg.png",
-    alt: "Masjid Video 5",
-    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
-  },
+    id: 6,
+    name: "Children's Activity Center",
+    description: "An interactive and fun space for kids to learn and play.",
+    category: "Children's Center",
+    src: "images/kids-center.jpg",
+    alt: "Kids Activity Center",
+    url: "https://www.example.com/kids-center",
+    location: "55 Happy Street, Family Town",
+    capacity: 80,
+    price: 75,
+    availability: [
+      { day: "Monday-Saturday", time: "10:00 AM - 7:00 PM" },
+    ],
+    amenities: ["Playground", "Art & Craft Zone", "Storytelling Area", "Supervision"],
+    bookingUrl: "https://www.example.com/book-kids-center",
+    contact: { phone: "+445566778", email: "kids@activitycenter.com" },
+    tags: ["children", "play", "education", "family"],
+    status: "Booked",
+  }
 ];
 
 const currentIndex = ref(0);

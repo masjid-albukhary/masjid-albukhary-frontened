@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useRoute } from "vue-router";
-import { ref, onMounted } from "vue";
+import {useRoute} from "vue-router";
+import {ref, onMounted} from "vue";
 
 const route = useRoute();
 const newsInfo = ref<{
@@ -25,43 +25,126 @@ const newsInfo = ref<{
 const news = [
   {
     id: 1,
-    name: "Community Hall",
-    description: "A spacious hall for events, gatherings, and conferences.",
-    category: "Event Space",
+    name: "Masjid Event Hall",
+    description: "A beautifully designed hall for community prayers and events.",
+    category: "Religious Space",
     src: "images/masjid-about-bg.png",
-    alt: "Community Hall",
-    url: "https://www.youtube.com/watch?v=example",
-    location: "123 Main Street, City Center",
-    capacity: 150,
-    price: 200,
+    alt: "Masjid Video 1",
+    bookingUrl: "https://www.youtube.com/watch?v=4pku9EburYQ",
+    location: "456 Mosque Road, Downtown",
+    capacity: 200,
+    price: 150,
     availability: [
-      { day: "Monday-Friday", time: "9:00 AM - 9:00 PM" },
-      { day: "Saturday-Sunday", time: "10:00 AM - 11:00 PM" },
+      { day: "Monday-Friday", time: "8:00 AM - 10:00 PM" },
+      { day: "Saturday-Sunday", time: "9:00 AM - 11:00 PM" },
     ],
-    amenities: ["WiFi", "Projector", "Air Conditioning", "Parking"],
-    bookingUrl: "https://www.example.com/book-community-hall",
-    contact: { phone: "+123456789", email: "booking@example.com" },
-    tags: ["event", "hall", "conference", "wedding"],
+    amenities: ["Prayer Mats", "Sound System", "Air Conditioning", "Parking"],
+    contact: { phone: "+987654321", email: "info@masjid.com" },
+    tags: ["religious", "masjid", "prayer", "event"],
     status: "Available",
   },
   {
     id: 2,
-    name: "Small Meeting Room",
-    description: "Perfect for business meetings and small team discussions.",
-    category: "Meeting Room",
-    src: "images/masjid-about-bg.png",
-    alt: "Meeting Room",
-    url: null,
-    location: "456 Office Street, Business Park",
-    capacity: 10,
+    name: "Community Sports Complex",
+    description: "A modern sports complex with facilities for football, basketball, and tennis.",
+    category: "Sports Facility",
+    src: "images/sports-complex.jpg",
+    alt: "Sports Complex",
+    url: "https://www.example.com/sports-complex",
+    location: "123 Stadium Road, City Center",
+    capacity: 500,
+    price: 200,
+    availability: [
+      { day: "Monday-Friday", time: "6:00 AM - 10:00 PM" },
+      { day: "Saturday-Sunday", time: "7:00 AM - 11:00 PM" },
+    ],
+    amenities: ["Locker Rooms", "Floodlights", "Seating Area", "Cafeteria"],
+    bookingUrl: "https://www.example.com/book-sports-complex",
+    contact: { phone: "+123456789", email: "contact@sportscomplex.com" },
+    tags: ["sports", "fitness", "stadium", "community"],
+    status: "Available",
+  },
+  {
+    id: 3,
+    name: "Public Library Conference Room",
+    description: "A quiet and professional space for meetings, workshops, and study sessions.",
+    category: "Library",
+    src: "images/library-room.jpg",
+    alt: "Library Conference Room",
+    url: "https://www.example.com/library-room",
+    location: "789 Book Street, Knowledge Town",
+    capacity: 50,
     price: 50,
-    availability: [{ day: "Monday-Friday", time: "8:00 AM - 8:00 PM" }],
-    amenities: ["WiFi", "Whiteboard", "Air Conditioning"],
-    bookingUrl: "https://www.example.com/book-meeting-room",
-    contact: { phone: "+987654321", email: "contact@meetingrooms.com" },
-    tags: ["business", "meeting", "office"],
+    availability: [
+      { day: "Monday-Friday", time: "9:00 AM - 8:00 PM" },
+      { day: "Saturday", time: "10:00 AM - 6:00 PM" },
+    ],
+    amenities: ["Wi-Fi", "Projector", "Whiteboard", "Bookshelf Access"],
+    bookingUrl: "https://www.example.com/book-library-room",
+    contact: { phone: "+112233445", email: "library@knowledge.com" },
+    tags: ["library", "conference", "study", "workshop"],
     status: "Booked",
   },
+  {
+    id: 4,
+    name: "City Hall Banquet Hall",
+    description: "A grand hall for weddings, banquets, and formal events.",
+    category: "Banquet Hall",
+    src: "images/banquet-hall.jpg",
+    alt: "City Hall Banquet",
+    url: "https://www.example.com/city-hall-banquet",
+    location: "222 City Square, Metropolitan Area",
+    capacity: 300,
+    price: 500,
+    availability: [
+      { day: "Monday-Saturday", time: "12:00 PM - 11:00 PM" },
+    ],
+    amenities: ["Catering", "Stage", "Lighting System", "Parking"],
+    bookingUrl: "https://www.example.com/book-banquet-hall",
+    contact: { phone: "+556677889", email: "events@cityhall.com" },
+    tags: ["banquet", "wedding", "event", "reception"],
+    status: "Available",
+  },
+  {
+    id: 5,
+    name: "Tech Innovation Hub",
+    description: "A co-working space designed for startups, entrepreneurs, and developers.",
+    category: "Co-Working Space",
+    src: "images/tech-hub.jpg",
+    alt: "Tech Innovation Hub",
+    url: "https://www.example.com/tech-hub",
+    location: "88 Silicon Valley, Tech District",
+    capacity: 100,
+    price: 100,
+    availability: [
+      { day: "Monday-Friday", time: "8:00 AM - 10:00 PM" },
+    ],
+    amenities: ["High-Speed Wi-Fi", "Meeting Rooms", "Coffee Bar", "Tech Support"],
+    bookingUrl: "https://www.example.com/book-tech-hub",
+    contact: { phone: "+998877665", email: "support@techhub.com" },
+    tags: ["coworking", "startup", "tech", "workspace"],
+    status: "Available",
+  },
+  {
+    id: 6,
+    name: "Children's Activity Center",
+    description: "An interactive and fun space for kids to learn and play.",
+    category: "Children's Center",
+    src: "images/kids-center.jpg",
+    alt: "Kids Activity Center",
+    url: "https://www.example.com/kids-center",
+    location: "55 Happy Street, Family Town",
+    capacity: 80,
+    price: 75,
+    availability: [
+      { day: "Monday-Saturday", time: "10:00 AM - 7:00 PM" },
+    ],
+    amenities: ["Playground", "Art & Craft Zone", "Storytelling Area", "Supervision"],
+    bookingUrl: "https://www.example.com/book-kids-center",
+    contact: { phone: "+445566778", email: "kids@activitycenter.com" },
+    tags: ["children", "play", "education", "family"],
+    status: "Booked",
+  }
 ];
 
 onMounted(() => {
@@ -71,33 +154,33 @@ onMounted(() => {
 </script>
 
 <template>
-  <NavBar />
+  <NavBar/>
 
   <section class="news-details" v-if="newsInfo">
     <div class="news-container">
       <div class="news-content">
         <h1 class="news-title">{{ newsInfo.name }}</h1>
-        <img :src="newsInfo.src" :alt="newsInfo.alt" class="news-image" />
+        <img :src="newsInfo.src" :alt="newsInfo.alt" class="news-image"/>
 
         <div class="news-meta">
           <p>
-            <UIcon name="mdi-marker" class="news-icon" />
+            <UIcon name="mdi-marker" class="news-icon"/>
             <span>Category:</span> {{ newsInfo.category }}
           </p>
           <p>
-            <UIcon name="mdi-marker" class="news-icon" />
+            <UIcon name="mdi-marker" class="news-icon"/>
             <span>Description:</span> {{ newsInfo.description }}
           </p>
           <p>
-            <UIcon name="mdi-map-marker" class="news-icon" />
+            <UIcon name="mdi-map-marker" class="news-icon"/>
             <span>Location:</span> {{ newsInfo.location }}
           </p>
           <p>
-            <UIcon name="mdi-account-group" class="news-icon" />
+            <UIcon name="mdi-account-group" class="news-icon"/>
             <span>Capacity:</span> {{ newsInfo.capacity }} people
           </p>
           <p>
-            <UIcon name="mdi-cash" class="news-icon" />
+            <UIcon name="mdi-cash" class="news-icon"/>
             <span>Price:</span> ${{ newsInfo.price }} per hour
           </p>
         </div>
@@ -106,7 +189,7 @@ onMounted(() => {
           <h2>Amenities</h2>
           <ul>
             <li v-for="amenity in newsInfo.amenities" :key="amenity">
-              <UIcon name="mdi-checkbox-marked-circle-outline" class="news-icon" />
+              <UIcon name="mdi-checkbox-marked-circle-outline" class="news-icon"/>
               {{ amenity }}
             </li>
           </ul>
@@ -118,12 +201,12 @@ onMounted(() => {
   <p v-else class="loading">Loading...</p>
 
   <News/>
-  <Footer />
+  <Footer/>
 </template>
 
 <style scoped>
 .news-details {
-  margin:0 auto;
+  margin: 0 auto;
   padding: 2rem;
   background: var(--bg-color);
   display: flex;
