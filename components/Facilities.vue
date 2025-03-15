@@ -108,11 +108,9 @@ function prevPage() {
 
 section {
   width: 100%;
-  padding: 3rem 1rem;
   text-align: center;
   background: var(--bg-color);
-  max-width: 1200px;
-  margin: 4rem auto;
+  margin: auto;
 }
 
 h1 {
@@ -127,6 +125,8 @@ h1 {
 }
 
 .facilities-container {
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

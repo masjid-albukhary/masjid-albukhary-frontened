@@ -5,10 +5,10 @@
 <template>
   <NavBar/>
   <Landing/>
+  <News/>
   <PrayerTime/>
   <Facilities/>
   <BookingStructure/>
-  <News/>
   <MapSection/>
   <Footer/>
 </template>
