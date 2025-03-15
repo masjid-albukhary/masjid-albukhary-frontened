@@ -6,7 +6,9 @@
   <NavBar/>
   <Landing/>
   <PrayerTime/>
+  <Facilities/>
   <BookingStructure/>
+  <News/>
   <MapSection/>
   <Footer/>
 </template>
