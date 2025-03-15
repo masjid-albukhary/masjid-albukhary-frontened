@@ -83,7 +83,7 @@ function prevPage() {
             class="card-news"
         />
         <div class="overlay">
-          <UIcon name="mdi-office-building" class="news-icon"/>
+          <UIcon name="mdi-newspaper" class="news-icon" />
           <NuxtLink :to="`/news/${news.id}`" class="news-title">
             <UIcon name="mdi-information-outline" />
             Learn More
@@ -110,9 +110,7 @@ section {
   width: 100%;
   padding: 3rem 1rem;
   text-align: center;
-  background: var(--bg-color);
-  max-width: 1200px;
-  margin: 4rem auto;
+  margin: 0 auto;
 }
 
 h1 {

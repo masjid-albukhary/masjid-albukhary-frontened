@@ -117,12 +117,13 @@ onMounted(() => {
 
   <p v-else class="loading">Loading...</p>
 
+  <News/>
   <Footer />
 </template>
 
 <style scoped>
 .news-details {
-  margin: 2rem auto;
+  margin:0 auto;
   padding: 2rem;
   background: var(--bg-color);
   display: flex;
