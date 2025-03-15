@@ -39,10 +39,22 @@ const news: News[] = [
     alt: "Masjid Video 5",
     url: "https://www.youtube.com/watch?v=4pku9EburYQ"
   },
+  {
+    id: 5,
+    src: "images/masjid-about-bg.png",
+    alt: "Masjid Video 5",
+    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
+  },
+  {
+    id: 5,
+    src: "images/masjid-about-bg.png",
+    alt: "Masjid Video 5",
+    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
+  },
 ];
 
 const currentIndex = ref(0);
-const itemsPerPage = ref(3);
+const itemsPerPage = ref(6);
 
 const visibleNews = computed(() => {
   return news.slice(currentIndex.value, currentIndex.value + itemsPerPage.value);
