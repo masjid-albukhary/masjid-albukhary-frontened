@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import {useRoute, useRouter} from 'vue-router';
-import {ref, onMounted} from 'vue';
+import { useRoute } from "vue-router";
+import { ref, onMounted } from "vue";
 
 const route = useRoute();
-const router = useRouter();
-const facility = ref<{
+const newsInfo = ref<{
   id: number;
   name: string;
   description: string;
@@ -23,7 +22,7 @@ const facility = ref<{
   status: string;
 } | null>(null);
 
-const facilities = [
+const news = [
   {
     id: 1,
     name: "Community Hall",
@@ -36,17 +35,14 @@ const facilities = [
     capacity: 150,
     price: 200,
     availability: [
-      {day: "Monday-Friday", time: "9:00 AM - 9:00 PM"},
-      {day: "Saturday-Sunday", time: "10:00 AM - 11:00 PM"}
+      { day: "Monday-Friday", time: "9:00 AM - 9:00 PM" },
+      { day: "Saturday-Sunday", time: "10:00 AM - 11:00 PM" },
     ],
     amenities: ["WiFi", "Projector", "Air Conditioning", "Parking"],
     bookingUrl: "https://www.example.com/book-community-hall",
-    contact: {
-      phone: "+123456789",
-      email: "booking@example.com"
-    },
+    contact: { phone: "+123456789", email: "booking@example.com" },
     tags: ["event", "hall", "conference", "wedding"],
-    status: "Available"
+    status: "Available",
   },
   {
     id: 2,
@@ -59,315 +55,180 @@ const facilities = [
     location: "456 Office Street, Business Park",
     capacity: 10,
     price: 50,
-    availability: [
-      {day: "Monday-Friday", time: "8:00 AM - 8:00 PM"}
-    ],
+    availability: [{ day: "Monday-Friday", time: "8:00 AM - 8:00 PM" }],
     amenities: ["WiFi", "Whiteboard", "Air Conditioning"],
     bookingUrl: "https://www.example.com/book-meeting-room",
-    contact: {
-      phone: "+987654321",
-      email: "contact@meetingrooms.com"
-    },
+    contact: { phone: "+987654321", email: "contact@meetingrooms.com" },
     tags: ["business", "meeting", "office"],
-    status: "Booked"
+    status: "Booked",
   },
-  {
-    id: 3,
-    name: "Community Hall",
-    description: "A spacious hall for events, gatherings, and conferences.",
-    category: "Event Space",
-    src: "images/masjid-about-bg.png",
-    alt: "Community Hall",
-    url: "https://www.youtube.com/watch?v=example",
-    location: "123 Main Street, City Center",
-    capacity: 150,
-    price: 200,
-    availability: [
-      {day: "Monday-Friday", time: "9:00 AM - 9:00 PM"},
-      {day: "Saturday-Sunday", time: "10:00 AM - 11:00 PM"}
-    ],
-    amenities: ["WiFi", "Projector", "Air Conditioning", "Parking"],
-    bookingUrl: "https://www.example.com/book-community-hall",
-    contact: {
-      phone: "+123456789",
-      email: "booking@example.com"
-    },
-    tags: ["event", "hall", "conference", "wedding"],
-    status: "Available"
-  },
-  {
-    id: 4,
-    name: "Small Meeting Room",
-    description: "Perfect for business meetings and small team discussions.",
-    category: "Meeting Room",
-    src: "images/masjid-about-bg.png",
-    alt: "Meeting Room",
-    url: null,
-    location: "456 Office Street, Business Park",
-    capacity: 10,
-    price: 50,
-    availability: [
-      {day: "Monday-Friday", time: "8:00 AM - 8:00 PM"}
-    ],
-    amenities: ["WiFi", "Whiteboard", "Air Conditioning"],
-    bookingUrl: "https://www.example.com/book-meeting-room",
-    contact: {
-      phone: "+987654321",
-      email: "contact@meetingrooms.com"
-    },
-    tags: ["business", "meeting", "office"],
-    status: "Booked"
-  },
-  {
-    id: 5,
-    name: "Community Hall",
-    description: "A spacious hall for events, gatherings, and conferences.",
-    category: "Event Space",
-    src: "images/masjid-about-bg.png",
-    alt: "Community Hall",
-    url: "https://www.youtube.com/watch?v=example",
-    location: "123 Main Street, City Center",
-    capacity: 150,
-    price: 200,
-    availability: [
-      {day: "Monday-Friday", time: "9:00 AM - 9:00 PM"},
-      {day: "Saturday-Sunday", time: "10:00 AM - 11:00 PM"}
-    ],
-    amenities: ["WiFi", "Projector", "Air Conditioning", "Parking"],
-    bookingUrl: "https://www.example.com/book-community-hall",
-    contact: {
-      phone: "+123456789",
-      email: "booking@example.com"
-    },
-    tags: ["event", "hall", "conference", "wedding"],
-    status: "Available"
-  },
-  {
-    id: 6,
-    name: "Small Meeting Room",
-    description: "Perfect for business meetings and small team discussions.",
-    category: "Meeting Room",
-    src: "images/masjid-about-bg.png",
-    alt: "Meeting Room",
-    url: null,
-    location: "456 Office Street, Business Park",
-    capacity: 10,
-    price: 50,
-    availability: [
-      {day: "Monday-Friday", time: "8:00 AM - 8:00 PM"}
-    ],
-    amenities: ["WiFi", "Whiteboard", "Air Conditioning"],
-    bookingUrl: "https://www.example.com/book-meeting-room",
-    contact: {
-      phone: "+987654321",
-      email: "contact@meetingrooms.com"
-    },
-    tags: ["business", "meeting", "office"],
-    status: "Booked"
-  },
-
 ];
 
 onMounted(() => {
   const id = Number(route.params.id);
-  facility.value = facilities.find((f) => f.id === id) || null;
+  newsInfo.value = news.find((item) => item.id === id) || null;
 });
-
-const goBack = () => {
-  router.push('/facilities');
-};
 </script>
 
 <template>
-  <NavBar/>
+  <NavBar />
 
-  <section class="facility-details" v-if="facility">
+  <section class="news-details" v-if="newsInfo">
+    <div class="news-container">
+      <div class="news-content">
+        <h1 class="news-title">{{ newsInfo.name }}</h1>
+        <img :src="newsInfo.src" :alt="newsInfo.alt" class="news-image" />
 
-    <div class="facility-container">
+        <div class="news-meta">
+          <p>
+            <UIcon name="mdi-marker" class="news-icon" />
+            <span>Category:</span> {{ newsInfo.category }}
+          </p>
+          <p>
+            <UIcon name="mdi-marker" class="news-icon" />
+            <span>Description:</span> {{ newsInfo.description }}
+          </p>
+          <p>
+            <UIcon name="mdi-map-marker" class="news-icon" />
+            <span>Location:</span> {{ newsInfo.location }}
+          </p>
+          <p>
+            <UIcon name="mdi-account-group" class="news-icon" />
+            <span>Capacity:</span> {{ newsInfo.capacity }} people
+          </p>
+          <p>
+            <UIcon name="mdi-cash" class="news-icon" />
+            <span>Price:</span> ${{ newsInfo.price }} per hour
+          </p>
+        </div>
 
-      <div class="facility-content">
-        <h1 class="facility-title">{{ facility.name }}</h1>
-        <img :src="facility.src" :alt="facility.alt" class="facility-image"/>
-        <p>
-          <UIcon
-              name="mdi-marker"
-              class="facility-icon"
-          />
-          <span>Category:</span>
-          {{ facility.category }}
-        </p>
-        <p>
-          <UIcon
-              name="mdi-marker"
-              class="facility-icon"
-          />
-          <span>Description:</span>
-          {{ facility.description }}
-        </p>
-        <p>
-          <UIcon
-              name="mdi-marker"
-              class="facility-icon"
-          />
-          <span>Location:</span>
-          {{ facility.location }}
-        </p>
-        <p>
-          <UIcon
-              name="mdi-marker"
-              class="facility-icon"
-          />
-          <span>Capacity:</span>
-          {{ facility.capacity }}
-          people
-        </p>
-        <p>
-          <UIcon
-              name="mdi-marker"
-              class="facility-icon"
-          />
-          <span>Price:</span>
-          ${{ facility.price }}
-          per hour
-        </p>
         <div class="amenities">
           <h2>Amenities</h2>
           <ul>
-            <li
-                v-for="amenity in facility.amenities"
-                :key="amenity"
-
-            >
-              <UIcon
-                  name="mdi-place"
-                  class="facility-icon"
-              />
+            <li v-for="amenity in newsInfo.amenities" :key="amenity">
+              <UIcon name="mdi-checkbox-marked-circle-outline" class="news-icon" />
               {{ amenity }}
             </li>
           </ul>
         </div>
-
       </div>
-
-      <div class="facilities-book-form">
-        <h2 class="form-title">Book your Wedding/Solemnisation Venue</h2>
-        <p class="form-description">Please fill in the form below to complete your booking. We encourage you to read the
-          stipulated terms and
-          conditions here before submitting the form.
-        </p>
-        <router-link to="/booking-venue.vue" class="booking-btn">
-          Register your Interest
-        </router-link>
-      </div>
-
     </div>
-
   </section>
 
   <p v-else class="loading">Loading...</p>
 
-  <Footer/>
+  <Footer />
 </template>
 
 <style scoped>
-.facility-details {
+.news-details {
   margin: 2rem auto;
-  padding: 2rem 0;
+  padding: 2rem;
   background: var(--bg-color);
+  display: flex;
+  justify-content: center;
 }
 
-.facility-container {
+.news-container {
   width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 3fr 1fr;
-  gap: 3rem;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-.facility-title {
-  font-size: 2rem;
+.news-title {
+  font-size: 2.2rem;
   color: var(--primary-color);
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
-.facility-image {
+.news-image {
   width: 100%;
-  height: 350px;
-  margin: 1rem auto;
-  box-shadow: rgba(149, 157, 165, 0.3) 0 8px 24px;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 8px 24px;
 }
 
-.facility-container p {
+.news-meta p {
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
   color: var(--primary-color);
-  font-weight: normal;
+  margin: 0.5rem 0;
 }
 
-.facility-container .facility-icon{
-  margin-right: 1rem;
+.news-icon {
+  margin-right: 0.5rem;
+  color: var(--secondary-color);
+  font-size: 1.3rem;
 }
-.facility-container p span{
+
+.news-meta span {
   font-weight: bold;
   color: var(--secondary-color);
-  margin-right: .5rem;
+  margin-right: 0.3rem;
 }
 
-ul {
+.amenities {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background: #f9f9f9;
+}
+
+.amenities h2 {
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.amenities ul {
   list-style: none;
   padding: 0;
 }
 
-li {
-  background: #f8f8f8;
-  padding: 10px;
-  margin: 5px 0;
-  border-radius: 5px;
-}
-
-.loading {
-  text-align: center;
-  font-size: 18px;
-  color: gray;
-  padding: 20px;
-}
-
-.facilities-book-form {
-  align-items: center;
-  display: block;
-  margin: auto;
-}
-
-.facilities-book-form .form-title {
-  margin: 1rem 0;
-  font-weight: bold;
-  color: var(--primary-color);
-  text-align: center;
-}
-
-.facilities-book-form .form-description {
-  margin: 1rem 0;
-  font-weight: normal;
-  font-size: 1rem;
-  color: var(--primary-color);
-  text-align: justify;
-}
-
-.facilities-book-form .booking-btn {
-  padding: .5rem 1rem;
+.amenities li {
   display: flex;
-  margin: 1rem auto;
-  font-weight: normal;
-  font-size: 1rem;
-  outline: none;
-  border: none;
-  color: var(--text-color);
-  background-color: var(--primary-color);
+  align-items: center;
+  background: #fff;
+  padding: 0.7rem;
+  margin-bottom: 0.5rem;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 8px;
 }
 
-.facilities-book-form .booking-btn:hover {
-  background-color: var(--secondary-color);
-  box-shadow: rgba(100, 100, 111, 0.2) 0 7px 29px 0;
-  transition: box-shadow .3s ease-in-out, background-color .3s ease-in-out;
+@media (max-width: 768px) {
+  .news-title {
+    font-size: 1.8rem;
+  }
+
+  .news-meta p {
+    font-size: 1rem;
+  }
+
+  .news-container {
+    width: 95%;
+  }
+
+  .news-image {
+    max-height: 300px;
+  }
 }
 
+@media (max-width: 480px) {
+  .news-title {
+    font-size: 1.6rem;
+  }
 
+  .news-meta p {
+    font-size: 0.95rem;
+  }
+
+  .news-image {
+    max-height: 250px;
+  }
+}
 </style>

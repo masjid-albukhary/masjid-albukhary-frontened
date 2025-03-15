@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import {computed, ref} from "vue";
 
-interface Facility {
+interface News {
   id: number;
   src: string;
   alt: string;
   url: string;
 }
 
-const facilities: Facility[] = [
+const news: News[] = [
   {
     id: 1,
     src: "images/masjid-about-bg.png",
@@ -44,12 +44,12 @@ const facilities: Facility[] = [
 const currentIndex = ref(0);
 const itemsPerPage = ref(3);
 
-const visibleFacilities = computed(() => {
-  return facilities.slice(currentIndex.value, currentIndex.value + itemsPerPage.value);
+const visibleNews = computed(() => {
+  return news.slice(currentIndex.value, currentIndex.value + itemsPerPage.value);
 });
 
 function nextPage() {
-  if (currentIndex.value + itemsPerPage.value < facilities.length) {
+  if (currentIndex.value + itemsPerPage.value < news.length) {
     currentIndex.value += itemsPerPage.value;
   } else {
     currentIndex.value = 0;
@@ -60,7 +60,7 @@ function prevPage() {
   if (currentIndex.value - itemsPerPage.value >= 0) {
     currentIndex.value -= itemsPerPage.value;
   } else {
-    currentIndex.value = facilities.length - itemsPerPage.value;
+    currentIndex.value = news.length - itemsPerPage.value;
   }
 }
 
@@ -68,23 +68,23 @@ function prevPage() {
 
 <template>
 
-  <section class="facilities">
+  <section class="news">
     <h1>
       <UIcon
           name="mdi-office-building"
       />
-      Our Facilities
+      Our news
     </h1>
-    <div class="facilities-container">
-      <div class="card" v-for="facility in visibleFacilities" :key="facility.id">
+    <div class="news-container">
+      <div class="card" v-for="news in visibleNews" :key="news.id">
         <img
-            :src="facility.src"
-            :alt="facility.alt"
-            class="card-facilities"
+            :src="news.src"
+            :alt="news.alt"
+            class="card-news"
         />
         <div class="overlay">
-          <UIcon name="mdi-office-building" class="facilities-icon"/>
-          <NuxtLink :to="`/news/${facility.id}`" class="facilities-title">
+          <UIcon name="mdi-office-building" class="news-icon"/>
+          <NuxtLink :to="`/news/${news.id}`" class="news-title">
             <UIcon name="mdi-information-outline" />
             Learn More
           </NuxtLink>
@@ -121,12 +121,12 @@ h1 {
   margin-bottom: 2rem;
 }
 
-.facilities {
+.news {
   padding: 2rem;
   text-align: center;
 }
 
-.facilities-container {
+.news-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -141,7 +141,7 @@ h1 {
   cursor: pointer;
 }
 
-.card-facilities {
+.card-news {
   width: 100%;
   height: 100%;
   transition: transform 0.3s ease-in-out;
@@ -166,12 +166,12 @@ h1 {
   opacity: 1;
 }
 
-.facilities-icon {
+.news-icon {
   font-size: 3rem;
   color: white;
 }
 
-.facilities-title {
+.news-title {
   color: white;
   font-size: 1.2rem;
   margin-top: 10px;
@@ -214,7 +214,7 @@ h1 {
 }
 
 
-.facilities {
+.news {
   background: var(--bg-color);
 }
 
