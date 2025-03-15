@@ -1,209 +1,221 @@
 <script setup lang="ts">
+import {computed, ref} from "vue";
 
-interface News {
+interface Facility {
   id: number;
-  title: string;
-  description: string;
-  date: string;
-  link?: string;
-  image?: string;
-  category?: string;
-  author?: string;
+  src: string;
+  alt: string;
+  url: string;
 }
 
-const news: News[] = [
+const facilities: Facility[] = [
   {
     id: 1,
-    title: "Community Iftar Gathering",
-    description: "Join us for a communal Iftar at Al Bukhary Mosque this Friday.",
-    date: "2025-03-06",
-    link: "/",
-    image: "/images/booking-image.png",
-    category: "Event",
-    author: "Admin",
+    src: "images/masjid-about-bg.png",
+    alt: "Masjid Video 1",
+    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
   },
   {
     id: 2,
-    title: "New Library Section Opened",
-    description: "The mosque's library now includes a new section for Islamic studies and children's books.",
-    date: "2025-02-28",
-    link: "/",
-    image: "/images/booking-image.png",
-    category: "Update",
-    author: "Library Team",
+    src: "images/masjid-about-bg.png",
+    alt: "Masjid Video 2",
+    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
   },
   {
     id: 3,
-    title: "Ramadan Timetable Released",
-    description: "Check out the updated prayer and fasting schedule for Ramadan 2025.",
-    date: "2025-02-25",
-    link: "/",
-    image: "/images/booking-image.png",
-    category: "Announcement",
-    author: "Mosque Management",
+    src: "images/masjid-about-bg.png",
+    alt: "Masjid Video 3",
+    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
   },
   {
     id: 4,
-    title: "Volunteer Opportunities Available",
-    description: "We are looking for volunteers to assist with mosque activities and charity events.",
-    date: "2025-02-20",
-    link: "/",
-    image: "/images/booking-image.png",
-    category: "Event",
-    author: "Community Outreach",
+    src: "images/masjid-about-bg.png",
+    alt: "Masjid Video 4",
+    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
   },
-
+  {
+    id: 5,
+    src: "images/masjid-about-bg.png",
+    alt: "Masjid Video 5",
+    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
+  },
 ];
 
-const groupedNews = [];
-for (let i = 0; i < news.length - 1; i += 3) {
-  groupedNews.push(news.slice(i, i + 2));
+const currentIndex = ref(0);
+const itemsPerPage = ref(3);
+
+const visibleFacilities = computed(() => {
+  return facilities.slice(currentIndex.value, currentIndex.value + itemsPerPage.value);
+});
+
+function nextPage() {
+  if (currentIndex.value + itemsPerPage.value < facilities.length) {
+    currentIndex.value += itemsPerPage.value;
+  } else {
+    currentIndex.value = 0;
+  }
 }
-const lastNewsItem = news[news.length - 1];
+
+function prevPage() {
+  if (currentIndex.value - itemsPerPage.value >= 0) {
+    currentIndex.value -= itemsPerPage.value;
+  } else {
+    currentIndex.value = facilities.length - itemsPerPage.value;
+  }
+}
 
 </script>
 
 <template>
-  <section class="news-section">
 
-    <h2 class="news-main-title">Recent News & Updates</h2>
+  <section class="facilities">
+    <h1>
+      <UIcon
+          name="mdi-office-building"
+      />
+      Our Facilities
+    </h1>
+    <div class="facilities-container">
+      <div class="card" v-for="facility in visibleFacilities" :key="facility.id">
+        <img
+            :src="facility.src"
+            :alt="facility.alt"
+            class="card-facilities"
+        />
+        <div class="overlay">
+          <UIcon name="mdi-office-building" class="facilities-icon"/>
+          <NuxtLink :to="`/news/${facility.id}`" class="facilities-title">
+            <UIcon name="mdi-information-outline" />
+            Learn More
+          </NuxtLink>
 
-    <div class="news-section-container">
-
-      <div v-if="lastNewsItem" class="last-news">
-        <div class="news-card special">
-          <div class="news-image-special">
-
-            <img v-if="lastNewsItem.image" :src="lastNewsItem.image" :alt="lastNewsItem.title" class="news-image">
-
-          </div>
-          <div class="news-content">
-            <h3>{{ lastNewsItem.title }}</h3>
-            <p class="date">{{ lastNewsItem.date }}</p>
-            <p>{{ lastNewsItem.description }}</p>
-            <a v-if="lastNewsItem.link" :href="lastNewsItem.link" class="read-more">Read More</a>
-          </div>
         </div>
       </div>
+    </div>
 
-      <div v-for="(group, index) in groupedNews" :key="'group-' + index" class="news-group">
-        <div v-for="newsItem in group" :key="newsItem.id" class="news-card">
-          <div class="image-news-container">
-            <img v-if="newsItem.image" :src="newsItem.image" :alt="newsItem.title" class="news-image">
-          </div>
-
-          <div class="news-content">
-            <h3>{{ newsItem.title }}</h3>
-            <p class="date">{{ newsItem.date }}</p>
-            <p>{{ newsItem.description }}</p>
-            <a v-if="newsItem.link" :href="newsItem.link" class="read-more">Read More</a>
-          </div>
-        </div>
-      </div>
-
+    <div class="buttons">
+      <button @click="prevPage" class="nav-button">
+        <UIcon name="mdi-arrow-left"/>
+      </button>
+      <button @click="nextPage" class="nav-button">
+        <UIcon name="mdi-arrow-right"/>
+      </button>
     </div>
   </section>
 </template>
 
 <style scoped>
-.news-section {
-  padding: 2rem;
-  background-color: var(--bg-color);
-  max-width: 1200px;
-  height: 100%;
-  margin: 0 auto;
-}
 
-.news-section .news-main-title {
-  text-align: center;
-  font-size: var(--text-size-h2);
-  font-weight: bold;
-  margin: 1rem auto;
-  color: var(--primary-color);
-}
-
-.news-section-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1rem;
-}
-
-.news-group {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-}
-
-.news-card {
-  display: grid;
-  grid-template-columns: 2fr 3fr;
-  border-radius: 10px;
-  margin-bottom: 1rem;
-  box-shadow: rgba(149, 157, 165, 0.1) 0 8px 24px;
-}
-
-.news-image {
+section {
   width: 100%;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 5px 0 0 5px;
-}
-
-.news-content {
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-h2 {
+  padding: 3rem 1rem;
   text-align: center;
+  background: var(--bg-color);
+  max-width: 1200px;
+  margin: 4rem auto;
 }
 
-.date {
-  color: gray;
-  font-size: 0.9rem;
-}
-
-.read-more {
-  display: inline-block;
-  margin-top: 10px;
+h1 {
+  font-size: 2rem;
   color: var(--primary-color);
-  text-decoration: none;
-}
-
-.read-more:hover {
-  color: var(--secondary-color);
-  text-decoration: underline;
-  transition: color 0.3s ease-in-out, text-decoration;
-}
-
-.last-news {
-  margin-top: 2rem;
-}
-
-.special {
-  display: block;
-  padding: 1.5rem;
   margin-bottom: 2rem;
 }
 
+.facilities {
+  padding: 2rem;
+  text-align: center;
+}
+
+.facilities-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  flex: 1 1 calc(33.33% - 1rem);
+  max-width: 400px;
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.card-facilities {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.3s ease-in-out;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.card:hover .overlay {
+  opacity: 1;
+}
+
+.facilities-icon {
+  font-size: 3rem;
+  color: white;
+}
+
+.facilities-title {
+  color: white;
+  font-size: 1.2rem;
+  margin-top: 10px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+  gap: 2rem;
+}
+
+.nav-button {
+  padding: 0.5rem 1rem;
+  font-size: 1.2rem;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  border: none;
+  outline: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.nav-button:hover {
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+}
+
 @media (max-width: 768px) {
-  .news-section-container {
-    grid-template-columns: 1fr;
-  }
-
-  .news-card {
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
-
-  .news-image {
-    width: 100%;
-    height: 200px;
-    border-radius: 10px 10px 0 0;
+  .card {
+    flex: 1 1 calc(50% - 1rem);
   }
 }
+
+@media (max-width: 480px) {
+  .card {
+    flex: 1 1 100%;
+  }
+}
+
+
+.facilities {
+  background: var(--bg-color);
+}
+
 </style>
