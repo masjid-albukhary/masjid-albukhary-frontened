@@ -1,0 +1,165 @@
+[33m63a8ebf[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m fixed i18n vue and updated it
+[33mca21941[m removed unneeded file
+[33m6e74586[m add translation to about page
+[33m5cdefd0[m added i18n vue and created translation files en and ms js files to handle content
+[33ma7e3a2a[m remove unneeded files and remove i18n vue
+[33mc3314fc[m install translations handle vue i18n.js
+[33m3d6963a[m created translations file and ms and en js file to handle translations
+[33mb8cc6c4[m removed padding in booking section
+[33m1372b4d[m added news and facilities components into index section
+[33m60fd819[m added news and facilities components into index section
+[33me3f0247[m working on news design page and dynamic id page
+[33m3e61cf3[m working on news design page and dynamic id page
+[33m3dcbc5d[m working on news design page and dynamic id page
+[33m1535926[m created news file with index page and dynamic id page
+[33mb9cc1eb[m started to work on news style and amke it dynamic
+[33md8f5631[m update gallery  components
+[33m626a0fc[m update facilities components
+[33m5e9d3fa[m update facilities pages
+[33mf019de3[m update index page
+[33m9907495[m pushing updated deployment
+[33m3e08bcd[m Merge remote-tracking branch 'origin/main'
+[33m843bfe3[m fixed the overrider admin sidebar
+[33m03fe4b1[m fixed the overrider admin sidebar
+[33maa9f796[m fixed the overrider admin side bar
+[33m6aa088f[m fixed link issues in Booking Structure section and make it's form responsive for all devices
+[33meeb9d95[m make Booking Structure section responsive for all devices
+[33m324d037[m make about section responsive for all devices
+[33m5200ad9[m removed unneeded components from index page and about page
+[33ma52b543[m make prayer time component responsive for all devices
+[33m0b85b95[m trying to fix issue in deployment files
+[33mda9befc[m changed nav bar withed size
+[33m103d36d[m trying to fixe deployment issue in deploy file
+[33mb001e17[m trying to fixe deployment issue and remove the conflict in pdfjs
+[33m7bddb06[m trying to fixe deployment issue and remove the conflict in pdfjs
+[33mfb4add8[m trying to fixe deployment issue
+[33mb7ed3e4[m trying to fixe deployment issue
+[33m41f7ce4[m trying to fixe deployment issue
+[33m51d312f[m trying to fixe deployment issue
+[33mb5f955d[m removed current deployment
+[33med6390d[m trying fixing issues that I am facing in deployment removed nuxtjs
+[33m49c2d48[m fixing issues that i am facing in deployment
+[33m131e3c8[m fixing issues that i am facing in deployment
+[33m7e8bf4b[m fixing issues that i am facing in deployment
+[33m92fea11[m fixing issues that i am facing in deployment in news components
+[33m4ae17b3[m Merge remote-tracking branch 'origin/main'
+[33m06e2917[m fixing issues that i am facing in deployment in news, log in components
+[33m2800426[m Create nuxtjs.yml
+[33ma3bc903[m Trigger GitHub Actions
+[33mde3e3f0[m Trigger GitHub Actions
+[33m2323501[m Add GitHub Actions deployment
+[33m3cbd21d[m Add GitHub Actions deployment
+[33md4a9eeb[m Add GitHub Actions deployment
+[33mdf57ba3[m removed unneeded landing page component
+[33m243a9ef[m updated correct icons name in nav bar and footer
+[33m4be7000[m removed log out link
+[33mfe002af[m changed icons to correct ones
+[33m33c72cc[m added jspdf and fixed first version of booking admin dashboard
+[33m2405910[m working on admin dashboard
+[33m95952a2[m created activity and it's page , as well as added it's link
+[33m47e743b[m created booking-dashboard and it's page , as well as added it's link
+[33md602c97[m added transition into app and fixed responsive news form page
+[33mff69fe6[m added transition into app and fixed responsive inside admin  page
+[33m8d38d45[m added transition into app and fixed responsive inside facility form page
+[33m813068d[m allowed to admin to upload image only in video
+[33m3e7777e[m removed unneeded component from gallery page
+[33m657f10a[m fixed nav bar height size
+[33m9dc4258[m fixed padding in Booking Structure
+[33mfa4aaf6[m fixed padding in booking form
+[33mc125d5f[m remove unneeded links
+[33mcc0ceac[m remove unneeded comments in admin nav bar
+[33mdea24b0[m remove unneeded components in index page
+[33m7125c3d[m added hover to link
+[33mb3daa6a[m fixed validation images and videos and add them into admin nav bar
+[33ma5a94b3[m fixed validation images
+[33mc098b9d[m created form videos popup to allow admin upload images
+[33md04a6f4[m created form images popup to allow admin upload images
+[33ma1c580c[m updated bg in admin footer
+[33mc4c5827[m updated the design in prayer time
+[33m25c12ab[m added facility form to admin nav bar
+[33m466882e[m created facilities  form and it's component
+[33m1ebea7f[m created facilities  form and it's component
+[33m934dbd3[m created news form and it's component
+[33m49dab2e[m created admin footer and added it into admin page
+[33ma5fd6b7[m finished news form and added into form pages
+[33m23cf6b3[m created news form pages
+[33m5174806[m fixed Facilities id page dynamic and created id page
+[33m0c1c843[m fixed Facilities id page dynamic
+[33m948c036[m removed Facilities pages and created new folder called facilities in order to create dynamic facilities id page
+[33m448c504[m started working on design on Facilities components
+[33mfc59437[m pushed design images
+[33m64423c6[m pushed design images
+[33m526183e[m finished video gallery
+[33mf3982ea[m finished first version of this gallery component
+[33m5ede609[m removed unneeded component
+[33m21ed63d[m finished Gallery page and component and created popup into gallery
+[33m35e3db5[m created Gallery page and component and added them into footer and nav bar only
+[33m8312b00[m created Facilities page and component and added them into footer and nav bar only
+[33m7aed211[m replaced links in nav bar and footer
+[33md9e4964[m replaced home page with index page and replace links
+[33mced71bd[m finished about component
+[33m3dc06a8[m fixed height in LANDING component
+[33m970495e[m fixed height in news component
+[33m039d353[m updated BOOKING SECTION AND NAV ALT text
+[33md5c0453[m updated nav bar to scroll in smooth scrolling
+[33m3e40849[m added design images
+[33m729fa9f[m creating landing page and added it into home page
+[33m703f4b8[m added new link for booking form
+[33mb55d2e5[m added color hover to links
+[33mae0ab08[m updated images design
+[33mec65003[m updated designed
+[33m1cdfc96[m install map leaflet and created new map section
+[33m6a96f59[m added some componenets to home page
+[33m0d4ed66[m add booking venue link to booking step and nav bar
+[33m67e25d0[m updated info in about section
+[33m8e49904[m updated color in nav bar
+[33m58ccd54[m created admin folder and it's index
+[33mf685e95[m implemented admin sign up form and it's page
+[33mf5dae90[m fixed validation in log in side
+[33m41ef0db[m updated login questions
+[33m98a6aea[m updated booking question here
+[33m2fd1798[m finished the log in design
+[33m0094d99[m created login page and Login component
+[33m3d95020[m remove margin from main contact section
+[33mf1fe093[m updated contact section
+[33m6bc2ac9[m create contact pages and contact component
+[33m1d87ec2[m changed colors in app and updated color in prayer time
+[33m1b0b674[m changes venu to venue
+[33m9b0259d[m changed form title
+[33m59bb01a[m created popup to user
+[33m2e377de[m created booking form and page booking venue
+[33mb86a4e9[m changed app colors
+[33m25b1691[m installed zod
+[33m5e324db[m created contact page and contact component
+[33mb22974b[m start create news component
+[33md5bc4f8[m added news components into news page and added news page link to footer
+[33m460653f[m created news page and added it into nav bar
+[33mf6f9546[m start working on news section
+[33m94a9b2d[m changed footer design image
+[33md8b1667[m updated footer style
+[33mc3cc71e[m pushed new color in footer and finished first version of footer
+[33md35dae1[m changed color in booking section
+[33mb26f0ba[m start creating footer section
+[33m323369c[m change text color and text hover color
+[33mddff233[m made prayer time structure responsive to all devices and replace the secreen shoot of prayer time
+[33ma6b647b[m made booking structure responsive to all devices
+[33m4f174cc[m removed unneeded image
+[33mcea8ab9[m creating Booking Structure component and add it into about page
+[33mbd97f28[m updated new design to prayer section include time and date
+[33m5aa38f9[m while updated colors in app supposed to update about section and nav bar section
+[33m2acb7ef[m add new structures to app include colors and font sizes
+[33mc021100[m change color in app and update image size
+[33m30db5eb[m change color
+[33md86a3e9[m finished first version of header
+[33m4c4ccc7[m finished first version of header
+[33me354082[m start creating nav bar and added masjid logo as png
+[33m5001479[m added new two colors text color and hover color
+[33m662dbdd[m created home page
+[33me92cc9f[m installed nuxt ui
+[33mfbb28a1[m creating about components and added into about page
+[33mc3db8db[m finished prayer time component
+[33md96c7e1[m finished prayer time component
+[33m8e9065c[m added   border-radius to app
+[33m90bd559[m created prayer time section and added it in test page
+[33m558e66f[m push first comment in my front end project
+[33mf276c63[m first commit
