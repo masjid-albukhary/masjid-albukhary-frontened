@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {ref, onMounted} from 'vue';
+const { t, locale } = useI18n()
 
 interface Link {
   link: string,
@@ -49,6 +50,7 @@ onMounted(() => {
 
       <nav v-if="isLinksVisible || !isMobile" class="navigation-menu">
         <ul class="navigation-links">
+          <li>{{ t('welcome') }}</li>
           <li v-for="link in links">
             <router-link :to="link.link">
               <UIcon

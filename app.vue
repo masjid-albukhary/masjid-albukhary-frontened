@@ -27,4 +27,11 @@
   --text-size-small: 0.875rem;
 }
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+}
+
 </style>
