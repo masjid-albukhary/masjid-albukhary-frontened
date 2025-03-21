@@ -53,8 +53,10 @@ onMounted(() => {
           <li>{{ t('welcome') }}</li>
           <li v-for="link in links">
             <router-link :to="link.link">
+
               <UIcon
                   :name="link.icon"
+
               />
               {{ link.label }}
             </router-link>
