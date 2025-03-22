@@ -29,6 +29,7 @@ const fullDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate
             We will keep you informed about the progress and let you know if any further information is needed.
 
             Al Bukhary Mosque
+
             {{ fullDate }}
           </p>
           <h2>Thank you for your patience.</h2>
