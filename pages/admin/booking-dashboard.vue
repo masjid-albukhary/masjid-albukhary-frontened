@@ -11,7 +11,7 @@ import AdminSideBar from "~/components/AdminSideBar.vue";
       <AdminSideBar/>
     </aside>
     <main>
-      <BookingDashboard/>
+
     </main>
   </section>
   <AdminFooter/>
