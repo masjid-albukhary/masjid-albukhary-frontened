@@ -40,7 +40,7 @@ const fullDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="css">
 .popup-overlay {
   position: fixed;
   top: 0;
