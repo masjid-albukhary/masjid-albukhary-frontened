@@ -50,15 +50,14 @@ onMounted(() => {
 
       <nav v-if="isLinksVisible || !isMobile" class="navigation-menu">
         <ul class="navigation-links">
-          <li>{{ t('welcome') }}</li>
           <li v-for="link in links">
-            <router-link :to="link.link">
+            <a :href="link.link">
               <UIcon
                   :name="link.icon"
 
               />
               {{ link.label }}
-            </router-link>
+            </a>
           </li>
         </ul>
       </nav>
@@ -103,38 +102,37 @@ onMounted(() => {
   list-style: none;
   padding: 0;
   margin: 0;
+  transition: 0.3s ease-in-out;
+}
+
+.navigation-links li{
+  display: inline-block;
+  padding: 0.3rem;
+  margin-right: 0.5rem;
+  border-radius: 0.5rem;
 }
 
 .navigation-links a {
   padding: 0 0.5rem;
   font-size: 1rem;
   text-decoration: none;
-}
-
-.navigation-links a:hover {
-  transition: 0.3s ease-in-out;
-}
-
-.navigation-links li {
-  display: inline-block;
-  padding: 0.3rem;
-  margin-right: 0.5rem;
-  border-radius: 0.5rem;
   color: var(--text-color);
 }
 
-.navigation-links li:hover {
+.navigation-links a:hover {
   color: var(--text-hover);
   transition: color 0.3s ease-in-out;
 }
 
-.navigation-links li:last-child {
+.navigation-links li:last-child a {
+  padding: .5rem ;
+  border-radius: 0.5rem;
   background: var(--text-color);
   color: var(--primary-color);
   transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
-.navigation-links li:hover:last-child {
+.navigation-links li:hover:last-child a {
   background-color: var(--text-hover);
   color: var(--secondary-color);
   transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;

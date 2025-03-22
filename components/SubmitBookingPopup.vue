@@ -103,7 +103,7 @@ p {
 
 .divider {
   margin: 5% 3%;
-  border: 1px solid var(--primary-color);;
+  border: 1px solid var(--primary-color);
 }
 
 
