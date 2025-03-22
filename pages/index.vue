@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <NavBar/>
+  <Header/>
   <Landing/>
   <News/>
   <PrayerTime/>

@@ -154,7 +154,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <NavBar/>
+  <Header/>
 
   <section class="news-details" v-if="newsInfo">
     <div class="news-container">

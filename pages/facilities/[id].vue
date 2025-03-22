@@ -179,7 +179,7 @@ const goBack = () => {
 </script>
 
 <template>
-  <NavBar/>
+  <Header/>
 
   <section class="facility-details" v-if="facility">
 

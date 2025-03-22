@@ -4,7 +4,7 @@ import Contact from "~/components/Contact.vue";
 </script>
 
 <template>
-  <NavBar/>
+  <Header/>
   <Contact/>
   <Footer/>
 </template>

@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <NavBar/>
+  <Header/>
   <Facilities/>
   <BookingStructure/>
   <Footer/>
