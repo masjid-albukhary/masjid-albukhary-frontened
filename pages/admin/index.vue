@@ -1,12 +1,12 @@
 <script setup lang="ts">
 
-import AdminNavBar from "~/components/AdminNavBar.vue";
+import AdminHeader from "~/components/AdminHeader.vue";
 import AdminSideBar from "~/components/AdminSideBar.vue";
 import AdminOverview from "~/components/AdminOverview.vue";
 </script>
 
 <template>
-  <AdminNavBar/>
+  <AdminHeader/>
   <section class="admin-container">
     <aside class="news-aside">
       <AdminSideBar/>
