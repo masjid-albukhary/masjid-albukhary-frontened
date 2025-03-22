@@ -54,7 +54,6 @@ onMounted(() => {
             <a :href="link.link">
               <UIcon
                   :name="link.icon"
-
               />
               {{ link.label }}
             </a>
