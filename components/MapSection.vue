@@ -1,35 +1,39 @@
 <script setup>
-import {ref, onMounted} from "vue";
+import { ref, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
+import 'leaflet/dist/leaflet.css';
 
+const { t } = useI18n();
 const mapContainer = ref(null);
 
 onMounted(async () => {
-  if (!mapContainer.value || !process.client) return;
+  if (!mapContainer.value) return;
 
-  const L = await import("leaflet");
+  const L = await import('leaflet');
 
   const lat = 3.1394;
   const lng = 101.7121;
 
   const map = L.map(mapContainer.value).setView([lat, lng], 16);
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: "© OpenStreetMap contributors",
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors',
   }).addTo(map);
 
   L.marker([lat, lng])
       .addTo(map)
-      .bindPopup("<b>Al Bukhary Mosque</b><br>Jln Hang Tuah, Kuala Lumpur")
+      .bindPopup('<b>Al Bukhary Mosque</b><br>Jln Hang Tuah, Kuala Lumpur')
       .openPopup();
 });
 </script>
 
 <template>
   <section class="map-container">
-    <h5 class="title">Albukhary Mosque Location</h5>
-    <div ref="mapContainer" class="h-[400px] w-full rounded-lg shadow-md"></div>
+    <h5 class="title">{{ t('mosque_location') }}</h5>
+    <div ref="mapContainer" style="height: 400px; width: 100%;" class="rounded-lg shadow-md"></div>
   </section>
 </template>
+
 
 <style>
 @import "leaflet/dist/leaflet.css";

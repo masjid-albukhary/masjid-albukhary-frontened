@@ -88,6 +88,7 @@ export default {
             message_placeholder: "Type your message here...",
         }
     },
+    mosque_location: "Albukhary Mosque Location",
     footer: {
         quickLinks: "Quick Links",
         socialMedia: "Social Media",

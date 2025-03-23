@@ -86,6 +86,7 @@ export default {
             message_placeholder: "Tulis mesej anda di sini...",
         }
     },
+    mosque_location: "Lokasi Masjid Albukhary",
     footer: {
         quickLinks: "Pautan Pantas",
         socialMedia: "Media Sosial",
