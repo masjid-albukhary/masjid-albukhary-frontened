@@ -29,6 +29,7 @@ onMounted(async () => {
 
 <template>
   <section class="map-container">
+
     <h5 class="title">{{ t('mosque_location') }}</h5>
     <div ref="mapContainer" style="height: 400px; width: 100%;" class="rounded-lg shadow-md"></div>
   </section>
@@ -38,8 +39,11 @@ onMounted(async () => {
 <style>
 @import "leaflet/dist/leaflet.css";
 
+section{
+  display: block;
+}
 .map-container {
-  width: 90%;
+  max-width: 1000px;
   margin: 5% auto;
 }
 
