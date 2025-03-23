@@ -69,5 +69,24 @@ export default {
             },
             submit: "Submit Booking"
         }
+    },
+
+    contact: {
+        title: "Get in touch with us",
+        description: "Reach out to us with any questions or concerns you may have, and we’ll be happy to help.",
+        your_details: "Your Details",
+        send_message: "Send Message",
+        form: {
+            name: "Name",
+            email: "Email Address",
+            phone: "Phone Number",
+            subject: "Subject",
+            message: "Message",
+            name_placeholder: "Enter your full name",
+            email_placeholder: "Enter your email",
+            phone_placeholder: "Enter your phone number",
+            subject_placeholder: "Enter subject",
+            message_placeholder: "Type your message here...",
+        }
     }
 }

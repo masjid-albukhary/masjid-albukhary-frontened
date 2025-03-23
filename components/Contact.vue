@@ -1,49 +1,53 @@
 <script setup>
-import {reactive, ref, watch} from 'vue';
+import {reactive, watch} from 'vue';
 import {z} from 'zod';
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const contactQuestions = [
   {
-    label: "Name",
+    label: t('contact.form.name'),
     type: "text",
-    placeholder: "Enter your full name",
+    placeholder: t('contact.form.name_placeholder'),
     required: true,
     id: "name",
     icon: "user"
   },
   {
-    label: "Email Address",
+    label: t('contact.form.email'),
     type: "email",
-    placeholder: "Enter your email",
+    placeholder: t('contact.form.email_placeholder'),
     required: true,
     id: "email",
     icon: "mail"
   },
   {
-    label: "Phone Number",
+    label: t('contact.form.phone'),
     type: "tel",
-    placeholder: "Enter your phone number",
+    placeholder: t('contact.form.phone_placeholder'),
     required: false,
     id: "phone",
     icon: "phone"
   },
   {
-    label: "Subject",
+    label: t('contact.form.subject'),
     type: "text",
-    placeholder: "Enter subject",
+    placeholder: t('contact.form.subject_placeholder'),
     required: false,
     id: "subject",
     icon: "edit"
   },
   {
-    label: "Message",
+    label: t('contact.form.message'),
     type: "textarea",
-    placeholder: "Type your message here...",
+    placeholder: t('contact.form.message_placeholder'),
     required: true,
     id: "message",
     icon: "message-circle"
   }
 ]
+
 
 const formSchema = z.object({
   name: z
@@ -103,7 +107,7 @@ async function handleSubmit() {
       }
 
 
-      const response = await api.post("/maintenance-requests/", formDataObj);
+      const response = await api.post("//", formDataObj);
       console.log("Response Data:", response.data);
       Object.keys(form).forEach((key) => (form[key] = ""));
       location.reload()
@@ -140,17 +144,15 @@ async function handleSubmit() {
         </div>
 
         <div class="contact-info">
-          <h3>Get on touch with us</h3>
-          <span>
-            Reach out to us with any questions or concerns you may have, and we’ll be happy to help
-          </span>
+          <h3>{{t('contact.title')}}</h3>
+          <span>{{t('contact.description')}}</span>
         </div>
 
       </div>
 
       <div class="contact-form">
 
-        <h2>Your Details</h2>
+        <h2>{{ t('contact.your_details') }}</h2>
 
         <form @submit.prevent="handleSubmit">
           <div class="contact-form">
@@ -180,7 +182,9 @@ async function handleSubmit() {
           </div>
 
           <div>
-            <button @click.once="isPopupVisible = true" class="contact-submit" type="submit">Send Message</button>
+            <button @click.once="isPopupVisible = true" class="contact-submit" type="submit">
+              {{t('contact.send_message')}}
+            </button>
           </div>
 
         </form>
@@ -360,12 +364,13 @@ async function handleSubmit() {
   background-color: var(--primary-color);
   color: var(--text-color);
   text-align: center;
+  border: none;
+  outline: none;
+  transition: background-color .3s ease-in-out;
 }
 
 .contact-submit:hover {
   background-color: var(--secondary-color);
-  color: var(--text-hover);
-  transition: background-color .3s ease-in-out, color .3s ease-in-out;
 }
 
 </style>

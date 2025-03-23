@@ -66,6 +66,25 @@ export default {
                 other_requests: "Masukkan sebarang permintaan atau pertanyaan",
             },
             submit: "Hantar Tempahan",
+        },
+    },
+
+    contact: {
+        title: "Hubungi Kami",
+        description: "Hubungi kami untuk sebarang pertanyaan atau kebimbangan, kami sedia membantu.",
+        your_details: "Maklumat Anda",
+        send_message: "Hantar Mesej",
+        form: {
+            name: "Nama",
+            email: "Alamat Emel",
+            phone: "Nombor Telefon",
+            subject: "Subjek",
+            message: "Mesej",
+            name_placeholder: "Masukkan nama penuh anda",
+            email_placeholder: "Masukkan emel anda",
+            phone_placeholder: "Masukkan nombor telefon anda",
+            subject_placeholder: "Masukkan subjek",
+            message_placeholder: "Tulis mesej anda di sini...",
         }
     }
 }
