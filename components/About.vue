@@ -1,42 +1,31 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const aboutItem = [
   {
     id: 1,
-    title: "Our Vision",
-    content: "To be a beacon of Islamic knowledge, spirituality, and community service, fostering unity and inclusivity while upholding the principles of faith, education, and social welfare.",
+    title: t("about.items[0].title"),
+    content: t("about.items[0].content"),
     image: "images/Masjid-Al-Bukhary.png",
   },
   {
     id: 2,
-    title: "Our Mission",
-    content: "" +
-        "Spiritual Growth: Provide a welcoming space for prayer, worship, and reflection, promoting a deep connection with Allah." +
-        "Education & Knowledge: Offer Islamic teachings, Quranic studies, and community learning programs to nurture faith and understanding." +
-        "Community Service: Engage in charitable activities, supporting those in need and strengthening community bonds." +
-        "Youth & Leadership Development: Empower the younger generation with guidance, mentorship, and leadership programs." +
-        "Interfaith Harmony: Promote mutual respect and understanding among diverse communities through dialogue and collaboration.",
+    title: t("about.items[1].title"),
+    content: t("about.items[1].content"),
     image: "images/Masjid-Al-Bukhary.png",
   },
-];
-
+]
 </script>
 
 <template>
-
   <section class="about-section">
-    <h1 class="about-title">Masjid Al Bukhary Kuala Lumpur Official</h1>
+    <h1 class="about-title">{{ t('about.title') }}</h1>
     <div class="about-content">
-
       <div class="description">
-        <h3>Get know more about Albukhary Foundation</h3>
-        <p class="description-text">
-          One simple act of kindness that took place four decades ago marked the beginning of Albukhary Foundation’s
-          journey. When Syed Mokhtar brought home his first salary of RM1,500 as a rice trader in 1974, his mother,
-          Sharifah Rokiah, reminded him that while they lived a humble life, there were others in the community who were
-          poorer. She encouraged him to keep half for the family, and distribute the remaining RM750 to 15 needy
-          families in their community.
-        </p>
+        <h3>{{ t('about.descriptionTitle') }}</h3>
+        <p class="description-text">{{ t('about.descriptionText') }}</p>
       </div>
 
       <div class="video-container">
@@ -48,19 +37,19 @@ const aboutItem = [
   </section>
 
   <section class="about-section">
-    <div class="about-grid" v-for="item in aboutItem" :key="item.id">
-      <template v-if="item.id % 2 !== 0">
+    <div class="about-grid" v-for="(item, index) in aboutItem" :key="index">
+      <template v-if="index % 2 === 0">
         <div class="text-content">
           <h2 class="item-title">{{ item.title }}</h2>
           <p class="item-description">{{ item.content }}</p>
         </div>
         <div class="image-content">
-          <img :src="item.image" :alt="item.title" class="image" loading="lazy"/>
+          <img src="../public/images/Masjid-Al-Bukhary.png" :alt="item.title" class="image" loading="lazy"/>
         </div>
       </template>
       <template v-else>
         <div class="image-content">
-          <img :src="item.image" :alt="item.title" class="image" loading="lazy"/>
+          <img src="../public/images/Masjid-Al-Bukhary.png" :alt="item.title" class="image" loading="lazy"/>
         </div>
         <div class="text-content">
           <h2 class="item-title">{{ item.title }}</h2>
@@ -68,7 +57,6 @@ const aboutItem = [
         </div>
       </template>
     </div>
-
   </section>
 </template>
 
