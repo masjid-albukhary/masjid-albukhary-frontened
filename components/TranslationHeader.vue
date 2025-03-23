@@ -2,35 +2,26 @@
 import { useI18n } from "#i18n";
 import { useRouter } from 'vue-router';
 
-const { locale } = useI18n();
+const { setLocale } = useI18n();
 const router = useRouter();
 
-const switchLanguage = (lang) => {
-  locale.value = lang;
-  console.log(`Language switched to: ${locale.value}`);
+const switchLanguage = async (lang) => {
+  await setLocale(lang);
 
-  const currentRoute = router.currentRoute.value;
-  let path = currentRoute.path;
-  const langPattern = /^\/(en|ar|ms)/;
+  const currentPath = router.currentRoute.value.path;
+  const pathWithoutLang = currentPath.replace(/^\/(en|ms)/, '');
 
-  if (lang === 'en') {
-    path = path.replace(langPattern, '');
-  } else {
-    if (!langPattern.test(path)) {
-      path = `/${lang}${path}`;
-    } else {
-      path = path.replace(langPattern, `/${lang}`);
-    }
-  }
+  // If lang is 'ms' => add /ms prefix, else default with no prefix
+  const newPath = lang === 'ms' ? `/ms${pathWithoutLang}` : `${pathWithoutLang}`;
 
-  router.push(path);
+  router.push(newPath);
 };
 </script>
 
 <template>
   <nav class="translate-navbar">
     <div class="translate-navbar-container">
-      <button @click="switchLanguage('en')" aria-label="English">
+      <button @click="switchLanguage('')" aria-label="English">
         <UIcon name="twemoji-flag-united-kingdom" class="flag-icon" />
         English
       </button>
