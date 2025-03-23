@@ -36,6 +36,38 @@ export default {
                 { content: "Finalize your arrangements and get ready for a memorable event!" }
             ]
         },
-    }
 
+        title: "Booking Form",
+        description: "Please fill in the form below to make your booking. Fields marked with an asterisk (*) are required.",
+        form_title: "Make Your Booking",
+        booking_form: {
+            label:{
+                first_name: "First Name",
+                last_name: "Last Name",
+                email: "Email",
+                phone: "Contact Number",
+                address: "Address",
+                postal_code: "Postal Code",
+                date_of_nikah: "Date of Nikah",
+                time_slot: "Choose your time slot",
+                venue: "Select Venue",
+                other_docs: "Other Requests/Inquiries",
+                other_requests: "Other Requests/Inquiries",
+            },
+            placeholder: {
+                first_name: "Enter your first name",
+                last_name: "Enter your last name",
+                email: "Enter your email",
+                phone: "Enter your contact number",
+                address: "Enter your address",
+                postal_code: "Enter postal code",
+                date_of_nikah: "DD-Month-YYYY (e.g., 10 Sept 2022)",
+                time_slot: "Choose your time slot",
+                venue: "Select a venue",
+                other_docs: "Upload any requests or inquiries",
+                other_requests: "Enter any requests or inquiries",
+            },
+            submit: "Submit Booking"
+        }
+    }
 }

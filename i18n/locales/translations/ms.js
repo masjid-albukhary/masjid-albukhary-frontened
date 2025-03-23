@@ -34,6 +34,38 @@ export default {
                 { content: "Jika diluluskan, kami akan menghubungi anda melalui mesej WhatsApp." },
                 { content: "Lengkapkan persiapan anda dan bersedia untuk acara yang bermakna!" }
             ]
+        },
+        title: "Borang Tempahan",
+        description: "Sila isi borang di bawah untuk membuat tempahan anda. Ruangan yang ditandakan dengan tanda asterisk (*) adalah wajib diisi.",
+        form_title: "Buat Tempahan Anda",
+        booking_form: {
+            label:{
+                first_name: "Nama Orang Hubungan",
+                last_name: "Nama Akhir",
+                email: "Emel",
+                phone: "Nombor Telefon",
+                address: "Alamat",
+                postal_code: "Poskod",
+                date_of_nikah: "Tarikh Nikah",
+                time_slot: "Pilih slot masa anda",
+                venue: "Pilih Tempat",
+                other_docs: "Permintaan/Pertanyaan Lain",
+                other_requests: "Permintaan/Pertanyaan Lain",
+            },
+            placeholder: {
+                first_name: "Masukkan nama pertama anda",
+                last_name: "Masukkan nama akhir anda",
+                email: "Masukkan emel anda",
+                phone: "Masukkan nombor telefon anda",
+                address: "Masukkan alamat anda",
+                postal_code: "Masukkan poskod",
+                date_of_nikah: "HH-Bulan-TTTT (contoh: 10 Sept 2022)",
+                time_slot: "Pilih slot masa anda",
+                venue: "Pilih tempat",
+                other_docs: "Muat naik sebarang permintaan atau pertanyaan",
+                other_requests: "Masukkan sebarang permintaan atau pertanyaan",
+            },
+            submit: "Hantar Tempahan",
         }
     }
 }

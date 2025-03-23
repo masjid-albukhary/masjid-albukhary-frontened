@@ -1,60 +1,62 @@
 <script setup>
 import {reactive, ref, watch} from 'vue';
 import {z} from 'zod';
+
+const { t } = useI18n();
 import Popup from '~/components/SubmitBookingPopup.vue';
 
 const bookingQuestions = [
   {
-    label: "Contact Person Name",
+    label: t('booking.booking_form.label.first_name'),
     type: "text",
-    placeholder: "First Name",
+    placeholder: t('booking.booking_form.placeholder.first_name'),
     required: true,
-    id: "contact_person_first_name",
+    id: "first_name",
   },
   {
-    label: "Contact Person Name",
+    label: t('booking.booking_form.label.last_name'),
     type: "text",
-    placeholder: "Last Name",
+    placeholder: t('booking.booking_form.placeholder.last_name'),
     required: true,
-    id: "contact_person_last_name",
+    id: "last_name",
   },
   {
-    label: "Email",
+    label: t('booking.booking_form.label.email'),
     type: "email",
-    placeholder: "Enter your email",
+    placeholder: t('booking.booking_form.placeholder.email'),
     required: true,
     id: "email",
   },
   {
-    label: "Contact Number",
+    label: t('booking.booking_form.label.phone'),
     type: "text",
-    placeholder: "Enter contact number",
+    placeholder: t('booking.booking_form.placeholder.phone'),
     required: true,
     id: "phone",
   },
   {
-    label: "Address",
+    label: t('booking.booking_form.label.address'),
     type: "text",
-    placeholder: "Address",
+    placeholder: t('booking.booking_form.placeholder.address'),
     required: true,
     id: "address",
   },
   {
-    label: "Postal Code",
+    label: t('booking.booking_form.label.postal_code'),
     type: "text",
-    placeholder: "Enter postal code",
+    placeholder: t('booking.booking_form.placeholder.postal_code'),
     required: true,
     id: "postal_code",
   },
   {
-    label: "Date of Nikah",
+    label: t('booking.booking_form.label.date_of_nikah'),
     type: "date",
-    placeholder: "DD-Month-YYYY (e.g., 10 Sept 2022)",
+    placeholder: t('booking.booking_form.placeholder.date_of_nikah'),
     required: true,
     id: "date_of_nikah",
   },
   {
-    label: "Choose your time slot",
+    label: t('booking.booking_form.label.time_slot'),
     type: "radio",
     options: [
       {value: "10 AM", label: "10 AM"},
@@ -63,11 +65,11 @@ const bookingQuestions = [
       {value: "3 PM (Mon-Thurs)", label: "3 PM (Mon-Thurs)"},
     ],
     required: true,
-    placeholder: "Choose your time slot",
+    placeholder: t('booking.booking_form.placeholder.time_slot'),
     id: "time_slot",
   },
   {
-    label: "Select Venue",
+    label: t('booking.booking_form.label.venue'),
     type: "select",
     options: [
       {value: "venue_1", label: "Venue 1"},
@@ -76,29 +78,29 @@ const bookingQuestions = [
     ],
     required: true,
     id: "venue",
-    placeholder: "Select an option",
+    placeholder: t('booking.booking_form.placeholder.venue'),
   },
   {
-    label: "Other Requests/Inquiries",
+    label: t('booking.booking_form.label.other_docs'),
     type: "file",
     required: true,
-    placeholder: "Upload any requests or inquiries",
-    id: "supporting_docs",
+    placeholder: t('booking.booking_form.placeholder.other_docs'),
+    id: "other_docs",
   },
   {
-    label: "Other Requests/Inquiries",
+    label: t('booking.booking_form.label.other_requests'),
     type: "textarea",
-    placeholder: "Enter any requests or inquiries",
+    placeholder: t('booking.booking_form.placeholder.other_requests'),
     required: false,
     id: "other_requests",
   },
 ];
 
 const formSchema = z.object({
-  contact_person_first_name: z
+  first_name: z
       .string()
       .min(8, 'First name must be at least 8 characters long'),
-  contact_person_last_name: z
+  last_name: z
       .string()
       .min(8, 'Last Name must be at least 8 characters long'),
   email: z
@@ -116,7 +118,7 @@ const formSchema = z.object({
   date_of_nikah: z.string().optional(),
   time_slot: z.string().optional(),
   venue: z.string().optional(),
-  supporting_docs: z.any().optional(),
+  other_docs: z.any().optional(),
   other_requests: z
       .string()
       .min(20, 'Detail must be at least 20 characters long'),
@@ -170,10 +172,10 @@ async function handleSubmit() {
         }
         formDataObj.append(key, value);
       }
-      formDataObj.delete('supporting_docs')
+      formDataObj.delete('other_docs')
 
       if (evidence_photo.value) {
-        formDataObj.append('supporting_docs', evidence_photo.value)
+        formDataObj.append('other_docs', evidence_photo.value)
       }
 
       const response = await api.post("//", formDataObj);
@@ -210,12 +212,12 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <div class="booking-form-section">
+  <section class="booking-form-section">
     <div class="container">
 
       <div class="booking-form">
 
-        <h2>Please fill this Booking Form</h2>
+        <h2>{{ t('booking.title') }}</h2>
 
         <form @submit.prevent="handleSubmit">
           <div class="booking-form">
@@ -264,7 +266,9 @@ async function handleSubmit() {
           <div>
 
 
-            <button @click.once="isPopupVisible = true" class="book-submit" type="submit"> Book Now</button>
+            <button @click.once="isPopupVisible = true" class="book-venue-submit" type="submit">
+              {{ t('booking.booking_form.submit') }}
+            </button>
             <Popup :show="isPopupVisible" @update:show="isPopupVisible = $event">
             </Popup>
           </div>
@@ -273,17 +277,12 @@ async function handleSubmit() {
       </div>
 
     </div>
-  </div>
+  </section>
 </template>
 
 <style scoped>
-.booking-form-section {
+section {
   margin: 3rem auto;
-  padding: 1rem;
-  border: 2px solid var(--secondary-color);
-  border-radius: 0 30px 30px 0;
-  box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px 0;
-  max-width: 1200px;
 }
 
 @media (max-width: 800px) {
@@ -297,6 +296,11 @@ async function handleSubmit() {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  max-width: 1000px;
+  margin: auto;
+  border: 2px solid var(--secondary-color);
+  border-radius: 0 30px 30px 0;
+  box-shadow: rgba(99, 99, 99, 0.4) 0 2px 8px 0;
 }
 
 @media (max-width: 1200px) {
@@ -309,25 +313,6 @@ async function handleSubmit() {
   flex: 1;
   padding: 1rem;
   min-width: 300px;
-}
-
-.container .description {
-  flex: 1;
-  padding: 1rem;
-  min-width: 300px;
-  text-align: center;
-}
-
-.container .description h2 {
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: var(--primary-color);
-}
-
-.container .description p {
-  font-size: 1rem;
-  color: var(--primary-color);
-  text-align: justify;
 }
 
 .booking-form h2 {
@@ -345,7 +330,7 @@ async function handleSubmit() {
 }
 
 .info {
-  flex: 1 1 calc(50% - 10px);
+  flex: 1 1 calc(50% - 1rem);
   min-width: 280px;
 }
 
@@ -374,9 +359,8 @@ async function handleSubmit() {
   font-size: 1rem;
 }
 
-.book-submit {
+.book-venue-submit {
   width: 100%;
-  max-width: 300px;
   margin: 2rem auto;
   padding: 0.75rem;
   display: block;
@@ -386,11 +370,39 @@ async function handleSubmit() {
   color: var(--text-color);
   text-align: center;
   cursor: pointer;
+  border: none;
+  outline: none;
 }
 
-.book-submit:hover {
+.book-venue-submit:hover {
   background-color: var(--secondary-color);
-  color: var(--text-hover);
-  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  transition: background-color 0.3s ease-in-out;
+}
+
+@media (max-width: 600px) {
+  .booking-form input,
+  .booking-form select {
+    padding: 0.75rem;
+  }
+
+  .book-venue-submit {
+    padding: 1rem;
+  }
+
+  .container .description h2,
+  .booking-form h2 {
+    font-size: 1.6rem;
+  }
+
+  .booking-form .question-title {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 350px) {
+  .container .booking-form,
+  .info {
+    min-width: 250px;
+  }
 }
 </style>
