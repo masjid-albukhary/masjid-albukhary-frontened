@@ -3,6 +3,7 @@
 </script>
 
 <template>
+  <TranslationHeader/>
   <Header/>
   <Gallery/>
   <Footer/>
