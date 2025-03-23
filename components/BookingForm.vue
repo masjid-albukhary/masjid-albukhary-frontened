@@ -389,7 +389,6 @@ section {
     padding: 1rem;
   }
 
-  .container .description h2,
   .booking-form h2 {
     font-size: 1.6rem;
   }
