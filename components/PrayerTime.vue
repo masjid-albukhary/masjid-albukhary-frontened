@@ -1,6 +1,8 @@
 <script setup>
 import {ref, computed, onMounted} from 'vue';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const city = ref('Kuala Lumpur');
 const country = ref('Malaysia');
 const method = ref(2);
@@ -78,7 +80,7 @@ onMounted(() => {
 
 <template>
   <div class="prayer-time">
-    <h2 class="title">Prayer Time</h2>
+    <h2 class="title">{{t('prayer_time')}}</h2>
     <div class="container">
       <div class="time-prayer-content">
         <div class="time-box">
