@@ -1,90 +1,92 @@
 <script setup>
 import {reactive, ref, watch} from 'vue';
 import {z} from 'zod';
+import {useI18n} from 'vue-i18n';
 
+const {t} = useI18n();
 const adminQuestions = [
   {
-    label: "Username",
+    label: t('sign_up.label.username'),
     type: "text",
-    placeholder: "Enter your username",
+    placeholder: t('sign_up.placeholder.username'),
     required: true,
     id: "username",
   },
   {
-    label: "Full Name",
+    label: t('sign_up.label.full_name'),
     type: "text",
-    placeholder: "Enter your full name",
+    placeholder: t('sign_up.placeholder.full_name'),
     required: true,
     id: "full_name",
   },
   {
-    label: "Email",
+    label: t('sign_up.label.email'),
     type: "email",
-    placeholder: "Enter your email",
+    placeholder: t('sign_up.placeholder.email'),
     required: true,
     id: "email",
   },
   {
-    label: "Phone Number",
+    label: t('sign_up.label.phone'),
     type: "tel",
-    placeholder: "Enter your phone number",
+    placeholder: t('sign_up.placeholder.phone'),
     required: false,
     id: "phone",
   },
   {
-    label: "Date of Birth",
+    label: t('sign_up.label.dob'),
     type: "date",
-    placeholder: "",
+    placeholder: t('sign_up.placeholder.dob'),
     required: false,
     id: "dob",
   },
   {
-    label: "Gender",
+    label: t('sign_up.label.gender'),
     type: "select",
-    placeholder: "Select your gender",
+    placeholder: t('sign_up.placeholder.gender'),
     required: false,
     id: "gender",
     options: [
-      {value: "male", label: "Male"},
-      {value: "female", label: "Female"},
+      {value: "male", label: t('sign_up.gender_options.male')},
+      {value: "female", label: t('sign_up.gender_options.female')},
     ],
   },
   {
-    label: "Address",
+    label: t('sign_up.label.address'),
     type: "text",
-    placeholder: "Enter your address",
+    placeholder: t('sign_up.placeholder.address'),
     required: false,
     id: "address",
   },
   {
-    label: "User Role",
+    label: t('sign_up.label.user_role'),
     type: "select",
-    placeholder: "Select user role",
+    placeholder: t('sign_up.placeholder.user_role'),
     required: true,
     id: "user_role",
     options: [
-      {label: "admin", value: "Admin"},
-      {label: "superAdmin", value: "super Admin"},
+      {value: "Admin", label: t('sign_up.user_role_options.admin')},
+      {value: "super Admin", label: t('sign_up.user_role_options.super_admin')},
     ],
   },
   {
-    label: "Profile Picture",
+    label: t('sign_up.label.profile_picture'),
     type: "file",
-    placeholder: "",
+    placeholder: t('sign_up.placeholder.profile_picture'),
     required: false,
     id: "profile_picture",
   },
   {
-    label: "Password",
+    label: t('sign_up.label.password'),
     type: "password",
-    placeholder: "Enter your password",
+    placeholder: t('sign_up.placeholder.password'),
     required: true,
     id: "password",
   },
   {
-    label: "Confirm Password",
+    label: t('sign_up.label.confirm_password'),
     type: "password",
-    placeholder: "Re-enter your password",
+    placeholder: t('sign_up.placeholder.confirm_password'),
     required: true,
     id: "confirm_password",
   },
@@ -207,12 +209,12 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <div class="admin-section">
+  <section class="admin-section">
     <div class="container">
 
       <div class="admin-form">
 
-        <h2>Please fill this Form</h2>
+        <h2>{{t('sign_up.title')}}</h2>
 
         <form @submit.prevent="handleSubmit">
           <div class="admin-form">
@@ -253,23 +255,25 @@ async function handleSubmit() {
 
           <div>
 
-            <button class="book-submit" type="submit">Sign Up</button>
+            <button class="sign-up-submit" type="submit">{{t('sign_up.submit')}}</button>
           </div>
 
         </form>
       </div>
 
     </div>
-  </div>
+  </section>
 </template>
 
 <style scoped>
 
-.admin-section {
-  margin: 3rem 7rem;
-  border: 2px solid var(--secondary-color);
-  border-radius: 0 30px 30px 0;
-  box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px 0;
+section {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, #0b78d2 50%, #489fe7 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (max-width: 800px) {
@@ -282,7 +286,13 @@ async function handleSubmit() {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  max-width: 1200px;
+  max-width: 1000px;
+  margin: 2rem auto;
+  box-shadow: rgba(149, 157, 165, 0.3) 0 8px 24px;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+
 }
 
 
@@ -381,7 +391,7 @@ async function handleSubmit() {
   }
 }
 
-.book-submit {
+.sign-up-submit {
   width: 90%;
   margin: 2rem auto;
   padding: .5rem 2rem;
@@ -391,12 +401,13 @@ async function handleSubmit() {
   background-color: var(--primary-color);
   color: var(--text-color);
   text-align: center;
+  border: none;
+  outline: none;
+  transition: background-color .3s ease-in-out;
 }
 
-.book-submit:hover {
+.sign-up-submit:hover {
   background-color: var(--secondary-color);
-  color: var(--text-hover);
-  transition: background-color .3s ease-in-out, color .3s ease-in-out;
 }
 
 </style>

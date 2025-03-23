@@ -135,5 +135,35 @@ export default {
         },
         welcome: "Selamat Kemb",
         button: "Log Masuk"
-    }
+    },
+    sign_up: {
+        title: "Sila isi borang ini",
+        label: {
+            username: "Nama Pengguna",
+            full_name: "Nama Penuh",
+            email: "Emel",
+            phone: "Nombor Telefon",
+            dob: "Tarikh Lahir",
+            gender: "Jantina",
+            address: "Alamat",
+            user_role: "Peranan Pengguna",
+            profile_picture: "Gambar Profil",
+            password: "Kata Laluan",
+            confirm_password: "Sahkan Kata Laluan",
+        },
+        placeholder: {
+            username: "Masukkan nama pengguna anda",
+            full_name: "Masukkan nama penuh anda",
+            email: "Masukkan emel anda",
+            phone: "Masukkan nombor telefon anda",
+            dob: "",
+            gender: "Pilih jantina anda",
+            address: "Masukkan alamat anda",
+            user_role: "Pilih peranan pengguna",
+            profile_picture: "",
+            password: "Masukkan kata laluan anda",
+            confirm_password: "Masukkan semula kata laluan anda",
+        },
+        submit: "Daftar",
+    },
 }

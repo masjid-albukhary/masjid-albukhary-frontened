@@ -137,6 +137,36 @@ export default {
         },
         welcome: "Welcome Back",
         button: "Log In"
-    }
+    },
+    sign_up: {
+        title: "Please fill this Form",
+        label: {
+            username: "Username",
+            full_name: "Full Name",
+            email: "Email",
+            phone: "Phone Number",
+            dob: "Date of Birth",
+            gender: "Gender",
+            address: "Address",
+            user_role: "User Role",
+            profile_picture: "Profile Picture",
+            password: "Password",
+            confirm_password: "Confirm Password",
+        },
+        placeholder: {
+            username: "Enter your username",
+            full_name: "Enter your full name",
+            email: "Enter your email",
+            phone: "Enter your phone number",
+            dob: "",
+            gender: "Select your gender",
+            address: "Enter your address",
+            user_role: "Select user role",
+            profile_picture: "",
+            password: "Enter your password",
+            confirm_password: "Re-enter your password",
+        },
+        submit: "Sign Up",
+    },
 
 }
