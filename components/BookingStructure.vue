@@ -1,53 +1,57 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+
 const booking_steps = [
   {
     step: 1,
-    content: "Fill out the hall booking form with your details and preferred hall.",
+    content: t('booking.booking_structure.steps[0].content'),
     icon: "mdi-info"
   },
   {
     step: 2,
-    content: "Our team will review your request within 3 days.",
+    content: t('booking.booking_structure.steps[1].content'),
     icon: "mdi-clock-check"
   },
   {
     step: 3,
-    content: "If approved, contact you through WhatsApp message .",
+    content: t('booking.booking_structure.steps[2].content'),
     icon: "mdi-email-check"
   },
   {
     step: 4,
-    content: "Finalize your arrangements and get ready for a memorable event!",
+    content: t('booking.booking_structure.steps[3].content'),
     icon: "mdi-celebration"
   }
-];
+]
 </script>
 
 <template>
   <section class="booking-structure">
-    <h2 class="booking-structure-title">How to Book a Hall</h2>
+    <h2 class="booking-structure-title">{{ t('booking.booking_structure.title') }}</h2>
 
     <div class="container">
       <div class="steps-booking-structure-container">
         <ul class="booking-structure-list">
           <li v-for="step in booking_steps" :key="step.step">
-            <UIcon :name="step.icon" class="booking-structure-icon"/>
+            <UIcon :name="step.icon" class="booking-structure-icon" />
             <span>{{ step.content }}</span>
           </li>
         </ul>
       </div>
+
       <div class="image-booking-structure-container">
-        <img src="/images/booking-image.png" alt="booking-structure-image" class="booking-structure-image">
+        <img src="/images/booking-image.png" alt="booking-structure-image" class="booking-structure-image" />
       </div>
     </div>
 
     <router-link to="/booking-venue" class="booking-structure-btn">
-      <UIcon name="mdi-register" class="register-icon"/>
-      Book Now
+      <UIcon name="mdi-register" class="register-icon" />
+      {{ t('booking.booking_structure.button') }}
     </router-link>
   </section>
 </template>
-
 
 <style scoped>
 section {

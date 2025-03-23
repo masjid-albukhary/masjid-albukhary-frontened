@@ -24,6 +24,18 @@ export default {
                 content: "Spiritual Growth: Provide a welcoming space for prayer, worship, and reflection, promoting a deep connection with Allah.\nEducation & Knowledge: Offer Islamic teachings, Quranic studies, and community learning programs to nurture faith and understanding.\nCommunity Service: Engage in charitable activities, supporting those in need and strengthening community bonds.\nYouth & Leadership Development: Empower the younger generation with guidance, mentorship, and leadership programs.\nInterfaith Harmony: Promote mutual respect and understanding among diverse communities through dialogue and collaboration."
             }
         ]
+    },
+    booking: {
+        booking_structure:{
+            title: "How to Book a Hall",
+            button: "Book Now",
+            steps: [
+                { content: "Fill out the hall booking form with your details and preferred hall." },
+                { content: "Our team will review your request within 3 days." },
+                { content: "If approved, we will contact you through WhatsApp message." },
+                { content: "Finalize your arrangements and get ready for a memorable event!" }
+            ]
+        },
     }
 
 }
