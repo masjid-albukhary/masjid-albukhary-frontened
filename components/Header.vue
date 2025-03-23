@@ -1,25 +1,27 @@
 <script setup lang="ts">
-import {ref, onMounted} from 'vue';
-const { t, locale } = useI18n()
+import { ref, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t, locale } = useI18n();
 
 interface Link {
-  link: string,
-  label: string,
-  icon: string,
+  link: string;
+  label: string;
+  icon: string;
 }
 
 const isLinksVisible = ref(false);
 const isMobile = ref(false);
 
 const links: Link[] = [
-  { link: "/", label: "Home", icon: "mdi-home" },
-  { link: "/about", label: "About", icon: "mdi-information" },
-  { link: "/news", label: "News", icon: "mdi-newspaper-variant" },
-  { link: "/booking-venue", label: "Booking Venue", icon: "mdi-calendar-check" },
-  { link: "/facilities", label: "Facilities", icon: "mdi-domain" },
-  { link: "/gallery", label: "Gallery", icon: "mdi-image-multiple" },
-  { link: "/contact", label: "Contact", icon: "mdi-email" }
-]
+  { link: "/", label: "menu.home", icon: "mdi-home" },
+  { link: "/about", label: "menu.about", icon: "mdi-information" },
+  { link: "/news", label: "menu.news", icon: "mdi-newspaper-variant" },
+  { link: "/booking-venue", label: "menu.booking", icon: "mdi-calendar-check" },
+  { link: "/facilities", label: "menu.facilities", icon: "mdi-domain" },
+  { link: "/gallery", label: "menu.gallery", icon: "mdi-image-multiple" },
+  { link: "/contact", label: "menu.contact", icon: "mdi-email" },
+];
 
 function toggleLinksVisibility() {
   isLinksVisible.value = !isLinksVisible.value;
@@ -40,22 +42,21 @@ onMounted(() => {
       <div class="logo-container">
         <div class="logo">
           <a href="https://commercedc.com.my/">
-            <img src="/images/masjid_albukary_logo.png" alt="masjid Albukary  Logo"/>
+            <img src="/images/masjid_albukary_logo.png" alt="masjid Albukary Logo" />
           </a>
         </div>
+
         <button v-if="isMobile" @click="toggleLinksVisibility" class="menu-toggle-btn">
-          <UIcon name="uil-bars"/>
+          <UIcon name="uil-bars" />
         </button>
       </div>
 
       <nav v-if="isLinksVisible || !isMobile" class="navigation-menu">
         <ul class="navigation-links">
-          <li v-for="link in links">
+          <li v-for="link in links" :key="link.link">
             <a :href="link.link">
-              <UIcon
-                  :name="link.icon"
-              />
-              {{ link.label }}
+              <UIcon :name="link.icon" />
+              {{ t(link.label) }}
             </a>
           </li>
         </ul>
@@ -63,6 +64,7 @@ onMounted(() => {
     </div>
   </div>
 </template>
+
 
 <style scoped>
 .header-container {
