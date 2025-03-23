@@ -70,7 +70,6 @@ export default {
             submit: "Submit Booking"
         }
     },
-
     contact: {
         title: "Get in touch with us",
         description: "Reach out to us with any questions or concerns you may have, and we’ll be happy to help.",
@@ -88,5 +87,32 @@ export default {
             subject_placeholder: "Enter subject",
             message_placeholder: "Type your message here...",
         }
+    },
+    footer: {
+        quickLinks: "Quick Links",
+        socialMedia: "Social Media",
+        bankDetails: "Bank Details",
+        accountNo: "Account No",
+        generalInfo: {
+            address: "Jln Hang Tuah, Bukit Bintang, 55200 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur",
+            phone: "(60) 4774 7300",
+            email: "info"
+        },
+        links: {
+            home: "Home",
+            about: "About",
+            news: "News",
+            booking: "Booking Venue",
+            facilities: "Facilities",
+            gallery: "Gallery",
+            contact: "Contact"
+        },
+        media: {
+            facebook: "Facebook",
+            instagram: "Instagram",
+            youtube: "YouTube",
+            whatsapp: "WhatsApp"
+        }
     }
+
 }

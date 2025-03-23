@@ -68,7 +68,6 @@ export default {
             submit: "Hantar Tempahan",
         },
     },
-
     contact: {
         title: "Hubungi Kami",
         description: "Hubungi kami untuk sebarang pertanyaan atau kebimbangan, kami sedia membantu.",
@@ -85,6 +84,32 @@ export default {
             phone_placeholder: "Masukkan nombor telefon anda",
             subject_placeholder: "Masukkan subjek",
             message_placeholder: "Tulis mesej anda di sini...",
+        }
+    },
+    footer: {
+        quickLinks: "Pautan Pantas",
+        socialMedia: "Media Sosial",
+        bankDetails: "Maklumat Bank",
+        accountNo: "No Akaun",
+        generalInfo: {
+            address: "Jln Hang Tuah, Bukit Bintang, 55200 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur",
+            phone: "(60) 4774 7300",
+            email: "info"
+        },
+        links: {
+            home: "Laman Utama",
+            about: "Tentang Kami",
+            news: "Berita",
+            booking: "Tempahan Tempat",
+            facilities: "Kemudahan",
+            gallery: "Galeri",
+            contact: "Hubungi"
+        },
+        media: {
+            facebook: "Facebook",
+            instagram: "Instagram",
+            youtube: "YouTube",
+            whatsapp: "WhatsApp"
         }
     }
 }

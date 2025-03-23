@@ -1,80 +1,49 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 
-interface Link {
-  link: string;
-  label: string;
-  icon: string;
-}
+const { t } = useI18n();
 
-interface Media {
-  icon: string;
-  link: string;
-  name: string;
-}
-
-interface GeneralInfo {
-  icon: string;
-  link: string;
-  label: string;
-}
+const links = [
+  { link: "/", labelKey: "footer.links.home", icon: "mdi-home" },
+  { link: "/about", labelKey: "footer.links.about", icon: "mdi-information" },
+  { link: "/news", labelKey: "footer.links.news", icon: "mdi-newspaper-variant" },
+  { link: "/booking-venue", labelKey: "footer.links.booking", icon: "mdi-calendar-check" },
+  { link: "/facilities", labelKey: "footer.links.facilities", icon: "mdi-domain" },
+  { link: "/gallery", labelKey: "footer.links.gallery", icon: "mdi-image-multiple" },
+  { link: "/contact", labelKey: "footer.links.contact", icon: "mdi-email" }
+];
 
 const currentYear = new Date().getFullYear();
 
-const links: Link[] = [
-  { link: "/", label: "Home", icon: "mdi-home" },
-  { link: "/about", label: "About", icon: "mdi-information" },
-  { link: "/news", label: "News", icon: "mdi-newspaper-variant" },
-  { link: "/booking-venue", label: "Booking Venue", icon: "mdi-calendar-check" },
-  { link: "/facilities", label: "Facilities", icon: "mdi-domain" },
-  { link: "/gallery", label: "Gallery", icon: "mdi-image-multiple" },
-  { link: "/contact", label: "Contact", icon: "mdi-email" }
+const media = [
+  { icon: "mdi-facebook", link: "https://www.facebook.com", labelKey: "footer.media.facebook" },
+  { icon: "mdi-instagram", link: "https://www.instagram.com", labelKey: "footer.media.instagram" },
+  { icon: "mdi-youtube", link: "https://www.youtube.com", labelKey: "footer.media.youtube" },
+  { icon: "mdi-whatsapp", link: "https://www.whatsapp.com", labelKey: "footer.media.whatsapp" }
 ];
 
-const media: Media[] = [
+const generalInfo = [
   {
-    name: "Facebook",
-    link: "https://www.facebook.com",
-    icon: "mdi-facebook"
-  },
-  {
-    name: "Instagram",
-    link: "https://www.instagram.com",
-    icon: "mdi-instagram"
-  },
-  {
-    name: "YouTube",
-    link: "https://www.youtube.com",
-    icon: "mdi-youtube"
-  },
-  {
-    name: "WhatsApp",
-    link: "https://www.whatsapp.com",
-    icon: "mdi-whatsapp"
-  }
-];
-
-const generalInfo: GeneralInfo[] = [
-  {
-    label: "Jln Hang Tuah, Bukit Bintang, 55200 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur",
-    link: "https://www.google.com/maps/place/Al+Bukhary+Mosque/@3.139085,101.7046321,17z/data=!3m1!4b1!4m6!3m5!1s0x31cc49d85ba20b57:0x52b2f325845db520!8m2!3d3.139085!4d101.7046321!16s%2Fm%2F03h5jrk?entry=ttu&g_ep=EgoyMDI1MDMwMi4wIKXMDSoASAFQAw%3D%3D",
+    labelKey: "footer.generalInfo.address",
+    link: "https://maps.google.com",
     icon: "mdi-location"
   },
   {
-    label: "(60) 4774 7300",
+    labelKey: "footer.generalInfo.phone",
     link: "tel:+6047747300",
-    icon: "ic-baseline-phone",
+    icon: "ic-baseline-phone"
   },
   {
-    label: "info@am.org",
+    labelKey: "footer.generalInfo.email",
     link: "mailto:info@aiu.edu.my",
-    icon: "ic-baseline-email",
+    icon: "ic-baseline-email"
   }
 ];
 
 </script>
 
 <template>
-  <div class="footer">
+  <footer class="footer">
     <div class="main-container">
 
       <div class="info-container">
@@ -83,8 +52,7 @@ const generalInfo: GeneralInfo[] = [
             <UIcon :name="info.icon"/>
           </span>
           <p class="info">
-            <a :href="info.link" v-if="info.link">{{ info.label }}</a>
-            <span v-else>{{ info.label }}</span>
+            <a :href="info.link">{{ t(info.labelKey) }}</a>
           </p>
         </div>
       </div>
@@ -94,37 +62,37 @@ const generalInfo: GeneralInfo[] = [
       <div class="links-container">
 
         <div class="links">
-          <h2>Quick Links</h2>
+          <h2>{{ t('footer.quickLinks') }}</h2>
           <ul>
             <li v-for="link in links" :key="link.link" class="link">
               <router-link :to="link.link">
                 <span>
                   <UIcon :name="link.icon"/>
                 </span>
-                {{ link.label }}
+                {{ t(link.labelKey) }}
               </router-link>
             </li>
           </ul>
         </div>
 
         <div class="others-links-section">
-          <h2>Social Media </h2>
+          <h2>{{ t('footer.socialMedia') }}</h2>
           <ul>
-            <li v-for="media in media" :key="media.name">
-              <a :href="media.link" target="_blank">
+            <li v-for="item in media" :key="item.icon">
+              <a :href="item.link" target="_blank">
                 <span>
-                  <UIcon :name="media.icon"/>
+                  <UIcon :name="item.icon"/>
                 </span>
-                {{ media.name }}
+                {{ t(item.labelKey) }}
               </a>
             </li>
           </ul>
         </div>
 
         <div class="bank-details">
-          <h2>Bank Details </h2>
+          <h2>{{ t('footer.bankDetails') }}</h2>
           <img src="../public/images/bank-muamalat-logo.png" alt="bank muamalat logo" class="bank-img"/>
-          <h4>Account No:9823793924023</h4>
+          <h4>{{ t('footer.accountNo') }}: 9823793924023</h4>
         </div>
 
       </div>
@@ -132,18 +100,30 @@ const generalInfo: GeneralInfo[] = [
       <hr class="divider">
 
       <div class="footer-bottom">
-        <p>&copy; Copyright <a href="https://aiu.edu.my/">Al Bukhary Mosque {{ currentYear }}</a></p>
+        <p>&copy; Copyright
+          <a href="https://aiu.edu.my/">Al Bukhary Mosque {{ currentYear }}</a>
+        </p>
       </div>
 
     </div>
-  </div>
+  </footer>
 </template>
 
 
 <style scoped>
-.footer {
+footer {
   padding: 1em 0;
   background-color: var(--background-color);
+
+  a {
+    text-decoration: none;
+    color: var(--text-color);
+    transition: color 0.3s ease;
+  }
+
+  a:hover {
+    color: var(--text-hover);
+  }
 }
 
 .main-container {
@@ -231,7 +211,6 @@ const generalInfo: GeneralInfo[] = [
 }
 
 .links ul li,
-.bank-details h4,
 .others-links-section ul li {
   list-style: none;
   font-size: 1rem;
@@ -239,12 +218,6 @@ const generalInfo: GeneralInfo[] = [
 
 .links ul li a span,
 .others-links-section li a span {
-  color: var(--text-color);
-  margin-right: .5rem;
-}
-
-.links ul li a,
-.others-links-section li a {
   color: var(--text-color);
   margin-right: .5rem;
 }
