@@ -115,6 +115,28 @@ export default {
             youtube: "YouTube",
             whatsapp: "WhatsApp"
         }
+    },
+
+
+    // admin side
+
+    login: {
+        label: {
+            username: "Username",
+            password: "Password",
+            confirm_password: "Confirm Password"
+        },
+        placeholder: {
+            username: "Enter your username",
+            password: "Enter your password",
+            confirm_password: "Re-enter your password"
+        },
+        navigation: {
+            home: "Home",
+            sign_up: "Sign Up"
+        },
+        welcome: "Welcome Back",
+        button: "Log In"
     }
 
 }

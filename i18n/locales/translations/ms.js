@@ -113,5 +113,27 @@ export default {
             youtube: "YouTube",
             whatsapp: "WhatsApp"
         }
+    },
+
+
+    // admin side
+
+    login: {
+        label: {
+            username: "Nama Pengguna",
+            password: "Kata Laluan",
+            confirm_password: "Sahkan Kata Laluan"
+        },
+        placeholder: {
+            username: "Masukkan nama pengguna anda",
+            password: "Masukkan kata laluan anda",
+            confirm_password: "Masukkan semula kata laluan anda"
+        },
+        navigation: {
+            home: "Laman Utama",
+            sign_up: "Daftar"
+        },
+        welcome: "Selamat Kemb",
+        button: "Log Masuk"
     }
 }

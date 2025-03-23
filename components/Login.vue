@@ -3,25 +3,27 @@
 import {reactive, ref, watch} from 'vue';
 import {z} from 'zod';
 
+const {t} = useI18n();
+
 const loginQuestions = [
   {
-    label: "Username",
+    label: t('login.label.username'),
     type: "text",
-    placeholder: "Enter your username",
+    placeholder: t('login.label.username'),
     required: true,
     id: "username",
   },
   {
-    label: "Password",
+    label: t('login.label.password'),
     type: "password",
-    placeholder: "Enter your password",
+    placeholder: t('login.placeholder.password'),
     required: true,
     id: "password",
   },
   {
-    label: "Confirm Password",
+    label: t('login.label.confirm_password'),
     type: "password",
-    placeholder: "Re-enter your password",
+    placeholder: t('login.placeholder.confirm_password'),
     required: true,
     id: "confirm_password",
   },
@@ -118,17 +120,17 @@ async function handleSubmit() {
 
       <div class="login-info-container">
         <div class="login-image-container">
-          <img src="../public/images/login.png" alt="Login Image" class="login-image" />
+          <img src="../public/images/login.png" alt="Login Image" class="login-image"/>
         </div>
         <div class="login-info">
-          <router-link to="/">Home</router-link>
+          <router-link to="/">{{ t('login.navigation.home') }}</router-link>
           <span> | </span>
-          <router-link to="/sign-up">Sign Up</router-link>
+          <router-link to="/sign-up">{{ t('login.navigation.sign_up') }}</router-link>
         </div>
       </div>
 
       <div class="login-form-container">
-        <h2>Welcome Back</h2>
+        <h2>{{ t('login.welcome') }}</h2>
         <form @submit.prevent="handleSubmit">
           <div class="form-group" v-for="(question, index) in loginQuestions" :key="index">
             <label :for="question.label" class="question-title">{{ question.label }}</label>
@@ -143,7 +145,7 @@ async function handleSubmit() {
             />
             <span v-if="errors[question.id]" class="error">{{ errors[question.id] }}</span>
           </div>
-          <button class="login-submit" type="submit">Log In</button>
+          <button class="login-submit" type="submit">{{t('login.button')}}</button>
         </form>
       </div>
     </div>
@@ -195,7 +197,7 @@ async function handleSubmit() {
   font-size: 1.2rem;
 }
 
-.login-info a ,
+.login-info a,
 .login-info span {
   text-decoration: none;
   font-weight: normal;
