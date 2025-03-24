@@ -179,6 +179,14 @@ export default {
         facility_form: "Facility Form",
         activity_form: "Activity Form",
         news_form: "News Form"
-    }
-
+    },
+    news_form: {
+        title: "Title",
+        category: "Category",
+        news_content: "News Content",
+        summary: "Summary",
+        image_upload: "Image Upload",
+        location: "Location",
+        date_of_event: "Date of Event",
+    },
 }

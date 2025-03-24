@@ -1,77 +1,70 @@
 <script setup>
-import {reactive, ref, watch} from 'vue';
+import {reactive, ref, watch,} from 'vue';
 import {z} from 'zod';
-import Popup from '~/components/SubmitBookingPopup.vue';
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 const newsQuestions = [
   {
-    label: "Title",
+    label: t('news_form.title'),
     type: "text",
     placeholder: "Enter news title",
     required: true,
     id: "title",
   },
   {
-    label: "Category",
+    label: t('news_form.category'),
     type: "select",
     options: [
-      {label: "Politics", value: "politics"},
-      {label: "Business", value: "business"},
-      {label: "Local News", value: "local-news"},
+      { label: 'Politics', value: "politics" },
+      { label: 'Business', value: "business" },
+      { label: 'Local news', value: "local-news" },
     ],
     placeholder: "Select a category",
     required: true,
     id: "category",
   },
   {
-    label: "News Content",
+    label: t('news_form.news_content'),
     type: "textarea",
     placeholder: "Write the full news article here...",
     required: true,
     id: "content",
   },
   {
-    label: "Summary",
+    label: t('news_form.summary'),
     type: "textarea",
     placeholder: "Enter a short summary of the news...",
     required: true,
     id: "summary",
   },
   {
-    label: "Image Upload",
+    label: t('news_form.image_upload'),
     type: "file",
     required: false,
     id: "image",
   },
   {
-    label: "Location",
+    label: t('news_form.location'),
     type: "text",
     placeholder: "Enter city, country",
     required: true,
     id: "location",
   },
   {
-    label: "Date of Event",
+    label: t('news_form.date_of_event'),
     type: "date",
     required: true,
     id: "event_date",
   },
-];
+]
 
 
 const formSchema = z.object({
-  title: z
-      .string()
-      .min(8, 'Title  must be at least 15 characters long'),
-  content: z
-      .string()
-      .min(8, 'Content must be at least 50 characters long'),
-  summary: z
-      .string()
-      .min(8, 'Summary must be at least 50 characters long'),
-  location: z
-      .string()
-      .min(8, 'Location must be at least 50 characters long'),
+  title: z.string().min(15, 'Title must be at least 15 characters long'),
+  content: z.string().min(50, 'Content must be at least 50 characters long'),
+  summary: z.string().min(50, 'Summary must be at least 50 characters long'),
+  location: z.string().min(50, 'Location must be at least 50 characters long'),
   event_date: z.string().optional(),
   category: z.string().optional(),
   image: z.any().optional(),

@@ -178,4 +178,13 @@ export default {
         activity_form: "Borang Aktiviti",
         news_form: "Borang Berita"
     },
+    news_form: {
+        title: "Tajuk",
+        category: "Kategori",
+        news_content: "Kandungan Berita",
+        summary: "Ringkasan",
+        image_upload: "Muat Naik Gambar",
+        location: "Lokasi",
+        date_of_event: "Tarikh Acara",
+    },
 }
