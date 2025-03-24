@@ -36,7 +36,6 @@ const handleLogout = () => {
                 :name="link.icon"
             />
           </span>
-
           <span class="label">{{ link.label }}</span>
 
         </li>
