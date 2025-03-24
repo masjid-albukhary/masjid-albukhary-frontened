@@ -32,6 +32,11 @@
   padding: 0;
   box-sizing: border-box;
 
+  button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
 }
 
 </style>

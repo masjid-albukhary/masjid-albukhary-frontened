@@ -5,6 +5,7 @@ import AdminSideBar from "~/components/AdminSideBar.vue";
 </script>
 
 <template>
+  <TranslationHeader/>
   <AdminHeader/>
   <section class="admin-container">
     <aside class="news-aside">

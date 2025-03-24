@@ -1,86 +1,170 @@
 <script setup>
 import {reactive, ref, watch} from 'vue';
 import {z} from 'zod';
-import Popup from '~/components/SubmitBookingPopup.vue';
+import {useI18n} from 'vue-i18n'
 
-const newsQuestions = [
+const {t} = useI18n()
+
+const activityQuestions = [
   {
-    label: "Title",
+    label: t("activity_form.label.title_en"),
     type: "text",
-    placeholder: "Enter news title",
+    placeholder: t("activity_form.placeholder.title_en"),
     required: true,
-    id: "title",
+    id: "title_en",
   },
   {
-    label: "Category",
+    label: t("activity_form.label.title_my"),
+    type: "text",
+    placeholder: t("activity_form.placeholder.title_my"),
+    required: true,
+    id: "title_my",
+  },
+  {
+    label: t("activity_form.label.description_en"),
+    type: "textarea",
+    placeholder: t("activity_form.placeholder.description_en"),
+    required: true,
+    id: "description_en",
+  },
+  {
+    label: t("activity_form.label.description_my"),
+    type: "textarea",
+    placeholder: t("activity_form.placeholder.description_my"),
+    required: true,
+    id: "description_my",
+  },
+  {
+    label: t("activity_form.label.activity_date"),
+    type: "date",
+    placeholder: t("activity_form.placeholder.activity_date"),
+    required: true,
+    id: "activity_date",
+  },
+  {
+    label: t("activity_form.label.time"),
+    type: "text",
+    placeholder: t("activity_form.placeholder.time"),
+    required: true,
+    id: "time",
+  },
+  {
+    label: t("activity_form.label.activity_type"),
     type: "select",
+    required: true,
+    id: "activity_type",
+    placeholder: t("activity_form.placeholder.activity_type"),
     options: [
-      {label: "Politics", value: "politics"},
-      {label: "Business", value: "business"},
-      {label: "Local News", value: "local-news"},
+      { label: t("activity_form.options.talk"), value: "talk" },
+      { label: t("activity_form.options.quran_class"), value: "quran_class" },
+      { label: t("activity_form.options.community_event"), value: "community_event" },
+      { label: t("activity_form.options.fundraising"), value: "fundraising" },
+      { label: t("activity_form.options.volunteer"), value: "volunteer" },
+      { label: t("activity_form.options.others"), value: "others" },
     ],
-    placeholder: "Select a category",
-    required: true,
-    id: "category",
   },
   {
-    label: "News Content",
-    type: "textarea",
-    placeholder: "Write the full news article here...",
-    required: true,
-    id: "content",
-  },
-  {
-    label: "Summary",
-    type: "textarea",
-    placeholder: "Enter a short summary of the news...",
-    required: true,
-    id: "summary",
-  },
-  {
-    label: "Image Upload",
-    type: "file",
-    required: false,
-    id: "image",
-  },
-  {
-    label: "Location",
+    label: t("activity_form.label.location"),
     type: "text",
-    placeholder: "Enter city, country",
+    placeholder: t("activity_form.placeholder.location"),
     required: true,
     id: "location",
   },
   {
-    label: "Date of Event",
-    type: "date",
-    required: true,
-    id: "event_date",
+    label: t("activity_form.label.target_audience"),
+    type: "text",
+    placeholder: t("activity_form.placeholder.target_audience"),
+    id: "target_audience",
+  },
+  {
+    label: t("activity_form.label.speaker"),
+    type: "text",
+    placeholder: t("activity_form.placeholder.speaker"),
+    required: false,
+    id: "speaker",
+  },
+  {
+    label: t("activity_form.label.poster"),
+    type: "file",
+    required: false,
+    id: "poster",
+  },
+  {
+    label: t("activity_form.label.estimated_participants"),
+    type: "text",
+    placeholder: t("activity_form.placeholder.estimated_participants"),
+    required: false,
+    id: "estimated_participants",
+  },
+  {
+    label: t("activity_form.label.live_stream"),
+    type: "select",
+    id: "live_stream",
+    placeholder: t("activity_form.placeholder.live_stream"),
+    options: [
+      { label: t("activity_form.options.yes"), value: "yes" },
+      { label: t("activity_form.options.no"), value: "no" },
+    ],
+  },
+  {
+    label: t("activity_form.label.live_stream_link"),
+    type: "url",
+    placeholder: t("activity_form.placeholder.live_stream_link"),
+    required: false,
+    id: "live_stream_link",
+  },
+  {
+    label: t("activity_form.label.notes"),
+    type: "textarea",
+    placeholder: t("activity_form.placeholder.notes"),
+    required: false,
+    id: "notes",
   },
 ];
 
-
 const formSchema = z.object({
-  title: z
+  title_en: z
       .string()
-      .min(8, 'Title  must be at least 15 characters long'),
-  content: z
+      .min(8, 'Activity Title (English) must be at least 8 characters long'),
+  title_my: z
       .string()
-      .min(8, 'Content must be at least 50 characters long'),
-  summary: z
+      .min(8, 'Activity Title (Malay) must be at least 8 characters long'),
+
+  description_en: z
       .string()
-      .min(8, 'Summary must be at least 50 characters long'),
-  location: z
+      .min(30, 'Description (English) must be at least 30 characters long'),
+  description_my: z
       .string()
-      .min(8, 'Location must be at least 50 characters long'),
-  event_date: z.string().optional(),
-  category: z.string().optional(),
-  image: z.any().optional(),
+      .min(30, 'Description (Malay) must be at least 30 characters long'),
+
+  activity_date: z.string().min(1, 'Activity date is required'),
+  time: z.string().min(5, 'Time is required (e.g., 8:00 AM - 10:00 AM)'),
+
+  activity_type: z.string().min(1, 'Activity Type is required'),
+
+  location: z.string().min(5, 'Location must be at least 5 characters long'),
+
+  target_audience: z.string().optional(),
+
+  speaker: z
+      .string()
+      .min(8, 'Speaker name must be at least 8 characters long'),
+
+  poster: z.any().optional(),
+
+  estimated_participants: z.string().optional(),
+
+  live_stream: z.enum(['yes', 'no']),
+  live_stream_link: z.string().url('Live stream link must be a valid URL').optional(),
+
+  notes: z.string().optional(),
+
 });
 
 const form = reactive({});
 const errors = reactive({});
 
-newsQuestions.forEach((question) => {
+activityQuestions.forEach((question) => {
   form[question.id] = "";
   errors[question.id] = "";
 });
@@ -95,7 +179,7 @@ function validateField(field) {
   }
 }
 
-newsQuestions.forEach((question) => {
+activityQuestions.forEach((question) => {
   watch(() => form[question.id], () => validateField(question.id));
 });
 
@@ -163,25 +247,25 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <div class="activity-form-section">
+  <section class="activity-form-section">
     <div class="container">
 
       <div class="activity-form">
 
-        <h2>This is  Activity Form</h2>
+        <h2>{{ t('activity_form.title') }}</h2>
 
         <form @submit.prevent="handleSubmit">
           <div class="activity-form">
-            <div class="info" v-for="(question, index) in newsQuestions " :key="index">
+            <div class="info" v-for="(question, index) in activityQuestions " :key="index">
               <label class="question-title" :for="question.label">{{ question.label }}</label>
 
               <input
-                  v-if="question.type === 'text'||question.type === 'email' || question.type === 'file' || question.type === 'date'"
+                  v-if="['text','email', 'file', 'date','number','url', 'date'].includes(question.type)"
                   :type="question.type"
                   v-model="form[question.id]"
                   :placeholder="question.placeholder"
                   :id="question.label"
-                  :accept="question.type === 'file' ? '.doc,.docx,.pdf,.jpg,.jpeg,.png,.gif' : ''"
+                  :accept="question.type === 'file' ? '.jpg,.jpeg,.png' : ''"
                   @change="(e) => handleFileUpload(e, question)"
                   @input="validateField(question.id)"
               />
@@ -221,12 +305,12 @@ async function handleSubmit() {
       </div>
 
     </div>
-  </div>
+  </section>
 </template>
 
 <style scoped>
 
-.activity-form-section {
+section {
   margin: 2rem 1rem;
   border: 2px solid var(--secondary-color);
   border-radius: 0 30px 30px 0;
@@ -235,7 +319,7 @@ async function handleSubmit() {
 }
 
 @media (max-width: 800px) {
-  .activity-form-section {
+  section {
     margin: 0.5rem;
   }
 }
@@ -256,6 +340,7 @@ async function handleSubmit() {
   .container div {
     display: block;
   }
+
   .container .activity-form {
     padding: 0 .5rem;
   }
@@ -265,6 +350,7 @@ async function handleSubmit() {
   .container {
     display: block;
   }
+
   .container .activity-form {
     padding: 0 .5rem;
   }
@@ -354,7 +440,7 @@ async function handleSubmit() {
   width: 90%;
   margin: 1rem auto;
   font-size: 1rem;
-  border-radius: 1rem 0 ;
+  border-radius: 1rem 0;
   background-color: var(--primary-color);
   color: var(--text-color);
 }
