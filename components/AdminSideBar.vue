@@ -20,7 +20,7 @@ const handleLogout = () => {
 
 <template>
   <aside class="sidebar">
-    <h2 class="admin-title">Admin Panel</h2>
+    <h2 class="admin-title">{{t('admin_sidebar.admin_title')}}</h2>
 
     <nav>
       <ul class="admin-nav">

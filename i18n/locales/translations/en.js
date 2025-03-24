@@ -174,6 +174,7 @@ export default {
         logout: "Logout"
     },
     admin_sidebar: {
+        admin_title: 'Admin Panel',
         admin: "Admin",
         booking_overview: "Booking Overview",
         facility_form: "Facility Form",

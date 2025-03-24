@@ -172,6 +172,7 @@ export default {
         logout: "Log Keluar"
     },
     admin_sidebar: {
+        admin_title:"Panel Pentadbir",
         admin: "Admin",
         booking_overview: "Gambaran Tempahan",
         facility_form: "Borang Kemudahan",
