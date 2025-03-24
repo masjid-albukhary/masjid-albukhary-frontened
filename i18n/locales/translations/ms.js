@@ -166,4 +166,14 @@ export default {
         },
         submit: "Daftar",
     },
+
+    admin_header: {
+        upload_image: "Muat Naik Gambar",
+        upload_video: "Muat Naik Video",
+        logout: "Log Keluar"
+    },
+
+    admin_sidebar: {
+
+    },
 }

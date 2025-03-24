@@ -26,14 +26,14 @@ export default {
         ]
     },
     booking: {
-        booking_structure:{
+        booking_structure: {
             title: "How to Book a Hall",
             button: "Book Now",
             steps: [
-                { content: "Fill out the hall booking form with your details and preferred hall." },
-                { content: "Our team will review your request within 3 days." },
-                { content: "If approved, we will contact you through WhatsApp message." },
-                { content: "Finalize your arrangements and get ready for a memorable event!" }
+                {content: "Fill out the hall booking form with your details and preferred hall."},
+                {content: "Our team will review your request within 3 days."},
+                {content: "If approved, we will contact you through WhatsApp message."},
+                {content: "Finalize your arrangements and get ready for a memorable event!"}
             ]
         },
 
@@ -41,7 +41,7 @@ export default {
         description: "Please fill in the form below to make your booking. Fields marked with an asterisk (*) are required.",
         form_title: "Make Your Booking",
         booking_form: {
-            label:{
+            label: {
                 first_name: "First Name",
                 last_name: "Last Name",
                 email: "Email",
@@ -168,5 +168,12 @@ export default {
         },
         submit: "Sign Up",
     },
+    admin_header: {
+        upload_image: "Upload Image",
+        upload_video: "Upload Video",
+        logout: "Logout"
+    },
+
+    admin_sidebar: {}
 
 }

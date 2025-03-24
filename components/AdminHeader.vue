@@ -3,6 +3,8 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import ImageUploadPopup from '~/components/ImageUploadPopup.vue'
 import VideoUploadPopup from '~/components/VideoUploadPopup.vue'
 
+import { useI18n } from 'vue-i18n'
+
 interface Link {
   link?: string
   label: string
@@ -10,17 +12,18 @@ interface Link {
   popup?: 'image' | 'video'
 }
 
+const { t } = useI18n()
 const isLinksVisible = ref(false)
 const isMobile = ref(false)
 const isImagePopupVisible = ref(false)
+
 const isVideoPopupVisible = ref(false)
 
 const links: Link[] = [
-  { label: 'Upload Image', icon: 'mdi-camera', popup: 'image' },
-  { label: 'Upload Video', icon: 'mdi-video', popup: 'video' },
-  { link: '', label: 'Logout', icon: 'mdi-logout' }
+  { label: t('admin_header.upload_image'), icon: 'mdi-camera', popup: 'image' },
+  { label: t('admin_header.upload_video'), icon: 'mdi-video', popup: 'video' },
+  { link: '', label: t('admin_header.logout'), icon: 'mdi-logout' }
 ]
-
 const toggleLinksVisibility = () => {
   isLinksVisible.value = !isLinksVisible.value
 }
