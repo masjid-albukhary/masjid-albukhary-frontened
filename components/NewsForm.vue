@@ -1,8 +1,9 @@
 <script setup>
 import {reactive, ref, watch,} from 'vue';
 import {z} from 'zod';
-import { useI18n } from 'vue-i18n'
-const { t } = useI18n()
+import {useI18n} from 'vue-i18n'
+
+const {t} = useI18n()
 
 const newsQuestions = [
   {
@@ -16,9 +17,9 @@ const newsQuestions = [
     label: t('news_form.category'),
     type: "select",
     options: [
-      { label: 'Politics', value: "politics" },
-      { label: 'Business', value: "business" },
-      { label: 'Local news', value: "local-news" },
+      {label: 'Politics', value: "politics"},
+      {label: 'Business', value: "business"},
+      {label: 'Local news', value: "local-news"},
     ],
     placeholder: "Select a category",
     required: true,
@@ -156,12 +157,12 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <div class="news-form-section">
+  <section class="news-form-section">
     <div class="container">
 
       <div class="news-form">
 
-        <h2>This is  News Form</h2>
+        <h2>This is News Form</h2>
 
         <form @submit.prevent="handleSubmit">
           <div class="news-form">
@@ -214,21 +215,26 @@ async function handleSubmit() {
       </div>
 
     </div>
-  </div>
+  </section>
 </template>
 
 <style scoped>
 
-.news-form-section {
+section {
   margin: 2rem 1rem;
   border: 2px solid var(--secondary-color);
   border-radius: 0 30px 30px 0;
   box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px 0;
   background-color: white;
+
+  button {
+    border: none;
+    outline: none;
+  }
 }
 
 @media (max-width: 800px) {
-  .news-form-section {
+  section {
     margin: 0.5rem;
   }
 }
@@ -249,6 +255,7 @@ async function handleSubmit() {
   .container div {
     display: block;
   }
+
   .container .news-form {
     padding: 0 .5rem;
   }
@@ -258,6 +265,7 @@ async function handleSubmit() {
   .container {
     display: block;
   }
+
   .container .news-form {
     padding: 0 .5rem;
   }
@@ -347,7 +355,7 @@ async function handleSubmit() {
   width: 90%;
   margin: 1rem auto;
   font-size: 1rem;
-  border-radius: 1rem 0 ;
+  border-radius: 1rem 0;
   background-color: var(--primary-color);
   color: var(--text-color);
 }
