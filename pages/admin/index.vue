@@ -6,6 +6,7 @@ import AdminOverview from "~/components/AdminOverview.vue";
 </script>
 
 <template>
+  <TranslationHeader/>
   <AdminHeader/>
   <section class="admin-container">
     <aside class="news-aside">
