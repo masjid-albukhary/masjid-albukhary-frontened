@@ -44,8 +44,8 @@ onMounted(() => {
     <div class="header-wrapper">
       <div class="logo-container">
         <div class="logo">
-          <a href="https://commercedc.com.my/">
-            <img src="/images/masjid_albukary_logo.png" alt="masjid Albukary Logo" />
+          <a href="http://www.masjidalbukharykl.com/">
+            <img src="./images/masjid_albukary_logo.png" alt="masjid Albukary Logo" />
           </a>
         </div>
 
