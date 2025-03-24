@@ -160,6 +160,7 @@ onMounted(() => {
     font-size: 2rem;
     margin: 0 1rem;
     color: var(--text-hover);
+    background: transparent;
   }
 
   .navigation-links {
