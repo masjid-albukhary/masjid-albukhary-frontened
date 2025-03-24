@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { useI18n } from 'vue-i18n';
+import {ref, onMounted} from 'vue';
+import {useI18n} from 'vue-i18n';
 
-const { t, locale } = useI18n();
+const {t, locale} = useI18n();
 
 interface Link {
   link: string;
@@ -13,16 +13,16 @@ interface Link {
 const isLinksVisible = ref(false);
 const isMobile = ref(false);
 
-import { computed } from 'vue';
+import {computed} from 'vue';
 
 const links = computed(() => [
-  { link: "/", label: t('footer.links.home'), icon: "mdi-home" },
-  { link: "/about", label: t('footer.links.about'), icon: "mdi-information" },
-  { link: "/news", label: t('footer.links.news'), icon: "mdi-newspaper-variant" },
-  { link: "/booking-venue", label: t('footer.links.booking'), icon: "mdi-calendar-check" },
-  { link: "/facilities", label: t('footer.links.facilities'), icon: "mdi-domain" },
-  { link: "/gallery", label: t('footer.links.gallery'), icon: "mdi-image-multiple" },
-  { link: "/contact", label: t('footer.links.contact'), icon: "mdi-email" }
+  {link: "/", label: t('footer.links.home'), icon: "mdi-home"},
+  {link: "/about", label: t('footer.links.about'), icon: "mdi-information"},
+  {link: "/news", label: t('footer.links.news'), icon: "mdi-newspaper-variant"},
+  {link: "/booking-venue", label: t('footer.links.booking'), icon: "mdi-calendar-check"},
+  {link: "/facilities", label: t('footer.links.facilities'), icon: "mdi-domain"},
+  {link: "/gallery", label: t('footer.links.gallery'), icon: "mdi-image-multiple"},
+  {link: "/contact", label: t('footer.links.contact'), icon: "mdi-email"}
 ]);
 
 
@@ -37,6 +37,8 @@ onMounted(() => {
     isMobile.value = window.innerWidth <= 1200;
   });
 });
+
+const logo = "./images/masjid_albukary_logo.png"
 </script>
 
 <template>
@@ -46,13 +48,13 @@ onMounted(() => {
         <div class="logo">
 
           <a href="http://www.masjidalbukharykl.com/">
-            <img src="./images/masjid_albukary_logo.png" alt="masjid Albukary Logo" />
+            <img :src="logo" alt="masjid Albukary Logo"/>
           </a>
 
         </div>
 
         <button v-if="isMobile" @click="toggleLinksVisibility" class="menu-toggle-btn">
-          <UIcon name="uil-bars" />
+          <UIcon name="uil-bars"/>
         </button>
       </div>
 
@@ -60,7 +62,7 @@ onMounted(() => {
         <ul class="navigation-links">
           <li v-for="link in links" :key="link.link">
             <a :href="link.link">
-              <UIcon :name="link.icon" />
+              <UIcon :name="link.icon"/>
               {{ t(link.label) }}
             </a>
           </li>
@@ -111,7 +113,7 @@ onMounted(() => {
   transition: 0.3s ease-in-out;
 }
 
-.navigation-links li{
+.navigation-links li {
   display: inline-block;
   padding: 0.3rem;
   margin-right: 0.5rem;
@@ -131,7 +133,7 @@ onMounted(() => {
 }
 
 .navigation-links li:last-child a {
-  padding: .5rem ;
+  padding: .5rem;
   border-radius: 0.5rem;
   background: var(--text-color);
   color: var(--primary-color);
