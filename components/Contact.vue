@@ -48,7 +48,6 @@ const contactQuestions = [
   }
 ]
 
-
 const formSchema = z.object({
   name: z
       .string()
@@ -67,7 +66,6 @@ const formSchema = z.object({
       .string()
       .min(20, 'Detail must be at least 20 characters long')
 });
-
 const form = reactive({});
 const errors = reactive({});
 
@@ -131,6 +129,8 @@ async function handleSubmit() {
   }
 }
 
+const contactImage = "./images/contact-image.jpg"
+
 </script>
 
 <template>
@@ -140,7 +140,7 @@ async function handleSubmit() {
       <div class="contact-info-container">
 
         <div class="contact-image-container">
-          <img src="../public/images/contact-image.jpg" alt="contact-png" class="contact-image"/>
+          <img :src="contactImage" alt="contact-png" class="contact-image"/>
         </div>
 
         <div class="contact-info">
