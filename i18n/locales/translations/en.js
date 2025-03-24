@@ -189,4 +189,30 @@ export default {
         location: "Location",
         date_of_event: "Date of Event",
     },
-}
+    facility_form: {
+        title:"This is Facility Form",
+        label: {
+            facility_name: "Facility Name",
+            facility_type: "Facility Type / Category",
+            location: "Location / Block Name",
+            upload_photos: "Upload Facility Photos",
+            capacity: "Capacity",
+            booking_required: "Is booking required?",
+            equipment: "Equipment Available",
+            rules: "Special Rules or Notes",
+            description: "Description",
+            yes: "Yes",
+            no: "No"
+        },
+        placeholder: {
+            facility_name: "Enter facility name (e.g., Prayer Hall, Library)",
+            facility_type: "Select facility category",
+            location: "Enter location or block (e.g., Main Building, Level 2)",
+            upload_photos: "Upload images (Max 3-5)",
+            capacity: "Enter capacity (e.g., 100 people)",
+            booking_required: "Is booking required?",
+            equipment: "Example: Microphone, Air-Conditioning, Projector, Chairs",
+            rules: "Example: Booking required, official use only",
+            description: "Describe the facility, capacity, usage, or any rules"
+        }
+    }}
