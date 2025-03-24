@@ -1,16 +1,17 @@
 <script setup>
 import { useRouter } from 'nuxt/app'
+import { useI18n } from 'vue-i18n'
+import { computed } from 'vue'
 
+const { t } = useI18n()
 const router = useRouter()
-
-const links = [
-  { link: "/admin", label: "Admin", icon: "mdi-account-cog" },
-  { link: "/admin/booking-dashboard", label: "Booking Overview", icon: "mdi-calendar-check" },
-  { link: "/admin/facility-form", label: "Facility Form", icon: "mdi-domain" },
-  { link: "/admin/activity-form", label: "Activity Form", icon: "mdi-run" },
-  { link: "/admin/news-form", label: "News Form", icon: "mdi-newspaper-variant" },
-];
-
+const links = computed(() => [
+  { link: "/admin", label: t('admin_sidebar.admin'), icon: "mdi-account-cog" },
+  { link: "/admin/booking-dashboard", label: t('admin_sidebar.booking_overview'), icon: "mdi-calendar-check" },
+  { link: "/admin/facility-form", label: t('admin_sidebar.facility_form'), icon: "mdi-domain" },
+  { link: "/admin/activity-form", label: t('admin_sidebar.activity_form'), icon: "mdi-run" },
+  { link: "/admin/news-form", label: t('admin_sidebar.news_form'), icon: "mdi-newspaper-variant" }
+])
 const handleLogout = () => {
   console.log('Logging out...')
   router.push('/')

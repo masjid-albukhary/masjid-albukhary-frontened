@@ -166,14 +166,16 @@ export default {
         },
         submit: "Daftar",
     },
-
     admin_header: {
         upload_image: "Muat Naik Gambar",
         upload_video: "Muat Naik Video",
         logout: "Log Keluar"
     },
-
     admin_sidebar: {
-
+        admin: "Admin",
+        booking_overview: "Gambaran Tempahan",
+        facility_form: "Borang Kemudahan",
+        activity_form: "Borang Aktiviti",
+        news_form: "Borang Berita"
     },
 }
