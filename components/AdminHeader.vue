@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import {ref, onMounted, onUnmounted} from 'vue'
 import ImageUploadPopup from '~/components/ImageUploadPopup.vue'
 import VideoUploadPopup from '~/components/VideoUploadPopup.vue'
 
-import { useI18n } from 'vue-i18n'
+import {useI18n} from 'vue-i18n'
 
 interface Link {
   link?: string
@@ -12,7 +12,7 @@ interface Link {
   popup?: 'image' | 'video'
 }
 
-const { t } = useI18n()
+const {t} = useI18n()
 const isLinksVisible = ref(false)
 const isMobile = ref(false)
 const isImagePopupVisible = ref(false)
@@ -20,9 +20,9 @@ const isImagePopupVisible = ref(false)
 const isVideoPopupVisible = ref(false)
 
 const links: Link[] = [
-  { label: t('admin_header.upload_image'), icon: 'mdi-camera', popup: 'image' },
-  { label: t('admin_header.upload_video'), icon: 'mdi-video', popup: 'video' },
-  { link: '', label: t('admin_header.logout'), icon: 'mdi-logout' }
+  {label: t('admin_header.upload_image'), icon: 'mdi-camera', popup: 'image'},
+  {label: t('admin_header.upload_video'), icon: 'mdi-video', popup: 'video'},
+  {link: '', label: t('admin_header.logout'), icon: 'mdi-logout'}
 ]
 const toggleLinksVisibility = () => {
   isLinksVisible.value = !isLinksVisible.value
@@ -52,19 +52,19 @@ onUnmounted(() => {
 <template>
   <header class="header-container">
 
-    <ImageUploadPopup :show="isImagePopupVisible" @update:show="isImagePopupVisible = $event" />
-    <VideoUploadPopup :show="isVideoPopupVisible" @update:show="isVideoPopupVisible = $event" />
+    <ImageUploadPopup :show="isImagePopupVisible" @update:show="isImagePopupVisible = $event"/>
+    <VideoUploadPopup :show="isVideoPopupVisible" @update:show="isVideoPopupVisible = $event"/>
 
 
     <div class="header-wrapper">
 
       <div class="logo-container">
         <a href="https://commercedc.com.my/" class="logo">
-          <img src="/images/masjid_albukary_logo.png" alt="AIU Logo" />
+          <img src="/images/masjid_albukary_logo.png" alt="AIU Logo"/>
         </a>
 
         <button v-if="isMobile" @click="toggleLinksVisibility" class="menu-toggle-btn">
-          <UIcon name="uil-bars" />
+          <UIcon name="uil-bars"/>
         </button>
       </div>
 
@@ -76,12 +76,12 @@ onUnmounted(() => {
                 @click="togglePopup(link.popup)"
                 class="popup-button"
             >
-              <UIcon :name="link.icon" />
+              <UIcon :name="link.icon"/>
               {{ link.label }}
             </button>
 
             <a v-else :href="link.link" class="nav-link">
-              <UIcon :name="link.icon" />
+              <UIcon :name="link.icon"/>
               {{ link.label }}
             </a>
           </li>
@@ -100,6 +100,16 @@ onUnmounted(() => {
   padding: 0.5rem 1rem;
   background-color: var(--primary-color);
   z-index: 1002;
+
+  button {
+    padding: .5rem 1rem;
+    background-color: transparent;
+    color: var(--text-color);
+    transition: color 200ms ease;
+  }
+  button:hover {
+    color: var(--text-hover);
+  }
 }
 
 .header-wrapper {
@@ -131,7 +141,7 @@ onUnmounted(() => {
   transition: 0.3s ease-in-out;
 }
 
-.navigation-links li{
+.navigation-links li {
   display: inline-block;
   padding: 0.3rem;
   margin-right: 0.5rem;
@@ -151,7 +161,7 @@ onUnmounted(() => {
 }
 
 .navigation-links li:last-child a {
-  padding: .5rem ;
+  padding: .5rem;
   border-radius: 0.5rem;
   background: var(--text-color);
   color: var(--primary-color);
