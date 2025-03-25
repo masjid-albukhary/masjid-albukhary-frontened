@@ -97,8 +97,8 @@ export default {
         accountNo: "Account No",
         generalInfo: {
             address: "Jln Hang Tuah, Bukit Bintang, 55200 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur",
-            phone: "(60) 4774 7300",
-            email: "info"
+            phone: "Phone",
+            email: "Email Address",
         },
         links: {
             home: "Home",
