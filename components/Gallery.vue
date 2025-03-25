@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, ref} from "vue";
+import { computed, ref } from "vue";
 
 interface Image {
   id: number;
@@ -15,72 +15,66 @@ interface Video {
 }
 
 const images: Image[] = [
-  {id: 1, src: "/images/masjid-about-bg.png", alt: "Masjid About 1"},
-  {id: 2, src: "/images/masjid-about-bg.png", alt: "Masjid About 2"},
-  {id: 3, src: "/images/masjid-about-bg.png", alt: "Masjid About 3"},
-  {id: 4, src: "/images/masjid-about-bg.png", alt: "Masjid About 4"},
-  {id: 5, src: "/images/masjid-about-bg.png", alt: "Masjid About 5"},
+  { id: 1, src: "/images/masjid-about-bg.png", alt: "Masjid About 1" },
+  { id: 2, src: "/images/masjid-about-bg.png", alt: "Masjid About 2" },
+  { id: 3, src: "/images/masjid-about-bg.png", alt: "Masjid About 3" },
+  { id: 4, src: "/images/masjid-about-bg.png", alt: "Masjid About 4" },
+  { id: 5, src: "/images/masjid-about-bg.png", alt: "Masjid About 5" },
 ];
 
 const videos: Video[] = [
-  {
-    id: 1,
-    src: "/images/masjid-about-bg.png",
-    alt: "Masjid Video 1",
-    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
-  },
-  {
-    id: 2,
-    src: "/images/masjid-about-bg.png",
-    alt: "Masjid Video 2",
-    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
-  },
-  {
-    id: 3,
-    src: "/images/masjid-about-bg.png",
-    alt: "Masjid Video 3",
-    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
-  },
-  {
-    id: 4,
-    src: "/images/masjid-about-bg.png",
-    alt: "Masjid Video 4",
-    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
-  },
-  {
-    id: 5,
-    src: "/images/masjid-about-bg.png",
-    alt: "Masjid Video 5",
-    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
-  },
+  { id: 1, src: "/images/masjid-about-bg.png", alt: "Masjid Video 1", url: "https://www.youtube.com/watch?v=4pku9EburYQ" },
+  { id: 2, src: "/images/masjid-about-bg.png", alt: "Masjid Video 2", url: "https://www.youtube.com/watch?v=4pku9EburYQ" },
+  { id: 3, src: "/images/masjid-about-bg.png", alt: "Masjid Video 3", url: "https://www.youtube.com/watch?v=4pku9EburYQ" },
+  { id: 4, src: "/images/masjid-about-bg.png", alt: "Masjid Video 4", url: "https://www.youtube.com/watch?v=4pku9EburYQ" },
+  { id: 5, src: "/images/masjid-about-bg.png", alt: "Masjid Video 5", url: "https://www.youtube.com/watch?v=4pku9EburYQ" },
 ];
 
-const currentIndex = ref(0);
+const currentImageIndex = ref(0);
+const currentVideoIndex = ref(0);
+
 const itemsPerPage = ref(3);
+
 const selectedImage = ref<Image | null>(null);
 const selectedVideo = ref<Video | null>(null);
 
 const visibleImages = computed(() => {
-  return images.slice(currentIndex.value, currentIndex.value + itemsPerPage.value);
+  return images.slice(currentImageIndex.value, currentImageIndex.value + itemsPerPage.value);
 });
 
 const visibleVideos = computed(() => {
-  return videos.slice(currentIndex.value, currentIndex.value + itemsPerPage.value);
+  return videos.slice(currentVideoIndex.value, currentVideoIndex.value + itemsPerPage.value);
 });
 
-function nextPage() {
-  if (currentIndex.value + itemsPerPage.value < images.length) {
-    currentIndex.value += itemsPerPage.value;
+function nextImagePage() {
+  if (currentImageIndex.value + itemsPerPage.value < images.length) {
+    currentImageIndex.value += itemsPerPage.value;
   } else {
-    currentIndex.value = 0;
+    currentImageIndex.value = 0;
   }
 }
 
-function prevPage() {
-  if (currentIndex.value - itemsPerPage.value >= 0) {
-    currentIndex.value -= itemsPerPage.value;
+function prevImagePage() {
+  if (currentImageIndex.value - itemsPerPage.value >= 0) {
+    currentImageIndex.value -= itemsPerPage.value;
   } else {
-    currentIndex.value = images.length - itemsPerPage.value;
+    currentImageIndex.value = images.length - itemsPerPage.value;
+  }
+}
+
+function nextVideoPage() {
+  if (currentVideoIndex.value + itemsPerPage.value < videos.length) {
+    currentVideoIndex.value += itemsPerPage.value;
+  } else {
+    currentVideoIndex.value = 0;
+  }
+}
+
+function prevVideoPage() {
+  if (currentVideoIndex.value - itemsPerPage.value >= 0) {
+    currentVideoIndex.value -= itemsPerPage.value;
+  } else {
+    currentVideoIndex.value = videos.length - itemsPerPage.value;
   }
 }
 
@@ -110,12 +104,12 @@ function closePopup() {
     </div>
 
     <div class="buttons">
-      <button @click="prevPage" class="nav-button">
+      <button @click="prevImagePage" class="nav-button">
         <UIcon
             name="mdi-arrow-left"
         />
       </button>
-      <button @click="nextPage" class="nav-button">
+      <button @click="nextImagePage" class="nav-button">
         <UIcon
             name="mdi-arrow-right"
         />
@@ -154,10 +148,10 @@ function closePopup() {
     </div>
 
     <div class="buttons">
-      <button @click="prevPage" class="nav-button">
+      <button @click="prevVideoPage" class="nav-button">
         <UIcon name="mdi-arrow-left"/>
       </button>
-      <button @click="nextPage" class="nav-button">
+      <button @click="nextVideoPage" class="nav-button">
         <UIcon name="mdi-arrow-right"/>
       </button>
     </div>
