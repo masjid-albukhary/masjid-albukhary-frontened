@@ -59,8 +59,8 @@ onUnmounted(() => {
     <div class="header-wrapper">
 
       <div class="logo-container">
-        <a href="https://commercedc.com.my/" class="logo">
-          <img src="/images/masjid_albukary_logo.png" alt="AIU Logo"/>
+        <a href="http://www.masjidalbukharykl.com/" class="logo">
+          <img src="./images/masjid_albukary_logo.png" alt="AIU Logo"/>
         </a>
 
         <button v-if="isMobile" @click="toggleLinksVisibility" class="menu-toggle-btn">
