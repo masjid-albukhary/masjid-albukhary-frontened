@@ -100,7 +100,7 @@ export default {
         accountNo: "Account No",
         generalInfo: {
             address: "Jln Hang Tuah, Bukit Bintang, 55200 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur",
-            phone: "Phone",
+            phone: "Phone Number",
             email: "Email Address",
         },
         links: {

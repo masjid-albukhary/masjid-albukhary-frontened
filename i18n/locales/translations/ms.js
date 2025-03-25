@@ -98,7 +98,7 @@ export default {
         accountNo: "No Akaun",
         generalInfo: {
             address: "Jln Hang Tuah, Bukit Bintang, 55200 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur",
-            phone: "telefon",
+            phone: "telefon Nombor",
             email: "alamat e-mel"
         },
         links: {
