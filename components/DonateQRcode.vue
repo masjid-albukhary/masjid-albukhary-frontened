@@ -19,15 +19,16 @@ const qrCode = "./images/masjid%20albukhary%20kl%20QR%20code.png";
 
 <style scoped>
 .donation-section {
-  padding: 4rem 1rem;
+  padding: 2rem 1rem;
   margin: 0 auto;
+  background: #f5f5f5;
 }
 
 .donation-title{
   text-align: center;
   font-size: 1.2rem;
   color: var(--primary-color);
-  margin-bottom: 4rem;
+  margin: 2rem 0;
 }
 
 .donation-container {
