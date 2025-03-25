@@ -88,6 +88,9 @@ export default {
     },
     prayer_time: "Waktu Solat",
     mosque_location: "Lokasi Masjid Albukhary",
+    donation:{
+      title: "Imbas Kod QR kami untuk menyokong aktiviti dan projek Masjid kami\n",
+    },
     footer: {
         quickLinks: "Pautan Pantas",
         socialMedia: "Media Sosial",

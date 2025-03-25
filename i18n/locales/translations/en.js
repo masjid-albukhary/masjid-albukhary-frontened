@@ -90,6 +90,9 @@ export default {
     },
     prayer_time: "Prayer Time",
     mosque_location: "Albukhary Mosque Location",
+    donation: {
+      title: "Scan our QR Code to support our Masjid activities and projects",
+    },
     footer: {
         quickLinks: "Quick Links",
         socialMedia: "Social Media",
