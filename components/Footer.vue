@@ -249,16 +249,6 @@ footer {
   }
 }
 
-@media (max-width: 1200px) {
-  .links ul li span {
-    display: none;
-  }
-
-  .others-links-section ul li span {
-    display: none;
-  }
-}
-
 .footer-bottom {
   text-align: start;
   font-size: 1.2rem;
