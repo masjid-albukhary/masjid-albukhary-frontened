@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
 import TranslationHeader from "~/components/TranslationHeader.vue";
+import DonateQRcode from "~/components/DonateQRcode.vue";
 </script>
 
 <template>
@@ -11,6 +12,7 @@ import TranslationHeader from "~/components/TranslationHeader.vue";
   <PrayerTime/>
   <Facilities/>
   <BookingStructure/>
+  <DonateQRcode/>
   <MapSection/>
   <Footer/>
 </template>
