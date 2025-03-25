@@ -101,7 +101,7 @@ section {
   justify-content: center;
   align-items: center;
   text-align: center;
-  background-image: url("../public/images/masjid-4.jpg");
+  background-image: url("/images/masjid-4.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
