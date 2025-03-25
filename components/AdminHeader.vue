@@ -47,6 +47,8 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('resize', updateMobileState)
 })
+
+const logo = "./images/masjid_albukary_logo.png"
 </script>
 
 <template>
@@ -60,7 +62,7 @@ onUnmounted(() => {
 
       <div class="logo-container">
         <a href="http://www.masjidalbukharykl.com/" class="logo">
-          <img src="./images/masjid_albukary_logo.png" alt="AIU Logo"/>
+          <img :src="logo" alt="AIU Logo"/>
         </a>
 
         <button v-if="isMobile" @click="toggleLinksVisibility" class="menu-toggle-btn">
@@ -107,6 +109,7 @@ onUnmounted(() => {
     color: var(--text-color);
     transition: color 200ms ease;
   }
+
   button:hover {
     color: var(--text-hover);
   }
