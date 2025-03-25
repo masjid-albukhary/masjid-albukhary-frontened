@@ -91,7 +91,7 @@ const generalInfo = [
         <div class="bank-details">
           <h2>{{ t('footer.bankDetails') }}</h2>
           <img src="../public/images/bank-muamalat-logo.png" alt="bank muamalat logo" class="bank-img"/>
-          <h4>{{ t('footer.accountNo') }}: 9823793924023</h4>
+          <h4>{{ t('footer.accountNo') }}: 9823 7939 2402</h4>
         </div>
 
       </div>
@@ -258,10 +258,12 @@ footer {
 
 .footer-bottom a {
   color: var(--text-color);
+  transition: color 0.3s ease;
 }
 
 a:hover {
   color: var(--text-color);
+  text-decoration: underline;
 }
 
 @media (max-width: 1200px) {
