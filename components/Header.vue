@@ -32,7 +32,7 @@ onMounted(() => {
   });
 });
 
-const logo = "/images/masjid_albukary_logo.png"
+// const logo = "/images/masjid_albukary_logo.png"
 </script>
 
 <template>
@@ -42,7 +42,7 @@ const logo = "/images/masjid_albukary_logo.png"
         <div class="logo">
 
           <a href="http:www.masjidalbukharykl.com/">
-            <img :src="logo" alt="masjid Albukary Logo"/>
+            <img src="/images/masjid_albukary_logo.png" alt="masjid Albukary Logo"/>
           </a>
 
         </div>
