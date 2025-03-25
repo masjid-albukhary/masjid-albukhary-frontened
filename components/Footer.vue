@@ -16,8 +16,7 @@ const links = [
 const currentYear = new Date().getFullYear();
 
 const media = [
-  { icon: "mdi-facebook", link: "https://www.facebook.com", labelKey: "footer.media.facebook" },
-  { icon: "mdi-instagram", link: "https://www.instagram.com", labelKey: "footer.media.instagram" },
+  { icon: "mdi-facebook", link: "https://www.facebook.com/mabkl.fb/", labelKey: "footer.media.facebook" },
   { icon: "mdi-youtube", link: "https://www.youtube.com", labelKey: "footer.media.youtube" },
   { icon: "mdi-whatsapp", link: "https://www.whatsapp.com", labelKey: "footer.media.whatsapp" }
 ];
@@ -30,12 +29,12 @@ const generalInfo = [
   },
   {
     labelKey: "footer.generalInfo.phone",
-    link: "tel:+6047747300",
+    link: "tel:0392210554",
     icon: "ic-baseline-phone"
   },
   {
     labelKey: "footer.generalInfo.email",
-    link: "mailto:info@aiu.edu.my",
+    link: "mailto:info@masjidalbukharykl.com",
     icon: "ic-baseline-email"
   }
 ];
@@ -101,7 +100,7 @@ const generalInfo = [
 
       <div class="footer-bottom">
         <p>&copy; Copyright
-          <a href="https://aiu.edu.my/">Al Bukhary Mosque {{ currentYear }}</a>
+          <a href="http://www.masjidalbukharykl.com/">Al Bukhary Mosque {{ currentYear }}</a>
         </p>
       </div>
 
