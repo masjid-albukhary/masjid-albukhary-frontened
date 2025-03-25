@@ -11,10 +11,10 @@ const switchLanguage = async (lang) => {
   const currentPath = router.currentRoute.value.path;
   const pathWithoutLang = currentPath.replace(/^\/(en|ms)/, '');
 
-  // If lang is 'ms' => add /ms prefix, else default with no prefix
   const newPath = lang === 'ms' ? `/ms${pathWithoutLang}` : `${pathWithoutLang}`;
 
   router.push(newPath);
+
 };
 </script>
 

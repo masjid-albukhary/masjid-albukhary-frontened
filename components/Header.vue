@@ -2,13 +2,7 @@
 import {ref, onMounted} from 'vue';
 import {useI18n} from 'vue-i18n';
 
-const {t, locale} = useI18n();
-
-interface Link {
-  link: string;
-  label: string;
-  icon: string;
-}
+const {t,} = useI18n();
 
 const isLinksVisible = ref(false);
 const isMobile = ref(false);
@@ -38,7 +32,7 @@ onMounted(() => {
   });
 });
 
-const logo = "./images/masjid_albukary_logo.png"
+const logo = "/images/masjid_albukary_logo.png"
 </script>
 
 <template>
@@ -47,7 +41,7 @@ const logo = "./images/masjid_albukary_logo.png"
       <div class="logo-container">
         <div class="logo">
 
-          <a href="http://www.masjidalbukharykl.com/">
+          <a href="http:www.masjidalbukharykl.com/">
             <img :src="logo" alt="masjid Albukary Logo"/>
           </a>
 
