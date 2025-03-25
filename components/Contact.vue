@@ -129,7 +129,7 @@ async function handleSubmit() {
   }
 }
 
-const contactImage = "./images/contact-image.jpg"
+const contactImage = "/images/contact-image.jpg"
 
 </script>
 
