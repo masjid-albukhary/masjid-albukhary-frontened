@@ -47,8 +47,8 @@ const adminQuestions = [
     required: false,
     id: "gender",
     options: [
-      {value: "male", label: t('sign_up.gender_options.male')},
-      {value: "female", label: t('sign_up.gender_options.female')},
+      {value: "male", label: "Male"},
+      {value: "female", label: "Female"},
     ],
   },
   {
@@ -65,8 +65,8 @@ const adminQuestions = [
     required: true,
     id: "user_role",
     options: [
-      {value: "Admin", label: t('sign_up.user_role_options.admin')},
-      {value: "super Admin", label: t('sign_up.user_role_options.super_admin')},
+      { value: "admin", label: "admin" },
+      { value: "super_admin", label:"Super Admin" },
     ],
   },
   {
@@ -214,7 +214,7 @@ async function handleSubmit() {
 
       <div class="admin-form">
 
-        <h2>{{t('sign_up.title')}}</h2>
+        <h2>{{ t('sign_up.title') }}</h2>
 
         <form @submit.prevent="handleSubmit">
           <div class="admin-form">
@@ -255,7 +255,7 @@ async function handleSubmit() {
 
           <div>
 
-            <button class="sign-up-submit" type="submit">{{t('sign_up.submit')}}</button>
+            <button class="sign-up-submit" type="submit">{{ t('sign_up.submit') }}</button>
           </div>
 
         </form>
