@@ -49,6 +49,7 @@ onUnmounted(() => {
 })
 
 const logo = "./images/masjid_albukary_logo.png"
+
 </script>
 
 <template>
