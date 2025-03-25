@@ -21,6 +21,9 @@ const landingItems: LandingItems[] = [
 const activeIndex = ref(0);
 let intervalId: number | null = null;
 
+// Loading state
+const isLoading = ref(true);
+
 const nextItem = () => {
   activeIndex.value = (activeIndex.value + 1) % landingItems.length;
 };
@@ -51,7 +54,11 @@ const getVisibleBullets = computed(() => {
 });
 
 onMounted(() => {
-  intervalId = setInterval(nextItem, 5000);
+
+  setTimeout(() => {
+    isLoading.value = false;
+    intervalId = setInterval(nextItem, 5000);
+  }, 1500);
 });
 
 onUnmounted(() => {
@@ -63,7 +70,11 @@ onUnmounted(() => {
 
 <template>
   <section class="landing">
-    <div class="landing-container">
+    <div v-if="isLoading" class="loading">
+      Loading...
+    </div>
+
+    <div v-else class="landing-container">
       <div class="landing-card">
         <h1 class="title">Landing Page</h1>
         <h2 class="sub-title">{{ landingItems[activeIndex].title }}</h2>
