@@ -48,7 +48,7 @@ onUnmounted(() => {
   window.removeEventListener('resize', updateMobileState)
 })
 
-const logo = "./images/masjid_albukary_logo.png"
+const logo = "images/masjid_albukary_logo.png"
 
 </script>
 
