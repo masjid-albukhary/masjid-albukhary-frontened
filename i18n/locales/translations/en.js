@@ -36,7 +36,6 @@ export default {
                 {content: "Finalize your arrangements and get ready for a memorable event!"}
             ]
         },
-
         title: "Booking Form",
         description: "Please fill in the form below to make your booking. Fields marked with an asterisk (*) are required.",
         form_title: "Make Your Booking",
@@ -48,9 +47,11 @@ export default {
                 phone: "Contact Number",
                 address: "Address",
                 postal_code: "Postal Code",
-                date_of_nikah: "Date of Nikah",
+                booking_date: "Booking dates",
                 time_slot: "Choose your time slot",
                 venue: "Select Venue",
+                guests: "Guests",
+                services: "Select Services",
                 other_docs: "Other Requests/Inquiries",
                 other_requests: "Other Requests/Inquiries",
             },
@@ -61,9 +62,11 @@ export default {
                 phone: "Enter your contact number",
                 address: "Enter your address",
                 postal_code: "Enter postal code",
-                date_of_nikah: "DD-Month-YYYY (e.g., 10 Sept 2022)",
+                booking_date: "DD-Month-YYYY (e.g., 10 Sept 2022)",
+                guests: "Enter number of guests",
                 time_slot: "Choose your time slot",
                 venue: "Select a venue",
+                services: "Select a services",
                 other_docs: "Upload any requests or inquiries",
                 other_requests: "Enter any requests or inquiries",
             },

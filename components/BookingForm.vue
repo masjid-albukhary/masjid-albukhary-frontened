@@ -2,7 +2,7 @@
 import {reactive, ref, watch} from 'vue';
 import {z} from 'zod';
 
-const { t } = useI18n();
+const {t} = useI18n();
 import Popup from '~/components/SubmitBookingPopup.vue';
 
 const bookingQuestions = [
@@ -49,11 +49,18 @@ const bookingQuestions = [
     id: "postal_code",
   },
   {
-    label: t('booking.booking_form.label.date_of_nikah'),
+    label: t('booking.booking_form.label.booking_date'),
     type: "date",
-    placeholder: t('booking.booking_form.placeholder.date_of_nikah'),
+    placeholder: t('booking.booking_form.placeholder.booking_date'),
     required: true,
-    id: "date_of_nikah",
+    id: "booking_date",
+  },
+  {
+    label: t('booking.booking_form.label.guests'),
+    type: "number",
+    placeholder: t('booking.booking_form.placeholder.guests'),
+    required: true,
+    id: "guests",
   },
   {
     label: t('booking.booking_form.label.time_slot'),
@@ -81,6 +88,27 @@ const bookingQuestions = [
     placeholder: t('booking.booking_form.placeholder.venue'),
   },
   {
+    label: t('booking.booking_form.label.services'),
+    type: "select",
+    options: [
+      {value: "circumcision_event", label: "Circumcision Event at Masjid Al-Bukhari"},
+      {value: "aqiqah", label: "Aqiqah with Masjid Al-Bukhari"},
+      {value: "quran_classes", label: "Quran Classes (6 - 18 years old)"},
+      {value: "zakat_fitrah", label: "Zakat Fitrah"},
+      {value: "solemnisation", label: "Solemnisation at Al-Bukhari Mosque"},
+      {value: "qurban_event", label: "Participate in Our Qurban Event"},
+      {value: "yasin_tahlil", label: "Yasin & Tahlil"},
+      {value: "funeral_management", label: "Jenazah or Funeral Management"},
+      {value: "catering", label: "Catering from Our Own Kitchen"},
+      {value: "e_wasiat", label: "E-Wasiat"},
+      {value: "e_khairat_kematian", label: "E-Khairat Kematian"},
+      {value: "other", label: "Other"},
+    ],
+    required: true,
+    id: "services",
+    placeholder: t('booking.booking_form.placeholder.services'),
+  },
+  {
     label: t('booking.booking_form.label.other_docs'),
     type: "file",
     required: true,
@@ -100,25 +128,39 @@ const formSchema = z.object({
   first_name: z
       .string()
       .min(8, 'First name must be at least 8 characters long'),
+
   last_name: z
       .string()
       .min(8, 'Last Name must be at least 8 characters long'),
+
   email: z
       .string()
       .email('Invalid email format')
       .regex(/@gmail\.com$/, "Must be a valid email ending with '@gmail.com'"),
+
   phone: z
       .string()
       .regex(/^\d{8,15}$/, 'Invalid phone number'),
+
   address: z.string()
       .min(8, 'Address must be at least 8 characters long'),
+
   postal_code: z
       .string()
       .regex(/^\d{4,8}$/, 'Invalid postal code'),
-  date_of_nikah: z.string().optional(),
+
+  booking_date: z.string().optional(),
+
   time_slot: z.string().optional(),
+
   venue: z.string().optional(),
+
+  services: z.string().optional(),
+
   other_docs: z.any().optional(),
+
+  guests: z.number().optional(),
+
   other_requests: z
       .string()
       .min(20, 'Detail must be at least 20 characters long'),
@@ -227,7 +269,7 @@ async function handleSubmit() {
               <label class="question-title" :for="question.label">{{ question.label }}</label>
 
               <input
-                  v-if="['text','email', 'file', 'date'].includes(question.type)"
+                  v-if="['text','email', 'file', 'date', 'number'].includes(question.type)"
                   :type="question.type"
                   v-model="form[question.id]"
                   :placeholder="question.placeholder"
