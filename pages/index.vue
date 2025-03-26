@@ -9,7 +9,6 @@ import DonateQRcode from "~/components/DonateQRcode.vue";
   <Header/>
   <Landing/>
   <News/>
-  <PrayerTime/>
   <Facilities/>
   <BookingStructure/>
   <DonateQRcode/>

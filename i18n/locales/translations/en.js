@@ -88,10 +88,12 @@ export default {
             message_placeholder: "Type your message here...",
         }
     },
-    prayer_time: "Prayer Time",
-    mosque_location: "Albukhary Mosque Location",
+    map_mosque: {
+        mosque_location: "Albukhary Mosque Location",
+        prayer_time: "Prayer Time",
+    },
     donation: {
-      title: "Scan our QR Code to support our Masjid activities and projects",
+        title: "Scan our QR Code to support our Masjid activities and projects",
     },
     footer: {
         quickLinks: "Quick Links",
@@ -194,7 +196,7 @@ export default {
         date_of_event: "Date of Event",
     },
     facility_form: {
-        title:"This is Facility Form",
+        title: "This is Facility Form",
         label: {
             facility_name: "Facility Name",
             facility_type: "Facility Type / Category",

@@ -25,21 +25,21 @@ export default {
         ]
     },
     booking: {
-        booking_structure:{
+        booking_structure: {
             title: "Cara Tempahan Dewan",
             button: "Tempah Sekarang",
             steps: [
-                { content: "Isi borang tempahan dewan dengan maklumat dan dewan pilihan anda." },
-                { content: "Pasukan kami akan menyemak permintaan anda dalam masa 3 hari." },
-                { content: "Jika diluluskan, kami akan menghubungi anda melalui mesej WhatsApp." },
-                { content: "Lengkapkan persiapan anda dan bersedia untuk acara yang bermakna!" }
+                {content: "Isi borang tempahan dewan dengan maklumat dan dewan pilihan anda."},
+                {content: "Pasukan kami akan menyemak permintaan anda dalam masa 3 hari."},
+                {content: "Jika diluluskan, kami akan menghubungi anda melalui mesej WhatsApp."},
+                {content: "Lengkapkan persiapan anda dan bersedia untuk acara yang bermakna!"}
             ]
         },
         title: "Borang Tempahan",
         description: "Sila isi borang di bawah untuk membuat tempahan anda. Ruangan yang ditandakan dengan tanda asterisk (*) adalah wajib diisi.",
         form_title: "Buat Tempahan Anda",
         booking_form: {
-            label:{
+            label: {
                 first_name: "Nama Orang Hubungan",
                 last_name: "Nama Akhir",
                 email: "Emel",
@@ -86,10 +86,13 @@ export default {
             message_placeholder: "Tulis mesej anda di sini...",
         }
     },
-    prayer_time: "Waktu Solat",
-    mosque_location: "Lokasi Masjid Albukhary",
-    donation:{
-      title: "Imbas Kod QR kami untuk menyokong aktiviti dan projek Masjid kami\n",
+    map_mosque: {
+        mosque_location: "Lokasi Masjid Albukhary",
+        prayer_time: "Waktu Solat",
+    },
+
+    donation: {
+        title: "Imbas Kod QR kami untuk menyokong aktiviti dan projek Masjid kami\n",
     },
     footer: {
         quickLinks: "Pautan Pantas",
@@ -175,7 +178,7 @@ export default {
         logout: "Log Keluar"
     },
     admin_sidebar: {
-        admin_title:"Panel Pentadbir",
+        admin_title: "Panel Pentadbir",
         admin: "Admin",
         booking_overview: "Gambaran Tempahan",
         facility_form: "Borang Kemudahan",
@@ -192,7 +195,7 @@ export default {
         date_of_event: "Tarikh Acara",
     },
     facility_form: {
-        title:"Ini adalah Borang Kemudahan",
+        title: "Ini adalah Borang Kemudahan",
         label: {
             facility_name: "Nama Kemudahan",
             facility_type: "Jenis / Kategori Kemudahan",
