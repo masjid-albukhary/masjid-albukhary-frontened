@@ -122,7 +122,6 @@ export default {
         }
     },
 
-
     // admin side
 
     login: {
