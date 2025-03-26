@@ -5,7 +5,6 @@
 <template>
   <TranslationHeader/>
   <Header/>
-  <BookingStructure/>
   <BookingForm/>
   <Footer/>
 </template>
