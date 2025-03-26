@@ -3,7 +3,7 @@ export default {
         home: "Home",
         about: "About",
         news: "News",
-        booking: "Booking Venue",
+        services: "Services",
         facilities: "Facilities",
         gallery: "Gallery",
         contact: "Contact"
@@ -109,7 +109,7 @@ export default {
             home: "Home",
             about: "About",
             news: "News",
-            booking: "Booking Venue",
+            services: "Services",
             facilities: "Facilities",
             gallery: "Gallery",
             contact: "Contact"

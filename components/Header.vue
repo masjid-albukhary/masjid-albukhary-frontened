@@ -10,13 +10,13 @@ const isMobile = ref(false);
 import {computed} from 'vue';
 
 const links = computed(() => [
-  {link: "/", label: t('footer.links.home'), icon: "mdi-home"},
-  {link: "/about", label: t('footer.links.about'), icon: "mdi-information"},
-  {link: "/news", label: t('footer.links.news'), icon: "mdi-newspaper-variant"},
-  {link: "/booking-venue", label: t('footer.links.booking'), icon: "mdi-calendar-check"},
-  {link: "/facilities", label: t('footer.links.facilities'), icon: "mdi-domain"},
-  {link: "/gallery", label: t('footer.links.gallery'), icon: "mdi-image-multiple"},
-  {link: "/contact", label: t('footer.links.contact'), icon: "mdi-email"}
+  {link: "/", label: t('menu.home'), icon: "mdi-home"},
+  {link: "/about", label: t('menu.about'), icon: "mdi-information"},
+  {link: "/news", label: t('menu.news'), icon: "mdi-newspaper-variant"},
+  {link: "/services", label: t('menu.services'), icon: "mdi-calendar-clock"},
+  {link: "/facilities", label: t('menu.facilities'), icon: "mdi-domain"},
+  {link: "/gallery", label: t('menu.gallery'), icon: "mdi-image-multiple"},
+  {link: "/contact", label: t('menu.contact'), icon: "mdi-email"}
 ]);
 
 

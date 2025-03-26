@@ -3,7 +3,7 @@ export default {
         home: "Utama",
         about: "Kira-Kira",
         news: "Berita",
-        booking: "Tempahan Tempat",
+        services: "perkhidmatan",
         facilities: "Kemudahan",
         gallery: "Galeri",
         contact: "Hubungi"
@@ -109,7 +109,7 @@ export default {
             about: "Tentang Kami",
             news: "Berita",
             booking: "Tempahan Tempat",
-            facilities: "Kemudahan",
+            services: "perkhidmatan",
             gallery: "Galeri",
             contact: "Hubungi"
         },
