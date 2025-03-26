@@ -255,7 +255,7 @@ const goBack = () => {
           stipulated terms and
           conditions here before submitting the form.
         </p>
-        <router-link to="/booking-venue.vue" class="booking-btn">
+        <router-link to="/pages/services-form.vue" class="booking-btn">
           Register your Interest
         </router-link>
       </div>
