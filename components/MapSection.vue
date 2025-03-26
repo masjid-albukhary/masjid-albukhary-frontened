@@ -1,31 +1,10 @@
 <script setup>
-import {ref, computed, onMounted} from 'vue';
-import {useI18n} from 'vue-i18n';
+import { ref, computed, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import 'leaflet/dist/leaflet.css';
 
-const {t} = useI18n();
+const { t } = useI18n();
 const mapContainer = ref(null);
-
-onMounted(async () => {
-  if (!mapContainer.value) return;
-
-  const L = await import('leaflet');
-
-  const lat = 3.1394;
-  const lng = 101.7121;
-
-  const map = L.map(mapContainer.value).setView([lat, lng], 16);
-
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors',
-  }).addTo(map);
-
-  L.marker([lat, lng])
-      .addTo(map)
-      .bindPopup('<b>Al Bukhary Mosque</b><br>Jln Hang Tuah, Kuala Lumpur')
-      .openPopup();
-});
-
 
 const city = ref('Kuala Lumpur');
 const country = ref('Malaysia');
@@ -33,18 +12,24 @@ const method = ref(2);
 const prayerTimes = ref(null);
 const currentTime = ref(new Date().toLocaleTimeString());
 
-const mainPrayers = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
+const mainPrayers = [
+  { value: "Fajr", label: "Subuh" },
+  { value: "Dhuhr", label: "Zohor" },
+  { value: "Asr", label: "Asar" },
+  { value: "Maghrib", label: "Maghrib" },
+  { value: "Isha", label: "Isyak" },
+];
 
 const fetchPrayerTimes = async () => {
   try {
     const response = await fetch(
         `https://api.aladhan.com/v1/timingsByCity?city=${city.value}&country=${country.value}&method=${method.value}`
     );
-    const {data} = await response.json();
+    const { data } = await response.json();
 
     prayerTimes.value = mainPrayers.reduce((times, prayer) => {
-      if (data.timings[prayer]) {
-        times[prayer] = data.timings[prayer];
+      if (data.timings[prayer.value]) {
+        times[prayer.value] = data.timings[prayer.value];
       }
       return times;
     }, {});
@@ -53,17 +38,20 @@ const fetchPrayerTimes = async () => {
   }
 };
 
-const formatTime = (time) =>
-    new Date(`1970-01-01T${time}`).toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
+const formatTime = (time) => {
+  if (!time || time === '24:00') return '12:00 AM';
+  const date = new Date(`1970-01-01T${time}`);
+  return date.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+};
 
 const addMinutes = (time, minutes) => {
   const date = new Date(`1970-01-01T${time}`);
   date.setMinutes(date.getMinutes() + minutes);
-  return date.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", hour12: true});
+  return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true });
 };
 
 const updateTime = () => {
@@ -72,11 +60,14 @@ const updateTime = () => {
 
 const formattedPrayerTimes = computed(() => {
   if (!prayerTimes.value) return null;
-  return Object.entries(prayerTimes.value).map(([prayer, time]) => ({
-    name: prayer,
-    original: formatTime(time),
-    adjusted: addMinutes(time, 10),
-  }));
+  return Object.entries(prayerTimes.value).map(([prayer, time]) => {
+    const label = mainPrayers.find(p => p.value === prayer)?.label || prayer;
+    return {
+      name: label,
+      original: formatTime(time),
+      adjusted: addMinutes(time, 10),
+    };
+  });
 });
 
 const getFormattedDate = () => {
@@ -90,23 +81,34 @@ const getFormattedDate = () => {
 
 const currentDate = ref(getFormattedDate());
 
-onMounted(() => {
+const setupMap = async () => {
+  if (!mapContainer.value) return;
+  const L = await import('leaflet');
+  const lat = 3.1394;
+  const lng = 101.7121;
+  const map = L.map(mapContainer.value).setView([lat, lng], 16);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors',
+  }).addTo(map);
+  L.marker([lat, lng])
+      .addTo(map)
+      .bindPopup('<b>Al Bukhary Mosque</b><br>Jln Hang Tuah, Kuala Lumpur')
+      .openPopup();
+};
+
+onMounted(async () => {
+  await setupMap();
+  fetchPrayerTimes();
+  setInterval(updateTime, 1000);
   setInterval(() => {
     currentDate.value = getFormattedDate();
   }, 86400000);
 });
-
-onMounted(() => {
-  fetchPrayerTimes();
-  setInterval(updateTime, 1000);
-});
-
 </script>
 
 <template>
   <section class="map-container">
     <div class="container">
-
       <div class="prayer-container">
         <div class="prayer-time">
           <h2 class="title">{{ t('map_mosque.prayer_time') }}</h2>
@@ -123,12 +125,13 @@ onMounted(() => {
               <div
                   v-for="prayer in formattedPrayerTimes"
                   :key="prayer.name"
-                  class="prayer-time-box">
-              <span class="time-data">
-                <UIcon name="mdi-mosque" class="mosque-icon"/>
-                {{ prayer.name }}
-              </span>
-                <hr class="prayer-time-divider"/>
+                  class="prayer-time-box"
+              >
+                <span class="time-data">
+                  <UIcon name="mdi-mosque" class="mosque-icon" aria-hidden="true" />
+                  {{ prayer.name }}
+                </span>
+                <hr class="prayer-time-divider" />
                 <span class="time-data">{{ prayer.original }}</span>
               </div>
             </div>
@@ -139,17 +142,13 @@ onMounted(() => {
       </div>
 
       <div class="map-box-container">
-
         <h2 class="title">{{ t('map_mosque.mosque_location') }}</h2>
-
-        <div ref="mapContainer" class="map">
-        </div>
+        <div ref="mapContainer" class="map" style="height: 350px;"></div>
       </div>
-
     </div>
-
   </section>
 </template>
+
 
 <style scoped>
 @import "leaflet/dist/leaflet.css";
@@ -233,7 +232,7 @@ onMounted(() => {
 
 .prayer-time-box {
   background-color: var(--primary-color);
-  color: var(--text-hover);
+  color: var(--text-color);
   padding: 1rem;
   border-radius: 1rem;
   text-align: center;
@@ -251,7 +250,6 @@ onMounted(() => {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* RESPONSIVE SECTION */
 @media (max-width: 992px) {
   .container {
     grid-template-columns: 1fr;
