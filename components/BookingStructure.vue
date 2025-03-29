@@ -46,7 +46,7 @@ const booking_steps = [
       </div>
     </div>
 
-    <router-link to="/booking-venue" class="booking-structure-btn">
+    <router-link to="/services-form" class="booking-structure-btn">
       <UIcon name="mdi-register" class="register-icon" />
       {{ t('booking.booking_structure.button') }}
     </router-link>
