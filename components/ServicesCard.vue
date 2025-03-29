@@ -49,7 +49,7 @@ const services: Service[] = [
       "Monthly progress reports",
       "Online & offline classes"
     ],
-    price: "RMXXX per month",
+    price: "RMXXX",
   },
   {
     id: 4,
@@ -187,6 +187,7 @@ function prevServicePage() {
 
 <template>
   <section class="service-section">
+
     <div class="service-header">
       <h2 class="service-title">{{ t('service.service_title') }}</h2>
       <p class="service-description">
@@ -195,7 +196,9 @@ function prevServicePage() {
     </div>
 
     <div class="service-grid">
+
       <div class="service-card" v-for="service in visibleService" :key="service.id">
+
         <div class="service-card-icon">
           <UIcon name="mdi-home-modern" class="service-icon" />
         </div>
@@ -207,20 +210,23 @@ function prevServicePage() {
         <div class="service-card-content">
           <ul class="service-facilities">
             <li v-for="(facility, index) in service.facilities" :key="index">
-              <UIcon name="mdi-office-building" class="service-icon" />
+              <UIcon name="mdi-check-circle" class="service-icon" />
               {{ facility }}
             </li>
           </ul>
         </div>
 
         <div class="service-card-footer">
-          <span class="service-price">{{ service.price }}</span>
-        </div>
+          <router-link to="/services-form" class="booking-structure-btn">
 
-        <router-link to="/services-form" class="booking-structure-btn">
-          <UIcon name="mdi-calendar-check" class="register-icon" />
-          {{ t('service.button') }}
-        </router-link>
+            <UIcon name="mdi-calendar-check" class="register-icon" />
+            {{ t('service.button') }}
+          </router-link>
+
+          <span class="service-price">
+            {{ service.price }}
+          </span>
+        </div>
       </div>
     </div>
 
@@ -232,6 +238,7 @@ function prevServicePage() {
         <UIcon name="mdi-arrow-right" />
       </button>
     </div>
+
   </section>
 </template>
 
@@ -273,23 +280,22 @@ function prevServicePage() {
 
 .service-card {
   background: linear-gradient(135deg, var(--secondary-color) 20%, var(--primary-color) 100%);
-  padding: 2rem;
-  border-radius: 15px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  padding: 1rem;
   color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
   transition: all 0.3s ease-in-out;
+  max-width: 400px;
 }
 
 .service-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  transform: scale(1.01);
+  box-shadow: rgba(149, 157, 165, 0.4) 0 8px 24px;
 }
 
 .service-card-icon {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.3);
   width: 5rem;
   height: 5rem;
   display: flex;
@@ -310,6 +316,10 @@ function prevServicePage() {
   text-align: center;
 }
 
+.service-card-content{
+  min-height: 220px;
+}
+
 .service-facilities {
   list-style: none;
   padding: 0;
@@ -317,48 +327,54 @@ function prevServicePage() {
 }
 
 .service-facilities li {
+  color: var(--text-color);
   display: flex;
   align-items: center;
   gap: 0.5rem;
   font-size: 1.1rem;
   margin-bottom: 0.5rem;
   opacity: 0.9;
-  transition: opacity 0.3s ease;
+  transition: all 0.3s ease-in;
 }
 
 .service-facilities li:hover {
   opacity: 1;
+  color: var(--text-hover);
 }
 
 .service-icon {
   font-size: 1.3rem;
-  color: white;
+}
+
+.service-card-footer{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
 }
 
 .service-price {
   font-size: 1.4rem;
   font-weight: bold;
-  color: #ffd700;
-  margin-top: 1rem;
+  color: var(--text-hover);
+  margin: 0 auto;
+  padding: .5rem 1rem;
+  background: transparent;
 }
 
 .booking-structure-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--primary-color);
-  padding: 0.8rem 1.8rem;
-  color: white;
+  color: var(--text-color);
   border-radius: 10px;
   text-decoration: none;
   font-size: 1rem;
-  font-weight: 600;
   transition: all 0.3s ease-in-out;
-  margin-top: 1.5rem;
+  margin: 0 auto;
+  padding: .5rem 1rem;
+  background: var(--primary-color);
 }
 
 .booking-structure-btn:hover {
   background: var(--secondary-color);
+  color: var(--text-hover);
 }
 
 .register-icon {
