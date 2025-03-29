@@ -99,7 +99,7 @@ const generalInfo = [
       <hr class="divider">
 
       <div class="footer-bottom">
-        <p>&copy; Copyright
+        <p>&copy; All Copyright Reserved For
           <a href="http://www.masjidalbukharykl.com/">Al Bukhary Mosque {{ currentYear }}</a>
         </p>
       </div>

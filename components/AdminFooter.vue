@@ -6,7 +6,7 @@ const currentYear = new Date().getFullYear();
 <template>
   <footer class="footer-admin-section">
     <div class="footer-container">
-      <p>&copy; Copyright <a href="https://aiu.edu.my/">Al Bukhary Mosque {{ currentYear }}</a></p>
+      <p>&copy; All Copyright Reserved For <a href="https://aiu.edu.my/">Al Bukhary Mosque {{ currentYear }}</a></p>
     </div>
   </footer>
 </template>
