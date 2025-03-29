@@ -73,6 +73,10 @@ export default {
             submit: "Submit Booking"
         }
     },
+    service:{
+        service_title: "Our Service",
+        service_description: "        Ar-Bukhary Mosque provides rental of our facilities. From prayer halls to conference rooms, our spaces are well-equipped and comfortable for various events.",
+    },
     contact: {
         title: "Get in touch with us",
         description: "Reach out to us with any questions or concerns you may have, and we’ll be happy to help.",

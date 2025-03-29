@@ -1,6 +1,8 @@
 <script setup lang="ts">
-
 import {computed, ref} from "vue";
+import {useI18n} from "vue-i18n";
+
+const { t } = useI18n();
 
 interface Service {
   id: number
@@ -186,10 +188,10 @@ function prevServicePage() {
 <template>
   <section class="service-section">
     <div class="service-header">
-      <h2 class="service-title">Our Facilities</h2>
+      <h2 class="service-title">{{t('service.service_title')}}</h2>
       <p class="service-description">
-        Ar-Bukhary Mosque provides rental of our facilities. From prayer halls to conference rooms, our spaces are well-equipped and comfortable for various events.
-      </p>
+        {{t('service.service_description')}}
+        </p>
     </div>
 
     <div class="service-grid">
@@ -239,31 +241,33 @@ section {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  width: 100%;
-
 }
 
-.service-card-icon{
-  background-color: var(--bg-color);
+.service-card-icon {
+  background-color: var(--primary-color);
   width: 5rem;
   height: 5rem;
-  padding: 0.5rem;
+  display: flex;
+  justify-content: center;
   align-items: center;
-  margin: 0 auto;
+  margin: -4rem auto 0;
   border-radius: 50%;
 }
 
-.service-card-icon > .service-icon {
-  background: var(--primary-color);
-  font-size: 2.5rem !important;
+.service-card-icon .service-icon {
+  background: var(--text-hover);
+  font-size: 2.5rem;
   width: 4rem;
   height: 4rem;
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
 }
 
 .service-header {
   max-width: 800px;
-  margin: 0 auto 2rem auto;
+  margin: 2rem auto;
 }
 
 .service-title {
@@ -276,12 +280,12 @@ section {
 .service-description {
   font-size: 1rem;
   color: var(--secondary-color);
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .service-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
   max-width: 1200px;
   margin: 0 auto;
@@ -289,15 +293,16 @@ section {
 
 .service-card {
   background: var(--secondary-color);
-  width: 100%;
   padding: 1.5rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   color: white;
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 10px;
 }
 
 .service-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
 .service-card-header {
@@ -347,17 +352,17 @@ section {
 
 .nav-button {
   padding: 0.75rem 1.5rem;
-  font-size: 1.2rem;
+  font-size: 1rem;
   background-color: var(--primary-color);
   color: white;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .nav-button:hover {
   background-color: var(--secondary-color);
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 </style>
