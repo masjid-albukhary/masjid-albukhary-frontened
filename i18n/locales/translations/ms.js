@@ -75,6 +75,7 @@ export default {
     service:{
         service_title: "Perkhidmatan Kami",
         service_description: "Masjid Ar-Bukhary menyediakan penyewaan kemudahan kami. Dari dewan solat ke bilik persidangan, ruang kami serba lengkap dan selesa untuk pelbagai acara.",
+        button: "Tempah sekarang"
     },
     contact: {
         title: "Hubungi Kami",

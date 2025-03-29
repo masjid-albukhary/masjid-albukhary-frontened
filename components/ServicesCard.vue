@@ -218,8 +218,8 @@ function prevServicePage() {
         </div>
 
         <router-link to="/services-form" class="booking-structure-btn">
-          <UIcon name="mdi-register" class="register-icon" />
-          {{ t('booking.booking_structure.button') }}
+          <UIcon name="mdi-calendar-check" class="register-icon" />
+          {{ t('service.button') }}
         </router-link>
       </div>
     </div>
@@ -353,14 +353,18 @@ function prevServicePage() {
   text-decoration: none;
   font-size: 1rem;
   font-weight: 600;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-in-out;
   margin-top: 1.5rem;
 }
 
 .booking-structure-btn:hover {
   background: var(--secondary-color);
-  transform: scale(1.1);
 }
+
+.register-icon {
+  margin-right: 0.75rem;
+}
+
 
 .buttons {
   display: flex;
