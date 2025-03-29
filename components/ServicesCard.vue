@@ -23,7 +23,7 @@ const services: Service[] = [
       "Souvenir for participants",
       "Refreshments provided"
     ],
-    price: "RMXXX",
+    price: "55",
   },
   {
     id: 2,
@@ -36,7 +36,7 @@ const services: Service[] = [
       "Dua recitation",
       "Live event streaming option"
     ],
-    price: "RMXXX",
+    price: "55",
   },
   {
     id: 3,
@@ -49,7 +49,7 @@ const services: Service[] = [
       "Monthly progress reports",
       "Online & offline classes"
     ],
-    price: "RMXXX",
+    price: "55",
   },
   {
     id: 4,
@@ -62,7 +62,7 @@ const services: Service[] = [
       "Support for needy families",
       "Official receipt provided"
     ],
-    price: "RMXXX",
+    price: "55",
   },
   {
     id: 5,
@@ -75,7 +75,7 @@ const services: Service[] = [
       "Marriage counseling session",
       "Islamic legal documentation"
     ],
-    price: "RMXXX",
+    price: "55",
   },
   {
     id: 6,
@@ -88,7 +88,7 @@ const services: Service[] = [
       "Certificate of Qurban",
       "Charitable contribution option"
     ],
-    price: "RMXXX per share",
+    price: "55 per share",
   },
   {
     id: 7,
@@ -101,7 +101,7 @@ const services: Service[] = [
       "Refreshments included",
       "Live streaming option"
     ],
-    price: "RMXXX",
+    price: "55",
   },
   {
     id: 8,
@@ -114,7 +114,7 @@ const services: Service[] = [
       "Family support & guidance",
       "Funeral prayer session"
     ],
-    price: "RMXXX",
+    price: "55",
   },
   {
     id: 9,
@@ -127,7 +127,7 @@ const services: Service[] = [
       "Freshly prepared meals",
       "Bulk order discounts"
     ],
-    price: "RMXXX per pax",
+    price: "55 per pax",
   },
   {
     id: 10,
@@ -140,7 +140,7 @@ const services: Service[] = [
       "Easy document retrieval",
       "Affordable pricing"
     ],
-    price: "RMXXX",
+    price: "55",
   },
   {
     id: 11,
@@ -153,7 +153,7 @@ const services: Service[] = [
       "No medical check-up required",
       "Simple registration process"
     ],
-    price: "RMXXX per year",
+    price: "55 per year",
   }
 ];
 
@@ -217,15 +217,18 @@ function prevServicePage() {
         </div>
 
         <div class="service-card-footer">
-          <router-link to="/services-form" class="booking-structure-btn">
-
-            <UIcon name="mdi-calendar-check" class="register-icon" />
-            {{ t('service.button') }}
-          </router-link>
 
           <span class="service-price">
+            RM /
             {{ service.price }}
           </span>
+
+          <router-link to="/services-form" class="booking-structure-btn">
+
+            {{ t('service.button') }}
+            <UIcon name="mdi-arrow-right" class="register-icon" />
+          </router-link>
+
         </div>
       </div>
     </div>
@@ -243,13 +246,14 @@ function prevServicePage() {
 </template>
 
 <style scoped>
-.service-section {
+section {
   padding: 4rem 1rem;
   text-align: center;
-  background: var(--bg-color);
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: 1200px !important;
+  margin: 0 auto;
 }
 
 .service-header {
@@ -280,7 +284,7 @@ function prevServicePage() {
 
 .service-card {
   background: linear-gradient(135deg, var(--secondary-color) 20%, var(--primary-color) 100%);
-  padding: 1rem;
+  padding: 2rem 1rem;
   color: white;
   display: flex;
   flex-direction: column;
@@ -290,7 +294,6 @@ function prevServicePage() {
 }
 
 .service-card:hover {
-  transform: scale(1.01);
   box-shadow: rgba(149, 157, 165, 0.4) 0 8px 24px;
 }
 
