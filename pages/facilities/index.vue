@@ -4,7 +4,7 @@
 
 <template>
   <Header/>
-  <Facilities/>
+  <FacilitiesCard/>
   <BookingStructure/>
   <Footer/>
 </template>
