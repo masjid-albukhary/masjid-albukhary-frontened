@@ -3,7 +3,7 @@
 <template>
   <TranslationHeader/>
   <Header/>
-  <BookingForm/>
+  <ServicesCard/>
   <Footer/>
 </template>
 
