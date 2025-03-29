@@ -188,24 +188,22 @@ function prevServicePage() {
 <template>
   <section class="service-section">
     <div class="service-header">
-      <h2 class="service-title">{{t('service.service_title')}}</h2>
+      <h2 class="service-title">{{ t('service.service_title') }}</h2>
       <p class="service-description">
-        {{t('service.service_description')}}
-        </p>
+        {{ t('service.service_description') }}
+      </p>
     </div>
 
     <div class="service-grid">
       <div class="service-card" v-for="service in visibleService" :key="service.id">
-
         <div class="service-card-icon">
-
-          <UIcon name="mdi-home-modern"  class="service-icon"/>
-
+          <UIcon name="mdi-home-modern" class="service-icon" />
         </div>
 
         <div class="service-card-header">
           <h3 class="service-card-title">{{ service.title }}</h3>
         </div>
+
         <div class="service-card-content">
           <ul class="service-facilities">
             <li v-for="(facility, index) in service.facilities" :key="index">
@@ -214,10 +212,15 @@ function prevServicePage() {
             </li>
           </ul>
         </div>
+
         <div class="service-card-footer">
           <span class="service-price">{{ service.price }}</span>
         </div>
 
+        <router-link to="/services-form" class="booking-structure-btn">
+          <UIcon name="mdi-register" class="register-icon" />
+          {{ t('booking.booking_structure.button') }}
+        </router-link>
       </div>
     </div>
 
@@ -233,114 +236,130 @@ function prevServicePage() {
 </template>
 
 <style scoped>
-section {
-  padding: 3rem 1rem;
+.service-section {
+  padding: 4rem 1rem;
   text-align: center;
   background: var(--bg-color);
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-}
-
-.service-card-icon {
-  background-color: var(--primary-color);
-  width: 5rem;
-  height: 5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: -4rem auto 0;
-  border-radius: 50%;
-}
-
-.service-card-icon .service-icon {
-  background: var(--text-hover);
-  font-size: 2.5rem;
-  width: 4rem;
-  height: 4rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
 }
 
 .service-header {
   max-width: 800px;
-  margin: 2rem auto;
+  margin-bottom: 2rem;
 }
 
 .service-title {
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: bold;
   color: var(--primary-color);
   margin-bottom: 0.5rem;
 }
 
 .service-description {
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: var(--secondary-color);
   line-height: 1.6;
 }
 
 .service-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
   max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
 }
 
 .service-card {
-  background: var(--secondary-color);
-  padding: 1.5rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, var(--secondary-color) 20%, var(--primary-color) 100%);
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
   color: white;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease-in-out;
 }
 
 .service-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
-.service-card-header {
-  text-align: center;
-  margin-bottom: 1rem;
+.service-card-icon {
+  background: rgba(255, 255, 255, 0.2);
+  width: 5rem;
+  height: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  transition: background 0.3s ease;
+}
+
+.service-card-icon .service-icon {
+  font-size: 2.5rem;
+  color: white;
 }
 
 .service-card-title {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: bold;
+  text-align: center;
 }
 
 .service-facilities {
   list-style: none;
   padding: 0;
+  margin-top: 1rem;
 }
 
 .service-facilities li {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 1rem;
+  font-size: 1.1rem;
   margin-bottom: 0.5rem;
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
+}
+
+.service-facilities li:hover {
+  opacity: 1;
 }
 
 .service-icon {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   color: white;
 }
 
-.service-card-footer {
-  text-align: center;
+.service-price {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #ffd700;
   margin-top: 1rem;
 }
 
-.service-price {
-  font-size: 1.2rem;
-  font-weight: bold;
+.booking-structure-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary-color);
+  padding: 0.8rem 1.8rem;
+  color: white;
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  margin-top: 1.5rem;
+}
+
+.booking-structure-btn:hover {
+  background: var(--secondary-color);
+  transform: scale(1.1);
 }
 
 .buttons {
@@ -351,7 +370,7 @@ section {
 }
 
 .nav-button {
-  padding: 0.75rem 1.5rem;
+  padding: 0.8rem 1.8rem;
   font-size: 1rem;
   background-color: var(--primary-color);
   color: white;
@@ -366,3 +385,4 @@ section {
   transform: scale(1.05);
 }
 </style>
+
