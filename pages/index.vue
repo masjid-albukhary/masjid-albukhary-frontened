@@ -8,7 +8,7 @@ import DonateQRcode from "~/components/DonateQRcode.vue";
   <TranslationHeader/>
   <Header/>
   <Landing/>
-  <News/>
+  <NewsCard/>
   <FacilitiesCard/>
   <BookingStructure/>
   <DonateQRcode/>
