@@ -75,7 +75,16 @@ export default {
     service:{
         service_title: "Perkhidmatan Kami",
         service_description: "Masjid Ar-Bukhary menyediakan penyewaan kemudahan kami. Dari dewan solat ke bilik persidangan, ruang kami serba lengkap dan selesa untuk pelbagai acara.",
-        button: "Tempah sekarang"
+        button: "Tempah sekarang",
+        booking_structure: {
+            title: "Tempah Perkhidmatan Masjid Anda dengan Mudah – Biarkan Kami Membantu dalam Momen Istimewa Anda!",
+            steps: [
+                {content: "Isi borang tempahan dewan dengan butiran dan tarikh pilihan anda."},
+                {content: "Pasukan kami akan menyemak permohonan anda dalam masa 3 hari."},
+                {content: "Jika diluluskan, kami akan menghubungi anda melalui WhatsApp untuk pengesahan."},
+                {content: "Selesaikan persiapan anda dan bersedia untuk acara yang lancar dan diberkati."}
+            ]
+        }
     },
     contact: {
         title: "Hubungi Kami",
