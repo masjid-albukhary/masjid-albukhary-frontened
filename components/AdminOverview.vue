@@ -50,6 +50,7 @@ const items: Items[] = [
 <style scoped>
 section {
   width: 100%;
+  height: 100vh;
 }
 
 .admin-overview-overview-header {
