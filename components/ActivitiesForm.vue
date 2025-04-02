@@ -35,6 +35,20 @@ const activityQuestions = [
     id: "description_my",
   },
   {
+    label: t("activity_form.label.summary_content_en"),
+    type: "textarea",
+    placeholder: t("activity_form.placeholder.summary_content_en"),
+    required: true,
+    id: "summary_content_en",
+  },
+  {
+    label: t("activity_form.label.summary_content_my"),
+    type: "textarea",
+    placeholder: t("activity_form.placeholder.summary_content_my"),
+    required: true,
+    id: "summary_content_my",
+  },
+  {
     label: t("activity_form.label.activity_date"),
     type: "date",
     placeholder: t("activity_form.placeholder.activity_date"),
@@ -117,6 +131,13 @@ const formSchema = z.object({
       .string()
       .min(30, 'Description (English) must be at least 30 characters long'),
   description_my: z
+      .string()
+      .min(30, 'Description (Malay) must be at least 30 characters long'),
+
+  summary_content_en: z
+      .string()
+      .min(30, 'Description (English) must be at least 30 characters long'),
+  summary_content_my: z
       .string()
       .min(30, 'Description (Malay) must be at least 30 characters long'),
 
