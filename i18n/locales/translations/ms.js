@@ -254,9 +254,9 @@ export default {
             location: "Lokasi",
             target_audience: "Sasaran Peserta",
             speaker: "Nama Penceramah / Tetamu",
+            activity_status :"Status Aktiviti",
             poster: "Muat Naik Poster / Gambar",
             estimated_participants: "Anggaran Peserta",
-            notes: "Nota Tambahan",
         },
         placeholder: {
             title_en: "Masukkan tajuk aktiviti dalam Bahasa Inggeris",
@@ -271,8 +271,8 @@ export default {
             location: "Masukkan lokasi",
             target_audience: "Sasaran Peserta",
             speaker: "Masukkan nama penceramah atau tetamu",
+            activity_status :"Status Aktiviti",
             estimated_participants: "Masukkan anggaran jumlah peserta",
-            notes: "Tambahkan sebarang maklumat tambahan",
         },
         options: {
             talk: "Ceramah Agama / Ceramah",

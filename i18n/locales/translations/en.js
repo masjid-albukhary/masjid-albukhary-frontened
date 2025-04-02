@@ -254,9 +254,9 @@ export default {
             location: "Location",
             target_audience: "Target Audience",
             speaker: "Speaker / Guest Name",
+            activity_status :"Activity Status",
             poster: "Upload Poster / Image",
             estimated_participants: "Estimated Participants",
-            notes: "Additional Notes",
         },
         placeholder: {
             title_en: "Enter activity title in English",
@@ -271,8 +271,8 @@ export default {
             location: "Enter location",
             target_audience: "Target Audience",
             speaker: "Enter speaker or guest name",
+            activity_status :"Activity Status",
             estimated_participants: "Enter estimated number of participants",
-            notes: "Add any extra information",
         },
         options: {
             talk: "Religious Talk / Ceramah",

@@ -69,12 +69,12 @@ const activityQuestions = [
     id: "activity_type",
     placeholder: t("activity_form.placeholder.activity_type"),
     options: [
-      { label: t("activity_form.options.talk"), value: "talk" },
-      { label: t("activity_form.options.quran_class"), value: "quran_class" },
-      { label: t("activity_form.options.community_event"), value: "community_event" },
-      { label: t("activity_form.options.fundraising"), value: "fundraising" },
-      { label: t("activity_form.options.volunteer"), value: "volunteer" },
-      { label: t("activity_form.options.others"), value: "others" },
+      {label: t("activity_form.options.talk"), value: "talk"},
+      {label: t("activity_form.options.quran_class"), value: "quran_class"},
+      {label: t("activity_form.options.community_event"), value: "community_event"},
+      {label: t("activity_form.options.fundraising"), value: "fundraising"},
+      {label: t("activity_form.options.volunteer"), value: "volunteer"},
+      {label: t("activity_form.options.others"), value: "others"},
     ],
   },
   {
@@ -98,6 +98,18 @@ const activityQuestions = [
     id: "speaker",
   },
   {
+    label: t("activity_form.label.activity_status"),
+    type: "select",
+    required: true,
+    placeholder:  t("activity_form.placeholder.activity_status"),
+    id: "activity_status",
+    options: [
+      {label: "Upcoming", value: "upcoming"},
+      {label: "Ongoing", value: "ongoing"},
+      {label: "Completed", value: "completed"},
+    ],
+  },
+  {
     label: t("activity_form.label.poster"),
     type: "file",
     required: false,
@@ -110,26 +122,22 @@ const activityQuestions = [
     required: false,
     id: "estimated_participants",
   },
-  {
-    label: t("activity_form.label.notes"),
-    type: "textarea",
-    placeholder: t("activity_form.placeholder.notes"),
-    required: false,
-    id: "notes",
-  },
 ];
 
 const formSchema = z.object({
   title_en: z
       .string()
       .min(8, 'Activity Title (English) must be at least 8 characters long'),
+
   title_my: z
       .string()
       .min(8, 'Activity Title (Malay) must be at least 8 characters long'),
 
+
   description_en: z
       .string()
       .min(30, 'Description (English) must be at least 30 characters long'),
+
   description_my: z
       .string()
       .min(30, 'Description (Malay) must be at least 30 characters long'),
@@ -137,11 +145,13 @@ const formSchema = z.object({
   summary_content_en: z
       .string()
       .min(30, 'Description (English) must be at least 30 characters long'),
+
   summary_content_my: z
       .string()
       .min(30, 'Description (Malay) must be at least 30 characters long'),
 
   activity_date: z.string().min(1, 'Activity date is required'),
+
   time: z.string().min(5, 'Time is required (e.g., 8:00 AM - 10:00 AM)'),
 
   activity_type: z.string().min(1, 'Activity Type is required'),
@@ -150,6 +160,8 @@ const formSchema = z.object({
 
   target_audience: z.string().optional(),
 
+  activity_status: z.string().optional(),
+
   speaker: z
       .string()
       .min(8, 'Speaker name must be at least 8 characters long'),
@@ -157,8 +169,6 @@ const formSchema = z.object({
   poster: z.any().optional(),
 
   estimated_participants: z.string().optional(),
-
-  notes: z.string().optional(),
 
 });
 
