@@ -97,23 +97,6 @@ const activityQuestions = [
     id: "estimated_participants",
   },
   {
-    label: t("activity_form.label.live_stream"),
-    type: "select",
-    id: "live_stream",
-    placeholder: t("activity_form.placeholder.live_stream"),
-    options: [
-      { label: t("activity_form.options.yes"), value: "yes" },
-      { label: t("activity_form.options.no"), value: "no" },
-    ],
-  },
-  {
-    label: t("activity_form.label.live_stream_link"),
-    type: "url",
-    placeholder: t("activity_form.placeholder.live_stream_link"),
-    required: false,
-    id: "live_stream_link",
-  },
-  {
     label: t("activity_form.label.notes"),
     type: "textarea",
     placeholder: t("activity_form.placeholder.notes"),
@@ -153,9 +136,6 @@ const formSchema = z.object({
   poster: z.any().optional(),
 
   estimated_participants: z.string().optional(),
-
-  live_stream: z.enum(['yes', 'no']),
-  live_stream_link: z.string().url('Live stream link must be a valid URL').optional(),
 
   notes: z.string().optional(),
 

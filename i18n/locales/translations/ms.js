@@ -254,8 +254,6 @@ export default {
             speaker: "Nama Penceramah / Tetamu",
             poster: "Muat Naik Poster / Gambar",
             estimated_participants: "Anggaran Peserta",
-            live_stream: "Adakah Siaran Langsung?",
-            live_stream_link: "Pautan Siaran Langsung (jika ada)",
             notes: "Nota Tambahan",
         },
         placeholder: {
@@ -270,8 +268,6 @@ export default {
             target_audience: "Sasaran Peserta",
             speaker: "Masukkan nama penceramah atau tetamu",
             estimated_participants: "Masukkan anggaran jumlah peserta",
-            live_stream: "Pilih jika ada Siaran Langsung",
-            live_stream_link: "Tampal pautan siaran langsung jika ada",
             notes: "Tambahkan sebarang maklumat tambahan",
         },
         options: {
