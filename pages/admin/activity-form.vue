@@ -8,7 +8,7 @@ import AdminSideBar from "~/components/AdminSideBar.vue";
   <TranslationHeader/>
   <AdminHeader/>
   <section class="admin-container">
-    <aside class="news-aside">
+    <aside class="activities-aside">
       <AdminSideBar/>
     </aside>
     <main>
@@ -25,9 +25,8 @@ import AdminSideBar from "~/components/AdminSideBar.vue";
   gap: 20px;
 }
 
-.news-aside {
+.activities-aside {
   display: flex;
-  background-color: var(--bg-color);
 }
 
 main {
@@ -39,7 +38,7 @@ main {
     grid-template-columns: 1fr;
   }
 
-  .news-aside {
+  .activities-aside {
     justify-content: center;
   }
 }
