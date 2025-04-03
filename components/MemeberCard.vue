@@ -106,6 +106,26 @@ function prevMemberPage() {
 </template>
 
 <style scoped>
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInOverlay {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
 .members-section {
   padding: 4rem 1rem;
   text-align: center;
@@ -139,9 +159,15 @@ function prevMemberPage() {
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: box-shadow 0.3s ease-in-out;
+  transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
   max-width: 350px;
   box-shadow: rgba(149, 157, 165, 0.3) 0 8px 24px;
+  opacity: 0;
+  animation: fadeIn 0.6s ease-in-out forwards;
+}
+
+.members-card:hover {
+  transform: scale(1.05);
 }
 
 .container {
@@ -166,11 +192,11 @@ function prevMemberPage() {
   overflow: hidden;
   width: 0;
   height: 100%;
-  transition: 0.5s ease;
+  transition: width 0.5s ease-in-out;
 }
 
 .container:hover .overlay {
-  width: 100%;
+  animation: slideInOverlay 0.5s forwards;
 }
 
 .text {
