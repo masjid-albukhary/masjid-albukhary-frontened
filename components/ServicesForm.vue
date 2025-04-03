@@ -1,9 +1,9 @@
 <script setup>
-import {reactive, ref, watch} from 'vue';
-import {z} from 'zod';
-import {useI18n} from 'vue-i18n'
+import { reactive, watch } from 'vue';
+import { z } from 'zod';
+import { useI18n } from 'vue-i18n';
 
-const {t} = useI18n()
+const { t } = useI18n();
 
 const serviceQuestions = [
   {
@@ -57,7 +57,7 @@ const serviceQuestions = [
   },
   {
     label: t("service_form.label.capacity"),
-    type: "text",
+    type: "number",
     placeholder: t("service_form.placeholder.capacity"),
     required: false,
     id: "capacity",
@@ -68,118 +68,92 @@ const formSchema = z.object({
   title_en: z
       .string()
       .min(8, 'Activity Title (English) must be at least 8 characters long'),
-
   title_my: z
       .string()
       .min(8, 'Activity Title (Malay) must be at least 8 characters long'),
-
   description_en: z
       .string()
       .min(30, 'Description (English) must be at least 30 characters long'),
-
   description_my: z
       .string()
       .min(30, 'Description (Malay) must be at least 30 characters long'),
-
   features_en: z
       .string()
       .min(10, 'Please provide at least one feature in English'),
-
   features_my: z
       .string()
       .min(10, 'Please provide at least one feature in Malay'),
-
   price: z
       .number()
       .min(0, 'Price must be a positive number'),
-
-  capacity: z.string().optional(),
+  capacity: z
+      .number()
+      .min(0, 'Price must be a positive number'),
 });
 
+const form = reactive(
+    serviceQuestions.reduce((acc, { id }) => {
+      acc[id] = '';
+      return acc;
+    }, {})
+);
 
-const form = reactive({});
 const errors = reactive({});
 
 serviceQuestions.forEach((question) => {
-  form[question.id] = "";
-  errors[question.id] = "";
+  errors[question.id] = '';
 });
 
+// Function to validate a specific field
 function validateField(field) {
   try {
     formSchema.shape[field].parse(form[field]);
-    errors[field] = "";
+    errors[field] = '';
   } catch (error) {
-    console.error(`Validation failed for field: ${field}`, error);
     errors[field] = error.errors ? error.errors[0].message : error.message;
   }
 }
 
+// Watch for form field changes and validate them
 serviceQuestions.forEach((question) => {
   watch(() => form[question.id], () => validateField(question.id));
 });
 
-const image = ref(null);
-
-const handleFileUpload = (event, inputDetails) => {
-  if (inputDetails.type !== 'file') {
-    return;
-  }
-  image.value = event.target.files[0];
-};
-
 async function handleSubmit() {
   form.Date = new Date().toLocaleDateString("en-GB");
 
+  // Validate the entire form
   const validationResults = formSchema.safeParse(form);
+
+  // If validation is successful
   if (validationResults.success) {
     try {
-      console.log("Sending API Request...");
-      const formDataObj = new FormData();
-      for (const key in form) {
-        const value = form[key];
-        if (value === null || value === undefined) {
-          continue;
-        }
-        formDataObj.append(key, value);
-      }
-      formDataObj.delete('image')
+      console.log("Validation passed.");
+      console.log("Form Data:", form);
 
-      if (image.value) {
-        formDataObj.append('image', image.value)
-      }
+      // Clear the form data after successful submission
+      Object.keys(form).forEach((key) => (form[key] = ''));
 
-      const response = await api.post("//", formDataObj);
-      console.log("Response Data:", response.data);
-      Object.keys(form).forEach((key) => (form[key] = ""));
-      isPopupVisible.value = true;
-      location.reload()
+      // Optionally, print a success message or proceed with actual form submission here
+      console.log("Form submitted successfully (without actual submission).");
+
     } catch (error) {
-      isPopupVisible.value = false;
       console.error("Error occurred:", error);
+      // Handle specific error scenarios (optional)
       if (error.response) {
         console.error("Backend Error:", error.response.data);
-        alert(`Error: ${error.response.data.detail || "Unable to submit the form."}`);
-        isPopupVisible.value = false;
-        // console.log("Response Data:", response.data.value);
       } else if (error.request) {
         console.error("No response from the server:", error.request);
-        alert("Server is not responding. Please try again later.");
-        isPopupVisible.value = false;
       } else {
         console.error("Request Setup Error:", error.message);
-        alert("An error occurred while submitting the form. Please try again.");
-        isPopupVisible.value = false;
       }
-      isPopupVisible.value = false;
     }
   } else {
+    // Log validation errors and alert the user
     console.log('Validation Errors:', validationResults.error.errors);
-    isPopupVisible.value = false;
     alert("Please correct the errors in the form.");
   }
 }
-
 </script>
 
 <template>
@@ -196,13 +170,11 @@ async function handleSubmit() {
               <label class="question-title" :for="question.label">{{ question.label }}</label>
 
               <input
-                  v-if="['text','email', 'file', 'date','number','url', 'date'].includes(question.type)"
+                  v-if="['text','email', 'date','number','url', 'date'].includes(question.type)"
                   :type="question.type"
                   v-model="form[question.id]"
                   :placeholder="question.placeholder"
                   :id="question.label"
-                  :accept="question.type === 'file' ? '.jpg,.jpeg,.png' : ''"
-                  @change="(e) => handleFileUpload(e, question)"
                   @input="validateField(question.id)"
               />
 
