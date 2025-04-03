@@ -91,13 +91,6 @@ const activityQuestions = [
     id: "target_audience",
   },
   {
-    label: t("activity_form.label.speaker"),
-    type: "text",
-    placeholder: t("activity_form.placeholder.speaker"),
-    required: false,
-    id: "speaker",
-  },
-  {
     label: t("activity_form.label.activity_status"),
     type: "select",
     required: true,
@@ -161,10 +154,6 @@ const formSchema = z.object({
   target_audience: z.string().optional(),
 
   activity_status: z.string().optional(),
-
-  speaker: z
-      .string()
-      .min(8, 'Speaker name must be at least 8 characters long'),
 
   poster: z.any().optional(),
 
