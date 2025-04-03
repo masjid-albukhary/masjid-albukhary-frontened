@@ -51,7 +51,7 @@ const members = [
 
 const currentMemberIndex = ref(0);
 
-const itemsPerPage = ref(5);
+const itemsPerPage = ref(4);
 
 const visibleMember = computed(() => {
   return members.slice(currentMemberIndex.value, currentMemberIndex.value + itemsPerPage.value);
@@ -162,6 +162,7 @@ function prevMemberPage() {
   left: 0;
   right: 0;
   background-color: var(--secondary-color);
+  opacity: 0.6;
   overflow: hidden;
   width: 0;
   height: 100%;
