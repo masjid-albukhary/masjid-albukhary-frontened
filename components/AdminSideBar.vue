@@ -9,7 +9,6 @@ const links = computed(() => [
   { link: "/admin", label: t('admin_sidebar.admin'), icon: "mdi-account-cog" },
   { link: "/admin/booking-dashboard", label: t('admin_sidebar.booking_overview'), icon: "mdi-calendar-check" },
   { link: "/admin/facility-form", label: t('admin_sidebar.facility_form'), icon: "mdi-domain" },
-  { link: "/admin/activity-form", label: t('admin_sidebar.activity_form'), icon: "mdi-run" },
   { link: "/admin/news-form", label: t('admin_sidebar.news_form'), icon: "mdi-newspaper-variant" }
 ])
 const handleLogout = () => {

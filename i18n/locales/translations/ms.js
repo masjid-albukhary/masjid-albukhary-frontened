@@ -200,7 +200,6 @@ export default {
         admin: "Admin",
         booking_overview: "Gambaran Tempahan",
         facility_form: "Borang Kemudahan",
-        activity_form: "Borang Aktiviti",
         news_form: "Borang Berita"
     },
     news_form: {

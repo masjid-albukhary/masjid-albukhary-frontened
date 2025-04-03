@@ -200,7 +200,6 @@ export default {
         admin: "Admin",
         booking_overview: "Booking Overview",
         facility_form: "Facility Form",
-        activity_form: "Activity Form",
         news_form: "News Form"
     },
     news_form: {

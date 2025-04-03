@@ -12,7 +12,7 @@ import AdminSideBar from "~/components/AdminSideBar.vue";
       <AdminSideBar/>
     </aside>
     <main>
-      <NewsForm/>
+      <ActivitiesForm/>
     </main>
   </section>
   <AdminFooter/>
