@@ -106,6 +106,12 @@ export default {
             message_placeholder: "Type your message here...",
         }
     },
+
+
+    members:{
+        title:"Meet Our Community",
+    },
+
     map_mosque: {
         mosque_location: "Albukhary Mosque Location",
         prayer_time: "Prayer Time",

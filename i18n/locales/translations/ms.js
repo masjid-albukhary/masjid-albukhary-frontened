@@ -86,6 +86,12 @@ export default {
             ]
         }
     },
+
+
+    members:{
+        title: "Bertemu komuniti kami",
+    },
+
     contact: {
         title: "Hubungi Kami",
         description: "Hubungi kami untuk sebarang pertanyaan atau kebimbangan, kami sedia membantu.",

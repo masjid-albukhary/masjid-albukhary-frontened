@@ -8,6 +8,7 @@ import Header from "~/components/Header.vue";
   <Header/>
   <landing/>
   <About/>
+  <MemeberCard/>
   <Contact/>
   <Footer/>
 </template>
