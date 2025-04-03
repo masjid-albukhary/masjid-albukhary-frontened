@@ -133,11 +133,11 @@ export default {
             email: "alamat e-mel"
         },
         links: {
-            home: "Laman Utama",
-            about: "Tentang Kami",
-            news: "Berita",
-            booking: "Tempahan Tempat",
+            home: "Utama",
+            about: "Kira-Kira",
+            news: "Aktiviti",
             services: "perkhidmatan",
+            facilities: "Kemudahan",
             gallery: "Galeri",
             contact: "Hubungi"
         },

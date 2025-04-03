@@ -6,7 +6,7 @@ const { t } = useI18n();
 const links = [
   { link: "/", labelKey: "footer.links.home", icon: "mdi-home" },
   { link: "/about", labelKey: "footer.links.about", icon: "mdi-information" },
-  { link: "/activities", labelKey: "footer.links.activities", icon: "mdi-calendar-star" },
+  { link: "/activities", labelKey: "footer.links.news", icon: "mdi-calendar-star" },
   { link: "/services", labelKey: "footer.links.services", icon: "mdi-calendar-check" },
   { link: "/facilities", labelKey: "footer.links.facilities", icon: "mdi-domain" },
   { link: "/gallery", labelKey: "footer.links.gallery", icon: "mdi-image-multiple" },
