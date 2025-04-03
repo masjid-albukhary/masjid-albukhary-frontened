@@ -4,7 +4,7 @@ import {useI18n} from 'vue-i18n';
 
 const {t} = useI18n();
 
-interface News {
+interface Activity {
   id: number;
   src: string;
   alt: string;
@@ -29,7 +29,7 @@ interface News {
   status: "Available" | "Booked";
 }
 
-const news = [
+const activities = [
   {
     id: 1,
     name: "Masjid Event Hall",
@@ -157,12 +157,12 @@ const news = [
 const currentIndex = ref(0);
 const itemsPerPage = ref(6);
 
-const visibleNews = computed(() => {
-  return news.slice(currentIndex.value, currentIndex.value + itemsPerPage.value);
+const visibleActivities = computed(() => {
+  return activities.slice(currentIndex.value, currentIndex.value + itemsPerPage.value);
 });
 
 function nextPage() {
-  if (currentIndex.value + itemsPerPage.value < news.length) {
+  if (currentIndex.value + itemsPerPage.value < activities.length) {
     currentIndex.value += itemsPerPage.value;
   } else {
     currentIndex.value = 0;
@@ -173,7 +173,7 @@ function prevPage() {
   if (currentIndex.value - itemsPerPage.value >= 0) {
     currentIndex.value -= itemsPerPage.value;
   } else {
-    currentIndex.value = news.length - itemsPerPage.value;
+    currentIndex.value = activities.length - itemsPerPage.value;
   }
 }
 
@@ -181,23 +181,23 @@ function prevPage() {
 
 <template>
 
-  <section class="news">
+  <section class="activities">
     <h1>
       <UIcon
           name="mdi-calendar-star"
       />
       {{ t('activities.title') }}
     </h1>
-    <div class="news-container">
-      <div class="card" v-for="news in visibleNews" :key="news.id">
+    <div class="activities-container">
+      <div class="card" v-for="activities in visibleActivities" :key="activities.id">
         <img
-            :src="news.src"
-            :alt="news.alt"
-            class="card-news"
+            :src="activities.src"
+            :alt="activities.alt"
+            class="card-activities"
         />
         <div class="overlay">
-          <UIcon name="mdi-newspaper" class="news-icon"/>
-          <NuxtLink :to="`/news/${news.id}`" class="news-title">
+          <UIcon name="mdi-newspaper" class="activities-icon"/>
+          <NuxtLink :to="`/activities/${activities.id}`" class="activities-title">
             <UIcon name="mdi-information-outline"/>
             Learn More
           </NuxtLink>
@@ -233,12 +233,12 @@ h1 {
   margin-bottom: 2rem;
 }
 
-.news {
+.activities {
   padding: 2rem;
   text-align: center;
 }
 
-.news-container {
+.activities-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -253,7 +253,7 @@ h1 {
   cursor: pointer;
 }
 
-.card-news {
+.card-activities {
   width: 100%;
   height: 100%;
   transition: transform 0.3s ease-in-out;
@@ -278,12 +278,12 @@ h1 {
   opacity: 1;
 }
 
-.news-icon {
+.activities-icon {
   font-size: 3rem;
   color: white;
 }
 
-.news-title {
+.activities-title {
   color: white;
   font-size: 1.2rem;
   margin-top: 10px;
@@ -324,7 +324,7 @@ h1 {
 }
 
 
-.news {
+.activities {
   background: var(--bg-color);
 }
 
