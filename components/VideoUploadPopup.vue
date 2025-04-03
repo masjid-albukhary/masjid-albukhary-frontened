@@ -6,7 +6,7 @@ const props = defineProps({show: Boolean});
 const emit = defineEmits(['update:show']);
 const closePopup = () => emit('update:show', false);
 
-const bookingQuestions = [
+const uploadVideosQuestions = [
   {
     label: 'Name Field',
     type: 'text',
@@ -44,8 +44,8 @@ const formSchema = z.object({
   upload_image: z.any().optional("Upload must be a file")
 });
 
-const form = reactive(Object.fromEntries(bookingQuestions.map(q => [q.id, ''])));
-const errors = reactive(Object.fromEntries(bookingQuestions.map(q => [q.id, ''])));
+const form = reactive(Object.fromEntries(uploadVideosQuestions.map(q => [q.id, ''])));
+const errors = reactive(Object.fromEntries(uploadVideosQuestions.map(q => [q.id, ''])));
 const evidence_photo = ref(null);
 const isPopupVisible = ref(false);
 
@@ -58,7 +58,7 @@ function validateField(field) {
   }
 }
 
-bookingQuestions.forEach(question => watch(() => form[question.id], () => validateField(question.id)));
+uploadVideosQuestions.forEach(question => watch(() => form[question.id], () => validateField(question.id)));
 
 const handleFileUpload = (event, inputDetails) => {
   if (inputDetails.type === 'file') {
@@ -97,7 +97,7 @@ async function handleSubmit() {
         <h2>Upload Video</h2>
         <form @submit.prevent="handleSubmit">
           <div class="upload-video-form">
-            <div class="info" v-for="(question, index) in bookingQuestions" :key="index">
+            <div class="info" v-for="(question, index) in uploadVideosQuestions" :key="index">
               <label class="question-title" :for="question.label">{{ question.label }}</label>
               <input
                   v-if="['text', 'url', 'file'].includes(question.type)"
