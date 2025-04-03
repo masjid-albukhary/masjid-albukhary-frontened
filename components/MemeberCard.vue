@@ -79,7 +79,7 @@ function prevMemberPage() {
 <template>
   <section class="members-section">
     <div class="members-card-header">
-      <h2 class="member-name">{{ t('members.name') }}</h2>
+      <h2 class="member-name">{{ t('members.title') }}</h2>
     </div>
 
     <div class="members-card-grid">
@@ -87,8 +87,8 @@ function prevMemberPage() {
         <div class="container">
           <img :src="member.photo" :alt="member.name" class="image" />
           <div class="overlay">
-            <span class="text-role">{{member.role}}</span>
-            <span class="text">{{member.name}}</span>
+            <span class="text-role">{{member.name}}</span>
+            <span class="text">{{member.role}}</span>
           </div>
         </div>
       </div>
@@ -133,6 +133,7 @@ function prevMemberPage() {
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
+  max-width: 100%;
 }
 
 .members-card-header {
@@ -140,16 +141,18 @@ function prevMemberPage() {
 }
 
 .member-name {
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-weight: bold;
   color: var(--primary-color);
 }
 
 .members-card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 2rem;
+  width: 100%;
   max-width: 1200px;
+  padding: 0 1rem;
 }
 
 .members-card {
@@ -160,7 +163,7 @@ function prevMemberPage() {
   flex-direction: column;
   align-items: center;
   transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
-  max-width: 350px;
+  max-width: 100%;
   box-shadow: rgba(149, 157, 165, 0.3) 0 8px 24px;
   opacity: 0;
   animation: fadeIn 0.6s ease-in-out forwards;
@@ -199,24 +202,22 @@ function prevMemberPage() {
   animation: slideInOverlay 0.5s forwards;
 }
 
-.text {
+.text,
+.text-role {
   white-space: nowrap;
   color: white;
-  font-size: 20px;
+  font-size: 18px;
   position: absolute;
-  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
+.text {
+  top: 60%;
+}
+
 .text-role {
-  white-space: nowrap;
-  color: white;
-  font-size: 20px;
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 40%;
 }
 
 .buttons {
@@ -224,6 +225,7 @@ function prevMemberPage() {
   justify-content: center;
   margin-top: 2rem;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .nav-button {
@@ -240,6 +242,64 @@ function prevMemberPage() {
 .nav-button:hover {
   background-color: var(--secondary-color);
   transform: scale(1.05);
+}
+
+
+@media (max-width: 768px) {
+  .members-section {
+    padding: 2rem 1rem;
+  }
+
+  .member-name {
+    font-size: 1.8rem;
+  }
+
+  .members-card-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .members-card {
+    padding: 1.5rem;
+  }
+
+  .text,
+  .text-role {
+    font-size: 16px;
+  }
+
+  .nav-button {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .member-name {
+    font-size: 1.6rem;
+  }
+
+  .members-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .members-card {
+    padding: 1.2rem;
+  }
+
+  .text,
+  .text-role {
+    font-size: 14px;
+  }
+
+  .buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nav-button {
+    width: 100%;
+  }
 }
 </style>
 
