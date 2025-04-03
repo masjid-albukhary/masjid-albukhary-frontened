@@ -2,7 +2,7 @@ export default {
     menu: {
         home: "Home",
         about: "About",
-        news: "News",
+        news: "Activities",
         services: "Services",
         facilities: "Facilities",
         gallery: "Gallery",
@@ -144,6 +144,10 @@ export default {
             youtube: "YouTube",
             whatsapp: "WhatsApp"
         }
+    },
+
+    activities:{
+        title: "Activities",
     },
 
     // admin side

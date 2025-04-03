@@ -2,7 +2,7 @@ export default {
     menu: {
         home: "Utama",
         about: "Kira-Kira",
-        news: "Berita",
+        news: "Aktiviti",
         services: "perkhidmatan",
         facilities: "Kemudahan",
         gallery: "Galeri",
@@ -113,6 +113,10 @@ export default {
     map_mosque: {
         mosque_location: "Lokasi Masjid Albukhary",
         prayer_time: "Waktu Solat",
+    },
+
+    activities:{
+        title: "Aktiviti",
     },
 
     donation: {

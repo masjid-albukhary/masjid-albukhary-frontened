@@ -2,7 +2,7 @@
 import {ref, onMounted} from 'vue';
 import {useI18n} from 'vue-i18n';
 
-const {t,} = useI18n();
+const {t} = useI18n();
 
 const isLinksVisible = ref(false);
 const isMobile = ref(false);
@@ -12,7 +12,7 @@ import {computed} from 'vue';
 const links = computed(() => [
   {link: "/", label: t('menu.home'), icon: "mdi-home"},
   {link: "/about", label: t('menu.about'), icon: "mdi-information"},
-  {link: "/news", label: t('menu.news'), icon: "mdi-newspaper-variant"},
+  {link: "/activities", label: t('menu.news'), icon: "mdi-calendar-star"},
   {link: "/services", label: t('menu.services'), icon: "mdi-calendar-clock"},
   {link: "/facilities", label: t('menu.facilities'), icon: "mdi-domain"},
   {link: "/gallery", label: t('menu.gallery'), icon: "mdi-image-multiple"},
