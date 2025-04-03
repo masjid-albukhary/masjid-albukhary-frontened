@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {ref, onMounted, onUnmounted} from 'vue'
-import ImageUploadPopup from '~/components/ImageUploadPopup.vue'
-import VideoUploadPopup from '~/components/VideoUploadPopup.vue'
+import ImageUploaderModal from '~/components/ImageUploaderModal.vue'
+import VideoUploaderModal from '~/components/VideoUploaderModal.vue'
 
 import {useI18n} from 'vue-i18n'
 
@@ -55,8 +55,8 @@ const logo = "/images/masjid_albukary_logo.png"
 <template>
   <header class="header-container">
 
-    <ImageUploadPopup :show="isImagePopupVisible" @update:show="isImagePopupVisible = $event"/>
-    <VideoUploadPopup :show="isVideoPopupVisible" @update:show="isVideoPopupVisible = $event"/>
+    <ImageUploaderModal :show="isImagePopupVisible" @update:show="isImagePopupVisible = $event"/>
+    <VideoUploaderModal :show="isVideoPopupVisible" @update:show="isVideoPopupVisible = $event"/>
 
 
     <div class="header-wrapper">

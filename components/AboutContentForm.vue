@@ -42,7 +42,6 @@ const AboutContentQuestions = [
   },
 ]
 
-
 const formSchema = z.object({
   title_en: z.string().min(10, 'Title must be at least 10 characters long'),
   title_my: z.string().min(10, 'Title must be at least 15 characters long'),
