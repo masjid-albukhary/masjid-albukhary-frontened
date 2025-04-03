@@ -4,7 +4,7 @@
 
 <template>
   <Header/>
-  <NewsCard/>
+  <ActivitiesCard/>
   <Footer/>
 </template>
 

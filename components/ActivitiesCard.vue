@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import {computed, ref} from "vue";
+import {useI18n} from 'vue-i18n';
+
+const {t} = useI18n();
 
 interface News {
   id: number;
@@ -26,7 +29,7 @@ interface News {
   status: "Available" | "Booked";
 }
 
-const news= [
+const news = [
   {
     id: 1,
     name: "Masjid Event Hall",
@@ -39,11 +42,11 @@ const news= [
     capacity: 200,
     price: 150,
     availability: [
-      { day: "Monday-Friday", time: "8:00 AM - 10:00 PM" },
-      { day: "Saturday-Sunday", time: "9:00 AM - 11:00 PM" },
+      {day: "Monday-Friday", time: "8:00 AM - 10:00 PM"},
+      {day: "Saturday-Sunday", time: "9:00 AM - 11:00 PM"},
     ],
     amenities: ["Prayer Mats", "Sound System", "Air Conditioning", "Parking"],
-    contact: { phone: "+987654321", email: "info@masjid.com" },
+    contact: {phone: "+987654321", email: "info@masjid.com"},
     tags: ["religious", "masjid", "prayer", "event"],
     status: "Available",
   },
@@ -59,12 +62,12 @@ const news= [
     capacity: 500,
     price: 200,
     availability: [
-      { day: "Monday-Friday", time: "6:00 AM - 10:00 PM" },
-      { day: "Saturday-Sunday", time: "7:00 AM - 11:00 PM" },
+      {day: "Monday-Friday", time: "6:00 AM - 10:00 PM"},
+      {day: "Saturday-Sunday", time: "7:00 AM - 11:00 PM"},
     ],
     amenities: ["Locker Rooms", "Floodlights", "Seating Area", "Cafeteria"],
     bookingUrl: "https://www.example.com/book-sports-complex",
-    contact: { phone: "+123456789", email: "contact@sportscomplex.com" },
+    contact: {phone: "+123456789", email: "contact@sportscomplex.com"},
     tags: ["sports", "fitness", "stadium", "community"],
     status: "Available",
   },
@@ -80,12 +83,12 @@ const news= [
     capacity: 50,
     price: 50,
     availability: [
-      { day: "Monday-Friday", time: "9:00 AM - 8:00 PM" },
-      { day: "Saturday", time: "10:00 AM - 6:00 PM" },
+      {day: "Monday-Friday", time: "9:00 AM - 8:00 PM"},
+      {day: "Saturday", time: "10:00 AM - 6:00 PM"},
     ],
     amenities: ["Wi-Fi", "Projector", "Whiteboard", "Bookshelf Access"],
     bookingUrl: "https://www.example.com/book-library-room",
-    contact: { phone: "+112233445", email: "library@knowledge.com" },
+    contact: {phone: "+112233445", email: "library@knowledge.com"},
     tags: ["library", "conference", "study", "workshop"],
     status: "Booked",
   },
@@ -101,11 +104,11 @@ const news= [
     capacity: 300,
     price: 500,
     availability: [
-      { day: "Monday-Saturday", time: "12:00 PM - 11:00 PM" },
+      {day: "Monday-Saturday", time: "12:00 PM - 11:00 PM"},
     ],
     amenities: ["Catering", "Stage", "Lighting System", "Parking"],
     bookingUrl: "https://www.example.com/book-banquet-hall",
-    contact: { phone: "+556677889", email: "events@cityhall.com" },
+    contact: {phone: "+556677889", email: "events@cityhall.com"},
     tags: ["banquet", "wedding", "event", "reception"],
     status: "Available",
   },
@@ -121,11 +124,11 @@ const news= [
     capacity: 100,
     price: 100,
     availability: [
-      { day: "Monday-Friday", time: "8:00 AM - 10:00 PM" },
+      {day: "Monday-Friday", time: "8:00 AM - 10:00 PM"},
     ],
     amenities: ["High-Speed Wi-Fi", "Meeting Rooms", "Coffee Bar", "Tech Support"],
     bookingUrl: "https://www.example.com/book-tech-hub",
-    contact: { phone: "+998877665", email: "support@techhub.com" },
+    contact: {phone: "+998877665", email: "support@techhub.com"},
     tags: ["coworking", "startup", "tech", "workspace"],
     status: "Available",
   },
@@ -141,11 +144,11 @@ const news= [
     capacity: 80,
     price: 75,
     availability: [
-      { day: "Monday-Saturday", time: "10:00 AM - 7:00 PM" },
+      {day: "Monday-Saturday", time: "10:00 AM - 7:00 PM"},
     ],
     amenities: ["Playground", "Art & Craft Zone", "Storytelling Area", "Supervision"],
     bookingUrl: "https://www.example.com/book-kids-center",
-    contact: { phone: "+445566778", email: "kids@activitycenter.com" },
+    contact: {phone: "+445566778", email: "kids@activitycenter.com"},
     tags: ["children", "play", "education", "family"],
     status: "Booked",
   }
@@ -181,9 +184,9 @@ function prevPage() {
   <section class="news">
     <h1>
       <UIcon
-          name="mdi-office-building"
+          name="mdi-calendar-star"
       />
-      Our news
+      {{ t('activities.title') }}
     </h1>
     <div class="news-container">
       <div class="card" v-for="news in visibleNews" :key="news.id">
@@ -193,9 +196,9 @@ function prevPage() {
             class="card-news"
         />
         <div class="overlay">
-          <UIcon name="mdi-newspaper" class="news-icon" />
+          <UIcon name="mdi-newspaper" class="news-icon"/>
           <NuxtLink :to="`/news/${news.id}`" class="news-title">
-            <UIcon name="mdi-information-outline" />
+            <UIcon name="mdi-information-outline"/>
             Learn More
           </NuxtLink>
 
@@ -205,11 +208,12 @@ function prevPage() {
 
     <div class="buttons">
       <button @click="prevPage" class="nav-button">
-        <UIcon name="mdi-arrow-left"/>
+        <UIcon name="mdi-arrow-left-circle"/>
       </button>
       <button @click="nextPage" class="nav-button">
-        <UIcon name="mdi-arrow-right"/>
+        <UIcon name="mdi-arrow-right-circle"/>
       </button>
+
     </div>
   </section>
 </template>
@@ -294,19 +298,17 @@ h1 {
 
 .nav-button {
   padding: 0.5rem 1rem;
-  font-size: 1.2rem;
-  background-color: var(--primary-color);
-  color: var(--text-color);
+  font-size: 1.5rem;
+  color: var(--primary-color);
   border: none;
   outline: none;
   border-radius: 1rem;
   cursor: pointer;
-  transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  transition: color 0.3s ease-in-out;
 }
 
 .nav-button:hover {
-  background-color: var(--secondary-color);
-  color: var(--text-color);
+  color: var(--secondary-color);
 }
 
 @media (max-width: 768px) {
