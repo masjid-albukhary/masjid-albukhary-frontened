@@ -182,12 +182,17 @@ function prevPage() {
 <template>
 
   <section class="activities">
-    <h1>
+
+    <h1 class="title">
+
       <UIcon
-          name="mdi-calendar-star"
+          name="mdi-chevron-right"
       />
+
       {{ t('activities.title') }}
+
     </h1>
+
     <div class="activities-container">
       <div class="card" v-for="activities in visibleActivities" :key="activities.id">
         <img
@@ -227,15 +232,16 @@ section {
   margin: 0 auto;
 }
 
-h1 {
+section .title {
+  align-items: center;
   font-size: 2rem;
-  color: var(--primary-color);
-  margin-bottom: 2rem;
+  color: var(--text-hover);
+  margin: 0 2rem 3rem 2rem;
 }
 
 .activities {
-  padding: 2rem;
-  text-align: center;
+  padding: 1.5rem;
+  text-align: start;
 }
 
 .activities-container {
