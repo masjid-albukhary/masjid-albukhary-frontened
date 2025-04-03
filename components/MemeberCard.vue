@@ -96,10 +96,10 @@ function prevMemberPage() {
 
     <div class="buttons">
       <button @click="prevMemberPage" class="nav-button">
-        <UIcon name="mdi-arrow-left" />
+        <UIcon name="mdi-arrow-left-circle"/>
       </button>
       <button @click="nextMemberPage" class="nav-button">
-        <UIcon name="mdi-arrow-right" />
+        <UIcon name="mdi-arrow-right-circle"/>
       </button>
     </div>
   </section>
