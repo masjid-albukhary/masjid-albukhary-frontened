@@ -4,154 +4,159 @@ import {useI18n} from 'vue-i18n';
 
 const {t} = useI18n();
 
-interface Activity {
+const Activity = ref<{
   id: number;
+  name: string;
+  description: string;
+  activity_type: string;
   src: string;
   alt: string;
-  name: string;
-  summary: string;
-  description: string;
+  date: string;
+  url: string | null;
   location: string;
-  contact: {
-    phone: string;
-    email: string;
-  };
-  category: string;
-  capacity: number;
+  time: string;
+  target_audience: string;
+  estimated_participants: number;
   price: number;
-  availability: {
-    day: string;
-    time: string;
-  }[];
   amenities: string[];
   bookingUrl: string;
-  tags: string[];
-  status: "Available" | "Booked";
-}
+  activity_status: string;
+} | null>(null);
 
 const activities = [
   {
     id: 1,
-    name: "Masjid Event Hall",
-    description: "A beautifully designed hall for community prayers and events.",
-    category: "Religious Space",
-    src: "images/masjid-about-bg.png",
-    alt: "Masjid Video 1",
-    bookingUrl: "https://www.youtube.com/watch?v=4pku9EburYQ",
-    location: "456 Mosque Road, Downtown",
-    capacity: 200,
-    price: 150,
-    availability: [
-      {day: "Monday-Friday", time: "8:00 AM - 10:00 PM"},
-      {day: "Saturday-Sunday", time: "9:00 AM - 11:00 PM"},
-    ],
-    amenities: ["Prayer Mats", "Sound System", "Air Conditioning", "Parking"],
-    contact: {phone: "+987654321", email: "info@masjid.com"},
-    tags: ["religious", "masjid", "prayer", "event"],
-    status: "Available",
+    name: "Quran Recitation Competition",
+    description: "An annual competition where participants showcase their Quran recitation skills.",
+    activity_type: "Religious Event",
+    src: "/images/masjid-about-bg.png",
+    alt: "Quran Recitation Competition",
+    target_audience: "Children & Adults",
+    bookingUrl: "https://www.example.com/quran-competition",
+    location: "Masjid Al-Noor, Main Prayer Hall",
+    estimated_participants: 100,
+    price: 0,
+    date: "2024-11-15",
+    time: "10:00 AM - 2:00 PM",
+    amenities: ["Prayer Mats", "Sound System", "Seating Area"],
+    contact: { phone: "+60123456789", email: "events@masjid.com" },
+    tags: ["quran", "recitation", "competition", "islamic"],
+    activity_status: "Upcoming",
   },
   {
     id: 2,
-    name: "Community Sports Complex",
-    description: "A modern sports complex with facilities for football, basketball, and tennis.",
-    category: "Sports Facility",
-    src: "images/masjid-about-bg.png",
-    alt: "Sports Complex",
-    url: "https://www.example.com/sports-complex",
-    location: "123 Stadium Road, City Center",
-    capacity: 500,
-    price: 200,
-    availability: [
-      {day: "Monday-Friday", time: "6:00 AM - 10:00 PM"},
-      {day: "Saturday-Sunday", time: "7:00 AM - 11:00 PM"},
-    ],
-    amenities: ["Locker Rooms", "Floodlights", "Seating Area", "Cafeteria"],
-    bookingUrl: "https://www.example.com/book-sports-complex",
-    contact: {phone: "+123456789", email: "contact@sportscomplex.com"},
-    tags: ["sports", "fitness", "stadium", "community"],
-    status: "Available",
+    name: "Islamic Parenting Workshop",
+    description: "A workshop focused on raising children with Islamic values in a modern world.",
+    activity_type: "Educational Seminar",
+    src: "/images/masjid-about-bg.png",
+    alt: "Islamic Parenting Workshop",
+    target_audience: "Parents & Guardians",
+    bookingUrl: "https://www.example.com/parenting-workshop",
+    location: "Masjid Al-Falah, Community Hall",
+    estimated_participants: 80,
+    price: 10,
+    date: "2024-10-05",
+    time: "2:00 PM - 5:00 PM",
+    amenities: ["Projector", "Refreshments", "Childcare Area"],
+    contact: { phone: "+60987654321", email: "info@masjid.com" },
+    tags: ["parenting", "education", "family", "workshop"],
+    activity_status: "Open for Registration",
   },
   {
     id: 3,
-    name: "Public Library Conference Room",
-    description: "A quiet and professional space for meetings, workshops, and study sessions.",
-    category: "Library",
-    src: "images/masjid-about-bg.png",
-    alt: "Library Conference Room",
-    url: "https://www.example.com/library-room",
-    location: "789 Book Street, Knowledge Town",
-    capacity: 50,
-    price: 50,
-    availability: [
-      {day: "Monday-Friday", time: "9:00 AM - 8:00 PM"},
-      {day: "Saturday", time: "10:00 AM - 6:00 PM"},
-    ],
-    amenities: ["Wi-Fi", "Projector", "Whiteboard", "Bookshelf Access"],
-    bookingUrl: "https://www.example.com/book-library-room",
-    contact: {phone: "+112233445", email: "library@knowledge.com"},
-    tags: ["library", "conference", "study", "workshop"],
-    status: "Booked",
+    name: "Weekly Tafsir Class",
+    description: "An in-depth weekly study session on the meaning of the Quran.",
+    activity_type: "Religious Class",
+    src: "/images/masjid-about-bg.png",
+    alt: "Tafsir Class",
+    target_audience: "General Public",
+    bookingUrl: "https://www.example.com/tafsir-class",
+    location: "Masjid An-Nur, Lecture Room 2",
+    estimated_participants: 50,
+    price: 0,
+    date: "Every Friday",
+    time: "7:30 PM - 9:00 PM",
+    amenities: ["Wi-Fi", "Books & Materials", "Tea & Coffee"],
+    contact: { phone: "+6045678912", email: "classes@masjid.com" },
+    tags: ["tafsir", "quran", "study", "religious"],
+    activity_status: "Ongoing",
   },
   {
     id: 4,
-    name: "City Hall Banquet Hall",
-    description: "A grand hall for weddings, banquets, and formal events.",
-    category: "Banquet Hall",
-    src: "images/masjid-about-bg.png",
-    alt: "City Hall Banquet",
-    url: "https://www.example.com/city-hall-banquet",
-    location: "222 City Square, Metropolitan Area",
-    capacity: 300,
-    price: 500,
-    availability: [
-      {day: "Monday-Saturday", time: "12:00 PM - 11:00 PM"},
-    ],
-    amenities: ["Catering", "Stage", "Lighting System", "Parking"],
-    bookingUrl: "https://www.example.com/book-banquet-hall",
-    contact: {phone: "+556677889", email: "events@cityhall.com"},
-    tags: ["banquet", "wedding", "event", "reception"],
-    status: "Available",
+    name: "Ramadan Iftar Program",
+    description: "A community event providing free iftar meals for those breaking their fast.",
+    activity_type: "Charity Event",
+    src: "/images/masjid-about-bg.png",
+    alt: "Ramadan Iftar Program",
+    target_audience: "Everyone",
+    bookingUrl: "https://www.example.com/ramadan-iftar",
+    location: "Masjid Al-Rahman, Open Courtyard",
+    estimated_participants: 300,
+    price: 0,
+    date: "2024-03-20 to 2024-04-19",
+    time: "Maghrib Time",
+    amenities: ["Food & Drinks", "Seating Area", "Volunteer Assistance"],
+    contact: { phone: "+60311223344", email: "iftar@masjid.com" },
+    tags: ["ramadan", "iftar", "charity", "community"],
+    activity_status: "Planned",
   },
   {
     id: 5,
-    name: "Tech Innovation Hub",
-    description: "A co-working space designed for startups, entrepreneurs, and developers.",
-    category: "Co-Working Space",
-    src: "images/masjid-about-bg.png",
-    alt: "Tech Innovation Hub",
-    url: "https://www.example.com/tech-hub",
-    location: "88 Silicon Valley, Tech District",
-    capacity: 100,
-    price: 100,
-    availability: [
-      {day: "Monday-Friday", time: "8:00 AM - 10:00 PM"},
-    ],
-    amenities: ["High-Speed Wi-Fi", "Meeting Rooms", "Coffee Bar", "Tech Support"],
-    bookingUrl: "https://www.example.com/book-tech-hub",
-    contact: {phone: "+998877665", email: "support@techhub.com"},
-    tags: ["coworking", "startup", "tech", "workspace"],
-    status: "Available",
+    name: "Masjid Clean-Up Drive",
+    description: "A volunteer-driven event to clean and beautify the masjid premises.",
+    activity_type: "Community Service",
+    src: "/images/masjid-about-bg.png",
+    alt: "Masjid Clean-Up Drive",
+    target_audience: "Volunteers",
+    bookingUrl: "https://www.example.com/clean-up-drive",
+    location: "Masjid Al-Huda, Entire Premises",
+    estimated_participants: 50,
+    price: 0,
+    date: "2024-08-10",
+    time: "8:00 AM - 12:00 PM",
+    amenities: ["Cleaning Supplies", "Refreshments", "Safety Gear"],
+    contact: { phone: "+60155667788", email: "volunteer@masjid.com" },
+    tags: ["community", "cleaning", "volunteer", "service"],
+    activity_status: "Upcoming",
   },
   {
-    id: 6,
-    name: "Children's Activity Center",
-    description: "An interactive and fun space for kids to learn and play.",
-    category: "Children's Center",
-    src: "images/masjid-about-bg.png",
-    alt: "Kids Activity Center",
-    url: "https://www.example.com/kids-center",
-    location: "55 Happy Street, Family Town",
-    capacity: 80,
-    price: 75,
-    availability: [
-      {day: "Monday-Saturday", time: "10:00 AM - 7:00 PM"},
-    ],
-    amenities: ["Playground", "Art & Craft Zone", "Storytelling Area", "Supervision"],
-    bookingUrl: "https://www.example.com/book-kids-center",
-    contact: {phone: "+445566778", email: "kids@activitycenter.com"},
-    tags: ["children", "play", "education", "family"],
-    status: "Booked",
-  }
+    id:6,
+    name: "Ramadan Iftar Program",
+    description: "A community event providing free iftar meals for those breaking their fast.",
+    activity_type: "Charity Event",
+    src: "/images/masjid-about-bg.png",
+    alt: "Ramadan Iftar Program",
+    target_audience: "Everyone",
+    bookingUrl: "https://www.example.com/ramadan-iftar",
+    location: "Masjid Al-Rahman, Open Courtyard",
+    estimated_participants: 300,
+    price: 0,
+    date: "2024-03-20 to 2024-04-19",
+    time: "Maghrib Time",
+    amenities: ["Food & Drinks", "Seating Area", "Volunteer Assistance"],
+    contact: { phone: "+60311223344", email: "iftar@masjid.com" },
+    tags: ["ramadan", "iftar", "charity", "community"],
+    activity_status: "Planned",
+  },
+  {
+    id: 7,
+    name: "Masjid Clean-Up Drive",
+    description: "A volunteer-driven event to clean and beautify the masjid premises.",
+    activity_type: "Community Service",
+    src: "/images/masjid-about-bg.png",
+    alt: "Masjid Clean-Up Drive",
+    target_audience: "Volunteers",
+    bookingUrl: "https://www.example.com/clean-up-drive",
+    location: "Masjid Al-Huda, Entire Premises",
+    estimated_participants: 50,
+    price: 0,
+    date: "2024-08-10",
+    time: "8:00 AM - 12:00 PM",
+    amenities: ["Cleaning Supplies", "Refreshments", "Safety Gear"],
+    contact: { phone: "+60155667788", email: "volunteer@masjid.com" },
+    tags: ["community", "cleaning", "volunteer", "service"],
+    activity_status: "Upcoming",
+  },
 ];
 
 const currentIndex = ref(0);
@@ -235,7 +240,7 @@ section {
 section .title {
   align-items: center;
   font-size: 2rem;
-  color: var(--text-hover);
+  color: var(--primary-color);
   margin: 0 2rem 3rem 2rem;
 }
 

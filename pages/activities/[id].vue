@@ -4,7 +4,8 @@ import {ref, onMounted} from "vue";
 
 const {t} = useI18n();
 const route = useRoute();
-const newsInfo = ref<{
+
+const Activity = ref<{
   id: number;
   name: string;
   description: string;
@@ -23,7 +24,7 @@ const newsInfo = ref<{
   activity_status: string;
 } | null>(null);
 
-const news = [
+const activities = [
   {
     id: 1,
     name: "Quran Recitation Competition",
@@ -118,12 +119,50 @@ const news = [
     contact: { phone: "+60155667788", email: "volunteer@masjid.com" },
     tags: ["community", "cleaning", "volunteer", "service"],
     activity_status: "Upcoming",
-  }
+  },
+  {
+    id:6,
+    name: "Ramadan Iftar Program",
+    description: "A community event providing free iftar meals for those breaking their fast.",
+    activity_type: "Charity Event",
+    src: "/images/masjid-about-bg.png",
+    alt: "Ramadan Iftar Program",
+    target_audience: "Everyone",
+    bookingUrl: "https://www.example.com/ramadan-iftar",
+    location: "Masjid Al-Rahman, Open Courtyard",
+    estimated_participants: 300,
+    price: 0,
+    date: "2024-03-20 to 2024-04-19",
+    time: "Maghrib Time",
+    amenities: ["Food & Drinks", "Seating Area", "Volunteer Assistance"],
+    contact: { phone: "+60311223344", email: "iftar@masjid.com" },
+    tags: ["ramadan", "iftar", "charity", "community"],
+    activity_status: "Planned",
+  },
+  {
+    id: 7,
+    name: "Masjid Clean-Up Drive",
+    description: "A volunteer-driven event to clean and beautify the masjid premises.",
+    activity_type: "Community Service",
+    src: "/images/masjid-about-bg.png",
+    alt: "Masjid Clean-Up Drive",
+    target_audience: "Volunteers",
+    bookingUrl: "https://www.example.com/clean-up-drive",
+    location: "Masjid Al-Huda, Entire Premises",
+    estimated_participants: 50,
+    price: 0,
+    date: "2024-08-10",
+    time: "8:00 AM - 12:00 PM",
+    amenities: ["Cleaning Supplies", "Refreshments", "Safety Gear"],
+    contact: { phone: "+60155667788", email: "volunteer@masjid.com" },
+    tags: ["community", "cleaning", "volunteer", "service"],
+    activity_status: "Upcoming",
+  },
 ];
 
 onMounted(() => {
   const id = Number(route.params.id);
-  newsInfo.value = news.find((item) => item.id === id) || null;
+  Activity.value = activities.find((item) => item.id === id) || null;
 });
 
 </script>
@@ -131,49 +170,49 @@ onMounted(() => {
 <template>
   <Header/>
 
-  <section class="activities-details" v-if="newsInfo">
+  <section class="activities-details" v-if="Activity">
     <div class="activities-container">
       <div class="activities-content">
 
-        <h1 class="activities-title">{{ newsInfo.name }}</h1>
+        <h1 class="activities-title">{{ Activity.name }}</h1>
 
-        <img :src="newsInfo.src" :alt="newsInfo.alt" class="activities-image"/>
+        <img :src="Activity.src" :alt="Activity.alt" class="activities-image"/>
 
         <div class="activities-meta">
 
           <p>
             <UIcon name="mdi-tag" class="activities-icon"/>
-            <span>Category:</span> {{ newsInfo.activity_type }}
+            <span>Category:</span> {{ Activity.activity_type }}
           </p>
 
           <p>
             <UIcon name="mdi-text-box-outline" class="activities-icon"/>
-            <span>Description:</span> {{ newsInfo.description }}
+            <span>Description:</span> {{ Activity.description }}
           </p>
 
           <p>
             <UIcon name="mdi-map-marker" class="activities-icon"/>
-            <span>Location:</span> {{ newsInfo.location }}
+            <span>Location:</span> {{ Activity.location }}
           </p>
 
           <p>
             <UIcon name="mdi-clock-time-four-outline" class="activities-icon"/>
-            <span>Time:</span> {{ newsInfo.time }}
+            <span>Time:</span> {{ Activity.time }}
           </p>
 
           <p>
             <UIcon name="mdi-account-group-outline" class="activities-icon"/>
-            <span>Capacity:</span> {{ newsInfo.estimated_participants }} people
+            <span>Capacity:</span> {{ Activity.estimated_participants }} people
           </p>
 
           <p>
             <UIcon name="mdi-cash-multiple" class="activities-icon"/>
-            <span>Price:</span> {{ newsInfo.price }} per hour
+            <span>Price:</span> {{ Activity.price }} per hour
           </p>
 
           <p>
             <UIcon name="mdi-calendar" class="activities-icon"/>
-            <span>Date:</span> {{ newsInfo.date }}
+            <span>Date:</span> {{ Activity.date }}
           </p>
 
 
@@ -184,7 +223,7 @@ onMounted(() => {
           <h2 class="amenities-title">{{ t('facilities.amenities') }}</h2>
 
           <ul>
-            <li v-for="amenity in newsInfo.amenities" :key="amenity">
+            <li v-for="amenity in Activity.amenities" :key="amenity">
               <UIcon name="mdi-checkbox-marked-circle-outline" class="activities-icon"/>
               {{ amenity }}
             </li>
@@ -197,8 +236,7 @@ onMounted(() => {
   </section>
 
   <p v-else class="loading">Loading...</p>
-
-  <News/>
+  
   <Footer/>
 </template>
 
