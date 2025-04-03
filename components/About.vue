@@ -188,11 +188,11 @@ section {
 }
 
 .about-grid {
-  width: 90%;
+  width: 100%;
   margin: 2rem auto;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 3rem;
+  gap: 1rem;
 }
 
 .about-title,
@@ -222,17 +222,15 @@ section {
 
 .image-content img {
   width: 100%;
-  max-width: 450px;
+  max-width: 500px;
   height: auto;
   aspect-ratio: 16/9;
   object-fit: cover;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease-in-out;
 }
 
 .image-content img:hover {
-  transform: scale(1.05);
+  transform: scale(1.005);
 }
 
 @media (max-width: 1024px) {
@@ -242,7 +240,7 @@ section {
 
   .about-grid {
     gap: 2rem;
-    width: 90%;
+    width: 100%;
   }
 
   .about-title {
