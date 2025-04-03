@@ -104,7 +104,6 @@ serviceQuestions.forEach((question) => {
   errors[question.id] = '';
 });
 
-// Function to validate a specific field
 function validateField(field) {
   try {
     formSchema.shape[field].parse(form[field]);
@@ -114,7 +113,6 @@ function validateField(field) {
   }
 }
 
-// Watch for form field changes and validate them
 serviceQuestions.forEach((question) => {
   watch(() => form[question.id], () => validateField(question.id));
 });

@@ -86,12 +86,9 @@ export default {
             ]
         }
     },
-
-
     members:{
         title: "Bertemu komuniti kami",
     },
-
     contact: {
         title: "Hubungi Kami",
         description: "Hubungi kami untuk sebarang pertanyaan atau kebimbangan, kami sedia membantu.",
@@ -114,11 +111,9 @@ export default {
         mosque_location: "Lokasi Masjid Albukhary",
         prayer_time: "Waktu Solat",
     },
-
     activities:{
         title: "Aktiviti",
     },
-
     donation: {
         title: "Imbas Kod QR kami untuk menyokong aktiviti dan projek Masjid kami\n",
     },
@@ -148,6 +143,15 @@ export default {
             whatsapp: "WhatsApp"
         }
     },
+    facilities: {
+        amenities:"Kemudahan",
+        facilities_form: {
+            title: "Tempah Tempat Perkahwinan/Upacara Anda",
+            description: "Sila isi borang di bawah untuk melengkapkan tempahan anda. Kami menggalakkan anda untuk membaca terma dan syarat yang ditetapkan di sini sebelum menghantar borang.",
+            button: "Daftar Minat Anda",
+        }
+    },
+
 
 
     // admin side

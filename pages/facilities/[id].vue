@@ -2,6 +2,8 @@
 import {useRoute, useRouter} from 'vue-router';
 import {ref, onMounted} from 'vue';
 
+const {t} = useI18n();
+
 const route = useRoute();
 const router = useRouter();
 const facility = ref<{
@@ -29,7 +31,7 @@ const facilities = [
     name: "Community Hall",
     description: "A spacious hall for events, gatherings, and conferences.",
     category: "Event Space",
-    src: "images/masjid-about-bg.png",
+    src: "/images/masjid-about-bg.png",
     alt: "Community Hall",
     url: "https://www.youtube.com/watch?v=example",
     location: "123 Main Street, City Center",
@@ -53,7 +55,7 @@ const facilities = [
     name: "Small Meeting Room",
     description: "Perfect for business meetings and small team discussions.",
     category: "Meeting Room",
-    src: "images/masjid-about-bg.png",
+    src: "/images/masjid-about-bg.png",
     alt: "Meeting Room",
     url: null,
     location: "456 Office Street, Business Park",
@@ -76,7 +78,7 @@ const facilities = [
     name: "Community Hall",
     description: "A spacious hall for events, gatherings, and conferences.",
     category: "Event Space",
-    src: "images/masjid-about-bg.png",
+    src: "/images/masjid-about-bg.png",
     alt: "Community Hall",
     url: "https://www.youtube.com/watch?v=example",
     location: "123 Main Street, City Center",
@@ -100,7 +102,7 @@ const facilities = [
     name: "Small Meeting Room",
     description: "Perfect for business meetings and small team discussions.",
     category: "Meeting Room",
-    src: "images/masjid-about-bg.png",
+    src: "/images/masjid-about-bg.png",
     alt: "Meeting Room",
     url: null,
     location: "456 Office Street, Business Park",
@@ -118,54 +120,6 @@ const facilities = [
     tags: ["business", "meeting", "office"],
     status: "Booked"
   },
-  {
-    id: 5,
-    name: "Community Hall",
-    description: "A spacious hall for events, gatherings, and conferences.",
-    category: "Event Space",
-    src: "images/masjid-about-bg.png",
-    alt: "Community Hall",
-    url: "https://www.youtube.com/watch?v=example",
-    location: "123 Main Street, City Center",
-    capacity: 150,
-    price: 200,
-    availability: [
-      {day: "Monday-Friday", time: "9:00 AM - 9:00 PM"},
-      {day: "Saturday-Sunday", time: "10:00 AM - 11:00 PM"}
-    ],
-    amenities: ["WiFi", "Projector", "Air Conditioning", "Parking"],
-    bookingUrl: "https://www.example.com/book-community-hall",
-    contact: {
-      phone: "+123456789",
-      email: "booking@example.com"
-    },
-    tags: ["event", "hall", "conference", "wedding"],
-    status: "Available"
-  },
-  {
-    id: 6,
-    name: "Small Meeting Room",
-    description: "Perfect for business meetings and small team discussions.",
-    category: "Meeting Room",
-    src: "images/masjid-about-bg.png",
-    alt: "Meeting Room",
-    url: null,
-    location: "456 Office Street, Business Park",
-    capacity: 10,
-    price: 50,
-    availability: [
-      {day: "Monday-Friday", time: "8:00 AM - 8:00 PM"}
-    ],
-    amenities: ["WiFi", "Whiteboard", "Air Conditioning"],
-    bookingUrl: "https://www.example.com/book-meeting-room",
-    contact: {
-      phone: "+987654321",
-      email: "contact@meetingrooms.com"
-    },
-    tags: ["business", "meeting", "office"],
-    status: "Booked"
-  },
-
 ];
 
 onMounted(() => {
@@ -173,12 +127,10 @@ onMounted(() => {
   facility.value = facilities.find((f) => f.id === id) || null;
 });
 
-const goBack = () => {
-  router.push('/facilities');
-};
 </script>
 
 <template>
+  <TranslationHeader/>
   <Header/>
 
   <section class="facility-details" v-if="facility">
@@ -186,11 +138,14 @@ const goBack = () => {
     <div class="facility-container">
 
       <div class="facility-content">
+
         <h1 class="facility-title">{{ facility.name }}</h1>
+
         <img :src="facility.src" :alt="facility.alt" class="facility-image"/>
+
         <p>
           <UIcon
-              name="mdi-marker"
+              name="mdi-tag-outline"
               class="facility-icon"
           />
           <span>Category:</span>
@@ -198,7 +153,7 @@ const goBack = () => {
         </p>
         <p>
           <UIcon
-              name="mdi-marker"
+              name="mdi-text-box-outline"
               class="facility-icon"
           />
           <span>Description:</span>
@@ -206,7 +161,7 @@ const goBack = () => {
         </p>
         <p>
           <UIcon
-              name="mdi-marker"
+              name="mdi-map-marker-outline"
               class="facility-icon"
           />
           <span>Location:</span>
@@ -214,24 +169,23 @@ const goBack = () => {
         </p>
         <p>
           <UIcon
-              name="mdi-marker"
+              name="mdi-account-group"
               class="facility-icon"
           />
           <span>Capacity:</span>
-          {{ facility.capacity }}
-          people
+          {{ facility.capacity }} people
         </p>
         <p>
           <UIcon
-              name="mdi-marker"
+              name="mdi-currency-usd"
               class="facility-icon"
           />
           <span>Price:</span>
-          ${{ facility.price }}
-          per hour
+          ${{ facility.price }} per hour
         </p>
+
         <div class="amenities">
-          <h2>Amenities</h2>
+          <h2 class="amenities-title">{{t('facilities.amenities')}}</h2>
           <ul>
             <li
                 v-for="amenity in facility.amenities"
@@ -239,7 +193,7 @@ const goBack = () => {
 
             >
               <UIcon
-                  name="mdi-place"
+                  name="mdi-cogs"
                   class="facility-icon"
               />
               {{ amenity }}
@@ -250,13 +204,10 @@ const goBack = () => {
       </div>
 
       <div class="facilities-book-form">
-        <h2 class="form-title">Book your Wedding/Solemnisation Venue</h2>
-        <p class="form-description">Please fill in the form below to complete your booking. We encourage you to read the
-          stipulated terms and
-          conditions here before submitting the form.
-        </p>
+        <h2 class="form-title">{{ t('facilities.facilities_form.title') }}</h2>
+        <p class="form-description">{{ t('facilities.facilities_form.description') }} </p>
         <router-link to="/services-form.vue" class="booking-btn">
-          Register your Interest
+          {{ t('facilities.facilities_form.button') }}
         </router-link>
       </div>
 
@@ -270,23 +221,48 @@ const goBack = () => {
 </template>
 
 <style scoped>
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 .facility-details {
-  margin: 2rem auto;
-  padding: 2rem 0;
+  margin: 0 auto;
+  padding: 4rem 0;
   background: var(--bg-color);
+  animation: fadeIn 1s ease-in-out;
 }
 
 .facility-container {
-  width: 90%;
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 3fr 1fr;
   gap: 3rem;
+  animation: slideIn 0.8s ease-in-out;
 }
 
 .facility-title {
   font-size: 2rem;
+  margin-bottom: 1rem;
   color: var(--primary-color);
 }
 
@@ -295,17 +271,25 @@ const goBack = () => {
   height: 350px;
   margin: 1rem auto;
   box-shadow: rgba(149, 157, 165, 0.3) 0 8px 24px;
+  transition: transform 0.3s ease;
+}
+
+.facility-image:hover {
+  transform: scale(1.05);
 }
 
 .facility-container p {
   color: var(--primary-color);
   font-weight: normal;
+  padding: .5rem;
+  margin: .5rem 0;
 }
 
-.facility-container .facility-icon{
+.facility-container .facility-icon {
   margin-right: 1rem;
 }
-.facility-container p span{
+
+.facility-container p span {
   font-weight: bold;
   color: var(--secondary-color);
   margin-right: .5rem;
@@ -314,19 +298,20 @@ const goBack = () => {
 ul {
   list-style: none;
   padding: 0;
+  color: var(--primary-color);
 }
 
 li {
-  background: #f8f8f8;
-  padding: 10px;
-  margin: 5px 0;
-  border-radius: 5px;
+  background: #f5f5f5;
+  padding: .5rem;
+  margin: .5rem 0;
+  animation: fadeIn 0.6s ease-in-out;
 }
 
 .loading {
   text-align: center;
   font-size: 18px;
-  color: gray;
+  color: var(--primary-color);
   padding: 20px;
 }
 
@@ -336,6 +321,11 @@ li {
   margin: auto;
 }
 
+.amenities-title{
+  margin: 1rem 0;
+  font-weight: bold;
+  color: var(--primary-color);
+}
 .facilities-book-form .form-title {
   margin: 1rem 0;
   font-weight: bold;
@@ -359,15 +349,74 @@ li {
   font-size: 1rem;
   outline: none;
   border: none;
+  text-decoration: none;
   color: var(--text-color);
   background-color: var(--primary-color);
+  transition: color .3s ease-in-out, background-color .3s ease-in-out;
 }
 
 .facilities-book-form .booking-btn:hover {
   background-color: var(--secondary-color);
-  box-shadow: rgba(100, 100, 111, 0.2) 0 7px 29px 0;
-  transition: box-shadow .3s ease-in-out, background-color .3s ease-in-out;
+  color: var(--text-hover);
 }
 
+@media (max-width: 768px) {
+  .facility-container {
+    width: 90%;
+    margin: 0 auto;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
 
+  .facility-title {
+    font-size: 1.8rem;
+  }
+
+  .facility-image {
+    height: auto;
+  }
+
+  .facility-container p,
+  .facility-container li {
+    font-size: 1rem;
+  }
+
+  .facilities-book-form .form-title {
+    font-size: 1.5rem;
+  }
+
+  .facilities-book-form .form-description {
+    font-size: 1rem;
+  }
+
+  .facilities-book-form .booking-btn {
+    padding: .6rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .facility-title {
+    width: 90%;
+    margin: 0 auto;
+    font-size: 1.6rem;
+  }
+
+  .facility-image {
+    height: 250px;
+  }
+
+  .facilities-book-form .form-title {
+    font-size: 1.4rem;
+  }
+
+  .facilities-book-form .form-description {
+    font-size: 0.9rem;
+  }
+
+  .facilities-book-form .booking-btn {
+    padding: .5rem 1.2rem;
+    font-size: 0.8rem;
+  }
+}
 </style>

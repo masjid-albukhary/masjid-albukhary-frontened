@@ -150,6 +150,16 @@ export default {
         title: "Activities",
     },
 
+    facilities: {
+        amenities:"Amenities",
+        facilities_form: {
+            title: "Book your Wedding/Solemnisation Venue",
+            description:"Please fill in the form below to complete your booking. We encourage you to read the stipulated terms and conditions here before submitting the form.",
+            button: "Register your Interest",
+        },
+
+    },
+
     // admin side
 
     login: {
@@ -231,7 +241,6 @@ export default {
             content_my: "Masukkan kandungan dalam Bahasa Melayu",
         },
     },
-
     facility_form: {
         title: "This is Facility Form",
         label: {
