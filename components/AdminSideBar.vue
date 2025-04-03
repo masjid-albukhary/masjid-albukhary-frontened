@@ -52,7 +52,7 @@ const handleLogout = () => {
 .sidebar {
   width: 100%;
   height: 100%;
-  background-color: var(--background-color);
+  background-color: var(--primary-color);
   padding: 20px;
 }
 
