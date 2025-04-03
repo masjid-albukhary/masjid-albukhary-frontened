@@ -190,7 +190,6 @@ onMounted(() => {
             <li
                 v-for="amenity in facility.amenities"
                 :key="amenity"
-
             >
               <UIcon
                   name="mdi-cogs"

@@ -6,6 +6,7 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
 const serviceQuestions = [
+
   {
     label: t("service_form.label.title_en"),
     type: "text",
@@ -62,6 +63,7 @@ const serviceQuestions = [
     required: false,
     id: "capacity",
   },
+
 ];
 
 const formSchema = z.object({
