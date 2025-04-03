@@ -190,10 +190,6 @@ function prevPage() {
 
     <h1 class="title">
 
-      <UIcon
-          name="mdi-chevron-right"
-      />
-
       {{ t('activities.title') }}
 
     </h1>
