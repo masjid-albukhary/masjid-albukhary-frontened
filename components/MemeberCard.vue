@@ -223,22 +223,21 @@ function prevMemberPage() {
   justify-content: center;
   margin-top: 2rem;
   gap: 1rem;
-  flex-wrap: wrap;
 }
 
 .nav-button {
   padding: 0.8rem 1.8rem;
-  font-size: 1rem;
-  background-color: var(--primary-color);
-  color: white;
+  font-size: 1.5rem;
+  background-color: transparent;
+  color: var(--primary-color);
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+  transition: color 0.3s, transform 0.2s;
 }
 
 .nav-button:hover {
-  background-color: var(--secondary-color);
+  color: var(--secondary-color);
   transform: scale(1.05);
 }
 
@@ -266,10 +265,6 @@ function prevMemberPage() {
     font-size: 16px;
   }
 
-  .nav-button {
-    padding: 0.6rem 1.5rem;
-    font-size: 0.9rem;
-  }
 }
 
 @media (max-width: 480px) {
@@ -290,10 +285,6 @@ function prevMemberPage() {
     font-size: 14px;
   }
 
-  .buttons {
-    flex-direction: column;
-    align-items: center;
-  }
 
   .nav-button {
     width: 100%;
