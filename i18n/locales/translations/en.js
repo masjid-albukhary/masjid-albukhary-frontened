@@ -213,6 +213,7 @@ export default {
         facility_form: "Facility Form",
         news_form: "Activity Form",
         about_content_form: "About Content management",
+        service_form: "Service Form",
     },
     about_content_form: {
         title: "About Content Management",
@@ -300,6 +301,30 @@ export default {
             others: "Others / Lain-lain",
             yes: "Yes / Ya",
             no: "No / Tidak",
+        },
+    },
+    service_form: {
+        title: "Service Form",
+        label: {
+            title_en: "Service Title (English)",
+            title_my: "Service Title (Malay)",
+            description_en: "Service Description (English)",
+            description_my: "Service Description (Malay)",
+            features_en: "Service Features (English)",
+            features_my: "Service Features (Malay)",
+            price: "Price (RM)",
+            poster: "Upload Service Poster",
+            capacity: "Estimated Capacity",
+        },
+        placeholder: {
+            title_en: "Enter the service title in English",
+            title_my: "Enter the service title in Malay",
+            description_en: "Enter the service description in English",
+            description_my: "Enter the service description in Malay",
+            features_en: "Enter the service features in English (comma separated)",
+            features_my: "Enter the service features in Malay (comma separated)",
+            price: "Enter the price in RM",
+            capacity: "Enter the estimated number of Estimated capacity",
         },
     },
 }
