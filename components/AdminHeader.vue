@@ -9,7 +9,7 @@ interface Link {
   link?: string
   label: string
   icon: string
-  popup?: 'image' | 'video'
+  popup?: 'image' | 'video' | 'member'
 }
 
 const {t} = useI18n()
@@ -18,20 +18,28 @@ const isMobile = ref(false)
 const isImagePopupVisible = ref(false)
 
 const isVideoPopupVisible = ref(false)
+const isNewMemberPopupVisible = ref(false)
 
 const links: Link[] = [
-  {label: t('admin_header.upload_image'), icon: 'mdi-camera', popup: 'image'},
-  {label: t('admin_header.upload_video'), icon: 'mdi-video', popup: 'video'},
-  {link: '', label: t('admin_header.logout'), icon: 'mdi-logout'}
-]
+  { label: t('admin_header.upload_image'), icon: 'mdi-image', popup: 'image' },
+  { label: t('admin_header.upload_video'), icon: 'mdi-video', popup: 'video' },
+  { label: t('admin_header.upload_new_member'), icon: 'mdi-account-plus', popup: 'member' },
+  { link: '', label: t('admin_header.logout'), icon: 'mdi-logout' }
+];
+
+
 const toggleLinksVisibility = () => {
   isLinksVisible.value = !isLinksVisible.value
 }
 
-const togglePopup = (type: 'image' | 'video') => {
-  if (type === 'image') isImagePopupVisible.value = !isImagePopupVisible.value
-  else isVideoPopupVisible.value = !isVideoPopupVisible.value
-
+const togglePopup = (type: 'image' | 'video' | 'member') => {
+  if (type === 'image') {
+    isImagePopupVisible.value = !isImagePopupVisible.value
+  } else if (type === 'video') {
+    isVideoPopupVisible.value = !isVideoPopupVisible.value
+  } else if (type === 'member') {
+    isNewMemberPopupVisible.value = !isNewMemberPopupVisible.value // Corrected handling for member popups
+  }
   isLinksVisible.value = false
 }
 
@@ -57,6 +65,7 @@ const logo = "/images/masjid_albukary_logo.png"
 
     <ImageUploaderModal :show="isImagePopupVisible" @update:show="isImagePopupVisible = $event"/>
     <VideoUploaderModal :show="isVideoPopupVisible" @update:show="isVideoPopupVisible = $event"/>
+    <NewMemberUploaderModal :show="isNewMemberPopupVisible" @update:show="isNewMemberPopupVisible = $event"/>
 
 
     <div class="header-wrapper">

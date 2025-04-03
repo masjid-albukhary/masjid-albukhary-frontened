@@ -191,6 +191,7 @@ export default {
         submit: "Daftar",
     },
     admin_header: {
+        upload_new_member: "Tambah Ahli",
         upload_image: "Muat Naik Gambar",
         upload_video: "Muat Naik Video",
         logout: "Log Keluar"

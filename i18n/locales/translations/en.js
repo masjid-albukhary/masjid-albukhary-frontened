@@ -191,6 +191,7 @@ export default {
         submit: "Sign Up",
     },
     admin_header: {
+        upload_new_member: "Add Member",
         upload_image: "Upload Image",
         upload_video: "Upload Video",
         logout: "Logout"
