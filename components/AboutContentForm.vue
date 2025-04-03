@@ -5,76 +5,56 @@ import {useI18n} from 'vue-i18n'
 
 const {t} = useI18n()
 
-const newsQuestions = [
+const AboutContentQuestions = [
   {
-    label: t('news_form.title'),
+    label: t('about_content_form.label.title_en'),
     type: "text",
-    placeholder: "Enter news title",
+    placeholder: t('about_content_form.placeholder.title_en'),
     required: true,
-    id: "title",
+    id: "title_en",
   },
   {
-    label: t('news_form.category'),
-    type: "select",
-    options: [
-      {label: 'Politics', value: "politics"},
-      {label: 'Business', value: "business"},
-      {label: 'Local news', value: "local-news"},
-    ],
-    placeholder: "Select a category",
+    label: t('about_content_form.label.title_my'),
+    type: "text",
+    placeholder: t('about_content_form.placeholder.title_my'),
     required: true,
-    id: "category",
+    id: "title_en",
   },
   {
-    label: t('news_form.news_content'),
-    type: "textarea",
-    placeholder: "Write the full news article here...",
+    label: t('about_content_form.label.content_en'),
+    type: "text",
+    placeholder: t('about_content_form.placeholder.content_en'),
     required: true,
-    id: "content",
+    id: "title_en",
   },
   {
-    label: t('news_form.summary'),
-    type: "textarea",
-    placeholder: "Enter a short summary of the news...",
+    label: t('about_content_form.label.content_my'),
+    type: "text",
+    placeholder: t('about_content_form.placeholder.content_my'),
     required: true,
-    id: "summary",
+    id: "title_en",
   },
   {
-    label: t('news_form.image_upload'),
+    label: t('about_content_form.label.about_content_image'),
     type: "file",
     required: false,
-    id: "image",
-  },
-  {
-    label: t('news_form.location'),
-    type: "text",
-    placeholder: "Enter city, country",
-    required: true,
-    id: "location",
-  },
-  {
-    label: t('news_form.date_of_event'),
-    type: "date",
-    required: true,
-    id: "event_date",
+    id: "about_content_image",
   },
 ]
 
 
 const formSchema = z.object({
-  title: z.string().min(15, 'Title must be at least 15 characters long'),
-  content: z.string().min(50, 'Content must be at least 50 characters long'),
-  summary: z.string().min(50, 'Summary must be at least 50 characters long'),
-  location: z.string().min(50, 'Location must be at least 50 characters long'),
-  event_date: z.string().optional(),
-  category: z.string().optional(),
-  image: z.any().optional(),
+  title_en: z.string().min(10, 'Title must be at least 10 characters long'),
+  title_my: z.string().min(10, 'Title must be at least 15 characters long'),
+  content_en: z.string().min(100, 'Content must be at least 100 characters long'),
+  content_my: z.string().min(100, 'Content must be at least 100 characters long'),
+  about_content_image: z.any().optional(),
 });
 
 const form = reactive({});
 const errors = reactive({});
 
-newsQuestions.forEach((question) => {
+AboutContentQuestions.forEach((question) => {
   form[question.id] = "";
   errors[question.id] = "";
 });
@@ -89,7 +69,7 @@ function validateField(field) {
   }
 }
 
-newsQuestions.forEach((question) => {
+AboutContentQuestions.forEach((question) => {
   watch(() => form[question.id], () => validateField(question.id));
 });
 
@@ -157,16 +137,17 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <section class="news-form-section">
+  <section class="about-management-form">
+
     <div class="container">
 
-      <div class="news-form">
+      <div class="about-management-form">
 
-        <h2>This is News Form</h2>
+        <h2>{{t('about_content_form.title')}}</h2>
 
         <form @submit.prevent="handleSubmit">
-          <div class="news-form">
-            <div class="info" v-for="(question, index) in newsQuestions " :key="index">
+          <div class="about-management-form">
+            <div class="info" v-for="(question, index) in AboutContentQuestions " :key="index">
               <label class="question-title" :for="question.label">{{ question.label }}</label>
 
               <input
@@ -208,7 +189,7 @@ async function handleSubmit() {
           </div>
 
           <div>
-            <button class="news-form-submit" type="submit">Submit</button>
+            <button class="about-management-form-submit" type="submit">Submit</button>
           </div>
 
         </form>
@@ -246,7 +227,7 @@ section {
   max-width: 1200px;
 }
 
-.container .news-form {
+.container .about-management-form {
   flex: 1;
   padding: 0 2.5rem;
 }
@@ -256,7 +237,7 @@ section {
     display: block;
   }
 
-  .container .news-form {
+  .container .about-management-form {
     padding: 0 .5rem;
   }
 }
@@ -266,7 +247,7 @@ section {
     display: block;
   }
 
-  .container .news-form {
+  .container .about-management-form {
     padding: 0 .5rem;
   }
 }
@@ -287,14 +268,14 @@ section {
   text-align: justify;
 }
 
-.news-form > h2 {
+.about-management-form > h2 {
   font-size: 1.5rem;
   color: var(--primary-color);
   text-align: center;
   padding: 1rem 0;
 }
 
-.news-form {
+.about-management-form {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
@@ -303,18 +284,18 @@ section {
 }
 
 .info {
-  flex-basis: calc(50% - 10px);
+  flex-basis: 100%;
   box-sizing: border-box;
   display: block;
 }
 
-.news-form .question-title {
+.about-management-form .question-title {
   font-size: 1rem;
   color: var(--primary-color);
 }
 
-.news-form input,
-.news-form select {
+.about-management-form input,
+.about-management-form select {
   width: 100%;
   padding: 0.5rem;
   border: 2px solid #EEEEEE;
@@ -322,7 +303,7 @@ section {
   outline: none;
 }
 
-.news-form textarea {
+.about-management-form textarea {
   width: 100%;
   min-height: 4rem;
   max-height: 4rem;
@@ -338,18 +319,18 @@ section {
 }
 
 @media (max-width: 1200px) {
-  .news-form textarea {
+  .about-management-form textarea {
     width: calc(100% - .5rem);
   }
 }
 
 @media (max-width: 800px) {
-  .news-form textarea {
+  .about-management-form textarea {
     width: calc(100% - .5rem);
   }
 }
 
-.news-form-submit {
+.about-management-form-submit {
   padding: .5rem 2rem;
   display: flex;
   width: 90%;
@@ -360,7 +341,7 @@ section {
   color: var(--text-color);
 }
 
-.news-form-submit:hover {
+.about-management-form-submit:hover {
   background-color: var(--primary-color);
   transition: .3s ease-in-out;
 }

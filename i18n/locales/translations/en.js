@@ -200,17 +200,26 @@ export default {
         admin: "Admin",
         booking_overview: "Booking Overview",
         facility_form: "Facility Form",
-        news_form: "News Form"
+        news_form: "Activity Form",
+        about_content_form: "About Content management",
     },
-    news_form: {
-        title: "Title",
-        category: "Category",
-        news_content: "News Content",
-        summary: "Summary",
-        image_upload: "Image Upload",
-        location: "Location",
-        date_of_event: "Date of Event",
+    about_content_form: {
+        title: "About Content Management",
+        label: {
+            title_en: "Title (English)",
+            title_my: "Title (Malay)",
+            content_en: "Content (English)",
+            content_my: "Content (Malay)",
+            about_content_image: "Upload Image",
+        },
+        placeholder: {
+            title_en: "Enter title in English",
+            title_my: "Masukkan tajuk dalam Bahasa Melayu",
+            content_en: "Enter content in English",
+            content_my: "Masukkan kandungan dalam Bahasa Melayu",
+        },
     },
+
     facility_form: {
         title: "This is Facility Form",
         label: {

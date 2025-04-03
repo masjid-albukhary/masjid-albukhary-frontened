@@ -6,11 +6,14 @@ import { computed } from 'vue'
 const { t } = useI18n()
 const router = useRouter()
 const links = computed(() => [
-  { link: "/admin", label: t('admin_sidebar.admin'), icon: "mdi-account-cog" },
-  { link: "/admin/booking-dashboard", label: t('admin_sidebar.booking_overview'), icon: "mdi-calendar-check" },
-  { link: "/admin/facility-form", label: t('admin_sidebar.facility_form'), icon: "mdi-domain" },
-  { link: "/admin/news-form", label: t('admin_sidebar.news_form'), icon: "mdi-newspaper-variant" }
+  { link: "/admin", label: t('admin_sidebar.admin'), icon: "mdi-shield-cog" },
+  { link: "/admin/booking-dashboard", label: t('admin_sidebar.booking_overview'), icon: "mdi-calendar-clock" },
+  { link: "/admin/facility-form", label: t('admin_sidebar.facility_form'), icon: "mdi-office-building" },
+  { link: "/admin/news-form", label: t('admin_sidebar.news_form'), icon: "mdi-post" },
+  { link: "/admin/about-content-management", label: t('admin_sidebar.about_content_form'), icon: "mdi-file-document-edit" }
 ])
+
+
 const handleLogout = () => {
   console.log('Logging out...')
   router.push('/')

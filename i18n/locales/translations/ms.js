@@ -200,43 +200,24 @@ export default {
         admin: "Admin",
         booking_overview: "Gambaran Tempahan",
         facility_form: "Borang Kemudahan",
-        news_form: "Borang Berita"
+        news_form: "Borang Aktiviti",
+        about_content_form: "Mengenai pengurusan kandungan",
     },
-    news_form: {
-        title: "Tajuk",
-        category: "Kategori",
-        news_content: "Kandungan Berita",
-        summary: "Ringkasan",
-        image_upload: "Muat Naik Gambar",
-        location: "Lokasi",
-        date_of_event: "Tarikh Acara",
-    },
-    facility_form: {
-        title: "Ini adalah Borang Kemudahan",
+    about_content_form: {
+        title: "Mengenai Pengurusan Kandungan",
         label: {
-            facility_name: "Nama Kemudahan",
-            facility_type: "Jenis / Kategori Kemudahan",
-            location: "Lokasi / Nama Blok",
-            upload_photos: "Muat Naik Gambar Kemudahan",
-            capacity: "Kapasiti",
-            booking_required: "Adakah tempahan diperlukan?",
-            equipment: "Peralatan Tersedia",
-            rules: "Peraturan atau Nota Khas",
-            description: "Deskripsi",
-            yes: "Ya",
-            no: "Tidak"
+            title_en: "Tajuk (Inggeris)",
+            title_my: "Tajuk (Melayu)",
+            content_en: "Kandungan (Inggeris)",
+            content_my: "Kandungan (Melayu)",
+            about_content_image: "Muat Naik Imej",
         },
         placeholder: {
-            facility_name: "Masukkan nama kemudahan (cth: Surau, Perpustakaan)",
-            facility_type: "Pilih kategori kemudahan",
-            location: "Masukkan lokasi atau blok (cth: Bangunan Utama, Aras 2)",
-            upload_photos: "Muat naik gambar (Maksimum 3-5)",
-            capacity: "Masukkan kapasiti (cth: 100 orang)",
-            booking_required: "Adakah tempahan diperlukan?",
-            equipment: "Contoh: Mikrofon, Penyaman Udara, Projektor, Kerusi",
-            rules: "Contoh: Tempahan diperlukan, untuk kegunaan rasmi sahaja",
-            description: "Huraikan kemudahan, kapasiti, penggunaan atau sebarang peraturan"
-        }
+            title_en: "Masukkan tajuk dalam bahasa Inggeris",
+            title_my: "Masukkan tajuk dalam bahasa Melayu",
+            content_en: "Masukkan kandungan dalam bahasa Inggeris",
+            content_my: "Masukkan kandungan dalam bahasa Melayu",
+        },
     },
     activity_form: {
         title: "Borang Aktiviti",
