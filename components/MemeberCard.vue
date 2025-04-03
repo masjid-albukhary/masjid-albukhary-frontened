@@ -84,7 +84,7 @@ function prevMemberPage() {
 
     <div class="members-card-grid">
       <div class="members-card" v-for="member in visibleMember" :key="member.id">
-        <div class="container">
+        <div class="members-card-container">
           <img :src="member.photo" :alt="member.name" class="image" />
           <div class="overlay">
             <span class="text-role">{{member.name}}</span>
@@ -156,7 +156,6 @@ function prevMemberPage() {
 }
 
 .members-card {
-  background: var(--bg-color);
   padding: 2rem 1rem;
   color: white;
   display: flex;
@@ -164,7 +163,6 @@ function prevMemberPage() {
   align-items: center;
   transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
   max-width: 100%;
-  box-shadow: rgba(149, 157, 165, 0.3) 0 8px 24px;
   opacity: 0;
   animation: fadeIn 0.6s ease-in-out forwards;
 }
@@ -173,7 +171,7 @@ function prevMemberPage() {
   transform: scale(1.05);
 }
 
-.container {
+.members-card-container {
   position: relative;
   width: 100%;
   max-width: 300px;
@@ -198,7 +196,7 @@ function prevMemberPage() {
   transition: width 0.5s ease-in-out;
 }
 
-.container:hover .overlay {
+.members-card-container:hover .overlay {
   animation: slideInOverlay 0.5s forwards;
 }
 
