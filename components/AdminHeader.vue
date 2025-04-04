@@ -61,6 +61,7 @@ const logo = "/images/masjid_albukary_logo.png"
 </script>
 
 <template>
+  <TranslationHeader/>
   <header class="header-container">
 
     <ImageUploaderModal :show="isImagePopupVisible" @update:show="isImagePopupVisible = $event"/>

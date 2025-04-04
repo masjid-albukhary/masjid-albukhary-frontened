@@ -6,7 +6,6 @@ import AboutContentForm from "~/components/AboutContentForm.vue";
 </script>
 
 <template>
-  <TranslationHeader/>
   <AdminHeader/>
   <section class="admin-container">
     <aside class="about-content-aside">

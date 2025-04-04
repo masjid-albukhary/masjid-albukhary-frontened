@@ -5,7 +5,6 @@ import AdminHeader from "~/components/AdminHeader.vue";
 </script>
 
 <template>
-  <TranslationHeader/>
   <AdminHeader/>
   <section class="admin-container">
     <aside class="services-aside">

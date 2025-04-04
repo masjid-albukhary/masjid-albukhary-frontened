@@ -4,7 +4,6 @@ import Header from "~/components/Header.vue";
 </script>
 
 <template>
-  <TranslationHeader/>
   <Header/>
   <landing/>
   <About/>

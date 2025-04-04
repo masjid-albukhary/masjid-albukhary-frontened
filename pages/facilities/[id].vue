@@ -177,7 +177,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <TranslationHeader/>
+
   <Header/>
 
   <section class="facility-details" v-if="facility">

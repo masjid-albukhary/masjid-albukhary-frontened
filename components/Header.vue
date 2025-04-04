@@ -32,10 +32,10 @@ onMounted(() => {
   });
 });
 
-// const logo = "/images/masjid_albukary_logo.png"
 </script>
 
 <template>
+  <TranslationHeader/>
   <div class="header-container">
     <div class="header-wrapper">
       <div class="logo-container">

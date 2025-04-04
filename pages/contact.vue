@@ -4,7 +4,6 @@ import Contact from "~/components/Contact.vue";
 </script>
 
 <template>
-  <TranslationHeader/>
   <Header/>
   <Contact/>
   <Footer/>

@@ -5,7 +5,6 @@ import DonateQRcode from "~/components/DonateQRcode.vue";
 </script>
 
 <template>
-  <TranslationHeader/>
   <Header/>
   <Landing/>
   <ActivitiesCard/>
