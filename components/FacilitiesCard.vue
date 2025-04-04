@@ -95,12 +95,13 @@ function prevPage() {
 
     <div class="buttons">
       <button @click="prevPage" class="nav-button">
-        <UIcon name="mdi-arrow-left"/>
+        <UIcon name="mdi-arrow-left-circle"/>
       </button>
       <button @click="nextPage" class="nav-button">
-        <UIcon name="mdi-arrow-right"/>
+        <UIcon name="mdi-arrow-right-circle"/>
       </button>
     </div>
+
   </section>
 </template>
 
@@ -186,19 +187,18 @@ h1 {
 
 .nav-button {
   padding: 0.5rem 1rem;
-  font-size: 1.2rem;
-  background-color: var(--primary-color);
-  color: var(--text-color);
+  font-size: 1.5rem;
+  background-color: transparent;
+  color: var(--primary-color);
   border: none;
   outline: none;
-  border-radius: 1rem;
   cursor: pointer;
-  transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  transition: color 0.3s ease-in-out;
 }
 
 .nav-button:hover {
-  background-color: var(--secondary-color);
-  color: var(--text-color);
+  transform: scale(1.05);
+  color: var(--secondary-color);
 }
 
 @media (max-width: 768px) {

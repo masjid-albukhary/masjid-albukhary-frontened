@@ -235,10 +235,10 @@ function prevServicePage() {
 
     <div class="buttons">
       <button @click="prevServicePage" class="nav-button">
-        <UIcon name="mdi-arrow-left" />
+        <UIcon name="mdi-arrow-left-circle" />
       </button>
       <button @click="nextServicePage" class="nav-button">
-        <UIcon name="mdi-arrow-right" />
+        <UIcon name="mdi-arrow-right-circle" />
       </button>
     </div>
 
@@ -394,18 +394,18 @@ section {
 
 .nav-button {
   padding: 0.8rem 1.8rem;
-  font-size: 1rem;
-  background-color: var(--primary-color);
-  color: white;
+  font-size: 1.5rem;
+  background: transparent;
+  color: var(--primary-color);
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+  transition: color 0.3s, transform 0.2s;
 }
 
 .nav-button:hover {
-  background-color: var(--secondary-color);
   transform: scale(1.05);
+  color: var(--secondary-color);
 }
 </style>
 
