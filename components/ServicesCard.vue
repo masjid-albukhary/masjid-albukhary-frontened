@@ -210,7 +210,7 @@ function prevServicePage() {
         <div class="service-card-content">
           <ul class="service-facilities">
             <li v-for="(facility, index) in service.facilities" :key="index">
-              <UIcon name="mdi-check-circle" class="service-icon" />
+              <UIcon name="mdi-cogs" class="service-icon" />
               {{ facility }}
             </li>
           </ul>
