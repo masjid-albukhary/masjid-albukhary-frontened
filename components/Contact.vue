@@ -27,7 +27,7 @@ const contactQuestions = [
     type: "tel",
     placeholder: t('contact.form.phone_placeholder'),
     required: false,
-    id: "phone",
+    id: "contact_number",
     icon: "phone"
   },
   {
@@ -51,20 +51,23 @@ const contactQuestions = [
 const formSchema = z.object({
   name: z
       .string()
-      .min(8, 'First name must be at least 8 characters long'),
+      .min(8, 'Name must be at least 8 characters long'),
+
   email: z
       .string()
-      .email('Invalid email format')
-      .regex(/@gmail\.com$/, "Must be a valid email ending with '@gmail.com'"),
-  phone: z
+      .email('Invalid email format'),
+
+  contact_number: z
       .string()
       .regex(/^\d{8,15}$/, 'Invalid phone number'),
+
   subject: z
       .string()
-      .min(8, 'First name must be at least 8 characters long'),
+      .min(8, 'Subject name must be at least 8 characters long'),
+
   message: z
       .string()
-      .min(20, 'Detail must be at least 20 characters long')
+      .min(20, 'Message must be at least 20 characters long')
 });
 const form = reactive({});
 const errors = reactive({});
@@ -92,42 +95,17 @@ async function handleSubmit() {
   form.Date = new Date().toLocaleDateString("en-GB");
 
   const validationResults = formSchema.safeParse(form);
-  if (validationResults.success) {
-    try {
-      console.log("Sending API Request...");
-      const formDataObj = new FormData();
-      for (const key in form) {
-        const value = form[key];
-        if (value === null || value === undefined) {
-          continue;
-        }
-        formDataObj.append(key, value);
-      }
 
-
-      const response = await api.post("//", formDataObj);
-      console.log("Response Data:", response.data);
-      Object.keys(form).forEach((key) => (form[key] = ""));
-      location.reload()
-    } catch (error) {
-      console.error("Error occurred:", error);
-      if (error.response) {
-        console.error("Backend Error:", error.response.data);
-        alert(`Error: ${error.response.data.detail || "Unable to submit the form."}`);
-        // console.log("Response Data:", response.data.value);
-      } else if (error.request) {
-        console.error("No response from the server:", error.request);
-        alert("Server is not responding. Please try again later.");
-      } else {
-        console.error("Request Setup Error:", error.message);
-        alert("An error occurred while submitting the form. Please try again.");
-      }
-    }
-  } else {
+  if (!validationResults.success) {
     console.log('Validation Errors:', validationResults.error.errors);
     alert("Please correct the errors in the form.");
+    return;
   }
+
+  // If validation is successful
+  console.log("Form Submitted Successfully:", form);
 }
+
 
 const contactImage = "/images/contact-image.jpg"
 
