@@ -1,44 +1,149 @@
 <script setup lang="ts">
 import {computed, ref} from "vue";
 
-interface Facility {
-  id: number;
-  src: string;
-  alt: string;
-  url: string;
-}
-
 const {t} = useI18n();
-const facilities: Facility[] = [
+
+const facilities = [
   {
     id: 1,
-    src: "images/masjid-about-bg.png",
-    alt: "Masjid Video 1",
-    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
+    name: "Community Hall",
+    description: "A spacious hall for events, gatherings, and conferences.",
+    category: "Event Space",
+    src: "/images/masjid-about-bg.png",
+    alt: "Community Hall",
+    url: "https://www.youtube.com/watch?v=example",
+    location: "123 Main Street, City Center",
+    capacity: 150,
+    price: 200,
+    availability: [
+      {day: "Monday-Friday", time: "9:00 AM - 9:00 PM"},
+      {day: "Saturday-Sunday", time: "10:00 AM - 11:00 PM"}
+    ],
+    amenities: ["WiFi", "Projector", "Air Conditioning", "Parking"],
+    bookingUrl: "https://www.example.com/book-community-hall",
+    contact: {
+      phone: "+123456789",
+      email: "booking@example.com"
+    },
+    tags: ["event", "hall", "conference", "wedding"],
+    status: "Available"
   },
   {
     id: 2,
-    src: "images/masjid-about-bg.png",
-    alt: "Masjid Video 2",
-    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
+    name: "Small Meeting Room",
+    description: "Perfect for business meetings and small team discussions.",
+    category: "Meeting Room",
+    src: "/images/masjid-about-bg.png",
+    alt: "Meeting Room",
+    url: null,
+    location: "456 Office Street, Business Park",
+    capacity: 10,
+    price: 50,
+    availability: [
+      {day: "Monday-Friday", time: "8:00 AM - 8:00 PM"}
+    ],
+    amenities: ["WiFi", "Whiteboard", "Air Conditioning"],
+    bookingUrl: "https://www.example.com/book-meeting-room",
+    contact: {
+      phone: "+987654321",
+      email: "contact@meetingrooms.com"
+    },
+    tags: ["business", "meeting", "office"],
+    status: "Booked"
   },
   {
     id: 3,
-    src: "images/masjid-about-bg.png",
-    alt: "Masjid Video 3",
-    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
+    name: "Community Hall",
+    description: "A spacious hall for events, gatherings, and conferences.",
+    category: "Event Space",
+    src: "/images/masjid-about-bg.png",
+    alt: "Community Hall",
+    url: "https://www.youtube.com/watch?v=example",
+    location: "123 Main Street, City Center",
+    capacity: 150,
+    price: 200,
+    availability: [
+      {day: "Monday-Friday", time: "9:00 AM - 9:00 PM"},
+      {day: "Saturday-Sunday", time: "10:00 AM - 11:00 PM"}
+    ],
+    amenities: ["WiFi", "Projector", "Air Conditioning", "Parking"],
+    bookingUrl: "https://www.example.com/book-community-hall",
+    contact: {
+      phone: "+123456789",
+      email: "booking@example.com"
+    },
+    tags: ["event", "hall", "conference", "wedding"],
+    status: "Available"
   },
   {
     id: 4,
-    src: "images/masjid-about-bg.png",
-    alt: "Masjid Video 4",
-    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
+    name: "Small Meeting Room",
+    description: "Perfect for business meetings and small team discussions.",
+    category: "Meeting Room",
+    src: "/images/masjid-about-bg.png",
+    alt: "Meeting Room",
+    url: null,
+    location: "456 Office Street, Business Park",
+    capacity: 10,
+    price: 50,
+    availability: [
+      {day: "Monday-Friday", time: "8:00 AM - 8:00 PM"}
+    ],
+    amenities: ["WiFi", "Whiteboard", "Air Conditioning"],
+    bookingUrl: "https://www.example.com/book-meeting-room",
+    contact: {
+      phone: "+987654321",
+      email: "contact@meetingrooms.com"
+    },
+    tags: ["business", "meeting", "office"],
+    status: "Booked"
   },
   {
     id: 5,
-    src: "images/masjid-about-bg.png",
-    alt: "Masjid Video 5",
-    url: "https://www.youtube.com/watch?v=4pku9EburYQ"
+    name: "Community Hall",
+    description: "A spacious hall for events, gatherings, and conferences.",
+    category: "Event Space",
+    src: "/images/masjid-about-bg.png",
+    alt: "Community Hall",
+    url: "https://www.youtube.com/watch?v=example",
+    location: "123 Main Street, City Center",
+    capacity: 150,
+    price: 200,
+    availability: [
+      {day: "Monday-Friday", time: "9:00 AM - 9:00 PM"},
+      {day: "Saturday-Sunday", time: "10:00 AM - 11:00 PM"}
+    ],
+    amenities: ["WiFi", "Projector", "Air Conditioning", "Parking"],
+    bookingUrl: "https://www.example.com/book-community-hall",
+    contact: {
+      phone: "+123456789",
+      email: "booking@example.com"
+    },
+    tags: ["event", "hall", "conference", "wedding"],
+    status: "Available"
+  },
+  {
+    id: 6,
+    name: "Small Meeting Room",
+    description: "Perfect for business meetings and small team discussions.",
+    category: "Meeting Room",
+    src: "/images/masjid-about-bg.png",
+    alt: "Meeting Room",
+    url: null,
+    location: "456 Office Street, Business Park",
+    capacity: 10,
+    price: 50,
+    availability: [
+      {day: "Monday-Friday", time: "8:00 AM - 8:00 PM"}
+    ],
+    amenities: ["WiFi", "Whiteboard", "Air Conditioning"],
+    bookingUrl: "https://www.example.com/book-meeting-room",
+    contact: {
+      phone: "+987654321",
+      email: "contact@meetingrooms.com"
+    },
+    tags: ["business", "meeting", "office"],
+    status: "Booked"
   },
 ];
 
