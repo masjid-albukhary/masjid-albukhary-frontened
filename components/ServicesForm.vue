@@ -6,7 +6,6 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
 const serviceQuestions = [
-
   {
     label: t("service_form.label.title_en"),
     type: "text",
@@ -63,34 +62,40 @@ const serviceQuestions = [
     required: false,
     id: "capacity",
   },
-
 ];
 
 const formSchema = z.object({
   title_en: z
       .string()
-      .min(8, 'Activity Title (English) must be at least 8 characters long'),
+      .min(8, 'Services Title (English) must be at least 8 characters long'),
+
   title_my: z
       .string()
-      .min(8, 'Activity Title (Malay) must be at least 8 characters long'),
+      .min(8, 'Services Title (Malay) must be at least 8 characters long'),
+
   description_en: z
       .string()
       .min(30, 'Description (English) must be at least 30 characters long'),
+
   description_my: z
       .string()
       .min(30, 'Description (Malay) must be at least 30 characters long'),
+
   features_en: z
       .string()
       .min(10, 'Please provide at least one feature in English'),
+
   features_my: z
       .string()
       .min(10, 'Please provide at least one feature in Malay'),
+
   price: z
       .number()
       .min(0, 'Price must be a positive number'),
+
   capacity: z
       .number()
-      .min(0, 'Price must be a positive number'),
+      .min(0, 'Capacity must be a positive number'),
 });
 
 const form = reactive(
@@ -122,38 +127,18 @@ serviceQuestions.forEach((question) => {
 async function handleSubmit() {
   form.Date = new Date().toLocaleDateString("en-GB");
 
-  // Validate the entire form
   const validationResults = formSchema.safeParse(form);
 
-  // If validation is successful
-  if (validationResults.success) {
-    try {
-      console.log("Validation passed.");
-      console.log("Form Data:", form);
-
-      // Clear the form data after successful submission
-      Object.keys(form).forEach((key) => (form[key] = ''));
-
-      // Optionally, print a success message or proceed with actual form submission here
-      console.log("Form submitted successfully (without actual submission).");
-
-    } catch (error) {
-      console.error("Error occurred:", error);
-      // Handle specific error scenarios (optional)
-      if (error.response) {
-        console.error("Backend Error:", error.response.data);
-      } else if (error.request) {
-        console.error("No response from the server:", error.request);
-      } else {
-        console.error("Request Setup Error:", error.message);
-      }
-    }
-  } else {
-    // Log validation errors and alert the user
+  if (!validationResults.success) {
     console.log('Validation Errors:', validationResults.error.errors);
     alert("Please correct the errors in the form.");
+    return;
   }
+
+  // If validation is successful
+  console.log("Form Submitted Successfully:", form);
 }
+
 </script>
 
 <template>

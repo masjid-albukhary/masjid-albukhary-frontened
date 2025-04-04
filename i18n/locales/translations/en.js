@@ -26,16 +26,6 @@ export default {
         ]
     },
     booking: {
-        booking_structure: {
-            title: "How to Book a Hall",
-            button: "Book Now",
-            steps: [
-                {content: "Fill out the hall booking form with your details and preferred hall."},
-                {content: "Our team will review your request within 3 days."},
-                {content: "If approved, we will contact you through WhatsApp message."},
-                {content: "Finalize your arrangements and get ready for a memorable event!"}
-            ]
-        },
         title: "Booking Form",
         description: "Please fill in the form below to make your booking. Fields marked with an asterisk (*) are required.",
         form_title: "Make Your Booking",
@@ -71,6 +61,20 @@ export default {
                 other_requests: "Enter any requests or inquiries",
             },
             submit: "Submit Booking"
+        },
+        booking_popup:{
+            messages: "Thank you for submitting your request. We have successfully received your application, and our team will review it within the next 3 days. We will keep you informed about the progress and let you know if any further information is needed. Al Bukhary Mosque",
+            sub_message:"Thank you for your patience."
+        },
+        booking_structure: {
+            title: "How to Book a Hall",
+            button: "Book Now",
+            steps: [
+                {content: "Fill out the hall booking form with your details and preferred hall."},
+                {content: "Our team will review your request within 3 days."},
+                {content: "If approved, we will contact you through WhatsApp message."},
+                {content: "Finalize your arrangements and get ready for a memorable event!"}
+            ]
         }
     },
     service:{
@@ -106,12 +110,9 @@ export default {
             message_placeholder: "Type your message here...",
         }
     },
-
-
     members:{
         title:"Meet Our Community",
     },
-
     map_mosque: {
         mosque_location: "Albukhary Mosque Location",
         prayer_time: "Prayer Time",
@@ -145,11 +146,9 @@ export default {
             whatsapp: "WhatsApp"
         }
     },
-
     activities:{
         title: "Activities",
     },
-
     facilities: {
         title:"Our Facilities",
         amenities:"Amenities",

@@ -25,16 +25,6 @@ export default {
         ]
     },
     booking: {
-        booking_structure: {
-            title: "Cara Tempahan Dewan",
-            button: "Tempah Sekarang",
-            steps: [
-                {content: "Isi borang tempahan dewan dengan maklumat dan dewan pilihan anda."},
-                {content: "Pasukan kami akan menyemak permintaan anda dalam masa 3 hari."},
-                {content: "Jika diluluskan, kami akan menghubungi anda melalui mesej WhatsApp."},
-                {content: "Lengkapkan persiapan anda dan bersedia untuk acara yang bermakna!"}
-            ]
-        },
         title: "Borang Tempahan",
         description: "Sila isi borang di bawah untuk membuat tempahan anda. Ruangan yang ditandakan dengan tanda asterisk (*) adalah wajib diisi.",
         form_title: "Buat Tempahan Anda",
@@ -70,6 +60,20 @@ export default {
                 other_requests: "Masukkan sebarang permintaan atau pertanyaan",
             },
             submit: "Hantar Tempahan",
+        },
+        booking_popup:{
+            messages: "Terima kasih kerana menghantar permohonan anda. Kami telah menerima permohonan anda dengan jayanya dan pasukan kami akan menyemaknya dalam masa 3 hari. Kami akan memaklumkan kepada anda tentang perkembangan permohonan dan sekiranya maklumat tambahan diperlukan. Masjid Al-Bukhary.",
+            sub_message: "Terima kasih atas kesabaran anda."
+        },
+        booking_structure: {
+            title: "Cara Tempahan Dewan",
+            button: "Tempah Sekarang",
+            steps: [
+                {content: "Isi borang tempahan dewan dengan maklumat dan dewan pilihan anda."},
+                {content: "Pasukan kami akan menyemak permintaan anda dalam masa 3 hari."},
+                {content: "Jika diluluskan, kami akan menghubungi anda melalui mesej WhatsApp."},
+                {content: "Lengkapkan persiapan anda dan bersedia untuk acara yang bermakna!"}
+            ]
         },
     },
     service:{

@@ -1,6 +1,8 @@
 <script setup>
 import {defineEmits, defineProps} from 'vue'
 
+const {t} = useI18n();
+
 const props = defineProps({
   show: Boolean
 })
@@ -18,20 +20,13 @@ const fullDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate
     <div class="popup-container" @click.stop>
       <div class="notification">
         <div class="logo-box">
-          <img src="/images/Masjid-submit-popup.png" alt="aiu-logo">
+          <img src="/images/Masjid-submit-popup.png" alt="submit popup image">
         </div>
         <div class="thank-info">
           <p>
-
-            Thank you for submitting your request. We have successfully received your application, and our team will
-            review it within the next 3 days.
-
-            We will keep you informed about the progress and let you know if any further information is needed.
-
-            Al Bukhary Mosque
-            {{ fullDate }}
+            {{t('booking.booking_popup.messages')}}  {{ fullDate }}
           </p>
-          <h2>Thank you for your patience.</h2>
+          <h2>{{t('booking.booking_popup.sub_message')}}</h2>
         </div>
       </div>
       <hr class="divider">
@@ -40,6 +35,17 @@ const fullDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate
 </template>
 
 <style scoped>
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .popup-overlay {
   position: fixed;
   top: 0;
@@ -50,32 +56,53 @@ const fullDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 1002;
+  animation: fadeIn 0.4s ease-in-out;
 }
 
 .popup-container {
-  background: #fff;
+  background: var(--bg-color);
   padding: 20px;
-  border-radius: 8px;
-  max-width: 50%;
-  width: 80%;
+  border-radius: 12px;
+  max-width: 600px;
+  width: 90%;
   position: relative;
   text-align: center;
-  z-index: 1001;
+  z-index: 1003;
+  animation: fadeIn 0.4s ease-in-out;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
-@media (max-width: 1200px) {
+/* Mobile Responsive */
+@media (max-width: 768px) {
   .popup-container {
     border-radius: 0;
-    max-width: 100%;
-    width: 100%;
+    max-width: 95%;
+    padding: 15px;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+    line-height: 2rem;
+  }
+
+  p {
+    font-size: 1rem;
+    line-height: 1.6rem;
   }
 }
 
-
 .logo-box {
   width: 200px;
-  margin: 0 auto 5rem auto;
+  margin: 0 auto 3rem auto;
+}
+
+.logo-box img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  border-radius: 8px;
 }
 
 span {
@@ -83,7 +110,7 @@ span {
 }
 
 .thank-info {
-  margin-top: -5rem;
+  margin-top: -3rem;
 }
 
 h2 {
@@ -98,13 +125,10 @@ p {
   color: var(--primary-color);
   text-align: justify;
   margin: 5% 3%;
-
 }
 
 .divider {
   margin: 5% 3%;
   border: 1px solid var(--primary-color);
 }
-
-
 </style>

@@ -135,8 +135,7 @@ const formSchema = z.object({
 
   email: z
       .string()
-      .email('Invalid email format')
-      .regex(/@gmail\.com$/, "Must be a valid email ending with '@gmail.com'"),
+      .email('Invalid email format'),
 
   phone: z
       .string()
@@ -197,58 +196,21 @@ const handleFileUpload = (event, inputDetails) => {
   evidence_photo.value = event.target.files[0];
 };
 
-const isPopupVisible = ref(false)
+const isPopupVisible = ref(true)
 
 async function handleSubmit() {
   form.Date = new Date().toLocaleDateString("en-GB");
 
   const validationResults = formSchema.safeParse(form);
-  if (validationResults.success) {
-    try {
-      console.log("Sending API Request...");
-      const formDataObj = new FormData();
-      for (const key in form) {
-        const value = form[key];
-        if (value === null || value === undefined) {
-          continue;
-        }
-        formDataObj.append(key, value);
-      }
-      formDataObj.delete('other_docs')
 
-      if (evidence_photo.value) {
-        formDataObj.append('other_docs', evidence_photo.value)
-      }
-
-      const response = await api.post("//", formDataObj);
-      console.log("Response Data:", response.data);
-      Object.keys(form).forEach((key) => (form[key] = ""));
-      isPopupVisible.value = true;
-      location.reload()
-    } catch (error) {
-      isPopupVisible.value = false;
-      console.error("Error occurred:", error);
-      if (error.response) {
-        console.error("Backend Error:", error.response.data);
-        alert(`Error: ${error.response.data.detail || "Unable to submit the form."}`);
-        isPopupVisible.value = false;
-        // console.log("Response Data:", response.data.value);
-      } else if (error.request) {
-        console.error("No response from the server:", error.request);
-        alert("Server is not responding. Please try again later.");
-        isPopupVisible.value = false;
-      } else {
-        console.error("Request Setup Error:", error.message);
-        alert("An error occurred while submitting the form. Please try again.");
-        isPopupVisible.value = false;
-      }
-      isPopupVisible.value = false;
-    }
-  } else {
+  if (!validationResults.success) {
     console.log('Validation Errors:', validationResults.error.errors);
-    isPopupVisible.value = false;
     alert("Please correct the errors in the form.");
+    return;
   }
+
+  // If validation is successful
+  console.log("Form Submitted Successfully:", form);
 }
 
 </script>
