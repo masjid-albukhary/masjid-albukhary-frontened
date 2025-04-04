@@ -196,7 +196,7 @@ const handleFileUpload = (event, inputDetails) => {
   evidence_photo.value = event.target.files[0];
 };
 
-const isPopupVisible = ref(true)
+const isPopupVisible = ref(false)
 
 async function handleSubmit() {
   form.Date = new Date().toLocaleDateString("en-GB");
