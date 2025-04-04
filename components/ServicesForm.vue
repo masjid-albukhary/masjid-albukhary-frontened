@@ -7,93 +7,93 @@ const { t } = useI18n();
 
 const serviceQuestions = [
   {
-    label: t("service_form.label.title_en"),
+    label: t("service_form.label.services_title_en"),
     type: "text",
-    placeholder: t("service_form.placeholder.title_en"),
+    placeholder: t("service_form.placeholder.services_title_en"),
     required: true,
-    id: "title_en",
+    id: "services_title_en",
   },
   {
-    label: t("service_form.label.title_my"),
+    label: t("service_form.label.services_title_my"),
     type: "text",
-    placeholder: t("service_form.placeholder.title_my"),
+    placeholder: t("service_form.placeholder.services_title_my"),
     required: true,
-    id: "title_my",
+    id: "services_title_my",
   },
   {
-    label: t("service_form.label.description_en"),
+    label: t("service_form.label.services_description_en"),
     type: "textarea",
-    placeholder: t("service_form.placeholder.description_en"),
+    placeholder: t("service_form.placeholder.services_description_en"),
     required: true,
-    id: "description_en",
+    id: "services_description_en",
   },
   {
-    label: t("service_form.label.description_my"),
+    label: t("service_form.label.services_description_my"),
     type: "textarea",
-    placeholder: t("service_form.placeholder.description_my"),
+    placeholder: t("service_form.placeholder.services_description_my"),
     required: true,
-    id: "description_my",
+    id: "services_description_my",
   },
   {
-    label: t("service_form.label.features_en"),
+    label: t("service_form.label.services_features_en"),
     type: "textarea",
-    placeholder: t("service_form.placeholder.features_en"),
+    placeholder: t("service_form.placeholder.services_features_en"),
     required: true,
-    id: "features_en",
+    id: "services_features_en",
   },
   {
-    label: t("service_form.label.features_my"),
+    label: t("service_form.label.services_features_my"),
     type: "textarea",
     placeholder: t("service_form.placeholder.features_my"),
     required: true,
-    id: "features_my",
+    id: "services_features_my",
   },
   {
-    label: t("service_form.label.price"),
+    label: t("service_form.label.services_price"),
     type: "number",
-    placeholder: t("service_form.placeholder.price"),
+    placeholder: t("service_form.placeholder.services_price"),
     required: true,
-    id: "price",
+    id: "services_price",
   },
   {
-    label: t("service_form.label.capacity"),
+    label: t("service_form.label.services_capacity"),
     type: "number",
-    placeholder: t("service_form.placeholder.capacity"),
+    placeholder: t("service_form.placeholder.services_capacity"),
     required: false,
-    id: "capacity",
+    id: "services_capacity",
   },
 ];
 
 const formSchema = z.object({
-  title_en: z
+  services_title_en: z
       .string()
       .min(8, 'Services Title (English) must be at least 8 characters long'),
 
-  title_my: z
+  services_title_my: z
       .string()
       .min(8, 'Services Title (Malay) must be at least 8 characters long'),
 
-  description_en: z
+  services_description_en: z
       .string()
       .min(30, 'Description (English) must be at least 30 characters long'),
 
-  description_my: z
+  services_description_my: z
       .string()
       .min(30, 'Description (Malay) must be at least 30 characters long'),
 
-  features_en: z
+  services_features_en: z
       .string()
       .min(10, 'Please provide at least one feature in English'),
 
-  features_my: z
+  services_features_my: z
       .string()
       .min(10, 'Please provide at least one feature in Malay'),
 
-  price: z
+  services_price: z
       .number()
       .min(0, 'Price must be a positive number'),
 
-  capacity: z
+  services_capacity: z
       .number()
       .min(0, 'Capacity must be a positive number'),
 });

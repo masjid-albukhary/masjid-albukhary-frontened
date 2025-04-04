@@ -1,78 +1,132 @@
 <script setup lang="ts">
-import {computed, onMounted, ref} from 'vue';
-import {useNuxtApp} from "#app";
-
-interface StudentRequest {
-  id: number
-  date: string
-  student: string
-  studentIdNumber: string
-  room_number: string
-  nationality: string
-  phone: string
-  email: string
-  gender: string
-  request: string
-  status: string
-  extend?: boolean | string
-}
+import {ref, computed} from 'vue';
 
 const columns = [
-  {key: 'name', label: 'Name', sortable: true},
+  {key: 'firstName', label: 'First Name', sortable: true},
+  {key: 'contact', label: 'Contact Number', sortable: true},
+  {key: 'venue', label: 'Venue', sortable: true},
   {key: 'status', label: 'Status', sortable: true},
-  {key: 'extend', label: 'View', sortable: false,}
-]
-const requests = ref<StudentRequest[]>([]);
-const currentPage = ref(1);
-const pageSize = ref(10);
-const q = ref('');
-// const api = $axios()
-// const fetchData = async () => {
-//
-//   isLoading.value = true;
-//   try {
-//     // const response = await api.get("/maintenance-requests/");
-//     requests.value = response.data.map((request: StudentRequest) => ({
-//       ...request,
-//       date: new Date().toLocaleDateString(),
-//     }));
-//   } catch (error) {
-//     console.error('Error fetching data:', error);
-//   } finally {
-//     isLoading.value = false;
-//   }
-//
-// }
-
-const isPopupVisible = ref(false);
-const currentRequest = ref({});
-
-const openPopup = (row: StudentRequest) => {
-  currentRequest.value = row;
-  isPopupVisible.value = true;
-};
-
-const selectedFilter = ref('pending');
-
-const filterOptions = [
-  {value: 'pending', label: 'Pending'},
-  {value: 'completed', label: 'Completed'},
-  {value: 'rejected', label: 'Rejected'},
+  {key: 'actions', label: 'Actions', sortable: false}
 ];
 
-const filteredRows = computed(() => {
-  let result = requests.value;
+const bookings = ref([
+  {
+    id: 1,
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john@example.com',
+    contact: '123456789',
+    address: '123 Main St, NY',
+    postalCode: '10001',
+    bookingDates: '2025-04-10 to 2025-04-12',
+    guests: 3,
+    timeSlot: '10:00 AM - 12:00 PM',
+    venue: 'Grand Hall',
+    services: 'Catering, Photography',
+    otherRequests: 'Need extra chairs',
+    status: 'Pending'
+  },
+  {
+    id: 2,
+    firstName: 'Jane',
+    lastName: 'Smith',
+    email: 'jane@example.com',
+    contact: '987654321',
+    address: '456 Oak Ave, CA',
+    postalCode: '90210',
+    bookingDates: '2025-05-05',
+    guests: 2,
+    timeSlot: '2:00 PM - 4:00 PM',
+    venue: 'Conference Room',
+    services: 'Projector, Sound System',
+    otherRequests: 'Gluten-free snacks',
+    status: 'Confirmed'
+  },
+  {
+    id: 3,
+    firstName: 'Ali',
+    lastName: 'Khan',
+    email: 'ali@example.com',
+    contact: '112233445',
+    address: '789 Elm St, TX',
+    postalCode: '75001',
+    bookingDates: '2025-06-15',
+    guests: 5,
+    timeSlot: '6:00 PM - 8:00 PM',
+    venue: 'Banquet Hall',
+    services: 'Live Music',
+    otherRequests: 'Extra lighting',
+    status: 'Cancelled'
+  },
+  {
+    id: 4,
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john@example.com',
+    contact: '123456789',
+    address: '123 Main St, NY',
+    postalCode: '10001',
+    bookingDates: '2025-04-10 to 2025-04-12',
+    guests: 3,
+    timeSlot: '10:00 AM - 12:00 PM',
+    venue: 'Grand Hall',
+    services: 'Catering, Photography',
+    otherRequests: 'Need extra chairs',
+    status: 'Pending'
+  },
+  {
+    id: 5,
+    firstName: 'Jane',
+    lastName: 'Smith',
+    email: 'jane@example.com',
+    contact: '987654321',
+    address: '456 Oak Ave, CA',
+    postalCode: '90210',
+    bookingDates: '2025-05-05',
+    guests: 2,
+    timeSlot: '2:00 PM - 4:00 PM',
+    venue: 'Conference Room',
+    services: 'Projector, Sound System',
+    otherRequests: 'Gluten-free snacks',
+    status: 'Confirmed'
+  },
+  {
+    id: 6,
+    firstName: 'Ali',
+    lastName: 'Khan',
+    email: 'ali@example.com',
+    contact: '112233445',
+    address: '789 Elm St, TX',
+    postalCode: '75001',
+    bookingDates: '2025-06-15',
+    guests: 5,
+    timeSlot: '6:00 PM - 8:00 PM',
+    venue: 'Banquet Hall',
+    services: 'Live Music',
+    otherRequests: 'Extra lighting',
+    status: 'Cancelled'
+  }
+]);
 
-  if (selectedFilter.value) {
-    result = result.filter(request => request.status === selectedFilter.value);
+const currentPage = ref(1);
+const pageSize = ref(5);
+const searchQuery = ref('');
+const statusFilter = ref('All');
+const bookingDetails = ref<Record<string, any>>({});
+
+const filteredRows = computed(() => {
+  let result = bookings.value;
+
+  if (statusFilter.value !== 'All') {
+    result = result.filter(booking => booking.status === statusFilter.value);
   }
 
-  if (q.value) {
-    result = result.filter(request => {
-      return Object.values(request).some(value =>
-          String(value).toLowerCase().includes(q.value.toLowerCase())
-      );
-    });
+  if (searchQuery.value) {
+    result = result.filter(booking =>
+        Object.values(booking).some(value =>
+            String(value).toLowerCase().includes(searchQuery.value.toLowerCase())
+        )
+    );
   }
 
   return result;
@@ -92,162 +146,295 @@ const handlePageChange = (newPage: number) => {
   }
 };
 
+const isPopupVisible = ref(false);
+const currentBooking = ref<any>(null);
 
-// onMounted(() => {
-//   fetchData();
-// });
+const openPopup = (row: any) => {
+  currentBooking.value = row;
+  bookingDetails.value = {
+    "Name": `${row.firstName} ${row.lastName}`,
+    "Email": row.email,
+    "Contact": row.contact,
+    "Address": row.address,
+    "Postal Code": row.postalCode,
+    "Booking Dates": row.bookingDates,
+    "Guests": row.guests,
+    "Time Slot": row.timeSlot,
+    "Venue": row.venue,
+    "Services": row.services,
+    "Other Requests": row.otherRequests,
+    "Status": row.status
+  };
+  isPopupVisible.value = true;
+};
+
+const closePopup = () => {
+  isPopupVisible.value = false;
+};
+
 
 </script>
 
 <template>
-  <section class="booking-dashboard-wrapper">
+  <section class="dashboard-wrapper">
+
     <div class="dashboard-container">
-
       <main class="content-area">
-        <div class="content-wrapper">
-          <div class="content-body">
-            <div class="header-section">
 
-              <div class="filter-wrapper">
-                <input v-model="q" placeholder="Filter students..." class="filter-box"/>
-              </div>
+        <div class="content-header">
+          <input v-model="searchQuery" placeholder="Search bookings..." class="search-box"/>
+          <select v-model="statusFilter" class="filter-dropdown">
+            <option value="All">All Statuses</option>
+            <option value="Pending">Pending</option>
+            <option value="Confirmed">Confirmed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </div>
 
-              <div class="filter-dropdown">
-                <select class="filter-box" v-model="selectedFilter" @click="filteredRows">
-                  <option value="" disabled selected>Filter students...</option>
-                  <option v-for="option in filterOptions" :key="option.value" :value="option.value">
-                    {{ option.label }}
-                  </option>
-                </select>
-              </div>
+        <table class="data-table">
+          <thead>
+          <tr>
+            <th v-for="col in columns" :key="col.key">{{ col.label }}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="row in paginatedRows" :key="row.id">
+            <td>{{ row.firstName }}</td>
+            <td>{{ row.contact }}</td>
+            <td>{{ row.venue }}</td>
+            <td :class="row.status.toLowerCase()">{{ row.status }}</td>
+            <td>
+              <button @click="openPopup(row)" class="view-button">View</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
 
-              <div class="download-btn-wrapper">
-                <button @click="" class="download-button">Download Report</button>
-              </div>
-
-            </div>
-
-            <UTable :columns="columns" :rows="paginatedRows">
-              <template #extend-data="{ row }">
-                <a @click="openPopup(row)" class="view-button">View</a>
-                <Popup
-                    :show="isPopupVisible"
-                    @update:show="isPopupVisible = $event"
-                    :request="currentRequest"
-                />
-              </template>
-            </UTable>
-
-            <div class="pagination-controls">
-              <button :disabled="currentPage === 1" @click="handlePageChange(currentPage - 1)"
-                      class="pagination-button">
-                <UIcon name="mdi-arrow-left"/>
-              </button>
-              <span class="pagination-info">Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) }}</span>
-              <button :disabled="currentPage >= Math.ceil(totalItems / pageSize)"
-                      @click="handlePageChange(currentPage + 1)" class="pagination-button">
-                <UIcon name="mdi-arrow-right"/>
-              </button>
-            </div>
-          </div>
+        <div class="pagination-controls">
+          <button :disabled="currentPage === 1" @click="handlePageChange(currentPage - 1)">⬅ Prev</button>
+          <span>Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) }}</span>
+          <button :disabled="currentPage >= Math.ceil(totalItems / pageSize)"
+                  @click="handlePageChange(currentPage + 1)">Next ➡
+          </button>
         </div>
       </main>
+    </div>
+
+    <div v-if="isPopupVisible" class="popup-overlay" @click="closePopup">
+      <div class="popup" @click.stop>
+        <div class="popup-header">
+          <h3>Booking Details</h3>
+          <button class="close-btn" @click="closePopup" aria-label="Close Popup">X</button>
+        </div>
+        <div class="popup-content">
+          <div v-for="(value, key) in bookingDetails" :key="key" class="popup-detail">
+
+            <span>{{ key }}:</span>
+            <span> {{ value }}</span>
+
+          </div>
+        </div>
+        <div class="popup-footer">
+          <button @click="closePopup" class="close-btn">Close</button>
+        </div>
+      </div>
     </div>
   </section>
 </template>
 
 <style scoped>
 section {
-  display: block;
+  padding: 20px;
+  min-height: 100vh;
+  height: 100%;
 }
 
-.dashboard-container {
-  width: 100%;
-  margin: 0 auto;
-  padding: 0;
-}
-
-.content-wrapper {
-  flex: 10;
-  background-color: #eee;
-  padding: 0;
-  height: 100vh;
-}
-
-.filter-wrapper,
-.filter-dropdown,
-.download-btn-wrapper {
-  padding: 1rem;
-}
-
-.filter-box,
-.download-button {
-  padding: 5px;
-  border-radius: 5px;
-  border: none;
-  outline: none;
-  color: var(--secondary-color);
-}
-
-.download-button {
-  background-color: var(--primary-color);
-  color: var(--text-color) !important;
-  border-radius: 10px 0 !important;
-  transition: var(--transition);
-}
-
-.download-button:hover {
-  background-color: var(--secondary-color);
-  color: var(--text-hover) !important;
-}
-
-.header-section {
+.content-header {
   display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
   flex-wrap: wrap;
-  align-items: center;
-  margin: 0.5rem;
 }
 
-.view-button,
-.pagination-button {
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  background-color: var(--primary-color);
+.filter-dropdown,
+.search-box {
+  padding: 8px;
+  max-width: 200px;
+  outline: none;
+  border-radius: .5rem;
+  border: 2px solid var(--text-hover);
+  width: 100%;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.data-table th, .data-table td {
+  border: 2px solid var(--text-hover);
+  padding: 10px;
+  word-wrap: break-word;
+}
+
+.view-button {
   color: var(--text-color);
+  outline: none;
+  border: none;
+  padding: .5rem 1rem;
   cursor: pointer;
-  transition: var(--transition);
-}
-
-.view-button:hover,
-.pagination-button:hover {
-  background-color: var(--secondary-color);
-  color: var(--text-hover);
+  background-color: var(--primary-color);
+  border-radius: .5rem;
+  font-size: 14px;
 }
 
 .pagination-controls {
   display: flex;
   justify-content: center;
-  margin: 1rem 0;
+  margin-top: 10px;
 }
 
-.pagination-info {
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  transition: 0.3s ease-in-out;
+.popup-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1002;
 }
 
-@media (max-width: 1200px) {
-  .dashboard-container,
-  .booking-dashboard-wrapper,
-  .header-section {
-    display: block;
-  }
+.popup {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.popup-header h3 {
+  margin: 0;
+}
+
+.close-btn {
+  background: #f44336;
+  color: var(--text-color);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.popup-content {
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+.popup-detail {
+  margin-bottom: 10px;
+}
+
+.popup-footer {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.popup-footer .close-btn {
+  background: var(--primary-color);
+  border-radius: 4px;
+  padding: 10px 20px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
 }
 
 @media (max-width: 768px) {
-  .content-area {
-    padding: 1rem;
+  .content-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .filter-dropdown,
+  .search-box {
+    max-width: 100%;
+    margin: 1rem 0;
+  }
+
+  .data-table th, .data-table td {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .view-button {
+    padding: .4rem 1rem;
+    font-size: 12px;
+  }
+
+  .popup {
+    max-width: 90%;
+    padding: 15px;
+  }
+
+  .popup-header h3 {
+    font-size: 18px;
+  }
+
+  .popup-content {
+    font-size: 14px;
+  }
+
+  .popup-footer .close-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-wrapper {
+    padding: 10px;
+  }
+
+  .filter-dropdown,
+  .search-box {
+    padding: 6px;
+  }
+
+  .data-table th, .data-table td {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .popup {
+    max-width: 95%;
+    padding: 10px;
+  }
+
+  .popup-header h3 {
+    font-size: 16px;
+  }
+
+  .view-button {
+    font-size: 10px;
+    padding: .3rem .8rem;
+  }
+
+  .popup-footer .close-btn {
+    padding: 6px 14px;
+    font-size: 12px;
   }
 }
 </style>
-

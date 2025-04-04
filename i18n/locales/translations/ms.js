@@ -157,8 +157,6 @@ export default {
         }
     },
 
-
-
     // admin side
 
     login: {
@@ -316,26 +314,26 @@ export default {
     service_form: {
         title: "Borang Perkhidmatan",
         label: {
-            title_en: "Tajuk Perkhidmatan (Bahasa Inggeris)",
-            title_my: "Tajuk Perkhidmatan (Bahasa Melayu)",
-            description_en: "Penerangan Perkhidmatan (Bahasa Inggeris)",
-            description_my: "Penerangan Perkhidmatan (Bahasa Melayu)",
-            features_en: "Ciri-ciri Perkhidmatan (Bahasa Inggeris)",
-            features_my: "Ciri-ciri Perkhidmatan (Bahasa Melayu)",
-            price: "Harga (RM)",
-            poster: "Muat Naik Poster Perkhidmatan",
-            capacity: "Anggaran Kapasiti",
+            services_title_en: "Tajuk Perkhidmatan (Bahasa Inggeris)",
+            services_title_my: "Tajuk Perkhidmatan (Bahasa Melayu)",
+            services_description_en: "Penerangan Perkhidmatan (Bahasa Inggeris)",
+            services_description_my: "Penerangan Perkhidmatan (Bahasa Melayu)",
+            services_features_en: "Ciri-ciri Perkhidmatan (Bahasa Inggeris)",
+            services_features_my: "Ciri-ciri Perkhidmatan (Bahasa Melayu)",
+            services_price: "Harga (RM)",
+            services_poster: "Muat Naik Poster Perkhidmatan",
+            services_capacity: "Anggaran Kapasiti",
         },
         placeholder: {
-            title_en: "Masukkan tajuk perkhidmatan dalam Bahasa Inggeris",
-            title_my: "Masukkan tajuk perkhidmatan dalam Bahasa Melayu",
-            description_en: "Masukkan penerangan perkhidmatan dalam Bahasa Inggeris",
-            description_my: "Masukkan penerangan perkhidmatan dalam Bahasa Melayu",
-            features_en: "Masukkan ciri-ciri perkhidmatan dalam Bahasa Inggeris (dipisahkan dengan koma)",
-            features_my: "Masukkan ciri-ciri perkhidmatan dalam Bahasa Melayu (dipisahkan dengan koma)",
-            price: "Masukkan harga dalam RM",
-            currency: "Masukkan mata wang",
-            capacity: "Masukkan anggaran bilangan Anggaran kapasiti",
+            services_title_en: "Masukkan tajuk perkhidmatan dalam Bahasa Inggeris",
+            services_title_my: "Masukkan tajuk perkhidmatan dalam Bahasa Melayu",
+            services_description_en: "Masukkan penerangan perkhidmatan dalam Bahasa Inggeris",
+            services_description_my: "Masukkan penerangan perkhidmatan dalam Bahasa Melayu",
+            services_features_en: "Masukkan ciri-ciri perkhidmatan dalam Bahasa Inggeris (dipisahkan dengan koma)",
+            services_features_my: "Masukkan ciri-ciri perkhidmatan dalam Bahasa Melayu (dipisahkan dengan koma)",
+            services_price: "Masukkan harga dalam RM",
+            services_currency: "Masukkan mata wang",
+            services_capacity: "Masukkan anggaran bilangan Anggaran kapasiti",
         },
     },
 }

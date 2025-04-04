@@ -11,21 +11,22 @@ import AdminSideBar from "~/components/AdminSideBar.vue";
       <AdminSideBar/>
     </aside>
     <main>
-
+      <BookingDashboard/>
     </main>
   </section>
   <AdminFooter/>
 </template>
 
 <style scoped>
-.admin-container {
+section{
   display: grid;
   grid-template-columns: 1fr 4fr;
 }
 
 .news-aside {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
   background-color: var(--bg-color);
 }
 
