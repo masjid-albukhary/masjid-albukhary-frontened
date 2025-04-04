@@ -8,112 +8,135 @@ const { t } = useI18n()
 
 const facilityQuestions = [
   {
-    label: t('facility_form.label.facility_name'),
+    label: t('facility_form.label.facility_name_en'),
     type: "text",
-    placeholder: t('facility_form.placeholder.facility_name'),
+    placeholder: t('facility_form.placeholder.facility_name_en'),
     required: true,
-    id: "facility_name",
+    id: "facility_name_en",
   },
   {
-    label: t('facility_form.label.facility_type'),
-    type: "select",
-    placeholder: t('facility_form.placeholder.facility_type'),
+    label: t('facility_form.label.facility_name_my'),
+    type: "text",
+    placeholder: t('facility_form.placeholder.facility_name_my'),
     required: true,
-    id: "facility_type",
-    options: ["Prayer", "Education", "Sports", "Community", "Others"]
+    id: "facility_name_my",
+  },
+  {
+    label: t('facility_form.label.facility_category'),
+    type: "select",
+    placeholder: t('facility_form.placeholder.facility_category'),
+    required: true,
+    id: "facility_category",
+    options: [
+      {value: "wedding_hall" , label: "Wedding Hall"},
+      {value: "education" , label: "Education"},
+      {value: "quran_class" , label: "Quran Class"},
+      {value: "sports" , label: "Sports"},
+      {value: "community_event" , label: "Community Event"},
+      {value: "others" , label: "Others"},
+    ]
   },
   {
     label: t('facility_form.label.location'),
     type: "text",
     placeholder: t('facility_form.placeholder.location'),
     required: true,
-    id: "location",
+    id: "facility_location",
   },
   {
-    label: t('facility_form.label.upload_photos'),
-    type: "file",
-    placeholder: t('facility_form.placeholder.upload_photos'),
+    label: t('facility_form.label.facility_description_en'),
+    type: "textarea",
+    placeholder: t('facility_form.placeholder.facility_description_en'),
     required: true,
-    id: "photos",
+    id: "facility_description_en",
+  },
+  {
+    label: t('facility_form.label.facility_description_my'),
+    type: "textarea",
+    placeholder: t('facility_form.placeholder.facility_description_my'),
+    required: true,
+    id: "facility_description_my",
+  },
+  {
+    label: t('facility_form.label.facility_features_en'),
+    type: "textarea",
+    placeholder: t('facility_form.placeholder.facility_features_en'),
+    required: false,
+    id: "facility_features_en",
+  },
+  {
+    label: t('facility_form.label.facility_features_my'),
+    type: "textarea",
+    placeholder: t('facility_form.placeholder.facility_features_my'),
+    required: false,
+    id: "facility_features_my",
   },
   {
     label: t('facility_form.label.capacity'),
     type: "number",
     placeholder: t('facility_form.placeholder.capacity'),
     required: true,
-    id: "capacity",
+    id: "facility_capacity",
   },
   {
-    label: t('facility_form.label.booking_required'),
-    type: "select",
-    placeholder: t('facility_form.placeholder.booking_required'),
+    label: t('facility_form.label.facility_price'),
+    type: "number",
+    placeholder: t('facility_form.placeholder.facility_price'),
     required: true,
-    id: "booking_required",
-    options: [
-      { label: t('facility_form.label.yes'), value: "yes" },
-      { label: t('facility_form.label.no'), value: "no" }
-    ]
+    id: "facility_price",
   },
   {
-    label: t('facility_form.label.equipment'),
-    type: "textarea",
-    placeholder: t('facility_form.placeholder.equipment'),
+    label: t('facility_form.label.facility_photo'),
+    type: "file",
+    placeholder: t('facility_form.placeholder.facility_photo'),
     required: true,
-    id: "equipment",
-  },
-  {
-    label: t('facility_form.label.rules'),
-    type: "textarea",
-    placeholder: t('facility_form.placeholder.rules'),
-    required: false,
-    id: "rules",
-  },
-  {
-    label: t('facility_form.label.description'),
-    type: "textarea",
-    placeholder: t('facility_form.placeholder.description'),
-    required: true,
-    id: "description",
+    id: "facility_photo",
   },
 ]
 
 const formSchema = z.object({
-  facility_name: z
+  facility_name_en: z
       .string()
       .min(5, 'Facility Name must be at least 5 characters long'),
 
-  facility_type: z
+  facility_name_my: z
+      .string()
+      .min(5, 'Facility Name must be at least 5 characters long'),
+
+  facility_category: z
       .string()
       .min(3, 'Facility Type is required'),
 
-  description: z
+  facility_features_en: z
       .string()
       .min(30, 'Description must be at least 30 characters long'),
 
-  location: z
+  facility_features_my: z
+      .string()
+      .min(30, 'Description must be at least 30 characters long'),
+
+  facility_description_en: z
+      .string()
+      .min(30, 'Description must be at least 30 characters long'),
+
+  facility_description_my: z
+      .string()
+      .min(30, 'Description must be at least 30 characters long'),
+
+  facility_location: z
       .string()
       .min(5, 'Location must be at least 5 characters long'),
 
-  photos: z.any().optional(),
+  facility_photo: z.any().optional(),
 
-  capacity: z
+  facility_capacity: z
       .number()
       .min(1, 'Capacity must be at least 1'),
 
-  equipment: z
-      .string()
-      .min(30, 'Equipment must be at least 30 characters long'),
+  price_capacity: z
+      .number()
+      .min(1, 'Capacity must be at least 1'),
 
-  rules: z
-      .string()
-      .optional(),
-
-  booking_required: z
-      .string().optional(),
-
-  booking_contact: z
-      .string()
-      .optional(),
 });
 
 const form = reactive({});
@@ -151,54 +174,19 @@ async function handleSubmit() {
   form.Date = new Date().toLocaleDateString("en-GB");
 
   const validationResults = formSchema.safeParse(form);
-  if (validationResults.success) {
-    try {
-      console.log("Sending API Request...");
-      const formDataObj = new FormData();
-      for (const key in form) {
-        const value = form[key];
-        if (value === null || value === undefined) {
-          continue;
-        }
-        formDataObj.append(key, value);
-      }
-      formDataObj.delete('image')
 
-      if (image.value) {
-        formDataObj.append('image', image.value)
-      }
-
-      const response = await api.post("/maintenance-requests/", formDataObj);
-      console.log("Response Data:", response.data);
-      Object.keys(form).forEach((key) => (form[key] = ""));
-      isPopupVisible.value = true;
-      location.reload()
-    } catch (error) {
-      isPopupVisible.value = false;
-      console.error("Error occurred:", error);
-      if (error.response) {
-        console.error("Backend Error:", error.response.data);
-        alert(`Error: ${error.response.data.detail || "Unable to submit the form."}`);
-        isPopupVisible.value = false;
-        // console.log("Response Data:", response.data.value);
-      } else if (error.request) {
-        console.error("No response from the server:", error.request);
-        alert("Server is not responding. Please try again later.");
-        isPopupVisible.value = false;
-      } else {
-        console.error("Request Setup Error:", error.message);
-        alert("An error occurred while submitting the form. Please try again.");
-        isPopupVisible.value = false;
-      }
-      isPopupVisible.value = false;
-    }
-  } else {
+  if (!validationResults.success) {
     console.log('Validation Errors:', validationResults.error.errors);
-    isPopupVisible.value = false;
     alert("Please correct the errors in the form.");
+    return;
   }
-}
 
+  alert("Form Submitted Successfully.");
+  // location.reload();
+
+  // If validation is successful
+  console.log("Form Submitted Successfully:", form);
+}
 </script>
 
 <template>
@@ -219,7 +207,7 @@ async function handleSubmit() {
                   v-model="form[question.id]"
                   :placeholder="question.placeholder"
                   :id="question.label"
-                  :accept="question.type === 'file' ? '.doc,.docx,.pdf,.jpg,.jpeg,.png,.gif' : ''"
+                  :accept="question.type === 'file' ? '.jpg,.jpeg,.png,' : ''"
                   @change="(e) => handleFileUpload(e, question)"
                   @input="validateField(question.id)"
               />

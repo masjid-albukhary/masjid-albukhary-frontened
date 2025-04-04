@@ -284,6 +284,35 @@ export default {
             no: "Tidak",
         },
     },
+    facility_form: {
+        title: "Borang Kemudahan",
+        label: {
+            facility_name_en: "Nama Kemudahan (English)",
+            facility_name_my: "Nama Kemudahan (Bahasa Melayu)",
+            facility_category: "Jenis / Kategori Kemudahan",
+            facility_description_en: "Penerangan Kemudahan (English)",
+            facility_description_my: "Penerangan Kemudahan (Bahasa Melayu)",
+            facility_location: "Lokasi / Nama Blok",
+            facility_photo: "Muat Naik Gambar Kemudahan",
+            facility_capacity: "Kapasiti Maksimum",
+            facility_price: "harga",
+            facility_features_en: "Ciri-ciri Kemudahan (English)",
+            facility_features_my: "Ciri-ciri Kemudahan (Bahasa Melayu)",
+        },
+        placeholder: {
+            facility_name_en: "Contoh: Prayer Hall, Library",
+            facility_name_my: "Contoh: Surau, Perpustakaan",
+            facility_category: "Pilih kategori kemudahan",
+            facility_description_en: "Huraikan penggunaan, peraturan, dan maklumat lain",
+            facility_description_my: "Huraikan penggunaan, peraturan, dan maklumat lain",
+            facility_location: "Contoh: Bangunan Utama, Aras 2",
+            facility_photo: "Muat naik sehingga 3–5 gambar",
+            facility_capacity: "Contoh: 100 orang",
+            facility_price: "E.g., 100 RM",
+            facility_features_en: "Contoh: Mikrofon, Penyaman Udara, Projektor, Kerusi",
+            facility_features_my: "Contoh: Mikrofon, Penyaman Udara, Projektor, Kerusi",
+        }
+    },
     service_form: {
         title: "Borang Perkhidmatan",
         label: {
