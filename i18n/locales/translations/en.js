@@ -151,6 +151,7 @@ export default {
     },
 
     facilities: {
+        title:"Our Facilities",
         amenities:"Amenities",
         facilities_form: {
             title: "Book your Wedding/Solemnisation Venue",

@@ -8,6 +8,7 @@ interface Facility {
   url: string;
 }
 
+const {t} = useI18n();
 const facilities: Facility[] = [
   {
     id: 1,
@@ -43,7 +44,6 @@ const facilities: Facility[] = [
 
 const currentIndex = ref(0);
 const itemsPerPage = ref(3);
-
 const visibleFacilities = computed(() => {
   return facilities.slice(currentIndex.value, currentIndex.value + itemsPerPage.value);
 });
@@ -69,12 +69,7 @@ function prevPage() {
 <template>
 
   <section class="facilities">
-    <h1>
-      <UIcon
-          name="mdi-office-building"
-      />
-      Our Facilities
-    </h1>
+    <h1 class="title"> {{t('facilities.title')}}</h1>
     <div class="facilities-container">
       <div class="card" v-for="facility in visibleFacilities" :key="facility.id">
         <img
@@ -118,6 +113,7 @@ h1 {
   font-size: 2rem;
   color: var(--primary-color);
   margin-bottom: 2rem;
+  text-align: start;
 }
 
 .facilities {

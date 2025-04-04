@@ -144,6 +144,7 @@ export default {
         }
     },
     facilities: {
+        title:"Kemudahan Kami",
         amenities:"Kemudahan",
         facilities_form: {
             title: "Tempah Tempat Perkahwinan/Upacara Anda",
