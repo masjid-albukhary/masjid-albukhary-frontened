@@ -209,6 +209,9 @@ async function handleSubmit() {
     return;
   }
 
+  alert("Form Submitted Successfully.");
+  location.reload();
+
   // If validation is successful
   console.log("Form Submitted Successfully:", form);
 }

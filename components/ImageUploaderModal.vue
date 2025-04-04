@@ -39,7 +39,6 @@ const formSchema = z.object({
 const form = reactive(Object.fromEntries(uploadImageQuestions.map(q => [q.id, ''])));
 const errors = reactive(Object.fromEntries(uploadImageQuestions.map(q => [q.id, ''])));
 const evidence_photo = ref(null);
-const isPopupVisible = ref(false);
 
 function validateField(field) {
   try {
@@ -59,27 +58,23 @@ const handleFileUpload = (event, inputDetails) => {
 };
 
 async function handleSubmit() {
-  form.Date = new Date().toLocaleDateString('en-GB');
+  form.Date = new Date().toLocaleDateString("en-GB");
+
   const validationResults = formSchema.safeParse(form);
 
-  if (validationResults.success) {
-    try {
-      const formDataObj = new FormData();
-      Object.entries(form).forEach(([key, value]) => value && formDataObj.append(key, value));
-      if (evidence_photo.value) formDataObj.append('upload_image', evidence_photo.value);
-
-      await api.post('//', formDataObj);
-      Object.keys(form).forEach(key => (form[key] = ''));
-      isPopupVisible.value = true;
-      location.reload();
-    } catch (error) {
-      console.error('Error occurred:', error);
-      alert(error.response?.data?.detail || 'An error occurred while submitting the form.');
-    }
-  } else {
-    alert('Please correct the errors in the form.');
+  if (!validationResults.success) {
+    console.log('Validation Errors:', validationResults.error.errors);
+    alert("Please correct the errors in the form.");
+    return;
   }
+
+  alert("Form Submitted Successfully.");
+  location.reload();
+
+  // If validation is successful
+  console.log("Form Submitted Successfully:", form);
 }
+
 </script>
 
 <template>
@@ -92,7 +87,7 @@ async function handleSubmit() {
             <div class="info" v-for="(question, index) in uploadImageQuestions" :key="index">
               <label class="question-title" :for="question.label">{{ question.label }}</label>
               <input
-                  v-if="['text', 'email', 'file'].includes(question.type)"
+                  v-if="['text', 'file'].includes(question.type)"
                   :type="question.type"
                   v-model="form[question.id]"
                   :placeholder="question.placeholder"

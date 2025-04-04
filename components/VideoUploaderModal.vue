@@ -67,28 +67,22 @@ const handleFileUpload = (event, inputDetails) => {
 };
 
 async function handleSubmit() {
-  form.Date = new Date().toLocaleDateString('en-GB');
+  form.Date = new Date().toLocaleDateString("en-GB");
+
   const validationResults = formSchema.safeParse(form);
 
-  if (validationResults.success) {
-    try {
-      const formDataObj = new FormData();
-      Object.entries(form).forEach(([key, value]) => value && formDataObj.append(key, value));
-      if (evidence_photo.value) formDataObj.append('upload_image', evidence_photo.value);
-
-      await api.post('//', formDataObj);
-      Object.keys(form).forEach(key => (form[key] = ''));
-      isPopupVisible.value = true;
-      location.reload();
-    } catch (error) {
-      console.error('Error occurred:', error);
-      alert(error.response?.data?.detail || 'An error occurred while submitting the form.');
-    }
-  } else {
-    alert('Please correct the errors in the form.');
+  if (!validationResults.success) {
+    console.log('Validation Errors:', validationResults.error.errors);
+    alert("Please correct the errors in the form.");
+    return;
   }
-}
-</script>
+
+  alert("Form Submitted Successfully.");
+  location.reload();
+
+  // If validation is successful
+  console.log("Form Submitted Successfully:", form);
+}</script>
 
 <template>
   <div v-if="show" class="popup-overlay" @click="closePopup">
