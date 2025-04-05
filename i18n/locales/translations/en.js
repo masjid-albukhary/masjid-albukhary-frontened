@@ -226,6 +226,8 @@ export default {
         news_form: "Activity Form",
         about_content_form: "About Content management",
         service_form: "Service Form",
+        service_dashboard: "Services Dashboard",
+        users_dashboard: "Users Dashboard",
     },
     about_content_form: {
         title: "About Content Management",

@@ -6,14 +6,18 @@ import { computed } from 'vue'
 const { t } = useI18n()
 const router = useRouter()
 const links = computed(() => [
-  { link: "/admin", label: t('admin_sidebar.admin'), icon: "mdi-user" },
+  { link: "/admin", label: t('admin_sidebar.admin'), icon: "mdi-account-cog-outline" },
   { link: "/admin/booking-dashboard", label: t('admin_sidebar.booking_overview'), icon: "mdi-calendar-clock" },
-  { link: "/admin/facility-form", label: t('admin_sidebar.facility_form'), icon: "mdi-office-building" },
-  { link: "/admin/facilities-admin-dashboard", label: t('admin_sidebar.facilities_dashboard'), icon: "mdi-office-building" },
+  { link: "/admin/facility-form", label: t('admin_sidebar.facility_form'), icon: "mdi-office-building-cog" },
+  { link: "/admin/facilities-admin-dashboard", label: t('admin_sidebar.facilities_dashboard'), icon: "mdi-domain" },
   { link: "/admin/news-form", label: t('admin_sidebar.news_form'), icon: "mdi-post" },
-  { link: "/admin/news-admin-dashboard", label: t('admin_sidebar.news_dashboard'), icon: "mdi-office-building" },
-  { link: "/admin/about-content-management", label: t('admin_sidebar.about_content_form'), icon: "mdi-file-document-edit" },
-  { link: "/admin/service-form", label: t('admin_sidebar.service_form'), icon: "mdi-calendar-star" },
+  { link: "/admin/news-admin-dashboard", label: t('admin_sidebar.news_dashboard'), icon: "mdi-newspaper-variant-multiple" },
+  { link: "/admin/about-content-management", label: t('admin_sidebar.about_content_form'), icon: "mdi-file-document-edit-outline" },
+  { link: "/admin/service-form", label: t('admin_sidebar.service_form'), icon: "mdi-clipboard-plus-outline" },
+  { link: "/admin/service-admin-dashboard", label: t('admin_sidebar.service_dashboard'), icon: "mdi-clipboard-text-multiple-outline" },
+  { link: "/admin/services-admin-dashboard", label: t('admin_sidebar.service_dashboard'), icon: "mdi-clipboard-text-multiple-outline" },
+  { link: "/admin/users-dashboard", label: t('admin_sidebar.users_dashboard'), icon: "mdi-account-multiple-outline" },
+
 ])
 
 

@@ -223,6 +223,8 @@ export default {
         news_dashboard: "Papan Pemuka Berita",
         about_content_form: "Mengenai pengurusan kandungan",
         service_form: "Borang Perkhidmatan",
+        service_dashboard: "Papan Pemuka Perkhidmatan",
+        users_dashboard: "Papan Pemuka Pengguna",
     },
     about_content_form: {
         title: "Mengenai Pengurusan Kandungan",
