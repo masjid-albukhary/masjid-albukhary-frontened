@@ -9,6 +9,7 @@ const links = computed(() => [
   { link: "/admin", label: t('admin_sidebar.admin'), icon: "mdi-user" },
   { link: "/admin/booking-dashboard", label: t('admin_sidebar.booking_overview'), icon: "mdi-calendar-clock" },
   { link: "/admin/facility-form", label: t('admin_sidebar.facility_form'), icon: "mdi-office-building" },
+  { link: "/admin/facilities-admin-dashboard", label: t('admin_sidebar.facilities_dashboard'), icon: "mdi-office-building" },
   { link: "/admin/news-form", label: t('admin_sidebar.news_form'), icon: "mdi-post" },
   { link: "/admin/about-content-management", label: t('admin_sidebar.about_content_form'), icon: "mdi-file-document-edit" },
   { link: "/admin/service-form", label: t('admin_sidebar.service_form'), icon: "mdi-calendar-star" },

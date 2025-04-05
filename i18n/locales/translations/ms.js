@@ -218,6 +218,7 @@ export default {
         admin: "Admin",
         booking_overview: "Gambaran Tempahan",
         facility_form: "Borang Kemudahan",
+        facilities_dashboard:"Papan Pemuka Kemudahan",
         news_form: "Borang Aktiviti",
         about_content_form: "Mengenai pengurusan kandungan",
         service_form: "Borang Perkhidmatan",

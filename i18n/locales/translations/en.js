@@ -221,6 +221,7 @@ export default {
         admin: "Admin",
         booking_overview: "Booking Overview",
         facility_form: "Facility Form",
+        facilities_dashboard:"Facilities Dashboard",
         news_form: "Activity Form",
         about_content_form: "About Content management",
         service_form: "Service Form",
