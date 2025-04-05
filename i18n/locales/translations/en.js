@@ -218,7 +218,7 @@ export default {
     },
     admin_sidebar: {
         admin_title: 'Admin Panel',
-        admin: "Admin",
+        admin: "Admin Overview",
         booking_overview: "Booking Overview",
         facility_form: "Facility Form",
         facilities_dashboard:"Facilities Dashboard",

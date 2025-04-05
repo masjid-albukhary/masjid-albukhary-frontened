@@ -215,7 +215,7 @@ export default {
     },
     admin_sidebar: {
         admin_title: "Panel Pentadbir",
-        admin: "Admin",
+        admin: "Gambaran Keseluruhan Pentadbir",
         booking_overview: "Gambaran Tempahan",
         facility_form: "Borang Kemudahan",
         facilities_dashboard: "Papan Pemuka Kemudahan",
