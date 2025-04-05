@@ -61,7 +61,7 @@ export default {
             },
             submit: "Hantar Tempahan",
         },
-        booking_popup:{
+        booking_popup: {
             messages: "Terima kasih kerana menghantar permohonan anda. Kami telah menerima permohonan anda dengan jayanya dan pasukan kami akan menyemaknya dalam masa 3 hari. Kami akan memaklumkan kepada anda tentang perkembangan permohonan dan sekiranya maklumat tambahan diperlukan. Masjid Al-Bukhary.",
             sub_message: "Terima kasih atas kesabaran anda."
         },
@@ -76,7 +76,7 @@ export default {
             ]
         },
     },
-    service:{
+    service: {
         service_title: "Perkhidmatan Kami",
         service_description: "Masjid Ar-Bukhary menyediakan penyewaan kemudahan kami. Dari dewan solat ke bilik persidangan, ruang kami serba lengkap dan selesa untuk pelbagai acara.",
         button: "Tempah sekarang",
@@ -90,7 +90,7 @@ export default {
             ]
         }
     },
-    members:{
+    members: {
         title: "Bertemu komuniti kami",
     },
     contact: {
@@ -115,7 +115,7 @@ export default {
         mosque_location: "Lokasi Masjid Albukhary",
         prayer_time: "Waktu Solat",
     },
-    activities:{
+    activities: {
         title: "Aktiviti",
     },
     donation: {
@@ -148,8 +148,8 @@ export default {
         }
     },
     facilities: {
-        title:"Kemudahan Kami",
-        amenities:"Kemudahan",
+        title: "Kemudahan Kami",
+        amenities: "Kemudahan",
         facilities_form: {
             title: "Tempah Tempat Perkahwinan/Upacara Anda",
             description: "Sila isi borang di bawah untuk melengkapkan tempahan anda. Kami menggalakkan anda untuk membaca terma dan syarat yang ditetapkan di sini sebelum menghantar borang.",
@@ -218,8 +218,9 @@ export default {
         admin: "Admin",
         booking_overview: "Gambaran Tempahan",
         facility_form: "Borang Kemudahan",
-        facilities_dashboard:"Papan Pemuka Kemudahan",
+        facilities_dashboard: "Papan Pemuka Kemudahan",
         news_form: "Borang Aktiviti",
+        news_dashboard: "Papan Pemuka Berita",
         about_content_form: "Mengenai pengurusan kandungan",
         service_form: "Borang Perkhidmatan",
     },
@@ -253,7 +254,7 @@ export default {
             activity_type: "Jenis Aktiviti",
             location: "Lokasi",
             target_audience: "Sasaran Peserta",
-            activity_status :"Status Aktiviti",
+            activity_status: "Status Aktiviti",
             poster: "Muat Naik Poster / Gambar",
             estimated_participants: "Anggaran Peserta",
         },
@@ -269,7 +270,7 @@ export default {
             activity_type: "Pilih Jenis Aktiviti",
             location: "Masukkan lokasi",
             target_audience: "Sasaran Peserta",
-            activity_status :"Status Aktiviti",
+            activity_status: "Status Aktiviti",
             estimated_participants: "Masukkan anggaran jumlah peserta",
         },
         options: {
