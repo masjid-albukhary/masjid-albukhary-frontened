@@ -1,9 +1,9 @@
 <script setup>
+import { reactive, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
+import { z } from 'zod';
 
-import {reactive, ref, watch} from 'vue';
-import {z} from 'zod';
-
-const {t} = useI18n();
+const { t } = useI18n();
 
 const loginQuestions = [
   {
@@ -20,25 +20,14 @@ const loginQuestions = [
     required: true,
     id: "password",
   },
-  {
-    label: t('login.label.confirm_password'),
-    type: "password",
-    placeholder: t('login.placeholder.confirm_password'),
-    required: true,
-    id: "confirm_password",
-  },
 ];
 
 const formSchema = z.object({
   username: z
       .string()
-      .min(8, 'First username must be at least 8 characters long'),
+      .min(8, 'Username must be at least 8 characters long'),
   password: z
       .string(),
-  confirm_password: z
-      .string()
-      .refine(value => value === form["password"], "Passwords must match"),
-
 });
 
 const form = reactive({});
@@ -63,55 +52,28 @@ loginQuestions.forEach((question) => {
   watch(() => form[question.id], () => validateField(question.id));
 });
 
-const isPopupVisible = ref(false)
-
 async function handleSubmit() {
   form.Date = new Date().toLocaleDateString("en-GB");
 
   const validationResults = formSchema.safeParse(form);
-  if (validationResults.success) {
-    try {
-      console.log("Sending API Request...");
-      const formDataObj = new FormData();
-      for (const key in form) {
-        const value = form[key];
-        if (value === null || value === undefined) {
-          continue;
-        }
-        formDataObj.append(key, value);
-      }
 
-      const response = await api.post("//", formDataObj);
-      console.log("Response Data:", response.data);
-      Object.keys(form).forEach((key) => (form[key] = ""));
-      isPopupVisible.value = true;
-      location.reload()
-    } catch (error) {
-      isPopupVisible.value = false;
-      console.error("Error occurred:", error);
-      if (error.response) {
-        console.error("Backend Error:", error.response.data);
-        alert(`Error: ${error.response.data.detail || "Unable to submit the form."}`);
-        isPopupVisible.value = false;
-        // console.log("Response Data:", response.data.value);
-      } else if (error.request) {
-        console.error("No response from the server:", error.request);
-        alert("Server is not responding. Please try again later.");
-        isPopupVisible.value = false;
-      } else {
-        console.error("Request Setup Error:", error.message);
-        alert("An error occurred while submitting the form. Please try again.");
-        isPopupVisible.value = false;
-      }
-      isPopupVisible.value = false;
-    }
-  } else {
+  if (!validationResults.success) {
     console.log('Validation Errors:', validationResults.error.errors);
-    isPopupVisible.value = false;
     alert("Please correct the errors in the form.");
+    return;
   }
-}
 
+  const token = useCookie('token');
+  const refreshToken = useCookie('refresh_token');
+
+  token.value = "fake_access_token";
+  refreshToken.value = "fake_refresh_token";
+
+  alert("Login successful! Fake tokens stored.");
+
+  await navigateTo('/admin');
+
+}
 </script>
 
 <template>

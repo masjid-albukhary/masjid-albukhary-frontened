@@ -24,7 +24,7 @@ const links: Link[] = [
   { label: t('admin_header.upload_image'), icon: 'mdi-image', popup: 'image' },
   { label: t('admin_header.upload_video'), icon: 'mdi-video', popup: 'video' },
   { label: t('admin_header.upload_new_member'), icon: 'mdi-account-plus', popup: 'member' },
-  { link: '', label: t('admin_header.logout'), icon: 'mdi-logout' }
+  { label: t('admin_header.logout'), icon: 'mdi-logout', link: 'logout' }
 ];
 
 
@@ -57,6 +57,30 @@ onUnmounted(() => {
 })
 
 const logo = "/images/masjid_albukary_logo.png"
+
+function logout() {
+  const token = useCookie('token');
+  const refreshToken = useCookie('refresh_token');
+
+  token.value = null;
+  refreshToken.value = null;
+
+  navigateTo('/login');
+}
+
+function handleLinkClick(item: Link) {
+  if (item.popup) {
+    togglePopup(item.popup)
+  } else if (item.link === 'logout') {
+    logout()
+  } else if (item.link) {
+    navigateTo(item.link)
+  }
+
+  isLinksVisible.value = false
+}
+
+
 
 </script>
 
