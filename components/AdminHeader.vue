@@ -9,7 +9,7 @@ interface Link {
   link?: string
   label: string
   icon: string
-  popup?: 'image' | 'video' | 'member'
+  popup?: 'image' | 'video' | 'member' | 'logout'
 }
 
 const {t} = useI18n()
@@ -24,7 +24,7 @@ const links: Link[] = [
   { label: t('admin_header.upload_image'), icon: 'mdi-image', popup: 'image' },
   { label: t('admin_header.upload_video'), icon: 'mdi-video', popup: 'video' },
   { label: t('admin_header.upload_new_member'), icon: 'mdi-account-plus', popup: 'member' },
-  { label: t('admin_header.logout'), icon: 'mdi-logout', link: 'logout' }
+  { label: t('admin_header.logout'), icon: 'mdi-logout', popup: 'logout' }
 ];
 
 
@@ -32,14 +32,23 @@ const toggleLinksVisibility = () => {
   isLinksVisible.value = !isLinksVisible.value
 }
 
-const togglePopup = (type: 'image' | 'video' | 'member') => {
+const togglePopup = (type: 'image' | 'video' | 'member' | 'logout') => {
   if (type === 'image') {
     isImagePopupVisible.value = !isImagePopupVisible.value
   } else if (type === 'video') {
     isVideoPopupVisible.value = !isVideoPopupVisible.value
   } else if (type === 'member') {
-    isNewMemberPopupVisible.value = !isNewMemberPopupVisible.value // Corrected handling for member popups
+    isNewMemberPopupVisible.value = !isNewMemberPopupVisible.value
+  } else if (type === 'logout') {
+    const token = useCookie('token')
+    const refreshToken = useCookie('refresh_token')
+
+    token.value = null
+    refreshToken.value = null
+
+    navigateTo('/login')
   }
+
   isLinksVisible.value = false
 }
 
@@ -57,30 +66,6 @@ onUnmounted(() => {
 })
 
 const logo = "/images/masjid_albukary_logo.png"
-
-function logout() {
-  const token = useCookie('token');
-  const refreshToken = useCookie('refresh_token');
-
-  token.value = null;
-  refreshToken.value = null;
-
-  navigateTo('/login');
-}
-
-function handleLinkClick(item: Link) {
-  if (item.popup) {
-    togglePopup(item.popup)
-  } else if (item.link === 'logout') {
-    logout()
-  } else if (item.link) {
-    navigateTo(item.link)
-  }
-
-  isLinksVisible.value = false
-}
-
-
 
 </script>
 
