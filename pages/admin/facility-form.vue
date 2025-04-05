@@ -2,6 +2,11 @@
 
 import AdminHeader from "~/components/AdminHeader.vue";
 import AdminSideBar from "~/components/AdminSideBar.vue";
+
+definePageMeta({
+  middleware: 'auth'
+})
+
 </script>
 
 <template>

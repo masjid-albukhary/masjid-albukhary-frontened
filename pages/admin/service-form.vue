@@ -2,6 +2,10 @@
 
 import AdminHeader from "~/components/AdminHeader.vue";
 
+definePageMeta({
+  middleware: 'auth'
+})
+
 </script>
 
 <template>
