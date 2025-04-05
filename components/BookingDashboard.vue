@@ -109,7 +109,7 @@ const bookings = ref([
 ]);
 
 const currentPage = ref(1);
-const pageSize = ref(5);
+const pageSize = ref(8);
 const searchQuery = ref('');
 const statusFilter = ref('All');
 const bookingDetails = ref<Record<string, any>>({});
@@ -148,6 +148,18 @@ const handlePageChange = (newPage: number) => {
 
 const isPopupVisible = ref(false);
 const currentBooking = ref<any>(null);
+
+const updateBooking = () => {
+  // TODO: implement update logic
+  console.log('Updating booking:', currentBooking.value);
+  closePopup();
+};
+
+const deleteBooking = () => {
+  console.log('Deleting booking:', currentBooking.value);
+  bookings.value = bookings.value.filter(b => b.id !== currentBooking.value?.id);
+  closePopup();
+};
 
 const openPopup = (row: any) => {
   currentBooking.value = row;
@@ -192,11 +204,13 @@ const closePopup = () => {
         </div>
 
         <table class="data-table">
+
           <thead>
           <tr>
             <th v-for="col in columns" :key="col.key">{{ col.label }}</th>
           </tr>
           </thead>
+
           <tbody>
           <tr v-for="row in paginatedRows" :key="row.id">
             <td>{{ row.firstName }}</td>
@@ -208,6 +222,7 @@ const closePopup = () => {
             </td>
           </tr>
           </tbody>
+
         </table>
 
         <div class="pagination-controls">
@@ -230,13 +245,25 @@ const closePopup = () => {
           <div v-for="(value, key) in bookingDetails" :key="key" class="popup-detail">
 
             <span>{{ key }}:</span>
-            <span> {{ value }}</span>
+            <span v-if="key === 'Status'">
+             <select v-model="currentBooking.status">
+               <option>Pending</option>
+               <option>Confirmed</option>
+               <option>Cancelled</option>
+             </select>
+           </span>
+            <span v-else>{{ value }}</span>
+
 
           </div>
         </div>
+
         <div class="popup-footer">
-          <button @click="closePopup" class="close-btn">Close</button>
+          <button @click="updateBooking" class="update-btn">Update</button>
+          <button @click="deleteBooking" class="delete-btn">Delete</button>
         </div>
+
+
       </div>
     </div>
   </section>
@@ -266,16 +293,27 @@ section {
   width: 100%;
 }
 
+.content-area {
+  width: 100%;
+  min-height: 1000px;
+}
+
 .data-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
+  overflow-x: auto;
+}
+.data-table th, .data-table td {
+  width: 100%;
+  border: 1px solid var(--text-hover);
+  padding: 10px 15px;
+  text-align: left;
 }
 
-.data-table th, .data-table td {
-  border: 2px solid var(--text-hover);
-  padding: 10px;
-  word-wrap: break-word;
+.data-table th {
+  background-color: var(--bg-color);
+  color: var(--primary-color);
+  font-weight: bold;
 }
 
 .view-button {
@@ -296,12 +334,12 @@ section {
 }
 
 .popup-overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -309,14 +347,15 @@ section {
 }
 
 .popup {
-  background: white;
-  border-radius: 8px;
-  padding: 20px;
-  max-width: 500px;
-  width: 100%;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  display: flex;
-  flex-direction: column;
+  background-color: var(--bg-hover-color);
+  padding: 2rem;
+  width: 60%;
+  max-width: 60%;
+  scroll-behavior: smooth;
+  text-align: center;
+  max-height: 90vh;
+  position: relative;
+  overflow-y: auto;
 }
 
 .popup-header {
@@ -330,12 +369,12 @@ section {
 }
 
 .close-btn {
-  background: #f44336;
+  background: red;
   color: var(--text-color);
   border: none;
-  padding: 8px 16px;
-  border-radius: 50%;
-  font-size: 18px;
+  padding: 5px 15px;
+  border-radius: 5px;
+  font-size: 1.2rem;
   cursor: pointer;
 }
 
@@ -346,6 +385,15 @@ section {
 
 .popup-detail {
   margin-bottom: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.popup-detail span {
+  background-color: var(--bg-color);
+  padding: 10px;
+  text-align: start;
+  margin-right: 1rem;
 }
 
 .popup-footer {
@@ -353,16 +401,29 @@ section {
   text-align: center;
 }
 
-.popup-footer .close-btn {
-  background: var(--primary-color);
-  border-radius: 4px;
-  padding: 10px 20px;
+.update-btn {
+  background-color: #4caf50;
   color: white;
-  cursor: pointer;
-  font-size: 16px;
+  padding: 8px 12px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 4px;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
 }
 
 @media (max-width: 768px) {
+  .popup {
+    width: 95%;
+    max-width: 95%;
+  }
+
   .content-header {
     flex-direction: column;
     align-items: flex-start;
@@ -372,6 +433,14 @@ section {
   .search-box {
     max-width: 100%;
     margin: 1rem 0;
+  }
+
+  .popup-detail {
+    grid-template-columns: 1fr;
+  }
+
+  .popup-detail span {
+    margin-bottom: .5rem;
   }
 
   .data-table th, .data-table td {
@@ -404,6 +473,11 @@ section {
 }
 
 @media (max-width: 480px) {
+  .popup {
+    width: 95%;
+    max-width: 95%;
+  }
+
   .dashboard-wrapper {
     padding: 10px;
   }
@@ -411,6 +485,14 @@ section {
   .filter-dropdown,
   .search-box {
     padding: 6px;
+  }
+
+  .popup-detail {
+    grid-template-columns: 1fr;
+  }
+
+  .popup-detail span {
+    margin-bottom: .5rem;
   }
 
   .data-table th, .data-table td {
@@ -437,4 +519,5 @@ section {
     font-size: 12px;
   }
 }
+
 </style>

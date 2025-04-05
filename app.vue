@@ -9,6 +9,7 @@
   --secondary-color: #489fe7;
   --background-color: #217ec2;
   --bg-color: #eeeeee;
+  --bg-hover-color: #f5f5f5;
   --text-color: #ffffff;
   --text-hover: #b5b9bf;
 
