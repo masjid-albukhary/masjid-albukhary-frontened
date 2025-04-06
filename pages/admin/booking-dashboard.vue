@@ -11,7 +11,7 @@ definePageMeta({
 
 <template>
   <AdminHeader/>
-  <section class="admin-container">
+  <section class="booking-dashboard-container">
     <aside class="news-aside">
       <AdminSideBar/>
     </aside>
@@ -23,7 +23,8 @@ definePageMeta({
 </template>
 
 <style scoped>
-section{
+
+section {
   display: grid;
   grid-template-columns: 1fr 4fr;
 }
@@ -36,7 +37,7 @@ section{
 }
 
 @media (max-width: 1024px) {
-  .admin-container {
+  section {
     grid-template-columns: 1fr;
   }
 
@@ -46,7 +47,7 @@ section{
 }
 
 @media (max-width: 768px) {
-  .admin-container {
+  section {
     display: flex;
     flex-direction: column;
   }

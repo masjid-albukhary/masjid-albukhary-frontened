@@ -11,8 +11,8 @@ definePageMeta({
 
 <template>
   <AdminHeader/>
-  <section class="news-admin-container">
-    <aside class="news-admin-aside">
+  <section class="about-admin-container">
+    <aside class="about-admin-aside">
       <AdminSideBar/>
     </aside>
     <main>
@@ -28,7 +28,7 @@ section{
   grid-template-columns: 1fr 4fr;
 }
 
-.news-admin-aside {
+.about-admin-aside {
   display: flex;
   min-height: 100vh;
   height: 100%;
@@ -40,13 +40,13 @@ section{
     grid-template-columns: 1fr;
   }
 
-  .news-admin-aside {
+  .about-admin-aside {
     justify-content: center;
   }
 }
 
 @media (max-width: 768px) {
-  .news-admin-aside {
+  .about-admin-aside {
     display: flex;
     flex-direction: column;
   }
