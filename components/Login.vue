@@ -136,13 +136,14 @@ async function handleSubmit() {
 <style scoped>
 .login-section {
   width: 100%;
-  height: 100vh;
   margin: 0 auto;
   padding: 4rem 0;
-  background: linear-gradient(120deg, #0b78d2 50%, #489fe7 100%);
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100%;
+  background: var(--bg-hover-color);
+  gap: 0;
 }
 
 .login-container {
@@ -150,11 +151,13 @@ async function handleSubmit() {
   grid-template-columns: 1fr 1fr;
   max-width: 1000px;
   margin: 0 auto;
-  box-shadow: rgba(149, 157, 165, 0.3) 0 8px 24px;
   padding: 2rem;
-  background-color: white;
+  background-color: var(--bg-hover-color);
   border-radius: 8px;
   overflow: hidden;
+  flex-wrap: wrap;
+  box-shadow: rgba(149, 157, 165, 0.3) 0 8px 24px;
+  border: 1px solid rgba(149, 157, 165, 0.3);
 }
 
 .login-info-container {
