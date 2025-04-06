@@ -186,6 +186,8 @@ async function handleSubmit() {
 
         <h2>{{ t('sign_up.title') }}</h2>
 
+        <hr class="divider"/>
+
         <form @submit.prevent="handleSubmit">
           <div class="admin-form">
 
@@ -229,14 +231,16 @@ async function handleSubmit() {
 
         </form>
 
+        <hr class="divider"/>
+
         <div class="buttons-container">
 
           <div class="buttons">
             <router-link to="/" class="login-btn">
-              {{t('sign_up.home_btn')}}
+              {{ t('sign_up.home_btn') }}
             </router-link>
             <router-link to="/login" class="sign-up-btn">
-              {{t('sign_up.login_btn')}}
+              {{ t('sign_up.login_btn') }}
             </router-link>
           </div>
 
@@ -244,6 +248,7 @@ async function handleSubmit() {
             {{ currentLang === 'en' ? 'Switch to Malay' : 'Switch to English' }}
           </button>
         </div>
+
 
       </div>
 
@@ -284,6 +289,13 @@ section {
   border: 1px solid rgba(149, 157, 165, 0.3);
 }
 
+.divider {
+  width: 100%;
+  max-width: 1000px !important;
+  margin: 1rem auto;
+  border: 1.5px solid rgba(149, 157, 165, 0.3) ;
+}
+
 
 .sign-up-container .admin-form {
   flex: 1;
@@ -306,7 +318,8 @@ section {
   font-size: 1.5rem;
   color: var(--primary-color);
   text-align: center;
-  padding: 1rem 0;
+  padding-top: 1rem;
+  margin: 0 auto;
 }
 
 .admin-form {
