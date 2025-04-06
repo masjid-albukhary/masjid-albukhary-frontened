@@ -1,10 +1,10 @@
 <script setup>
-import { reactive, ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { reactive, watch } from 'vue';
 import { z } from 'zod';
+import { useI18n } from "#i18n";
+import { useRouter } from 'vue-router';
 
 const { t } = useI18n();
-
 const loginQuestions = [
   {
     label: t('login.label.username'),
@@ -21,7 +21,6 @@ const loginQuestions = [
     id: "password",
   },
 ];
-
 const formSchema = z.object({
   username: z
       .string()
@@ -29,7 +28,6 @@ const formSchema = z.object({
   password: z
       .string(),
 });
-
 const form = reactive({});
 const errors = reactive({});
 
@@ -51,6 +49,24 @@ function validateField(field) {
 loginQuestions.forEach((question) => {
   watch(() => form[question.id], () => validateField(question.id));
 });
+
+const { setLocale, locale } = useI18n();
+const router = useRouter();
+
+const currentLang = locale.value;
+
+const toggleLanguage = async () => {
+  const newLang = currentLang === 'en' ? 'ms' : 'en';
+
+  await setLocale(newLang);
+
+  const currentPath = router.currentRoute.value.path;
+  const pathWithoutLang = currentPath.replace(/^\/(en|ms)/, '');
+
+  const newPath = newLang === 'ms' ? `/ms${pathWithoutLang}` : `${pathWithoutLang}`;
+
+  router.push(newPath);
+};
 
 async function handleSubmit() {
   form.Date = new Date().toLocaleDateString("en-GB");
@@ -109,6 +125,9 @@ async function handleSubmit() {
           </div>
           <button class="login-submit" type="submit">{{t('login.button')}}</button>
         </form>
+        <button @click="toggleLanguage" class="translation-btn">
+          {{ currentLang === 'en' ? 'Switch to Malay' : 'Switch to English' }}
+        </button>
       </div>
     </div>
   </section>
@@ -212,6 +231,7 @@ input {
   margin-top: 0.3rem;
 }
 
+.translation-btn,
 .login-submit {
   width: 100%;
   padding: 0.7rem;
@@ -225,6 +245,7 @@ input {
   margin-top: 1rem;
 }
 
+.translation-btn:hover,
 .login-submit:hover {
   background-color: var(--secondary-color);
   color: var(--text-hover);
