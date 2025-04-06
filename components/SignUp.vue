@@ -4,6 +4,7 @@ import {z} from 'zod';
 import {useI18n} from 'vue-i18n';
 
 const {t} = useI18n();
+const {setLocale, locale} = useI18n();
 const adminQuestions = [
   {
     label: t('sign_up.label.username'),
@@ -65,8 +66,8 @@ const adminQuestions = [
     required: true,
     id: "user_role",
     options: [
-      { value: "admin", label: "admin" },
-      { value: "super_admin", label:"Super Admin" },
+      {value: "admin", label: "admin"},
+      {value: "super_admin", label: "Super Admin"},
     ],
   },
   {
@@ -91,7 +92,6 @@ const adminQuestions = [
     id: "confirm_password",
   },
 ];
-
 const formSchema = z.object({
   username: z
       .string()
@@ -120,7 +120,6 @@ const formSchema = z.object({
       .refine(value => value === form["password"], "Passwords must match"),
 
 });
-
 const form = reactive({});
 const errors = reactive({});
 
@@ -144,7 +143,6 @@ adminQuestions.forEach((question) => {
 });
 
 const profile_picture = ref(null);
-
 const handleFileUpload = (event, inputDetails) => {
   if (inputDetails.type !== 'file') {
     return;
@@ -152,65 +150,40 @@ const handleFileUpload = (event, inputDetails) => {
   profile_picture.value = event.target.files[0];
 };
 
-const isPopupVisible = ref(false)
+const currentLang = locale.value;
+const toggleLanguage = async () => {
+  const newLang = currentLang === 'en' ? 'ms' : 'en';
+
+  await setLocale(newLang);
+
+  const currentPath = router.currentRoute.value.path;
+  const pathWithoutLang = currentPath.replace(/^\/(en|ms)/, '');
+
+  const newPath = newLang === 'ms' ? `/ms${pathWithoutLang}` : `${pathWithoutLang}`;
+
+  router.push(newPath);
+};
 
 async function handleSubmit() {
   form.Date = new Date().toLocaleDateString("en-GB");
 
   const validationResults = formSchema.safeParse(form);
-  if (validationResults.success) {
-    try {
-      console.log("Sending API Request...");
-      const formDataObj = new FormData();
-      for (const key in form) {
-        const value = form[key];
-        if (value === null || value === undefined) {
-          continue;
-        }
-        formDataObj.append(key, value);
-      }
-      formDataObj.delete('profile_picture')
 
-      if (profile_picture.value) {
-        formDataObj.append('profile_picture', profile_picture.value)
-      }
-
-      const response = await api.post("//", formDataObj);
-      console.log("Response Data:", response.data);
-      Object.keys(form).forEach((key) => (form[key] = ""));
-      isPopupVisible.value = true;
-      location.reload()
-    } catch (error) {
-      isPopupVisible.value = false;
-      console.error("Error occurred:", error);
-      if (error.response) {
-        console.error("Backend Error:", error.response.data);
-        alert(`Error: ${error.response.data.detail || "Unable to submit the form."}`);
-        isPopupVisible.value = false;
-        // console.log("Response Data:", response.data.value);
-      } else if (error.request) {
-        console.error("No response from the server:", error.request);
-        alert("Server is not responding. Please try again later.");
-        isPopupVisible.value = false;
-      } else {
-        console.error("Request Setup Error:", error.message);
-        alert("An error occurred while submitting the form. Please try again.");
-        isPopupVisible.value = false;
-      }
-      isPopupVisible.value = false;
-    }
-  } else {
+  if (!validationResults.success) {
     console.log('Validation Errors:', validationResults.error.errors);
-    isPopupVisible.value = false;
     alert("Please correct the errors in the form.");
+    return;
   }
+
+  // If validation is successful
+  console.log("Form Submitted Successfully:", form);
 }
 
 </script>
 
 <template>
   <section class="admin-section">
-    <div class="container">
+    <div class="sign-up-container ">
 
       <div class="admin-form">
 
@@ -254,11 +227,27 @@ async function handleSubmit() {
           </div>
 
           <div>
-
             <button class="sign-up-submit" type="submit">{{ t('sign_up.submit') }}</button>
           </div>
 
         </form>
+
+        <div class="buttons-container">
+
+          <div class="buttons">
+            <router-link to="/" class="login-btn">
+              {{t('sign_up.home_btn')}}
+            </router-link>
+            <router-link to="/login" class="sign-up-btn">
+              {{t('sign_up.login_btn')}}
+            </router-link>
+          </div>
+
+          <button @click="toggleLanguage" class="translation-btn">
+            {{ currentLang === 'en' ? 'Switch to Malay' : 'Switch to English' }}
+          </button>
+        </div>
+
       </div>
 
     </div>
@@ -270,63 +259,50 @@ async function handleSubmit() {
 section {
   width: 100%;
   height: 100%;
-  background: linear-gradient(120deg, #0b78d2 50%, #489fe7 100%);
+  background: var(--bg-hover-color);
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0 auto;
+  padding: 0;
+  gap: 0;
 }
 
 @media (max-width: 800px) {
-  .admin-section {
+  section {
     margin: 0.5rem;
   }
 }
 
-.container {
+.sign-up-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   max-width: 1000px;
-  margin: 2rem auto;
-  box-shadow: rgba(149, 157, 165, 0.3) 0 8px 24px;
+  margin: 5rem auto;
   background-color: white;
   border-radius: 8px;
   overflow: hidden;
-
+  box-shadow: rgba(149, 157, 165, 0.3) 0 8px 24px;
+  border: 1px solid rgba(149, 157, 165, 0.3);
 }
 
 
-.container .admin-form {
+.sign-up-container .admin-form {
   flex: 1;
   padding: 0 2.5rem;
 }
 
 @media (max-width: 800px) {
-  .container div {
+  .sign-up-container div {
     display: block;
   }
 }
 
 @media (max-width: 1200px) {
-  .container {
+  .sign-up-container {
     display: block;
   }
-}
-
-.container .description h2 {
-  font-size: 1.2rem;
-  padding: .5rem 0;
-  font-weight: bold;
-  color: var(--primary-color);
-  text-align: center;
-}
-
-.container .description p {
-  font-size: 1rem;
-  padding: 1rem 0;
-  font-weight: normal;
-  color: var(--primary-color);
-  text-align: justify;
 }
 
 .admin-form > h2 {
@@ -393,8 +369,8 @@ section {
 
 .sign-up-submit {
   width: 90%;
-  margin: 2rem auto;
-  padding: .5rem 2rem;
+  margin: .5rem auto;
+  padding: .5rem;
   display: flex;
   font-size: 1rem;
   border-radius: 1rem 0;
@@ -409,5 +385,67 @@ section {
 .sign-up-submit:hover {
   background-color: var(--secondary-color);
 }
+
+.buttons-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  font-size: 1.2rem;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.sign-up-btn,
+.login-btn {
+  padding: .5rem 1rem;
+  color: var(--primary-color);
+  border: none;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+
+.translation-btn {
+  padding: .5rem 1rem;
+  color: var(--primary-color);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.sign-up-btn:hover,
+.login-btn:hover,
+.translation-btn:hover {
+  color: var(--secondary-color);
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+
+  .buttons-container {
+    flex-direction: column;
+  }
+
+  .buttons-container {
+    width: 90%;
+  }
+
+  .buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
 
 </style>

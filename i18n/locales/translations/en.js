@@ -209,6 +209,8 @@ export default {
             confirm_password: "Re-enter your password",
         },
         submit: "Sign Up",
+        home_btn:"Home Page",
+        login_btn:"Login Page",
     },
     admin_header: {
         upload_new_member: "Add Member",

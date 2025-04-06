@@ -206,6 +206,8 @@ export default {
             confirm_password: "Masukkan semula kata laluan anda",
         },
         submit: "Daftar",
+        home_btn:"Halaman Utama",
+        login_btn:"Halaman Log Masuk",
     },
     admin_header: {
         upload_new_member: "Tambah Ahli",
