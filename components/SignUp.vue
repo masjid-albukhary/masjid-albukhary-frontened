@@ -264,7 +264,7 @@ section {
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-  padding: 0;
+  padding: 4rem 0;
   gap: 0;
 }
 
@@ -279,7 +279,7 @@ section {
   flex-direction: row;
   flex-wrap: wrap;
   max-width: 1000px;
-  margin: 5rem auto;
+  margin: 0 auto;
   background-color: white;
   border-radius: 8px;
   overflow: hidden;
