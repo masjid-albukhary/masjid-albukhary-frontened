@@ -60,17 +60,6 @@ const adminQuestions = [
     id: "address",
   },
   {
-    label: t('sign_up.label.user_role'),
-    type: "select",
-    placeholder: t('sign_up.placeholder.user_role'),
-    required: true,
-    id: "user_role",
-    options: [
-      {value: "admin", label: "admin"},
-      {value: "super_admin", label: "Super Admin"},
-    ],
-  },
-  {
     label: t('sign_up.label.profile_picture'),
     type: "file",
     placeholder: t('sign_up.placeholder.profile_picture'),
@@ -96,25 +85,33 @@ const formSchema = z.object({
   username: z
       .string()
       .min(8, 'First username must be at least 8 characters long'),
+
   full_name: z
       .string()
       .min(8, 'Last Name must be at least 8 characters long'),
+
   email: z
       .string()
       .email('Invalid email format')
       .regex(/@gmail\.com$/, "Must be a valid email ending with '@gmail.com'"),
+
   phone: z
       .string()
       .regex(/^\d{8,15}$/, 'Invalid phone number'),
+
   dob: z.string().optional(),
+
   address: z
       .string()
       .min(8, 'Address must be at least 8 characters long'),
+
   gender: z.string().optional(),
-  user_role: z.string().optional(),
+
   profile_picture: z.any().optional(),
+
   password: z
       .string(),
+
   confirm_password: z
       .string()
       .refine(value => value === form["password"], "Passwords must match"),
