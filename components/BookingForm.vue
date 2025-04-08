@@ -150,7 +150,7 @@ const formSchema = z.object({
 
   postal_code: z
       .string()
-      .regex(/^\d{4,8}$/, 'Invalid postal code'),
+      .min(4, 'Invalid postal code'),
 
   booking_date: z.string().optional(),
 
