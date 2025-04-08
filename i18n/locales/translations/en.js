@@ -108,6 +108,11 @@ export default {
             phone_placeholder: "Enter your phone number",
             subject_placeholder: "Enter subject",
             message_placeholder: "Type your message here...",
+        },
+        popup:{
+            title: "Thank You for Reaching Out!",
+            message: "In the meantime, feel free to explore our website for more information, or reach out to us again if you have any other questions.",
+            thanksMessage:"Thanks for your patience!",
         }
     },
     members:{

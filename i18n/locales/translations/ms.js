@@ -109,7 +109,13 @@ export default {
             phone_placeholder: "Masukkan nombor telefon anda",
             subject_placeholder: "Masukkan subjek",
             message_placeholder: "Tulis mesej anda di sini...",
+        },
+        popup: {
+            title: "Terima Kasih kerana Menghubungi Kami!",
+            message: "Sementara itu, sila luangkan masa untuk meneroka laman web kami untuk maklumat lanjut, atau hubungi kami semula jika anda mempunyai sebarang pertanyaan lain.",
+            thanksMessage: "Terima kasih atas kesabaran anda!",
         }
+
     },
     map_mosque: {
         mosque_location: "Lokasi Masjid Albukhary",
