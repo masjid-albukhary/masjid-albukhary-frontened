@@ -1,9 +1,13 @@
 <script setup>
 import {reactive, ref, watch} from 'vue';
 import {z} from 'zod';
+import SubmitBookingPopup from "~/components/SubmitBookingPopup.vue";
+import {useNuxtApp} from "#app";
 
+const showPopup = ref(false);
+const {$axios} = useNuxtApp();
+const api = $axios()
 const {t} = useI18n();
-import Popup from '~/components/SubmitBookingPopup.vue';
 
 const bookingQuestions = [
   {
@@ -167,7 +171,6 @@ const formSchema = z.object({
 
 const form = reactive({});
 const errors = reactive({});
-
 bookingQuestions.forEach((question) => {
   form[question.id] = "";
   errors[question.id] = "";
@@ -187,34 +190,62 @@ bookingQuestions.forEach((question) => {
   watch(() => form[question.id], () => validateField(question.id));
 });
 
-const evidence_photo = ref(null);
+const other_docs = ref(null);
 
 const handleFileUpload = (event, inputDetails) => {
   if (inputDetails.type !== 'file') {
     return;
   }
-  evidence_photo.value = event.target.files[0];
+  other_docs.value = event.target.files[0];
 };
 
 const isPopupVisible = ref(false)
 
-async function handleSubmit() {
-  form.Date = new Date().toLocaleDateString("en-GB");
+
+const handleSubmit = async () => {
+  form.Date = new Date().toLocaleDateString('en-GB');
 
   const validationResults = formSchema.safeParse(form);
 
   if (!validationResults.success) {
     console.log('Validation Errors:', validationResults.error.errors);
-    alert("Please correct the errors in the form.");
+    alert('Please correct the errors in the form.');
     return;
   }
 
-  alert("Form Submitted Successfully.");
-  location.reload();
+  const formData = new FormData();
 
-  // If validation is successful
-  console.log("Form Submitted Successfully:", form);
+  formData.append('first_name', form.first_name);
+  formData.append('last_name', form.last_name);
+  formData.append('email', form.email);
+  formData.append('phone', form.phone);
+  formData.append('address', form.address);
+  formData.append('postal_code', form.postal_code);
+  formData.append('time_slot', form.time_slot);
+  formData.append('venue', form.venue);
+  formData.append('booking_date', form.booking_date);
+  formData.append('services', form.services);
+  formData.append('guests', form.guests);
+  formData.append('other_requests', form.other_requests);
+  formData.append('other_docs', other_docs.value); // Ensure the correct file field is added here
+
+  try {
+    const response = await api.post('/requests/booking-requests/', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    console.log('Form Submitted Successfully:', response.data);
+    alert('Form Submitted Successfully.');
+
+    location.reload();
+  } catch (error) {
+    console.error('Failed to submit form:', error);
+    alert('An error occurred while submitting the form.');
+  }
 }
+
 
 </script>
 
@@ -276,8 +307,9 @@ async function handleSubmit() {
             <button @click.once="isPopupVisible = true" class="book-venue-submit" type="submit">
               {{ t('booking.booking_form.submit') }}
             </button>
-            <Popup :show="isPopupVisible" @update:show="isPopupVisible = $event">
-            </Popup>
+            <SubmitBookingPopup :show="showPopup" @update:show="showPopup = $event" >
+
+            </SubmitBookingPopup>
           </div>
 
         </form>

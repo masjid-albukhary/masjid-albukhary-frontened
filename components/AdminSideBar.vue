@@ -20,7 +20,7 @@ const links = computed(() => [
   { link: "/admin/news-form", label: t('admin_sidebar.news_form'), icon: "mdi-newspaper-variant-multiple" },
   { link: "/admin/news-content-dashboard", label: t('admin_sidebar.news_dashboard'), icon: "mdi-newspaper-variant-multiple" },
 
-  { link: "/admin/service-form", label: t('admin_sidebar.service_form'), icon: "mdi-clipboard-plus-outline" },
+  { link: "/admin/services-form", label: t('admin_sidebar.service_form'), icon: "mdi-clipboard-plus-outline" },
   { link: "/admin/services-overview-dashboard", label: t('admin_sidebar.service_dashboard'), icon: "mdi-clipboard-text-multiple-outline" },
 
   { link: "/admin/users-dashboard", label: t('admin_sidebar.users_dashboard'), icon: "mdi-account-multiple-outline" },
