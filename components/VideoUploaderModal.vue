@@ -1,10 +1,7 @@
 <script setup>
 import {defineEmits, defineProps, reactive, ref, watch} from 'vue';
 import {z} from 'zod';
-
-const props = defineProps({show: Boolean});
-const emit = defineEmits(['update:show']);
-const closePopup = () => emit('update:show', false);
+import {useNuxtApp} from "#app";
 
 const uploadVideosQuestions = [
   {
@@ -17,7 +14,7 @@ const uploadVideosQuestions = [
   {
     label: 'Alert Field',
     type: 'text',
-    placeholder: 'First Name',
+    placeholder: 'Alert Field',
     required: true,
     id: 'alert_field',
   },
@@ -25,29 +22,36 @@ const uploadVideosQuestions = [
     label: 'Link',
     type: 'url',
     required: true,
-    placeholder: 'Upload any requests or inquiries',
+    placeholder: 'Video Link',
     id: 'video_link'
   },
   {
-    label: 'Upload Images',
+    label: 'Upload Video',
     type: 'file',
     required: true,
-    placeholder: 'Upload any requests or inquiries',
-    id: 'upload_image'
+    placeholder: 'Upload a video file',
+    id: 'gallery_video'
   },
 ];
 
 const formSchema = z.object({
-  name_field: z.string().min(8, 'Name field name must be at least 8 characters long'),
-  alert_field: z.string().min(8, 'Alert field name must be at least 8 characters long'),
+  name_field: z.string().min(8, 'Name field must be at least 8 characters long'),
+  alert_field: z.string().min(8, 'Alert field must be at least 8 characters long'),
   video_link: z.string().url('Invalid URL format').optional(),
-  upload_image: z.any().optional("Upload must be a file")
+  gallery_video: z.string().optional(),
 });
+
+const {$axios} = useNuxtApp();
+const api = $axios()
+const gallery_video = ref(null);
+const props = defineProps({show: Boolean});
+const emit = defineEmits(['update:show']);
+const closePopup = () => emit('update:show', false);
 
 const form = reactive(Object.fromEntries(uploadVideosQuestions.map(q => [q.id, ''])));
 const errors = reactive(Object.fromEntries(uploadVideosQuestions.map(q => [q.id, ''])));
-const evidence_photo = ref(null);
-const isPopupVisible = ref(false);
+
+uploadVideosQuestions.forEach(question => watch(() => form[question.id], () => validateField(question.id)));
 
 function validateField(field) {
   try {
@@ -58,31 +62,54 @@ function validateField(field) {
   }
 }
 
-uploadVideosQuestions.forEach(question => watch(() => form[question.id], () => validateField(question.id)));
-
 const handleFileUpload = (event, inputDetails) => {
   if (inputDetails.type === 'file') {
-    evidence_photo.value = event.target.files[0];
+    gallery_video.value = event.target.files[0];
+    console.log('Selected File:', gallery_video.value); // Debugging line
   }
 };
 
 async function handleSubmit() {
-  form.Date = new Date().toLocaleDateString("en-GB");
+  form.Date = new Date().toLocaleDateString('en-GB');
 
   const validationResults = formSchema.safeParse(form);
 
   if (!validationResults.success) {
     console.log('Validation Errors:', validationResults.error.errors);
-    alert("Please correct the errors in the form.");
+    alert('Please correct the errors in the form.');
     return;
   }
 
-  alert("Form Submitted Successfully.");
-  location.reload();
+  const formData = new FormData();
+  formData.append('name_field', form.name_field);
+  formData.append('alert_field', form.alert_field);
+  formData.append('video_link', form.video_link);
+  formData.append('gallery_video', gallery_video.value); // Ensure consistency with form field
 
-  // If validation is successful
-  console.log("Form Submitted Successfully:", form);
-}</script>
+  try {
+    const response = await api.post('/content_manager/gallery/videos/', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    console.log('Form Submitted Successfully:', response.data);
+    alert('Form Submitted Successfully.');
+
+    // Reset form and gallery video after submission
+    form.name_field = '';
+    form.alert_field = '';
+    form.video_link = '';
+    gallery_video.value = null;
+
+    location.reload();
+
+  } catch (error) {
+    console.error('Failed to submit form:', error);
+    alert('An error occurred while submitting the form.');
+  }
+}
+</script>
 
 <template>
   <div v-if="show" class="popup-overlay" @click="closePopup">

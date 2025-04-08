@@ -1,8 +1,11 @@
 <script setup>
-import {defineEmits, defineProps, reactive, ref, watch} from 'vue';
-import {z} from 'zod';
+import { defineEmits, defineProps, reactive, ref, watch } from 'vue';
+import { z } from 'zod';
+import {useNuxtApp} from "#app";
 
-const props = defineProps({show: Boolean});
+const {$axios} = useNuxtApp();
+const api = $axios()
+const props = defineProps({ show: Boolean });
 const emit = defineEmits(['update:show']);
 const closePopup = () => emit('update:show', false);
 
@@ -26,18 +29,18 @@ const uploadVideosQuestions = [
     type: 'file',
     required: true,
     placeholder: 'Upload any requests or inquiries',
-    id: 'photo'
+    id: 'photo',
   },
 ];
 
 const formSchema = z.object({
   name: z.string().min(8, 'Name must be at least 8 characters long'),
   role: z.string().min(8, 'Role must be at least 8 characters long'),
-  photo: z.any().optional("Upload must be a file")
+  photo: z.any().optional('Upload must be a file'),
 });
 
-const form = reactive(Object.fromEntries(uploadVideosQuestions.map(q => [q.id, ''])));
-const errors = reactive(Object.fromEntries(uploadVideosQuestions.map(q => [q.id, ''])));
+const form = reactive(Object.fromEntries(uploadVideosQuestions.map((q) => [q.id, ''])));
+const errors = reactive(Object.fromEntries(uploadVideosQuestions.map((q) => [q.id, ''])));
 const evidence_photo = ref(null);
 
 function validateField(field) {
@@ -49,7 +52,7 @@ function validateField(field) {
   }
 }
 
-uploadVideosQuestions.forEach(question => watch(() => form[question.id], () => validateField(question.id)));
+uploadVideosQuestions.forEach((question) => watch(() => form[question.id], () => validateField(question.id)));
 
 const handleFileUpload = (event, inputDetails) => {
   if (inputDetails.type === 'file') {
@@ -58,23 +61,40 @@ const handleFileUpload = (event, inputDetails) => {
 };
 
 async function handleSubmit() {
-  form.Date = new Date().toLocaleDateString("en-GB");
+  form.Date = new Date().toLocaleDateString('en-GB');
 
   const validationResults = formSchema.safeParse(form);
 
   if (!validationResults.success) {
     console.log('Validation Errors:', validationResults.error.errors);
-    alert("Please correct the errors in the form.");
+    alert('Please correct the errors in the form.');
     return;
   }
 
-  alert("Form Submitted Successfully.");
-  location.reload();
+  const formData = new FormData();
+  formData.append('name', form.name);
+  formData.append('role', form.role);
+  formData.append('photo', evidence_photo.value);
 
-  // If validation is successful
-  console.log("Form Submitted Successfully:", form);
+  try {
+    const response = await api.post('/content_manager/member/', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    console.log('Form Submitted Successfully:', response.data);
+    alert('Form Submitted Successfully.');
+
+    location.reload();
+
+  } catch (error) {
+    console.error('Failed to submit form:', error);
+    alert('An error occurred while submitting the form.');
+  }
 }
 </script>
+
 
 <template>
   <div v-if="show" class="popup-overlay" @click="closePopup">
