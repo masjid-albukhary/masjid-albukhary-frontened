@@ -1,58 +1,71 @@
 <script setup lang="ts">
-
 import AdminHeader from "~/components/AdminHeader.vue";
 import AdminSideBar from "~/components/AdminSideBar.vue";
-import AboutContentForm from "~/components/AboutContentForm.vue";
 
 definePageMeta({
   middleware: 'auth'
-})
-
+});
 </script>
 
 <template>
-  <AdminHeader/>
-  <section class="admin-container">
-    <aside class="about-content-aside">
-      <AdminSideBar/>
+  <AdminHeader />
+  <section class="admin-layout">
+    <aside class="admin-sidebar">
+      <AdminSideBar />
     </aside>
-    <main>
+    <main class="admin-main">
       <AboutContentForm/>
     </main>
   </section>
-  <AdminFooter/>
+  <AdminFooter />
 </template>
 
 <style scoped>
-.admin-container {
+.admin-layout {
   display: grid;
   grid-template-columns: 1fr 4fr;
   gap: 20px;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  padding: 0;
+  margin: 0;
 }
 
-.about-content-aside {
+.admin-sidebar {
   display: flex;
   background-color: var(--bg-color);
+  padding: 0;
+  border-radius: 8px;
 }
 
-main {
+.admin-main {
+  width: 100%;
   padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
 @media (max-width: 1024px) {
-  .admin-container {
+  .admin-layout {
     grid-template-columns: 1fr;
   }
 
-  .about-content-aside {
+  .admin-sidebar {
     justify-content: center;
   }
 }
 
+
 @media (max-width: 768px) {
-  .admin-container {
+  .admin-layout {
     display: flex;
     flex-direction: column;
+    padding: 10px;
+  }
+
+  .admin-sidebar {
+    margin-bottom: 20px;
   }
 }
 </style>

@@ -9,16 +9,16 @@ const router = useRouter()
 const links = computed(() => [
   { link: "/admin/", label: t('admin_sidebar.admin'), icon: "mdi-account-cog-outline" },
 
-  { link: "/admin/booking-dashboard", label: t('admin_sidebar.booking_overview'), icon: "mdi-calendar-clock" },
-
-  { link: "/admin/facility-form", label: t('admin_sidebar.facility_form'), icon: "mdi-office-building-cog" },
-  { link: "/admin/facility-management-dashboard", label: t('admin_sidebar.facilities_dashboard'), icon: "mdi-domain" },
-
-  { link: "/admin/news-form", label: t('admin_sidebar.news_form'), icon: "mdi-newspaper-variant-multiple" },
-  { link: "/admin/news-content-dashboard", label: t('admin_sidebar.news_dashboard'), icon: "mdi-newspaper-variant-multiple" },
-
+  { link: "/admin/about-content-dashboard", label: t('admin_sidebar.about_content_dashboard'), icon: "mdi-file-document-edit-outline" },
   { link: "/admin/about-form", label: t('admin_sidebar.about_content_form'), icon: "mdi-file-document-edit-outline" },
-  { link: "/admin/about-content-dashboard", label: t('admin_sidebar.about_content_form'), icon: "mdi-file-document-edit-outline" },
+
+  { link: "/admin/booking-dashboard", label: t('admin_sidebar.booking_overview'), icon: "mdi-calendar-clock" },
+  { link: "/admin/facility-form", label: t('admin_sidebar.facility_form'), icon: "mdi-office-building-cog" },
+
+  { link: "/admin/facility-management-dashboard", label: t('admin_sidebar.facilities_dashboard'), icon: "mdi-domain" },
+  { link: "/admin/news-form", label: t('admin_sidebar.news_form'), icon: "mdi-newspaper-variant-multiple" },
+
+  { link: "/admin/news-content-dashboard", label: t('admin_sidebar.news_dashboard'), icon: "mdi-newspaper-variant-multiple" },
 
   { link: "/admin/service-form", label: t('admin_sidebar.service_form'), icon: "mdi-clipboard-plus-outline" },
   { link: "/admin/services-overview-dashboard", label: t('admin_sidebar.service_dashboard'), icon: "mdi-clipboard-text-multiple-outline" },
