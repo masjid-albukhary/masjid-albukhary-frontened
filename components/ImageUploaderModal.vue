@@ -26,19 +26,23 @@ const uploadImageQuestions = [
     type: 'file',
     required: true,
     placeholder: 'Upload any requests or inquiries',
-    id: 'upload_image'
+    id: 'gallery_image'
   }
 ];
 
 const formSchema = z.object({
   name_field: z.string().min(8, 'Name field name must be at least 8 characters long'),
   alert_field: z.string().min(8, 'Alert field name must be at least 8 characters long'),
-  upload_image: z.any().optional("Upload must be a file")
+  gallery_image: z.any().optional("Upload must be a file")
 });
 
 const form = reactive(Object.fromEntries(uploadImageQuestions.map(q => [q.id, ''])));
 const errors = reactive(Object.fromEntries(uploadImageQuestions.map(q => [q.id, ''])));
-const evidence_photo = ref(null);
+const {$axios} = useNuxtApp();
+const api = $axios()
+const gallery_image = ref(null);
+
+uploadImageQuestions.forEach(question => watch(() => form[question.id], () => validateField(question.id)));
 
 function validateField(field) {
   try {
@@ -49,32 +53,48 @@ function validateField(field) {
   }
 }
 
-uploadImageQuestions.forEach(question => watch(() => form[question.id], () => validateField(question.id)));
-
 const handleFileUpload = (event, inputDetails) => {
   if (inputDetails.type === 'file') {
-    evidence_photo.value = event.target.files[0];
+    gallery_image.value = event.target.files[0];
+    console.log('Selected File:', gallery_image.value); // Debugging line
   }
 };
 
+
 async function handleSubmit() {
-  form.Date = new Date().toLocaleDateString("en-GB");
+  form.Date = new Date().toLocaleDateString('en-GB');
 
   const validationResults = formSchema.safeParse(form);
 
   if (!validationResults.success) {
     console.log('Validation Errors:', validationResults.error.errors);
-    alert("Please correct the errors in the form.");
+    alert('Please correct the errors in the form.');
     return;
   }
 
-  alert("Form Submitted Successfully.");
-  location.reload();
+  const formData = new FormData();
+  formData.append('name_field', form.name_field);
+  formData.append('alert_field', form.alert_field);
+  formData.append('gallery_image', gallery_image.value); // Ensure key matches
 
-  // If validation is successful
-  console.log("Form Submitted Successfully:", form);
+  try {
+    const response = await api.post('/content_manager/gallery/images/', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    console.log('Form Submitted Successfully:', response.data);
+    alert('Form Submitted Successfully.');
+    console.log(formData);
+
+    location.reload();
+
+  } catch (error) {
+    console.error('Failed to submit form:', error);
+    alert('An error occurred while submitting the form.');
+  }
 }
-
 </script>
 
 <template>
