@@ -214,21 +214,29 @@ export default {
         logout: "Log Keluar"
     },
     admin_sidebar: {
-        admin_title: 'Panel Admin',
-        admin: "Tinjauan Admin",
-        booking_overview: "Tinjauan Tempahan",
-        facility_form: "Borang Kemudahan",
-        facilities_dashboard: "Papan Pemuka Kemudahan",
-        news_dashboard: "Papan Pemuka Berita",
-        news_form: "Borang Aktiviti",
-        about_content_dashboard: "About Content management",
-        about_content_form: "About content Form",
-        service_form: "Borang Perkhidmatan",
-        service_dashboard: "Papan Pemuka Perkhidmatan",
-        users_dashboard: "Papan Pemuka Pengguna",
-        users_form: "Pengguna Baharu",
-        images_dashboard: "Papan Pemuka Imej",
-        videos_dashboard: "Papan Pemuka Video",
+        admin_title: "Panel Pentadbiran",
+        admin: "Ringkasan Papan Pemuka",
+
+        booking_overview: "Pengurusan Tempahan",
+
+        facility_form: "Kemudahan Baharu",
+        facilities_dashboard: "Pengurusan Kemudahan",
+
+        news_form: "Aktiviti Baharu",
+        news_dashboard: "Pengurusan Aktiviti",
+
+        about_content_form: "Bahagian Tentang Baharu",
+        about_content_dashboard: "Pengurusan Bahagian Tentang",
+
+        service_form: "Perkhidmatan Baharu",
+        service_dashboard: "Pengurusan Perkhidmatan",
+        service_overview_dashboard: "Ringkasan Perkhidmatan",
+
+        users_form: "Daftar Pengguna",
+        users_dashboard: "Pengurusan Pengguna",
+
+        images_dashboard: "Perpustakaan Imej",
+        videos_dashboard: "Perpustakaan Video"
     },
     about_content_form: {
         title: "Mengenai Pengurusan Kandungan",

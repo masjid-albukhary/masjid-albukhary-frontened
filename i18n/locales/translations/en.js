@@ -217,21 +217,29 @@ export default {
         logout: "Logout"
     },
     admin_sidebar: {
-        admin_title: 'Admin Panel',
-        admin: "Admin Overview",
-        booking_overview: "Booking Overview",
-        facility_form: "Facility Form",
-        facilities_dashboard: "Facilities Dashboard",
-        news_dashboard: "News Dashboard",
-        news_form: "Activity Form",
-        about_content_dashboard: "About Content management",
-        about_content_form: "About content Form",
-        service_form: "Service Form",
-        service_dashboard: "Services Dashboard",
-        users_dashboard: "Users Dashboard",
-        users_form: "New User",
-        images_dashboard: "Images Dashboard",
-        videos_dashboard: "Videos Dashboard",
+        admin_title: "Administration Panel",
+        admin: "Dashboard Overview",
+
+        booking_overview: "Booking Management",
+
+        facility_form: "New Facility",
+        facilities_dashboard: "Facility Management",
+
+        news_form: "Create Activity",
+        news_dashboard: "Activity Management",
+
+        about_content_form: "New About Section",
+        about_content_dashboard: "About Section Management",
+
+        service_form: "New Service",
+        service_dashboard: "Service Management",
+        service_overview_dashboard: "Services Overview",
+
+        users_form: "Register User",
+        users_dashboard: "User Management",
+
+        images_dashboard: "Image Library",
+        videos_dashboard: "Video Library"
     },
     about_content_form: {
         title: "About Content Management",
