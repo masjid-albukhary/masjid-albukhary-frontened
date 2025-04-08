@@ -24,6 +24,7 @@ const links = computed(() => [
   { link: "/admin/services-overview-dashboard", label: t('admin_sidebar.service_dashboard'), icon: "mdi-clipboard-text-multiple-outline" },
 
   { link: "/admin/users-dashboard", label: t('admin_sidebar.users_dashboard'), icon: "mdi-account-multiple-outline" },
+  { link: "/admin/register-new-admin", label: t('admin_sidebar.users_form'), icon: "mdi-user-plus-outline" },
 
   { link: "/admin/image-gallery-dashboard", label: t('admin_sidebar.images_dashboard'), icon: "mdi-images" },
   { link: "/admin/video-gallery-dashboard", label: t('admin_sidebar.videos_dashboard'), icon: "mdi-video" },

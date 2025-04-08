@@ -225,6 +225,7 @@ export default {
         service_form: "Borang Perkhidmatan",
         service_dashboard: "Papan Pemuka Perkhidmatan",
         users_dashboard: "Papan Pemuka Pengguna",
+        users_form: "Pengguna Baharu",
         images_dashboard: "Papan Pemuka Imej",
         videos_dashboard: "Papan Pemuka Video",
     },

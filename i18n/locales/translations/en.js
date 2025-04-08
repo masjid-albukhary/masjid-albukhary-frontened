@@ -228,6 +228,7 @@ export default {
         service_form: "Service Form",
         service_dashboard: "Services Dashboard",
         users_dashboard: "Users Dashboard",
+        users_form: "New User",
         images_dashboard: "Images Dashboard",
         videos_dashboard: "Videos Dashboard",
     },

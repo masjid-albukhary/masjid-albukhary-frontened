@@ -172,7 +172,6 @@ async function handleSubmit() {
     return;
   }
 
-  // If validation is successful
   console.log("Form Submitted Successfully:", form);
 }
 
@@ -233,22 +232,6 @@ async function handleSubmit() {
 
         <hr class="divider"/>
 
-        <div class="buttons-container">
-
-          <div class="buttons">
-            <router-link to="/" class="login-btn">
-              {{ t('sign_up.home_btn') }}
-            </router-link>
-            <router-link to="/login" class="sign-up-btn">
-              {{ t('sign_up.login_btn') }}
-            </router-link>
-          </div>
-
-          <button @click="toggleLanguage" class="translation-btn">
-            {{ currentLang === 'en' ? 'Switch to Malay' : 'Switch to English' }}
-          </button>
-        </div>
-
 
       </div>
 
@@ -277,16 +260,8 @@ section {
 }
 
 .sign-up-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  max-width: 1000px;
   margin: 0 auto;
-  background-color: white;
   border-radius: 8px;
-  overflow: hidden;
-  box-shadow: rgba(149, 157, 165, 0.3) 0 8px 24px;
-  border: 1px solid rgba(149, 157, 165, 0.3);
 }
 
 .divider {
@@ -331,7 +306,7 @@ section {
 }
 
 .info {
-  flex-basis: calc(50% - 10px);
+  flex-basis: 100%;
   box-sizing: border-box;
   display: block;
 }
@@ -395,67 +370,5 @@ section {
 .sign-up-submit:hover {
   background-color: var(--secondary-color);
 }
-
-.buttons-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  padding: 1rem;
-  width: 100%;
-  max-width: 1000px;
-  margin: 0 auto;
-  font-size: 1.2rem;
-}
-
-.buttons {
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-}
-
-.sign-up-btn,
-.login-btn {
-  padding: .5rem 1rem;
-  color: var(--primary-color);
-  border: none;
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-
-.translation-btn {
-  padding: .5rem 1rem;
-  color: var(--primary-color);
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.sign-up-btn:hover,
-.login-btn:hover,
-.translation-btn:hover {
-  color: var(--secondary-color);
-  text-decoration: underline;
-}
-
-@media (max-width: 600px) {
-
-  .buttons-container {
-    flex-direction: column;
-  }
-
-  .buttons-container {
-    width: 90%;
-  }
-
-  .buttons {
-    flex-direction: column;
-    gap: 10px;
-  }
-}
-
 
 </style>
