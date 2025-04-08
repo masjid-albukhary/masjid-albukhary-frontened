@@ -131,11 +131,11 @@ const bookingQuestions = [
 const formSchema = z.object({
   first_name: z
       .string()
-      .min(8, 'First name must be at least 8 characters long'),
+      .min(5, 'First name must be at least 5 characters long'),
 
   last_name: z
       .string()
-      .min(8, 'Last Name must be at least 8 characters long'),
+      .min(5, 'Last Name must be at least 5 characters long'),
 
   email: z
       .string()
@@ -227,7 +227,7 @@ const handleSubmit = async () => {
   formData.append('services', form.services);
   formData.append('guests', form.guests);
   formData.append('other_requests', form.other_requests);
-  formData.append('other_docs', other_docs.value); // Ensure the correct file field is added here
+  formData.append('other_docs', other_docs.value);
 
   try {
     const response = await api.post('/requests/booking-requests/', formData, {
@@ -237,7 +237,8 @@ const handleSubmit = async () => {
     });
 
     console.log('Form Submitted Successfully:', response.data);
-    alert('Form Submitted Successfully.');
+    // alert('Form Submitted Successfully.');
+    showPopup.value = true;
 
     location.reload();
   } catch (error) {
