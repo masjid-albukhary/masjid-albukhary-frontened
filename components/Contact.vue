@@ -1,10 +1,15 @@
 <script setup>
 import {reactive, watch} from 'vue';
 import {z} from 'zod';
-
 import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
+import {useNuxtApp} from "#app";
+import SubmitMessagePopup from '~/components/SubmitMessagePopup.vue';
 
+
+const { t } = useI18n();
+const {$axios} = useNuxtApp();
+const api = $axios()
+const showPopup = ref(false);
 const contactQuestions = [
   {
     label: t('contact.form.name'),
@@ -47,7 +52,6 @@ const contactQuestions = [
     icon: "message-circle"
   }
 ]
-
 const formSchema = z.object({
   name: z
       .string()
@@ -102,8 +106,30 @@ async function handleSubmit() {
     return;
   }
 
-  // If validation is successful
-  console.log("Form Submitted Successfully:", form);
+  try {
+    const payload = {
+      name: form.name,
+      email: form.email,
+      contact_number: form.contact_number,
+      subject: form.subject,
+      message: form.message,
+      date: form.Date
+    };
+
+    const response = await api.post("/requests/contact-message/", payload);
+
+    console.log("Form submitted successfully:", response.data);
+    alert("Your message has been sent successfully!");
+    showPopup.value = true;
+    // location.reload();
+
+    Object.keys(form).forEach((key) => {
+      form[key] = "";
+    });
+  } catch (error) {
+    console.error("Error submitting form:", error);
+    alert("There was an error while submitting the form. Please try again.");
+  }
 }
 
 
@@ -125,7 +151,6 @@ const contactImage = "/images/contact-image.jpg"
           <h3>{{t('contact.title')}}</h3>
           <span>{{t('contact.description')}}</span>
         </div>
-
       </div>
 
       <div class="contact-form">
@@ -163,6 +188,11 @@ const contactImage = "/images/contact-image.jpg"
             <button @click.once="isPopupVisible = true" class="contact-submit" type="submit">
               {{t('contact.send_message')}}
             </button>
+
+            <SubmitMessagePopup :show="showPopup" @update:show="showPopup = $event" >
+
+            </SubmitMessagePopup>
+
           </div>
 
         </form>
