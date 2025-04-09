@@ -39,7 +39,7 @@ const AboutContentQuestions = [
     label: t('about_content_form.label.about_content_image'),
     type: "file",
     required: false,
-    id: "about_content_image",
+    id: "about_image",
   },
 ]
 const formSchema = z.object({
@@ -47,7 +47,7 @@ const formSchema = z.object({
   about_title_my: z.string().min(10, 'Title must be at least 15 characters long'),
   about_content_en: z.string().min(100, 'Content must be at least 100 characters long'),
   about_content_my: z.string().min(100, 'Content must be at least 100 characters long'),
-  about_content_image: z.any().optional(),
+  about_image: z.any().optional(),
 });
 const form = reactive({});
 const errors = reactive({});
@@ -71,12 +71,12 @@ AboutContentQuestions.forEach((question) => {
   watch(() => form[question.id], () => validateField(question.id));
 });
 
-const about_content_image = ref(null);
+const about_image = ref(null);
 const handleFileUpload = (event, inputDetails) => {
   if (inputDetails.type !== 'file') {
     return;
   }
-  about_content_image.value = event.target.files[0];
+  about_image.value = event.target.files[0];
 };
 const handleSubmit = async () => {
   form.Date = new Date().toLocaleDateString('en-GB');
@@ -95,7 +95,7 @@ const handleSubmit = async () => {
   formData.append('about_title_my', form.about_title_my);
   formData.append('about_content_en', form.about_content_en);
   formData.append('about_content_my', form.about_content_my);
-  formData.append('about_content_image', about_content_image.value);
+  formData.append('about_image', about_image.value);
 
   try {
     const response = await api.post('/content_manager/about_us_content/', formData, {

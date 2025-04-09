@@ -11,7 +11,7 @@ interface AboutContent {
   content_en: string;
   content_my: string;
   created_at: string;
-
+  file?: File | string;
 }
 
 const columns = [
@@ -66,15 +66,34 @@ const updateContent = async () => {
   if (!currentContent.value) return;
 
   try {
-    const updatedContent = currentContent.value;
-    const response = await api.put(`/content_manager/about_us_content/${updatedContent.id}/`, updatedContent);
-    console.log('Content updated:', response.data);
+    const formData = new FormData();
+
+    for (const [key, value] of Object.entries(currentContent.value)) {
+      if (key === 'id') continue;
+
+      if (key === 'file' && value instanceof File) {
+        formData.append('file', value);
+      } else {
+        formData.append(key, value as string);
+      }
+    }
+
+    const response = await api.patch(
+        `/content_manager/about_us_content/${currentContent.value.id}/`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+    );
+
+    const index = contentData.value.findIndex(item => item.id === currentContent.value?.id);
+    if (index !== -1) {
+      contentData.value[index] = response.data;
+    }
 
     alert('Content updated successfully!');
-
-    contentData.value = contentData.value.map(content =>
-        content.id === updatedContent.id ? response.data : content
-    );
     closePopup();
   } catch (error) {
     console.error('Failed to update content:', error);
@@ -102,6 +121,12 @@ const deleteContent = async () => {
   }
 };
 
+const handleFileUpload = (file: File) => {
+  if (currentContent.value) {
+    currentContent.value.file = file;
+  }
+};
+
 const openPopup = (content: AboutContent) => {
   currentContent.value = {...content};
   contentDetails.value = {
@@ -110,6 +135,7 @@ const openPopup = (content: AboutContent) => {
     "Content (English)": content.content_en,
     "Content (Malay)": content.content_my,
     "Created At": content.created_at,
+    "File": content.file || 'No file uploaded'
   };
   isPopupVisible.value = true;
 };
@@ -206,6 +232,7 @@ onMounted(async () => {
         @closePopup="closePopup"
         @updateContent="updateContent"
         @deleteContent="deleteContent"
+        @fileUploaded="handleFileUpload"
     />
   </section>
 </template>
