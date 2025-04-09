@@ -7,18 +7,18 @@ const props = defineProps({
   currentContent: Object,
 });
 
-const emit = defineEmits(['closePopup', 'updateBooking', 'deleteBooking']);
+const emit = defineEmits(['closePopup', 'deleteContent', 'contentBooking']);
 
 const closePopup = () => {
   emit('closePopup');
 };
 
 const updateBooking = () => {
-  emit('updateBooking');
+  emit('contentBooking');
 };
 
 const deleteBooking = () => {
-  emit('deleteBooking');
+  emit('deleteContent');
 };
 </script>
 
