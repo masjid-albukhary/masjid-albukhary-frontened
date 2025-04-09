@@ -12,28 +12,28 @@ const AboutContentQuestions = [
     type: "text",
     placeholder: t('about_content_form.placeholder.title_en'),
     required: true,
-    id: "about_title_en",
+    id: "title_en",
   },
   {
     label: t('about_content_form.label.title_my'),
     type: "text",
     placeholder: t('about_content_form.placeholder.title_my'),
     required: true,
-    id: "about_title_my",
+    id: "title_my",
   },
   {
     label: t('about_content_form.label.content_en'),
     type: "text",
     placeholder: t('about_content_form.placeholder.content_en'),
     required: true,
-    id: "about_content_en",
+    id: "content_en",
   },
   {
     label: t('about_content_form.label.content_my'),
     type: "text",
     placeholder: t('about_content_form.placeholder.content_my'),
     required: true,
-    id: "about_content_my",
+    id: "content_my",
   },
   {
     label: t('about_content_form.label.about_content_image'),
@@ -43,10 +43,10 @@ const AboutContentQuestions = [
   },
 ]
 const formSchema = z.object({
-  about_title_en: z.string().min(10, 'Title must be at least 10 characters long'),
-  about_title_my: z.string().min(10, 'Title must be at least 15 characters long'),
-  about_content_en: z.string().min(100, 'Content must be at least 100 characters long'),
-  about_content_my: z.string().min(100, 'Content must be at least 100 characters long'),
+  title_en: z.string().min(10, 'Title must be at least 10 characters long'),
+  title_my: z.string().min(10, 'Title must be at least 15 characters long'),
+  content_en: z.string().min(100, 'Content must be at least 100 characters long'),
+  content_my: z.string().min(100, 'Content must be at least 100 characters long'),
   about_image: z.any().optional(),
 });
 const form = reactive({});
@@ -91,10 +91,10 @@ const handleSubmit = async () => {
 
   const formData = new FormData();
 
-  formData.append('about_title_en', form.about_title_en);
-  formData.append('about_title_my', form.about_title_my);
-  formData.append('about_content_en', form.about_content_en);
-  formData.append('about_content_my', form.about_content_my);
+  formData.append('title_en', form.title_en);
+  formData.append('title_my', form.title_my);
+  formData.append('content_en', form.content_en);
+  formData.append('content_my', form.content_my);
   formData.append('about_image', about_image.value);
 
   try {
