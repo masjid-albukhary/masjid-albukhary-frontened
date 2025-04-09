@@ -107,7 +107,7 @@ const handleSubmit = async () => {
     console.log('Form Submitted Successfully:', response.data);
     alert('Form Submitted Successfully.');
 
-    // location.reload();
+    location.reload();
   } catch (error) {
     console.error('Failed to submit form:', error);
     alert('An error occurred while submitting the form.');
