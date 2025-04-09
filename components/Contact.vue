@@ -116,12 +116,13 @@ async function handleSubmit() {
       date: form.Date
     };
 
-    const response = await api.post("/requests/contact-message/", payload);
+    const response = await api.post("/requests/contact_message/", payload);
 
     console.log("Form submitted successfully:", response.data);
     alert("Your message has been sent successfully!");
     showPopup.value = true;
-    // location.reload();
+
+    location.reload();
 
     Object.keys(form).forEach((key) => {
       form[key] = "";

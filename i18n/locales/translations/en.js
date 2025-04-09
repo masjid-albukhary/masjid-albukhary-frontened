@@ -226,6 +226,7 @@ export default {
         admin: "Dashboard Overview",
 
         booking_overview: "Booking Management",
+        contact_messages_overview: "Messages Management",
 
         facility_form: "New Facility",
         facilities_dashboard: "Facility Management",

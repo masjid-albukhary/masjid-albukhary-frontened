@@ -225,6 +225,7 @@ export default {
         admin: "Gambaran Keseluruhan Papan Pemuka",
 
         booking_overview: "Pengurusan Tempahan",
+        contact_messages_overview: "Pengurusan Mesej",
 
         facility_form: "Kemudahan Baharu",
         facilities_dashboard: "Pengurusan Kemudahan",

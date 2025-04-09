@@ -22,7 +22,8 @@ const groupedLinks = computed(() => [
     icon: "mdi-view-dashboard-outline",
     children: [
       { link: "/admin/", label: t('admin_sidebar.admin'), icon: "mdi-account-cog-outline" },
-      { link: "/admin/booking-dashboard", label: t('admin_sidebar.booking_overview'), icon: "mdi-calendar-clock" }
+      { link: "/admin/booking-dashboard", label: t('admin_sidebar.booking_overview'), icon: "mdi-calendar-clock" },
+      { link: "/admin/contact-messages-dashboard", label: t('admin_sidebar.contact_messages_overview'), icon: "mdi-phone" }
     ]
   },
   {
@@ -74,10 +75,7 @@ const groupedLinks = computed(() => [
     ]
   }
 ])
-const handleLogout = () => {
-  console.log('Logging out...')
-  router.push('/')
-}
+
 </script>
 
 <template>
@@ -93,7 +91,6 @@ const handleLogout = () => {
               <UIcon :name="group.icon" />
             </span>
             <span class="label">{{ group.label }}</span>
-<!--            <span class="chevron">{{ expandedGroups.has(group.label) ? '' : '' }}</span>-->
           </div>
 
           <ul v-if="expandedGroups.has(group.label)">
