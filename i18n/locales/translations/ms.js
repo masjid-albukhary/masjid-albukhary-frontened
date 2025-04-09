@@ -219,16 +219,17 @@ export default {
         upload_video: "Muat Naik Video",
         logout: "Log Keluar"
     },
+
     admin_sidebar: {
         admin_title: "Panel Pentadbiran",
-        admin: "Ringkasan Papan Pemuka",
+        admin: "Gambaran Keseluruhan Papan Pemuka",
 
         booking_overview: "Pengurusan Tempahan",
 
         facility_form: "Kemudahan Baharu",
         facilities_dashboard: "Pengurusan Kemudahan",
 
-        news_form: "Aktiviti Baharu",
+        news_form: "Cipta Aktiviti",
         news_dashboard: "Pengurusan Aktiviti",
 
         about_content_form: "Bahagian Tentang Baharu",
@@ -236,13 +237,21 @@ export default {
 
         service_form: "Perkhidmatan Baharu",
         service_dashboard: "Pengurusan Perkhidmatan",
-        service_overview_dashboard: "Ringkasan Perkhidmatan",
+        service_overview_dashboard: "Gambaran Perkhidmatan",
 
         users_form: "Daftar Pengguna",
         users_dashboard: "Pengurusan Pengguna",
 
-        images_dashboard: "Perpustakaan Imej",
-        videos_dashboard: "Perpustakaan Video"
+        images_dashboard: "Galeri Gambar",
+        videos_dashboard: "Galeri Video",
+
+        dashboard_section: "Papan Pemuka",
+        about_section: "Bahagian Tentang",
+        facility_section: "Pengurusan Kemudahan",
+        news_section: "Pengurusan Aktiviti",
+        services_section: "Perkhidmatan",
+        users_section: "Pengurusan Pengguna",
+        media_section: "Pustaka Media"
     },
     about_content_form: {
         title: "Mengenai Pengurusan Kandungan",

@@ -244,7 +244,15 @@ export default {
         users_dashboard: "User Management",
 
         images_dashboard: "Image Library",
-        videos_dashboard: "Video Library"
+        videos_dashboard: "Video Library",
+
+        dashboard_section: "Dashboard",
+        about_section: "About Section",
+        facility_section: "Facility Management",
+        news_section: "Activity Management",
+        services_section: "Services",
+        users_section: "User Management",
+        media_section: "Media Library"
     },
     about_content_form: {
         title: "About Content Management",
