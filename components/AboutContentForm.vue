@@ -1,38 +1,39 @@
 <script setup>
-import {reactive, ref, watch,} from 'vue';
+import {reactive, ref, watch} from 'vue';
 import {z} from 'zod';
-import {useI18n} from 'vue-i18n'
+import {useNuxtApp} from "#app";
 
-const {t} = useI18n()
-
+const {$axios} = useNuxtApp();
+const api = $axios()
+const {t} = useI18n();
 const AboutContentQuestions = [
   {
     label: t('about_content_form.label.title_en'),
     type: "text",
     placeholder: t('about_content_form.placeholder.title_en'),
     required: true,
-    id: "title_en",
+    id: "about_title_en",
   },
   {
     label: t('about_content_form.label.title_my'),
     type: "text",
     placeholder: t('about_content_form.placeholder.title_my'),
     required: true,
-    id: "title_en",
+    id: "about_title_my",
   },
   {
     label: t('about_content_form.label.content_en'),
     type: "text",
     placeholder: t('about_content_form.placeholder.content_en'),
     required: true,
-    id: "title_en",
+    id: "about_content_en",
   },
   {
     label: t('about_content_form.label.content_my'),
     type: "text",
     placeholder: t('about_content_form.placeholder.content_my'),
     required: true,
-    id: "title_en",
+    id: "about_content_my",
   },
   {
     label: t('about_content_form.label.about_content_image'),
@@ -41,15 +42,13 @@ const AboutContentQuestions = [
     id: "about_content_image",
   },
 ]
-
 const formSchema = z.object({
-  title_en: z.string().min(10, 'Title must be at least 10 characters long'),
-  title_my: z.string().min(10, 'Title must be at least 15 characters long'),
-  content_en: z.string().min(100, 'Content must be at least 100 characters long'),
-  content_my: z.string().min(100, 'Content must be at least 100 characters long'),
+  about_title_en: z.string().min(10, 'Title must be at least 10 characters long'),
+  about_title_my: z.string().min(10, 'Title must be at least 15 characters long'),
+  about_content_en: z.string().min(100, 'Content must be at least 100 characters long'),
+  about_content_my: z.string().min(100, 'Content must be at least 100 characters long'),
   about_content_image: z.any().optional(),
 });
-
 const form = reactive({});
 const errors = reactive({});
 
@@ -72,66 +71,49 @@ AboutContentQuestions.forEach((question) => {
   watch(() => form[question.id], () => validateField(question.id));
 });
 
-const image = ref(null);
-
+const about_content_image = ref(null);
 const handleFileUpload = (event, inputDetails) => {
   if (inputDetails.type !== 'file') {
     return;
   }
-  image.value = event.target.files[0];
+  about_content_image.value = event.target.files[0];
 };
-
-async function handleSubmit() {
-  form.Date = new Date().toLocaleDateString("en-GB");
+const handleSubmit = async () => {
+  form.Date = new Date().toLocaleDateString('en-GB');
 
   const validationResults = formSchema.safeParse(form);
-  if (validationResults.success) {
-    try {
-      console.log("Sending API Request...");
-      const formDataObj = new FormData();
-      for (const key in form) {
-        const value = form[key];
-        if (value === null || value === undefined) {
-          continue;
-        }
-        formDataObj.append(key, value);
-      }
-      formDataObj.delete('image')
 
-      if (image.value) {
-        formDataObj.append('image', image.value)
-      }
-
-      const response = await api.post("/maintenance-requests/", formDataObj);
-      console.log("Response Data:", response.data);
-      Object.keys(form).forEach((key) => (form[key] = ""));
-      isPopupVisible.value = true;
-      location.reload()
-    } catch (error) {
-      isPopupVisible.value = false;
-      console.error("Error occurred:", error);
-      if (error.response) {
-        console.error("Backend Error:", error.response.data);
-        alert(`Error: ${error.response.data.detail || "Unable to submit the form."}`);
-        isPopupVisible.value = false;
-        // console.log("Response Data:", response.data.value);
-      } else if (error.request) {
-        console.error("No response from the server:", error.request);
-        alert("Server is not responding. Please try again later.");
-        isPopupVisible.value = false;
-      } else {
-        console.error("Request Setup Error:", error.message);
-        alert("An error occurred while submitting the form. Please try again.");
-        isPopupVisible.value = false;
-      }
-      isPopupVisible.value = false;
-    }
-  } else {
+  if (!validationResults.success) {
     console.log('Validation Errors:', validationResults.error.errors);
-    isPopupVisible.value = false;
-    alert("Please correct the errors in the form.");
+    alert('Please correct the errors in the form.');
+    return;
+  }
+
+  const formData = new FormData();
+
+  formData.append('about_title_en', form.about_title_en);
+  formData.append('about_title_my', form.about_title_my);
+  formData.append('about_content_en', form.about_content_en);
+  formData.append('about_content_my', form.about_content_my);
+  formData.append('about_content_image', about_content_image.value);
+
+  try {
+    const response = await api.post('/content_manager/about-us-content/', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    console.log('Form Submitted Successfully:', response.data);
+    alert('Form Submitted Successfully.');
+
+    // location.reload();
+  } catch (error) {
+    console.error('Failed to submit form:', error);
+    alert('An error occurred while submitting the form.');
   }
 }
+
 
 </script>
 
