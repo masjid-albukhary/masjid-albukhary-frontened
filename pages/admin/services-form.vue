@@ -14,7 +14,7 @@ definePageMeta({
       <AdminSideBar />
     </aside>
     <main class="admin-main">
-      <ServiceForm/>
+      <ServicesForm/>
     </main>
   </section>
   <AdminFooter />
