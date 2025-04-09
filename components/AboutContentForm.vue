@@ -98,7 +98,7 @@ const handleSubmit = async () => {
   formData.append('about_content_image', about_content_image.value);
 
   try {
-    const response = await api.post('/content_manager/about-us-content/', formData, {
+    const response = await api.post('/content_manager/about_us_content/', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
