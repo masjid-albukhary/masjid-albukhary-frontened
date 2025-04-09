@@ -1,9 +1,12 @@
 <script setup>
-import { reactive, watch } from 'vue';
-import { z } from 'zod';
-import { useI18n } from 'vue-i18n';
+import {reactive, watch} from 'vue';
+import {z} from 'zod';
+import {useI18n} from 'vue-i18n';
+import {useNuxtApp} from "#app";
 
-const { t } = useI18n();
+const {t} = useI18n();
+const {$axios} = useNuxtApp();
+const api = $axios();
 
 const serviceQuestions = [
   {
@@ -11,99 +14,74 @@ const serviceQuestions = [
     type: "text",
     placeholder: t("service_form.placeholder.services_title_en"),
     required: true,
-    id: "services_title_en",
+    id: "service_title_en"
   },
   {
     label: t("service_form.label.services_title_my"),
     type: "text",
     placeholder: t("service_form.placeholder.services_title_my"),
     required: true,
-    id: "services_title_my",
+    id: "service_title_my"
   },
   {
     label: t("service_form.label.services_description_en"),
     type: "textarea",
     placeholder: t("service_form.placeholder.services_description_en"),
     required: true,
-    id: "services_description_en",
+    id: "service_description_en"
   },
   {
     label: t("service_form.label.services_description_my"),
     type: "textarea",
     placeholder: t("service_form.placeholder.services_description_my"),
     required: true,
-    id: "services_description_my",
+    id: "service_description_my"
   },
   {
     label: t("service_form.label.services_features_en"),
     type: "textarea",
     placeholder: t("service_form.placeholder.services_features_en"),
     required: true,
-    id: "services_features_en",
+    id: "service_features_en"
   },
   {
     label: t("service_form.label.services_features_my"),
     type: "textarea",
-    placeholder: t("service_form.placeholder.features_my"),
+    placeholder: t("service_form.placeholder.services_features_my"),
     required: true,
-    id: "services_features_my",
+    id: "service_features_my"
   },
   {
     label: t("service_form.label.services_price"),
     type: "number",
     placeholder: t("service_form.placeholder.services_price"),
     required: true,
-    id: "services_price",
+    id: "service_price"
   },
   {
     label: t("service_form.label.services_capacity"),
     type: "number",
     placeholder: t("service_form.placeholder.services_capacity"),
     required: false,
-    id: "services_capacity",
+    id: "service_capacity"
   },
 ];
 
 const formSchema = z.object({
-  services_title_en: z
-      .string()
-      .min(8, 'Services Title (English) must be at least 8 characters long'),
-
-  services_title_my: z
-      .string()
-      .min(8, 'Services Title (Malay) must be at least 8 characters long'),
-
-  services_description_en: z
-      .string()
-      .min(30, 'Description (English) must be at least 30 characters long'),
-
-  services_description_my: z
-      .string()
-      .min(30, 'Description (Malay) must be at least 30 characters long'),
-
-  services_features_en: z
-      .string()
-      .min(10, 'Please provide at least one feature in English'),
-
-  services_features_my: z
-      .string()
-      .min(10, 'Please provide at least one feature in Malay'),
-
-  services_price: z
-      .number()
-      .min(0, 'Price must be a positive number'),
-
-  services_capacity: z
-      .number()
-      .min(0, 'Capacity must be a positive number'),
+  service_title_en: z.string().min(8, 'Services Title (English) must be at least 8 characters long'),
+  service_title_my: z.string().min(8, 'Services Title (Malay) must be at least 8 characters long'),
+  service_description_en: z.string().min(30, 'Description (English) must be at least 30 characters long'),
+  service_description_my: z.string().min(30, 'Description (Malay) must be at least 30 characters long'),
+  service_features_en: z.string().min(10, 'Please provide at least one feature in English'),
+  service_features_my: z.string().min(10, 'Please provide at least one feature in Malay'),
+  service_price: z.number().min(0, 'Price must be a positive number'),
+  service_capacity: z.number().min(0, 'Capacity must be a positive number').optional(),
 });
 
-const form = reactive(
-    serviceQuestions.reduce((acc, { id }) => {
-      acc[id] = '';
-      return acc;
-    }, {})
-);
+const form = reactive(serviceQuestions.reduce((acc, {id}) => {
+  acc[id] = '';
+  return acc;
+}, {}));
 
 const errors = reactive({});
 
@@ -125,7 +103,12 @@ serviceQuestions.forEach((question) => {
 });
 
 async function handleSubmit() {
+
   form.Date = new Date().toLocaleDateString("en-GB");
+
+  form.service_features_en = form.service_features_en.trim().split("\n").filter(Boolean).join(", ");
+  form.service_features_my = form.service_features_my.trim().split("\n").filter(Boolean).join(", ");
+
 
   const validationResults = formSchema.safeParse(form);
 
@@ -135,11 +118,38 @@ async function handleSubmit() {
     return;
   }
 
-  alert("Form Submitted Successfully.");
-  location.reload();
+  try {
+    const payload = {
+      service_title_en: form.service_title_en,
+      service_title_my: form.service_title_my,
+      service_description_en: form.service_description_en,
+      service_description_my: form.service_description_my,
+      service_features_en: form.service_features_en,
+      service_features_my: form.service_features_my,
+      service_price: form.service_price,
+      service_capacity: form.service_capacity || null,
+      date: form.Date
+    };
 
-  // If validation is successful
-  console.log("Form Submitted Successfully:", form);
+    const response = await api.post("/service_facility_management/services/", payload);
+
+    console.log("Form submitted successfully:", response.data);
+    alert("Your message has been sent successfully!");
+
+    // location.reload();
+
+    Object.keys(form).forEach((key) => {
+      form[key] = "";
+    });
+  } catch (error) {
+    console.error("Error submitting form:", error);
+    if (error.response) {
+      console.error("Response data:", error.response.data); // More detailed error info
+      alert("There was an error while submitting the form. Please try again.");
+    } else {
+      alert("Unknown error occurred.");
+    }
+  }
 }
 </script>
 
