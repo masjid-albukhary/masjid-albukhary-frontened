@@ -87,14 +87,6 @@ function prevPage() {
         </div>
       </div>
 
-      <div class="images-gallery-buttons">
-        <button @click="prevPage" class="nav-button">
-          <UIcon name="mdi-arrow-left-circle"/>
-        </button>
-        <button @click="nextPage" class="nav-button">
-          <UIcon name="mdi-arrow-right-circle"/>
-        </button>
-      </div>
     </div>
 
     <div v-else class="loader-wrapper">
@@ -102,8 +94,16 @@ function prevPage() {
       <p>Loading images... </p>
     </div>
 
-
   </section>
+  <div class="images-gallery-buttons">
+    <button @click="prevPage" class="nav-button">
+      <UIcon name="mdi-arrow-left-circle"/>
+    </button>
+    <button @click="nextPage" class="nav-button">
+      <UIcon name="mdi-arrow-right-circle"/>
+    </button>
+  </div>
+
 </template>
 
 <style scoped>
