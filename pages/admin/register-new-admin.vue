@@ -34,7 +34,7 @@ definePageMeta({
 
 .admin-sidebar {
   display: flex;
-  background-color: var(--bg-color);
+  background-color: var(--primary-color);
   padding: 0;
   border-radius: 8px;
 }
@@ -42,7 +42,6 @@ definePageMeta({
 .admin-main {
   width: 100%;
   padding: 20px;
-  background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
