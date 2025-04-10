@@ -1,17 +1,16 @@
-import type { AxiosError, AxiosRequestConfig } from "axios";
-import axios from "axios";
+import type { AxiosError, AxiosRequestConfig } from 'axios';
+import axios from 'axios';
+import { useCookie, navigateTo } from '#app';
 
-// Store to manage the token refresh process
 let isRefreshing = false;
 let failedQueue: any[] = [];
 
-// Function to process queued failed requests after token refresh
 const processQueue = (error: any = null) => {
-    failedQueue.forEach(prom => {
+    failedQueue.forEach(promise => {
         if (error) {
-            prom.reject(error);
+            promise.reject(error);
         } else {
-            prom.resolve();
+            promise.resolve();
         }
     });
     failedQueue = [];
@@ -24,39 +23,36 @@ export function createApi() {
         baseURL: baseUrl,
     });
 
+    // ✅ Attach token to every request
     api.interceptors.request.use(
         (config) => {
             const accessToken = useCookie('token').value;
+
             if (accessToken) {
                 config.headers = config.headers || {};
                 config.headers['Authorization'] = `Bearer ${accessToken}`;
             } else {
                 console.warn('No access token found. Please log in again.');
             }
+
             return config;
         },
         (error) => {
-            console.error("Request error:", error);
+            console.error('Request error:', error);
             return Promise.reject(error);
         }
     );
 
+    // ✅ Handle response errors, especially 401
     api.interceptors.response.use(
         (response) => response,
         async (error: AxiosError) => {
             const originalRequest = error.config as AxiosRequestConfig;
 
-            // If originalRequest doesn't exist, just reject the promise
-            if (!originalRequest) {
+            if (!originalRequest || error.response?.status !== 401 || originalRequest?.url?.includes('refresh')) {
                 return Promise.reject(error);
             }
 
-            // If the error is not related to token expiration, reject it
-            if (error.response?.status !== 401 || originalRequest?.url?.includes('refresh')) {
-                return Promise.reject(error);
-            }
-
-            // Handle token refresh if we are already refreshing the token
             if (isRefreshing) {
                 return new Promise((resolve, reject) => {
                     failedQueue.push({ resolve, reject });
@@ -65,52 +61,45 @@ export function createApi() {
                     .catch((err) => Promise.reject(err));
             }
 
-            // Mark refreshing flag as true
             isRefreshing = true;
 
             try {
                 const refreshToken = useCookie('refresh_token').value;
+
                 if (!refreshToken) {
                     console.error('No refresh token found. Redirecting to login.');
                     navigateTo('/login');
                     return Promise.reject(new Error('No refresh token'));
                 }
 
-                const response = await api.post('/token/refresh/', { refresh: refreshToken });
+                const response = await api.post('/token/refresh/', {
+                    refresh: refreshToken,
+                });
 
-                const accessTokenCookie = useCookie('token');
-                const refreshTokenCookie = useCookie('refresh_token');
+                const newAccessToken = response.data.access;
+                const newRefreshToken = response.data.refresh;
 
-                // Update the cookies with the new tokens
-                accessTokenCookie.value = response.data.access;
-                if (response.data.refresh) {
-                    refreshTokenCookie.value = response.data.refresh;
+                // ✅ Update cookies with path so they are available everywhere
+                useCookie('token', { path: '/' }).value = newAccessToken;
+                useCookie('refresh_token', { path: '/' }).value = newRefreshToken;
+
+                // ✅ Retry the original request with the new token
+                if (originalRequest.headers) {
+                    originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
                 }
 
-                // Set the Authorization header for the original request
-                if (originalRequest?.headers) {
-                    originalRequest.headers['Authorization'] = `Bearer ${response.data.access}`;
-                }
-
-                // Process any failed requests in the queue after refresh
                 processQueue();
 
-                // Retry the original request with the new token
                 return api(originalRequest);
             } catch (refreshError) {
-                // In case of refresh failure, clear tokens and navigate to login
-                const accessTokenCookie = useCookie('token');
-                const refreshTokenCookie = useCookie('refresh_token');
+                useCookie('token', { path: '/' }).value = null;
+                useCookie('refresh_token', { path: '/' }).value = null;
 
-                accessTokenCookie.value = null;
-                refreshTokenCookie.value = null;
-
-                console.error("Token refresh failed, logging out.");
+                console.error('Token refresh failed. Redirecting to login.');
                 navigateTo('/login');
 
                 return Promise.reject(refreshError);
             } finally {
-                // Mark the refreshing process as complete
                 isRefreshing = false;
             }
         }

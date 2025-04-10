@@ -3,6 +3,7 @@ import { reactive, watch } from 'vue';
 import { z } from 'zod';
 import { useI18n } from "#i18n";
 import { useRouter } from 'vue-router';
+import {navigateTo, useCookie, useNuxtApp} from "#app";
 
 const { t } = useI18n();
 const loginQuestions = [
@@ -24,12 +25,30 @@ const loginQuestions = [
 const formSchema = z.object({
   username: z
       .string()
-      .min(8, 'Username must be at least 8 characters long'),
+      .min(4, 'Username must be at least 8 characters long'),
   password: z
       .string(),
 });
 const form = reactive({});
 const errors = reactive({});
+
+const {$axios} = useNuxtApp();
+const api = $axios()
+const { setLocale, locale } = useI18n();
+const router = useRouter();
+const currentLang = locale.value;
+const toggleLanguage = async () => {
+  const newLang = currentLang === 'en' ? 'ms' : 'en';
+
+  await setLocale(newLang);
+
+  const currentPath = router.currentRoute.value.path;
+  const pathWithoutLang = currentPath.replace(/^\/(en|ms)/, '');
+
+  const newPath = newLang === 'ms' ? `/ms${pathWithoutLang}` : `${pathWithoutLang}`;
+
+  router.push(newPath);
+};
 
 loginQuestions.forEach((question) => {
   form[question.id] = "";
@@ -50,46 +69,39 @@ loginQuestions.forEach((question) => {
   watch(() => form[question.id], () => validateField(question.id));
 });
 
-const { setLocale, locale } = useI18n();
-const router = useRouter();
 
-const currentLang = locale.value;
-
-const toggleLanguage = async () => {
-  const newLang = currentLang === 'en' ? 'ms' : 'en';
-
-  await setLocale(newLang);
-
-  const currentPath = router.currentRoute.value.path;
-  const pathWithoutLang = currentPath.replace(/^\/(en|ms)/, '');
-
-  const newPath = newLang === 'ms' ? `/ms${pathWithoutLang}` : `${pathWithoutLang}`;
-
-  router.push(newPath);
-};
+function validateForm() {
+  validateField("username");
+  validateField("password");
+}
 
 async function handleSubmit() {
-  form.Date = new Date().toLocaleDateString("en-GB");
+  validateForm();
 
-  const validationResults = formSchema.safeParse(form);
+  if (!errors.username && !errors.password) {
+    try {
 
-  if (!validationResults.success) {
-    console.log('Validation Errors:', validationResults.error.errors);
-    alert("Please correct the errors in the form.");
-    return;
+      const response = await api.post('/accounts/token/', {
+        username: form.username,
+        password: form.password,
+      });
+
+      console.log('Login tokens:', response.data.access, response.data.refresh);
+
+      useCookie('token', { path: '/' }).value = response.data.access;
+      useCookie('refresh_token', { path: '/' }).value = response.data.refresh;
+
+      navigateTo('/admin');
+      console.log('Navigated to /admin');
+    } catch (error) {
+      console.error('Error during login:', error);
+      alert('Login failed.');
+      location.reload();
+      errorMessage.value = error.response?.data?.message || 'Login failed.';
+    }
   }
-
-  const token = useCookie('token');
-  const refreshToken = useCookie('refresh_token');
-
-  token.value = "fake_access_token";
-  refreshToken.value = "fake_refresh_token";
-
-  alert("Login successful! Fake tokens stored.");
-
-  await navigateTo('/admin');
-
 }
+
 </script>
 
 <template>

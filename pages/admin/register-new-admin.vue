@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import AdminHeader from "~/components/AdminHeader.vue";
 import AdminSideBar from "~/components/AdminSideBar.vue";
-import AdminOverview from "~/components/AdminOverview.vue";
-import SignUp from "~/components/SignUp.vue"; // <-- Make sure this is imported
+import SignUp from "~/components/SignUp.vue";
 
 definePageMeta({
   middleware: 'auth'
