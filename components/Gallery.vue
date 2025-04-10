@@ -1,53 +1,45 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import {computed, onMounted, ref} from "vue";
+import {useNuxtApp} from "#app";
 
 interface Image {
   id: number;
-  src: string;
-  alt: string;
+  name_field: string;
+  alert_field: string;
+  gallery_image: string;
 }
 
 interface Video {
   id: number;
-  src: string;
-  alt: string;
-  url: string;
+  name_field: string;
+  alert_field: string;
+  video_link: string;
+  gallery_video: string;
 }
 
-const images: Image[] = [
-  { id: 1, src: "/images/masjid-about-bg.png", alt: "Masjid About 1" },
-  { id: 2, src: "/images/masjid-about-bg.png", alt: "Masjid About 2" },
-  { id: 3, src: "/images/masjid-about-bg.png", alt: "Masjid About 3" },
-  { id: 4, src: "/images/masjid-about-bg.png", alt: "Masjid About 4" },
-  { id: 5, src: "/images/masjid-about-bg.png", alt: "Masjid About 5" },
-];
+const {$axios} = useNuxtApp();
+const api = $axios()
 
-const videos: Video[] = [
-  { id: 1, src: "/images/masjid-about-bg.png", alt: "Masjid Video 1", url: "https://www.youtube.com/watch?v=4pku9EburYQ" },
-  { id: 2, src: "/images/masjid-about-bg.png", alt: "Masjid Video 2", url: "https://www.youtube.com/watch?v=4pku9EburYQ" },
-  { id: 3, src: "/images/masjid-about-bg.png", alt: "Masjid Video 3", url: "https://www.youtube.com/watch?v=4pku9EburYQ" },
-  { id: 4, src: "/images/masjid-about-bg.png", alt: "Masjid Video 4", url: "https://www.youtube.com/watch?v=4pku9EburYQ" },
-  { id: 5, src: "/images/masjid-about-bg.png", alt: "Masjid Video 5", url: "https://www.youtube.com/watch?v=4pku9EburYQ" },
-];
+const images = ref<Image[]>([]);
+const videos = ref<Video[]>([]);
 
 const currentImageIndex = ref(0);
 const currentVideoIndex = ref(0);
-
 const itemsPerPage = ref(3);
 
 const selectedImage = ref<Image | null>(null);
 const selectedVideo = ref<Video | null>(null);
 
 const visibleImages = computed(() => {
-  return images.slice(currentImageIndex.value, currentImageIndex.value + itemsPerPage.value);
+  return images.value.slice(currentImageIndex.value, currentImageIndex.value + itemsPerPage.value);
 });
 
 const visibleVideos = computed(() => {
-  return videos.slice(currentVideoIndex.value, currentVideoIndex.value + itemsPerPage.value);
+  return videos.value.slice(currentVideoIndex.value, currentVideoIndex.value + itemsPerPage.value);
 });
 
 function nextImagePage() {
-  if (currentImageIndex.value + itemsPerPage.value < images.length) {
+  if (currentImageIndex.value + itemsPerPage.value < images.value.length) {
     currentImageIndex.value += itemsPerPage.value;
   } else {
     currentImageIndex.value = 0;
@@ -58,12 +50,12 @@ function prevImagePage() {
   if (currentImageIndex.value - itemsPerPage.value >= 0) {
     currentImageIndex.value -= itemsPerPage.value;
   } else {
-    currentImageIndex.value = images.length - itemsPerPage.value;
+    currentImageIndex.value = images.value.length - itemsPerPage.value;
   }
 }
 
 function nextVideoPage() {
-  if (currentVideoIndex.value + itemsPerPage.value < videos.length) {
+  if (currentVideoIndex.value + itemsPerPage.value < videos.value.length) {
     currentVideoIndex.value += itemsPerPage.value;
   } else {
     currentVideoIndex.value = 0;
@@ -74,7 +66,7 @@ function prevVideoPage() {
   if (currentVideoIndex.value - itemsPerPage.value >= 0) {
     currentVideoIndex.value -= itemsPerPage.value;
   } else {
-    currentVideoIndex.value = videos.length - itemsPerPage.value;
+    currentVideoIndex.value = videos.value.length - itemsPerPage.value;
   }
 }
 
@@ -86,6 +78,29 @@ function closePopup() {
   selectedImage.value = null;
   selectedVideo.value = null;
 }
+
+onMounted(async () => {
+  try {
+    const imageResponse = await api.get("/content_manager/gallery/images/");
+    images.value = imageResponse.data;
+    console.log("Images:", images.value);
+
+    const videoResponse = await api.get("/content_manager/gallery/videos/");
+    videos.value = videoResponse.data;
+    console.log("Videos:", videos.value);
+  } catch (error) {
+    console.error("Failed to load data:", error);
+    if (error.response) {
+      console.error("Error response:", error.response.data);
+      console.error("Error status:", error.response.status);
+    } else if (error.request) {
+      console.error("Error request:", error.request);
+    } else {
+      console.error("Error message:", error.message);
+    }
+  }
+});
+
 </script>
 
 
@@ -95,23 +110,24 @@ function closePopup() {
       <UIcon
           name="mdi-folder-multiple-image"
       />
-      Masjid Albukhary Images Gallery</h1>
+      Masjid Albukhary Images Gallery
+    </h1>
 
     <div class="images-gallery-container">
       <div class="card" v-for="image in visibleImages" :key="image.id" @click="openPopup(image)">
-        <img :src="image.src" :alt="image.alt" class="card-image"/>
+        <img :src="image.gallery_image" :alt="image.alert_field" class="card-image"/>
       </div>
     </div>
 
     <div class="buttons">
       <button @click="prevImagePage" class="nav-button">
         <UIcon
-            name="mdi-arrow-left"
+            name="mdi-arrow-right-circle"
         />
       </button>
       <button @click="nextImagePage" class="nav-button">
         <UIcon
-            name="mdi-arrow-right"
+            name="mdi-arrow-right-circle"
         />
       </button>
     </div>
@@ -123,7 +139,7 @@ function closePopup() {
               name="mdi-close"
           /></span>
 
-        <img :src="selectedImage.src" :alt="selectedImage.alt" class="popup-image"/>
+        <img :src="selectedImage.gallery_image" :alt="selectedImage.gallery_image" class="popup-image"/>
       </div>
     </div>
 
@@ -134,14 +150,15 @@ function closePopup() {
       <UIcon
           name="mdi-movie-open-play"
       />
-      Masjid Albukhary Video Gallery</h1>
+      Masjid Albukhary Video Gallery
+    </h1>
     <div class="video-gallery-container">
       <div class="card" v-for="video in visibleVideos" :key="video.id">
-        <a :href="video.url" target="_blank" class="video-link">
-          <img :src="video.src" :alt="video.alt" class="card-video"/>
+        <a :href="video.video_link" target="_blank" class="video-link">
+          <img :src="video.gallery_video" :alt="video.alert_field" class="card-video"/>
           <div class="overlay">
             <UIcon name="mdi-play-circle-outline" class="play-icon"/>
-            <p class="video-title">{{ video.alt }}</p>
+            <p class="video-title">{{ video.alert_field }}</p>
           </div>
         </a>
       </div>
@@ -149,10 +166,10 @@ function closePopup() {
 
     <div class="buttons">
       <button @click="prevVideoPage" class="nav-button">
-        <UIcon name="mdi-arrow-left"/>
+        <UIcon name="mdi-arrow-left-circle"/>
       </button>
       <button @click="nextVideoPage" class="nav-button">
-        <UIcon name="mdi-arrow-right"/>
+        <UIcon name="mdi-arrow-right-circle"/>
       </button>
     </div>
   </section>
@@ -184,7 +201,8 @@ h1 {
 
 .card {
   flex: 1 1 30%;
-  max-width: 320px;
+  max-width: 350px;
+  max-height: 250px;
   padding: 1rem;
   border-radius: 10px;
   text-align: center;
@@ -192,12 +210,14 @@ h1 {
 }
 
 .card-image {
-  width: 100%;
-  height: auto;
   border-radius: 5px;
   box-shadow: rgba(149, 157, 165, 0.2) 0 8px 24px;
   transform: skew(10deg, 5deg);
   transition: transform 0.2s ease-in-out;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .card-image:hover {
@@ -213,19 +233,18 @@ h1 {
 
 .nav-button {
   padding: 0.5rem 1rem;
-  font-size: 1.2rem;
-  background-color: var(--primary-color);
-  color: var(--text-color);
+  font-size: 1.5rem;
+  background: transparent;
+  color: var(--primary-color);
   border: none;
   outline: none;
   border-radius: 1rem;
   cursor: pointer;
-  transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  transition: color 0.3s ease-in-out;
 }
 
 .nav-button:hover {
-  background-color: var(--secondary-color);
-  color: var(--text-color);
+  color: var(--secondary-color);
 }
 
 .popup-overlay {
@@ -243,17 +262,23 @@ h1 {
 
 .popup-content {
   position: relative;
-  background: white;
+  background: var(--bg-color);
   padding: 1rem;
   border-radius: 10px;
   max-width: 80%;
   max-height: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .popup-image {
-  max-width: 90%;
-  max-height: 80vh;
+  max-width: 700px;
+  max-height: 450px;
+  width: 100%;
+  height: auto;
   border-radius: 5px;
+  object-fit: contain;
 }
 
 .close-btn {
@@ -279,12 +304,9 @@ h1 {
 }
 
 .video-gallery {
-  background-image: url("../public/images/masjid-video-bg.png");
+  background: var(--bg-hover-color);
   background-repeat: no-repeat;
   background-size: cover;
-}
-
-.video-gallery {
   padding: 2rem;
   text-align: center;
 }
@@ -296,25 +318,20 @@ h1 {
   gap: 1rem;
 }
 
-.card {
-  position: relative;
-  width: 300px;
-  height: 250px;
+.card-video {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  max-height: 200px;
   border-radius: 5px;
-  overflow: hidden;
-  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+  object-fit: cover;
+  display: block;
 }
 
 .video-link {
   display: block;
   position: relative;
-}
-
-.card-video {
-  width: 100%;
-  height: 100%;
-  border-radius: 5px;
-  transition: transform 0.3s ease-in-out;
 }
 
 .card:hover .card-video {
@@ -327,6 +344,8 @@ h1 {
   left: 0;
   width: 100%;
   height: 100%;
+  max-width: 300px;
+  max-height: 200px;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
@@ -350,5 +369,6 @@ h1 {
   font-size: 1.2rem;
   margin-top: 10px;
 }
+
 
 </style>

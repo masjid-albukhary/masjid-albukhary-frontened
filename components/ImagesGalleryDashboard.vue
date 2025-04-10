@@ -42,7 +42,7 @@ onMounted(async () => {
     images.value = response.data;
   } catch (error: any) {
     console.error("Failed to load about content:", error);
-  }finally {
+  } finally {
     isLoading.value = false;
   }
 });
@@ -147,14 +147,14 @@ function prevPage() {
 
 .image-details {
   padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: block;
+  align-items: start;
+  text-align: start;
 }
 
 .image-details h3 {
   font-size: 1rem;
-  margin: 0;
+  margin: .5rem auto;
   color: var(--primary-color);
 }
 
