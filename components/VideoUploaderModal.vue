@@ -84,7 +84,7 @@ async function handleSubmit() {
   formData.append('name_field', form.name_field);
   formData.append('alert_field', form.alert_field);
   formData.append('video_link', form.video_link);
-  formData.append('gallery_video', gallery_video.value); // Ensure consistency with form field
+  formData.append('gallery_video', gallery_video.value);
 
   try {
     const response = await api.post('/content_manager/gallery/videos/', formData, {
