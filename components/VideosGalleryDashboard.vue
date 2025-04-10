@@ -36,18 +36,20 @@ const deleteVideo = async (id: number) => {
   }
 };
 
+const isLoading = ref(true);
+const currentIndex = ref(0);
+const itemsPerPage = ref(6);
+
 onMounted(async () => {
   try {
     const response = await api.get("/content_manager/gallery/videos/");
     videos.value = response.data;
   } catch (error: any) {
     console.error("Failed to load about content:", error);
+  }finally {
+    isLoading.value = false;
   }
 });
-
-
-const currentIndex = ref(0);
-const itemsPerPage = ref(6);
 
 const visibleVideos = computed(() => {
   return videos.value.slice(currentIndex.value, currentIndex.value + itemsPerPage.value);
@@ -74,8 +76,8 @@ function prevPage() {
 
 <template>
   <section class="videos-gallery">
-    <div class="videos-gallery-container">
 
+    <div class="videos-gallery-container" v-if="!isLoading">
       <div class="videos-gallery-item" v-for="video in visibleVideos" :key="video.id">
         <div class="video-container">
           <img :src="video.upload_image" :alt="video.alert_field" class="video-image"/>
@@ -96,18 +98,22 @@ function prevPage() {
           </div>
         </div>
       </div>
-
-      <div class="videos-gallery-buttons">
-        <button @click="prevPage" class="nav-button">
-          <UIcon name="mdi-arrow-left-circle"/>
-        </button>
-        <button @click="nextPage" class="nav-button">
-          <UIcon name="mdi-arrow-right-circle"/>
-        </button>
-      </div>
-
     </div>
+
+    <div v-else class="loader-wrapper">
+      <div class="spinner"></div>
+      <p>{{ t('Loading videos...') }}</p>
+    </div>
+
   </section>
+  <div class="videos-gallery-buttons">
+    <button @click="prevPage" class="nav-button">
+      <UIcon name="mdi-arrow-left-circle"/>
+    </button>
+    <button @click="nextPage" class="nav-button">
+      <UIcon name="mdi-arrow-right-circle"/>
+    </button>
+  </div>
 </template>
 
 <style scoped>
