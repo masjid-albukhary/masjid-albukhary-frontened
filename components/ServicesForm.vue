@@ -136,7 +136,7 @@ async function handleSubmit() {
     console.log("Form submitted successfully:", response.data);
     alert("Your message has been sent successfully!");
 
-    // location.reload();
+    location.reload();
 
     Object.keys(form).forEach((key) => {
       form[key] = "";
