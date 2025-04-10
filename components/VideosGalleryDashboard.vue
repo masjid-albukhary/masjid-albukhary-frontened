@@ -102,7 +102,7 @@ function prevPage() {
 
     <div v-else class="loader-wrapper">
       <div class="spinner"></div>
-      <p>{{ t('Loading videos...') }}</p>
+      <p>Loading videos...</p>
     </div>
 
   </section>

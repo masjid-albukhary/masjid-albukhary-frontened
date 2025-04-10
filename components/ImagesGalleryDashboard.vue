@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {useI18n} from "vue-i18n";
 import {useNuxtApp} from "#app";
 
@@ -16,6 +16,7 @@ interface ImageDetails {
 
 const images = ref<ImageDetails[]>([]);
 const isProcessing = ref(false);
+const isLoading = ref(true);
 
 const deleteImage = async (id: number) => {
   if (isProcessing.value) return;
@@ -41,14 +42,41 @@ onMounted(async () => {
     images.value = response.data;
   } catch (error: any) {
     console.error("Failed to load about content:", error);
+  }finally {
+    isLoading.value = false;
   }
 });
+
+const currentIndex = ref(0);
+const itemsPerPage = ref(6);
+
+const visibleImages = computed(() => {
+  return images.value.slice(currentIndex.value, currentIndex.value + itemsPerPage.value);
+});
+
+function nextPage() {
+  if (currentIndex.value + itemsPerPage.value < images.value.length) {
+    currentIndex.value += itemsPerPage.value;
+  } else {
+    currentIndex.value = 0;
+  }
+}
+
+function prevPage() {
+  if (currentIndex.value - itemsPerPage.value >= 0) {
+    currentIndex.value -= itemsPerPage.value;
+  } else {
+    currentIndex.value = images.value.length - itemsPerPage.value;
+  }
+}
+
 </script>
 
 <template>
   <section class="images-gallery">
-    <div class="images-gallery-container">
-      <div class="images-gallery-item" v-for="image in images" :key="image.id">
+    <div class="images-gallery-container" v-if="!isLoading">
+
+      <div class="images-gallery-item" v-for="image in visibleImages" :key="image.id">
         <div class="image-container">
           <img :src="image.upload_image" :alt="image.alert_field" class="image"/>
 
@@ -58,7 +86,23 @@ onMounted(async () => {
           </div>
         </div>
       </div>
+
+      <div class="images-gallery-buttons">
+        <button @click="prevPage" class="nav-button">
+          <UIcon name="mdi-arrow-left-circle"/>
+        </button>
+        <button @click="nextPage" class="nav-button">
+          <UIcon name="mdi-arrow-right-circle"/>
+        </button>
+      </div>
     </div>
+
+    <div v-else class="loader-wrapper">
+      <div class="spinner"></div>
+      <p>Loading images... </p>
+    </div>
+
+
   </section>
 </template>
 
@@ -147,4 +191,30 @@ onMounted(async () => {
     font-size: 0.8rem;
   }
 }
+
+
+.images-gallery-buttons {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem auto;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav-button {
+  padding: 0.5rem 1rem;
+  font-size: 1.5rem;
+  background: transparent;
+  color: var(--primary-color);
+  border: none;
+  outline: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out;
+}
+
+.nav-button:hover {
+  color: var(--secondary-color);
+}
+
 </style>
