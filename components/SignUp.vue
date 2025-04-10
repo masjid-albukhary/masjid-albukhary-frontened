@@ -2,9 +2,9 @@
 import {reactive, ref, watch} from 'vue';
 import {z} from 'zod';
 import {useI18n} from 'vue-i18n';
+import {useNuxtApp} from "#app";
 
 const {t} = useI18n();
-const {setLocale, locale} = useI18n();
 const adminQuestions = [
   {
     label: t('sign_up.label.username'),
@@ -32,7 +32,7 @@ const adminQuestions = [
     type: "tel",
     placeholder: t('sign_up.placeholder.phone'),
     required: false,
-    id: "phone",
+    id: "phone_number",
   },
   {
     label: t('sign_up.label.dob'),
@@ -81,6 +81,7 @@ const adminQuestions = [
     id: "confirm_password",
   },
 ];
+
 const formSchema = z.object({
   username: z
       .string()
@@ -92,10 +93,9 @@ const formSchema = z.object({
 
   email: z
       .string()
-      .email('Invalid email format')
-      .regex(/@gmail\.com$/, "Must be a valid email ending with '@gmail.com'"),
+      .email('Invalid email format'),
 
-  phone: z
+  phone_number: z
       .string()
       .regex(/^\d{8,15}$/, 'Invalid phone number'),
 
@@ -119,6 +119,15 @@ const formSchema = z.object({
 });
 const form = reactive({});
 const errors = reactive({});
+const {$axios} = useNuxtApp();
+const api = $axios()
+const profile_picture = ref(null);
+const handleFileUpload = (event, inputDetails) => {
+  if (inputDetails.type !== 'file') {
+    return;
+  }
+  profile_picture.value = event.target.files[0];
+};
 
 adminQuestions.forEach((question) => {
   form[question.id] = "";
@@ -139,41 +148,49 @@ adminQuestions.forEach((question) => {
   watch(() => form[question.id], () => validateField(question.id));
 });
 
-const profile_picture = ref(null);
-const handleFileUpload = (event, inputDetails) => {
-  if (inputDetails.type !== 'file') {
-    return;
-  }
-  profile_picture.value = event.target.files[0];
-};
-
-const currentLang = locale.value;
-const toggleLanguage = async () => {
-  const newLang = currentLang === 'en' ? 'ms' : 'en';
-
-  await setLocale(newLang);
-
-  const currentPath = router.currentRoute.value.path;
-  const pathWithoutLang = currentPath.replace(/^\/(en|ms)/, '');
-
-  const newPath = newLang === 'ms' ? `/ms${pathWithoutLang}` : `${pathWithoutLang}`;
-
-  router.push(newPath);
-};
-
-async function handleSubmit() {
-  form.Date = new Date().toLocaleDateString("en-GB");
+const handleSubmit = async () => {
 
   const validationResults = formSchema.safeParse(form);
-
   if (!validationResults.success) {
     console.log('Validation Errors:', validationResults.error.errors);
-    alert("Please correct the errors in the form.");
+    alert('Please correct the errors in the form.');
     return;
   }
 
-  console.log("Form Submitted Successfully:", form);
-}
+  const formData = new FormData();
+  formData.append('username', form.username);
+  formData.append('email', form.email);
+  formData.append('password', form.password);
+
+  formData.append('profile[full_name]', form.full_name);
+  formData.append('profile[phone]', form.phone_number);
+  formData.append('profile[dob]', form.dob);
+  formData.append('profile[gender]', form.gender);
+  formData.append('profile[address]', form.address);
+  if (profile_picture.value) {
+    formData.append('profile[profile_picture]', profile_picture.value);
+  }
+
+  formData.forEach((value, key) => {
+    console.log(key, value);
+  });
+
+  try {
+    const response = await api.post('/accounts/register/', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    console.log('Form Submitted Successfully:', response.data);
+    showPopup.value = true;
+    location.reload();
+  } catch (error) {
+
+    console.error('Failed to submit form:', error.response?.data || error.message);
+    alert('An error occurred while submitting the form.');
+  }
+};
 
 </script>
 
@@ -249,7 +266,7 @@ section {
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-  padding: 4rem 0;
+  padding: 0;
   gap: 0;
 }
 
@@ -268,7 +285,7 @@ section {
   width: 100%;
   max-width: 1000px !important;
   margin: 1rem auto;
-  border: 1.5px solid rgba(149, 157, 165, 0.3) ;
+  border: 1.5px solid rgba(149, 157, 165, 0.3);
 }
 
 
@@ -341,12 +358,20 @@ section {
 }
 
 @media (max-width: 1200px) {
+  .sign-up-container .admin-form {
+    padding: 0 .5rem;
+  }
+
   .admin-form textarea {
     width: calc(100% - .5rem);
   }
 }
 
 @media (max-width: 800px) {
+  .sign-up-container .admin-form {
+    padding: 0 .5rem;
+  }
+
   .admin-form textarea {
     width: calc(100% - .5rem);
   }
