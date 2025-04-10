@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import { useI18n } from "vue-i18n";
-import { useNuxtApp } from "#app";
+import {computed, onMounted, ref} from "vue";
+import {useI18n} from "vue-i18n";
+import {useNuxtApp} from "#app";
 
-const { t } = useI18n();
-const { $axios } = useNuxtApp();
+const {t} = useI18n();
+const {$axios} = useNuxtApp();
 const api = $axios();
 
 interface VideoDetails {
@@ -44,14 +44,41 @@ onMounted(async () => {
     console.error("Failed to load about content:", error);
   }
 });
+
+
+const currentIndex = ref(0);
+const itemsPerPage = ref(6);
+
+const visibleVideos = computed(() => {
+  return videos.value.slice(currentIndex.value, currentIndex.value + itemsPerPage.value);
+});
+
+function nextPage() {
+  if (currentIndex.value + itemsPerPage.value < videos.value.length) {
+    currentIndex.value += itemsPerPage.value;
+  } else {
+    currentIndex.value = 0;
+  }
+}
+
+function prevPage() {
+  if (currentIndex.value - itemsPerPage.value >= 0) {
+    currentIndex.value -= itemsPerPage.value;
+  } else {
+    currentIndex.value = videos.value.length - itemsPerPage.value;
+  }
+}
+
+
 </script>
 
 <template>
   <section class="videos-gallery">
     <div class="videos-gallery-container">
-      <div class="videos-gallery-item" v-for="video in videos" :key="video.id">
+
+      <div class="videos-gallery-item" v-for="video in visibleVideos" :key="video.id">
         <div class="video-container">
-          <img :src="video.upload_image" :alt="video.alert_field" class="video-image" />
+          <img :src="video.upload_image" :alt="video.alert_field" class="video-image"/>
 
           <div class="video-details">
             <div class="box-info">
@@ -62,10 +89,23 @@ onMounted(async () => {
               <span>{{ t('Link') }}:</span>
               <span><a :href="video.video_link" target="_blank">{{ t('Watch Video') }}</a></span>
             </div>
-            <button @click="deleteVideo(video.id)" :disabled="isProcessing" class="delete-btn">{{ t('Delete') }}</button>
+            <button @click="deleteVideo(video.id)" :disabled="isProcessing" class="delete-btn">{{
+                t('Delete')
+              }}
+            </button>
           </div>
         </div>
       </div>
+
+      <div class="videos-gallery-buttons">
+        <button @click="prevPage" class="nav-button">
+          <UIcon name="mdi-arrow-left-circle"/>
+        </button>
+        <button @click="nextPage" class="nav-button">
+          <UIcon name="mdi-arrow-right-circle"/>
+        </button>
+      </div>
+
     </div>
   </section>
 </template>
@@ -172,4 +212,29 @@ a:hover {
     padding: 6px 12px;
   }
 }
+
+.videos-gallery-buttons {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem auto;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav-button {
+  padding: 0.5rem 1rem;
+  font-size: 1.5rem;
+  background: transparent;
+  color: var(--primary-color);
+  border: none;
+  outline: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out;
+}
+
+.nav-button:hover {
+  color: var(--secondary-color);
+}
+
 </style>
