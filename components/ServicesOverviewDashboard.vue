@@ -6,18 +6,18 @@ import ServicesOverviewPopup from '~/components/ServicesOverviewPopup.vue';
 
 interface ServiceContent {
   id: number;
-  service_title_en: string;
-  service_title_my: string;
-  service_description_en: string;
-  service_description_my: string;
-  service_capacity: number;
-  service_price: number;
+  title_en: string;
+  title_my: string;
+  description_en: string;
+  description_my: string;
+  capacity: number;
+  price: number;
   created_at: string;
 }
 
 const columns = [
-  { key: 'service_title_en', label: 'Title English', sortable: false },
-  { key: 'service_title_my', label: 'Title Malay', sortable: false },
+  { key: 'title_en', label: 'Title English', sortable: false },
+  { key: 'title_my', label: 'Title Malay', sortable: false },
   { key: 'created_at', label: 'Pushed Date', sortable: false },
   { key: 'actions', label: 'Actions', sortable: false },
 ];
@@ -41,8 +41,8 @@ const filteredRows = computed(() => {
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase();
     result = result.filter(content =>
-        content.service_title_en.toLowerCase().includes(query) ||
-        content.service_title_my.toLowerCase().includes(query)
+        content.title_en.toLowerCase().includes(query) ||
+        content.title_my.toLowerCase().includes(query)
     );
   }
 
@@ -168,8 +168,8 @@ onMounted(async () => {
             </thead>
             <tbody>
             <tr v-for="row in paginatedRows" :key="row.id">
-              <td>{{ row.service_title_en }}</td>
-              <td>{{ row.service_title_my }}</td>
+              <td>{{ row.title_en }}</td>
+              <td>{{ row.title_my }}</td>
               <td>{{ formatDate(row.created_at) }}</td>
               <td>
                 <button @click="openPopup(row)" class="view-button">View</button>

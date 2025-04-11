@@ -28,14 +28,14 @@ watch(
 );
 
 const labelMapping = {
-  service_title_en: 'Title (English)',
-  service_title_my: 'Title (Malay)',
-  service_description_en: 'Description (English)',
-  service_description_my: 'Description (Malay)',
-  service_features_en: 'Features (English)',
-  service_features_my: 'Features (Malay)',
-  service_capacity: 'Capacity',
-  service_price: 'Price',
+  title_en: 'Title (English)',
+  title_my: 'Title (Malay)',
+  description_en: 'Description (English)',
+  description_my: 'Description (Malay)',
+  features_en: 'Features (English)',
+  features_my: 'Features (Malay)',
+  capacity: 'Capacity',
+  price: 'Price',
   created_at: 'Created At',
 };
 
