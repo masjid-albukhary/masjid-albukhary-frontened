@@ -75,7 +75,7 @@ const logo = "/images/masjid_albukary_logo.png"
 
     <ImageUploaderModal :show="isImagePopupVisible" @update:show="isImagePopupVisible = $event"/>
     <VideoUploaderModal :show="isVideoPopupVisible" @update:show="isVideoPopupVisible = $event"/>
-    <NewMemberUploaderModal :show="isNewMemberPopupVisible" @update:show="isNewMemberPopupVisible = $event"/>
+    <MemberUploaderModal :show="isNewMemberPopupVisible" @update:show="isNewMemberPopupVisible = $event"/>
 
 
     <div class="header-wrapper">

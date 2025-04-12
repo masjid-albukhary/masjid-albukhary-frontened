@@ -32,8 +32,8 @@ const uploadVideosQuestions = [
   },
 ];
 const formSchema = z.object({
-  name: z.string().min(8, 'Name must be at least 8 characters long'),
-  role: z.string().min(8, 'Role must be at least 8 characters long'),
+  name: z.string().min(5, 'Name must be at least 5 characters long'),
+  role: z.string().min(5, 'Role must be at least 5 characters long'),
   photo: z.any().optional('Upload must be a file'),
 });
 const form = reactive(Object.fromEntries(uploadVideosQuestions.map((q) => [q.id, ''])));
