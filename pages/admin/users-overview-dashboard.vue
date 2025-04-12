@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import AdminHeader from "~/components/AdminHeader.vue";
 import AdminSideBar from "~/components/AdminSideBar.vue";
+import UsersOverviewDashboard from "~/components/UsersOverviewDashboard.vue";
 
 definePageMeta({
   middleware: 'auth'
@@ -15,7 +16,7 @@ definePageMeta({
       <AdminSideBar />
     </aside>
     <main class="admin-main">
-      <UsersDashboard/>
+      <UsersOverviewDashboard/>
     </main>
   </section>
   <AdminFooter />

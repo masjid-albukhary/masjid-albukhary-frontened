@@ -115,7 +115,7 @@ async function handleSubmit() {
         <div class="login-info">
           <router-link to="/">{{ t('login.navigation.home') }}</router-link>
           <span> | </span>
-          <router-link to="/admin/register-new-user">{{ t('login.navigation.sign_up') }}</router-link>
+          <router-link to="/admin/user-registration">{{ t('login.navigation.sign_up') }}</router-link>
         </div>
       </div>
 
