@@ -120,14 +120,19 @@ async function handleSubmit() {
 
     console.log("Form submitted successfully:", response.data);
     alert("Your message has been sent successfully!");
-
-    showPopup.value = true;
-
-    location.reload();
-
     Object.keys(form).forEach((key) => {
       form[key] = "";
     });
+
+    setTimeout(() => {
+      showPopup.value = true;
+
+      setTimeout(() => {
+        location.reload();
+      }, 3000);
+
+    }, 3000);
+
   } catch (error) {
     console.error("Error submitting form:", error);
     alert("There was an error while submitting the form. Please try again.");
