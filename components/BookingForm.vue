@@ -230,17 +230,21 @@ const handleSubmit = async () => {
   formData.append('other_docs', other_docs.value);
 
   try {
-    const response = await api.post('/requests/booking-requests/', formData, {
+    const response = await api.post('/requests/booking_requests/', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
 
-    console.log('Form Submitted Successfully:', response.data);
-    // alert('Form Submitted Successfully.');
-    showPopup.value = true;
+    setTimeout(() => {
+      showPopup.value = true;
 
-    location.reload();
+      setTimeout(() => {
+        location.reload();
+      }, 2000);
+
+    }, 1000);
+
   } catch (error) {
     console.error('Failed to submit form:', error);
     alert('An error occurred while submitting the form.');
