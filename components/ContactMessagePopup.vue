@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue';
+import { defineProps, defineEmits, ref, watch } from 'vue';
 
 const props = defineProps({
   isPopupVisible: Boolean,
@@ -8,6 +8,16 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['closePopup', 'deleteContent', 'updateContent']);
+
+const editableContent = ref({ ...props.currentContent });
+
+watch(
+    () => props.currentContent,
+    (newContent) => {
+      editableContent.value = { ...newContent }; // deep clone into ref
+    },
+    { deep: true, immediate: true }
+);
 
 const closePopup = () => {
   emit('closePopup');
@@ -18,7 +28,16 @@ const deleteContent = () => {
 };
 
 const updateContent = () => {
-  emit('updateContent', props.currentContent); // pass the current content back to parent
+  emit('updateContent', { ...editableContent.value });
+};
+
+const labelMapping: Record<string, string> = {
+  id: 'ID',
+  name: 'Name',
+  email: 'Email',
+  subject: 'Subject',
+  message: 'Message',
+  created_at: 'Created at',
 };
 </script>
 
@@ -26,17 +45,27 @@ const updateContent = () => {
   <div v-if="isPopupVisible" class="popup-overlay" @click="closePopup">
     <div class="popup" @click.stop>
       <div class="popup-header">
-        <h3>Service Details</h3>
+        <h3>Users Details</h3>
         <button class="close-btn" @click="closePopup" aria-label="Close Popup">
           <UIcon name="mdi-close" />
         </button>
       </div>
 
       <div class="popup-content">
-        <div v-for="(value, key) in contentDetails" :key="key" class="popup-detail">
-          <span>{{ key }}:</span>
-          <span>{{ value }}</span>
+
+        <div v-for="(value, key) in editableContent" :key="key" class="popup-detail">
+          <label :for="key" class="key-label">
+            {{ labelMapping[key] || key }}:
+          </label>
+          <input
+              v-model="editableContent[key]"
+              :id="key"
+              class="popup-input"
+              type="text"
+          />
+
         </div>
+
       </div>
 
       <div class="popup-footer">
@@ -100,8 +129,18 @@ const updateContent = () => {
 
 .popup-detail span {
   background-color: var(--bg-color);
-  padding: 10px;
   word-wrap: break-word;
+}
+
+.popup-input{
+  outline: none;
+  border: 5px solid var(--bg-color);
+  padding: .5rem;
+}
+
+.key-label {
+  background: var(--bg-color);
+  padding: 0.7rem;
 }
 
 .popup-footer {
@@ -112,16 +151,22 @@ const updateContent = () => {
 }
 
 .update-btn {
-  background-color: #3498db;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--text-color);
   padding: 8px 12px;
   border: none;
   border-radius: 4px;
+  transition: all 0.3 ease-in-out;
+}
+
+.update-btn:hover {
+  background-color: var(--secondary-color);
+  color: var(--text-hover);
 }
 
 .delete-btn {
   background-color: red;
-  color: white;
+  color: var(--text-color);
   padding: 8px 12px;
   border: none;
   border-radius: 4px;

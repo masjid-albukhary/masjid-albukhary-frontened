@@ -120,6 +120,7 @@ async function handleSubmit() {
 
     console.log("Form submitted successfully:", response.data);
     alert("Your message has been sent successfully!");
+
     showPopup.value = true;
 
     location.reload();

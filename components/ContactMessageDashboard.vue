@@ -1,223 +1,182 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useNuxtApp } from '#app';
 import ContactMessagePopup from '~/components/ContactMessagePopup.vue';
 
-interface ContactData {
+interface MessageDetails {
   id: number;
   name: string;
   email: string;
-  contact_number: string;
   subject: string;
   message: string;
-  submitted_at: string;
+  contact_number: string;
+  created_at: string;
 }
 
-interface ApiError {
-  response?: {
-    data: any;
-    status: number;
-  };
-  request?: any;
-  message?: string;
-}
-
-const columns = [
+const userColumns = [
   { key: 'name', label: 'Name', sortable: false },
-  { key: 'contact_number', label: 'Contact Number', sortable: false },
-  { key: 'subject', label: 'Subject', sortable: false },
+  { key: 'phone', label: 'Phone No', sortable: true },
+  { key: 'subject', label: 'User Type', sortable: true },
   { key: 'actions', label: 'Actions', sortable: false },
 ];
 
-const contactData = ref<ContactData[]>([]);
+const contentData = ref<MessageDetails[]>([]);
 const { locale } = useI18n();
 const { $axios } = useNuxtApp();
 const api = $axios();
-const searchQuery = ref('');
-const bookingDetails = ref<Record<string, any>>({});
-const isPopupVisible = ref(false);
-const currentBooking = ref<ContactData | null>(null);
-
-const isLoading = ref(false);
-const isProcessing = ref(false);
-const notification = ref({ show: false, message: '', type: 'success' });
 
 const currentPage = ref(1);
-const itemsPerPage = ref(10);
+const pageSize = ref(8);
+const searchQuery = ref('');
+const contentDetails = ref<Record<string, any>>({});
+const isPopupVisible = ref(false);
+const currentContent = ref<MessageDetails | null>(null);
+const isLoading = ref(true);
+const filteredRows = computed(() => {
+  let result = contentData.value;
 
-const filteredData = computed(() => {
-  const query = searchQuery.value.toLowerCase();
-  return contactData.value.filter((row) =>
-      row.name.toLowerCase().includes(query) ||
-      row.subject.toLowerCase().includes(query) ||
-      row.contact_number.toLowerCase().includes(query)
-  );
+  if (searchQuery.value) {
+    const query = searchQuery.value.toLowerCase();
+    result = result.filter(content =>
+        content.name.toLowerCase().includes(query) ||
+        content.subject.toLowerCase().includes(query) ||
+        content.email.toLowerCase().includes(query)
+    );
+  }
+
+  return result;
+});
+const totalItems = computed(() => filteredRows.value.length);
+const paginatedRows = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  return filteredRows.value.slice(start, end);
 });
 
-const paginatedData = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage.value;
-  const end = currentPage.value * itemsPerPage.value;
-  return filteredData.value.slice(start, end);
-});
-
-const totalPages = computed(() => {
-  return Math.max(1, Math.ceil(filteredData.value.length / itemsPerPage.value));
-});
-
-const showNotification = (message: string, type: 'success' | 'error') => {
-  notification.value = { show: true, message, type };
-  setTimeout(() => {
-    notification.value.show = false;
-  }, 3000);
-};
-
-const goToPage = (page: number) => {
-  if (page < 1 || page > totalPages.value) return;
-  currentPage.value = page;
-};
-
-const loadContactMessages = async () => {
-  isLoading.value = true;
-  try {
-    const response = await api.get('/requests/contact_message/');
-    contactData.value = response.data;
-    console.log('Contact messages loaded:', contactData.value.length);
-    console.log('Current Locale:', locale.value);
-  } catch (error: ApiError) {
-    handleApiError(error, 'Failed to load contact messages');
-  } finally {
-    isLoading.value = false;
+const handlePageChange = (newPage: number) => {
+  if (newPage > 0 && newPage <= Math.ceil(totalItems.value / pageSize.value)) {
+    currentPage.value = newPage;
   }
 };
 
-const handleApiError = (error: ApiError, defaultMessage: string) => {
-  console.error(defaultMessage, error);
-  let errorMessage = defaultMessage;
+const updateContent = async (updatedContent: MessageDetails) => {
+  if (!currentContent.value) return;
 
-  if (error.response) {
-    console.error('Error response:', error.response.data);
-    console.error('Error status:', error.response.status);
-    if (error.response.data?.detail) {
-      errorMessage += `: ${error.response.data.detail}`;
+  try {
+    const response = await api.put(`/requests/contact_message/${updatedContent.id}/`, updatedContent);
+    const index = contentData.value.findIndex(content => content.id === updatedContent.id);
+    if (index !== -1) {
+      contentData.value[index] = { ...updatedContent };
     }
-  } else if (error.request) {
-    console.error('Error request:', error.request);
-    errorMessage += ': No response received from server';
-  } else if (error.message) {
-    console.error('Error message:', error.message);
-    errorMessage += `: ${error.message}`;
-  }
 
-  showNotification(errorMessage, 'error');
-};
-
-const confirmDeleteBooking = () => {
-  if (confirm('Are you sure you want to delete this contact message?')) {
-    deleteBooking();
-  }
-};
-
-const deleteBooking = async () => {
-  if (!currentBooking.value || isProcessing.value) return;
-
-  isProcessing.value = true;
-  try {
-    const deletedBooking = currentBooking.value;
-    await api.delete(`/requests/contact_message/${deletedBooking.id}/`);
-
-    contactData.value = contactData.value.filter(b => b.id !== deletedBooking.id);
-    showNotification('Booking deleted successfully!', 'success');
+    alert('Content updated successfully!');
     closePopup();
-  } catch (error: any) {
-    handleApiError(error, 'Failed to delete booking');
-  } finally {
-    isProcessing.value = false;
+  } catch (error) {
+    console.error('Failed to update content:', error);
+    alert('Failed to update content. Please try again later.');
   }
 };
 
-const openPopup = (row: ContactData) => {
-  currentBooking.value = { ...row }; // Create a copy to avoid direct mutation
-  bookingDetails.value = {
-    'Name': row.name,
-    'Email': row.email,
-    'Contact': row.contact_number,
-    'Title': row.subject,
-    'Message': row.message,
+const deleteContent = async () => {
+  if (!currentContent.value) return;
+
+  if (confirm('Are you sure you want to delete this content?')) {
+    try {
+      const deletedContent = currentContent.value;
+      await api.delete(`/profiles/${deletedContent.id}/`);
+      console.log('Content deleted successfully');
+
+      alert('Content deleted successfully!');
+      contentData.value = contentData.value.filter(content => content.id !== deletedContent.id);
+      closePopup();
+    } catch (error) {
+      console.error('Failed to delete content:', error);
+      alert('Failed to delete content. Please try again later.');
+    }
+  }
+};
+
+const openPopup = (content: MessageDetails) => {
+  currentContent.value = { ...content };
+  contentDetails.value = {
+    "ID": content.id,
+    "Name": content.name,
+    "Email": content.email,
+    "Subject": content.subject,
+    "Message": content.message,
+    "Created at": content.created_at,
   };
   isPopupVisible.value = true;
 };
-
 const closePopup = () => {
   isPopupVisible.value = false;
-  currentBooking.value = null;
+  currentContent.value = null;
 };
 
-onMounted(() => {
-  loadContactMessages();
+onMounted(async () => {
+  isLoading.value = true;
+  try {
+    const response = await api.get("/requests/contact_message/");
+    contentData.value = response.data;
+    console.log("Content loaded:", contentData.value.length, "items");
+    console.log("Current Locale:", locale.value);
+  } catch (error: any) {
+    console.error("Failed to load services content:", error);
+    alert("Error loading content. Please try again later.");
+  } finally {
+    isLoading.value = false;
+  }
 });
+
 </script>
 
 <template>
   <section class="dashboard-wrapper">
     <div class="dashboard-container">
       <main class="content-area">
+
         <div class="content-header">
-          <input
-              v-model="searchQuery"
-              placeholder="Search by name, subject, or contact number..."
-              class="search-box"
-          />
+          <input v-model="searchQuery" placeholder="Search by user..." class="search-box"/>
         </div>
 
-        <div v-if="notification.show" :class="['notification', notification.type]">
-          {{ notification.message }}
+        <div v-if="isLoading" class="loading-state">
+          Loading user...
         </div>
 
-        <div v-if="isLoading" class="loading-indicator">
-          Loading contact messages...
-        </div>
-
-        <div v-else-if="contactData.length === 0" class="empty-state">
-          No contact messages found.
+        <div v-else-if="contentData.length === 0" class="empty-state">
+          No content available.
         </div>
 
         <div v-else class="table-wrapper">
           <table class="data-table">
             <thead>
             <tr>
-              <th v-for="col in columns" :key="col.key">{{ col.label }}</th>
+              <th v-for="col in userColumns" :key="col.key">{{ col.label }}</th>
             </tr>
             </thead>
             <tbody>
-            <tr v-for="row in paginatedData" :key="row.id">
+            <tr v-for="row in paginatedRows" :key="row.id">
               <td>{{ row.name }}</td>
-              <td>{{ row.contact_number }}</td>
-              <td>{{ row.subject }}</td>
+              <td>{{ row.subject}}</td>
+              <td>{{ row.email}}</td>
               <td>
                 <button @click="openPopup(row)" class="view-button">View</button>
               </td>
             </tr>
             </tbody>
           </table>
+        </div>
 
-          <div class="pagination-controls">
-            <button
-                @click="goToPage(currentPage - 1)"
-                :disabled="currentPage === 1 || isLoading"
-                class="pagination-button"
-            >
-              Previous
-            </button>
-            <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
-            <button
-                @click="goToPage(currentPage + 1)"
-                :disabled="currentPage === totalPages || isLoading"
-                class="pagination-button"
-            >
-              Next
-            </button>
-          </div>
+        <div v-if="!isLoading && contentData.length > 0" class="pagination-controls">
+          <button class="pagination-button" :disabled="currentPage === 1" @click="handlePageChange(currentPage - 1)">
+            ⬅ Prev
+          </button>
+          <span>Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) || 1 }}</span>
+          <button class="pagination-button" :disabled="currentPage >= Math.ceil(totalItems / pageSize)"
+                  @click="handlePageChange(currentPage + 1)">
+            Next ➡
+          </button>
         </div>
       </main>
     </div>
@@ -225,12 +184,14 @@ onMounted(() => {
     <ContactMessagePopup
         v-if="isPopupVisible"
         :isPopupVisible="isPopupVisible"
-        :bookingDetails="bookingDetails"
-        :currentBooking="currentBooking"
-        :isProcessing="isProcessing"
+        :contentDetails="contentDetails"
+        :currentContent="currentContent"
         @closePopup="closePopup"
-        @deleteBooking="confirmDeleteBooking"
+        @updateContent="updateContent"
+        @deleteContent="deleteContent"
     />
+
+
   </section>
 </template>
 
@@ -255,6 +216,7 @@ onMounted(() => {
   border: 1px solid #ddd;
   border-radius: 4px;
   min-width: 300px;
+  outline: none;
 }
 
 .table-wrapper {
@@ -284,7 +246,7 @@ onMounted(() => {
   padding: 0.5rem 1rem;
   border-radius: 4px;
   cursor: pointer;
-  transition:  all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 
 .view-button:hover {
@@ -313,11 +275,7 @@ onMounted(() => {
   cursor: not-allowed;
 }
 
-.page-info {
-  font-size: 0.9rem;
-}
-
-.loading-indicator {
+.loading-state {
   text-align: center;
   padding: 2rem;
   color: #666;
@@ -330,13 +288,4 @@ onMounted(() => {
   background-color: var(--primary-color);
   border-radius: 4px;
 }
-
-.notification {
-  padding: 0.75rem;
-  margin-bottom: 1rem;
-  border-radius: 4px;
-  text-align: center;
-  font-weight: bold;
-}
-
 </style>
