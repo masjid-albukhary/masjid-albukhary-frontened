@@ -191,9 +191,8 @@ export default {
             email: "Alamat Emel",
             phone: "Nombor Telefon",
             dob: "Tarikh Lahir",
+            user_type: "Jenis Pengguna",
             gender: "Jantina",
-            address: "Alamat Tempat Tinggal",
-            profile_picture: "Gambar Profil",
             password: "Kata Laluan",
             confirm_password: "Sahkan Kata Laluan",
         },
@@ -203,14 +202,13 @@ export default {
             email: "Masukkan alamat emel anda",
             phone: "Masukkan nombor telefon anda",
             dob: "Pilih tarikh lahir anda",
+            user_type: "Pilih jenis pengguna anda",
             gender: "Pilih jantina anda",
-            address: "Masukkan alamat tempat tinggal anda",
-            profile_picture: "Muat naik gambar profil",
             password: "Cipta kata laluan",
             confirm_password: "Sahkan kata laluan anda",
         },
         submit: "Daftar",
-        home_btn: "Halaman Utama",
+        home_btn: "Pergi ke Laman Utama",
         login_btn: "Kembali ke Log Masuk",
     },
     admin_header: {
@@ -219,7 +217,6 @@ export default {
         upload_video: "Muat Naik Video",
         logout: "Log Keluar"
     },
-
     admin_sidebar: {
         admin_title: "Panel Pentadbiran",
         admin: "Gambaran Keseluruhan Papan Pemuka",

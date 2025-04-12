@@ -18,28 +18,7 @@ const adminQuestions = [
     type: "text",
     placeholder: t('sign_up.placeholder.full_name'),
     required: true,
-    id: "full_name",
-  },
-  {
-    label: t('sign_up.label.email'),
-    type: "email",
-    placeholder: t('sign_up.placeholder.email'),
-    required: true,
-    id: "email",
-  },
-  {
-    label: t('sign_up.label.phone'),
-    type: "tel",
-    placeholder: t('sign_up.placeholder.phone'),
-    required: false,
-    id: "phone_number",
-  },
-  {
-    label: t('sign_up.label.dob'),
-    type: "date",
-    placeholder: t('sign_up.placeholder.dob'),
-    required: false,
-    id: "dob",
+    id: "name",
   },
   {
     label: t('sign_up.label.gender'),
@@ -53,18 +32,35 @@ const adminQuestions = [
     ],
   },
   {
-    label: t('sign_up.label.address'),
-    type: "text",
-    placeholder: t('sign_up.placeholder.address'),
+    label: t('sign_up.label.user_type'),
+    type: "select",
+    placeholder: t('sign_up.placeholder.user_type'),
     required: false,
-    id: "address",
+    id: "user_type",
+    options: [
+      {value: "manger", label: "Manager"},
+    ],
   },
   {
-    label: t('sign_up.label.profile_picture'),
-    type: "file",
-    placeholder: t('sign_up.placeholder.profile_picture'),
+    label: t('sign_up.label.phone'),
+    type: "tel",
+    placeholder: t('sign_up.placeholder.phone'),
     required: false,
-    id: "profile_picture",
+    id: "phone",
+  },
+  {
+    label: t('sign_up.label.email'),
+    type: "email",
+    placeholder: t('sign_up.placeholder.email'),
+    required: true,
+    id: "email",
+  },
+  {
+    label: t('sign_up.label.dob'),
+    type: "date",
+    placeholder: t('sign_up.placeholder.dob'),
+    required: false,
+    id: "dob",
   },
   {
     label: t('sign_up.label.password'),
@@ -85,29 +81,25 @@ const adminQuestions = [
 const formSchema = z.object({
   username: z
       .string()
-      .min(8, 'First username must be at least 8 characters long'),
+      .min(8, 'Username must be at least 8 characters long'),
 
-  full_name: z
+  name: z
       .string()
-      .min(8, 'Last Name must be at least 8 characters long'),
+      .min(8, 'Full Name must be at least 8 characters long'),
+
+  phone: z
+      .string()
+      .regex(/^\d{8,15}$/, 'Invalid phone number'),
 
   email: z
       .string()
       .email('Invalid email format'),
 
-  phone_number: z
-      .string()
-      .regex(/^\d{8,15}$/, 'Invalid phone number'),
-
   dob: z.string().optional(),
-
-  address: z
-      .string()
-      .min(8, 'Address must be at least 8 characters long'),
 
   gender: z.string().optional(),
 
-  profile_picture: z.any().optional(),
+  user_type: z.string().optional(),
 
   password: z
       .string(),
@@ -115,12 +107,12 @@ const formSchema = z.object({
   confirm_password: z
       .string()
       .refine(value => value === form["password"], "Passwords must match"),
-
 });
+
 const form = reactive({});
 const errors = reactive({});
 const {$axios} = useNuxtApp();
-const api = $axios()
+const api = $axios();
 const profile_picture = ref(null);
 const handleFileUpload = (event, inputDetails) => {
   if (inputDetails.type !== 'file') {
@@ -149,7 +141,6 @@ adminQuestions.forEach((question) => {
 });
 
 const handleSubmit = async () => {
-
   const validationResults = formSchema.safeParse(form);
   if (!validationResults.success) {
     console.log('Validation Errors:', validationResults.error.errors);
@@ -157,36 +148,30 @@ const handleSubmit = async () => {
     return;
   }
 
-  const formData = new FormData();
-  formData.append('username', form.username);
-  formData.append('email', form.email);
-  formData.append('password', form.password);
-
-  formData.append('profile[full_name]', form.full_name);
-  formData.append('profile[phone]', form.phone_number);
-  formData.append('profile[dob]', form.dob);
-  formData.append('profile[gender]', form.gender);
-  formData.append('profile[address]', form.address);
-  if (profile_picture.value) {
-    formData.append('profile[profile_picture]', profile_picture.value);
-  }
-
-  formData.forEach((value, key) => {
-    console.log(key, value);
-  });
+  const payload = {
+    username: form.username,
+    password: form.password,
+    profile: {
+      name: form.name,
+      gender: form.gender,
+      user_type: form.user_type,
+      phone: form.phone,
+      email: form.email,
+      dob: form.dob,
+    },
+  };
 
   try {
-    const response = await api.post('/accounts/register/', formData, {
+    const response = await api.post('/register/', payload, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': 'application/json',
       },
     });
 
     console.log('Form Submitted Successfully:', response.data);
-    showPopup.value = true;
+    alert('You have registered the manager successfully.');
     location.reload();
   } catch (error) {
-
     console.error('Failed to submit form:', error.response?.data || error.message);
     alert('An error occurred while submitting the form.');
   }
@@ -205,6 +190,7 @@ const handleSubmit = async () => {
         <hr class="divider"/>
 
         <form @submit.prevent="handleSubmit">
+
           <div class="admin-form">
 
             <div class="info" v-for="(question, index) in adminQuestions " :key="index">
@@ -221,7 +207,6 @@ const handleSubmit = async () => {
                   @change="(e) => handleFileUpload(e, question)"
                   @input="validateField(question.id)"
               />
-
 
               <select
                   v-if="question.type === 'select' ||  question.type === 'radio'"
@@ -247,12 +232,10 @@ const handleSubmit = async () => {
 
         </form>
 
-        <hr class="divider"/>
-
-
       </div>
 
     </div>
+
   </section>
 </template>
 
