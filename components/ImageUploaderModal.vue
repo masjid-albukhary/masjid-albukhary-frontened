@@ -1,6 +1,11 @@
 <script setup>
+
 import {defineEmits, defineProps, reactive, ref, watch} from 'vue';
+import {useNuxtApp} from "#app";
 import {z} from 'zod';
+
+const {$axios} = useNuxtApp();
+const api = $axios()
 
 const props = defineProps({show: Boolean});
 const emit = defineEmits(['update:show']);
@@ -29,21 +34,15 @@ const uploadImageQuestions = [
     id: 'gallery_image'
   }
 ];
-
 const formSchema = z.object({
   name_field: z.string().min(8, 'Name field name must be at least 8 characters long'),
   alert_field: z.string().min(8, 'Alert field name must be at least 8 characters long'),
-  gallery_image: z.any().optional("Upload must be a file")
+  gallery_image: z.any().optional('Upload must be a file'),
 });
-
 const form = reactive(Object.fromEntries(uploadImageQuestions.map(q => [q.id, ''])));
 const errors = reactive(Object.fromEntries(uploadImageQuestions.map(q => [q.id, ''])));
-const {$axios} = useNuxtApp();
-const api = $axios()
+
 const gallery_image = ref(null);
-
-uploadImageQuestions.forEach(question => watch(() => form[question.id], () => validateField(question.id)));
-
 function validateField(field) {
   try {
     formSchema.shape[field].parse(form[field]);
@@ -53,14 +52,13 @@ function validateField(field) {
   }
 }
 
+uploadImageQuestions.forEach((question) => watch(() => form[question.id], () => validateField(question.id)));
+
 const handleFileUpload = (event, inputDetails) => {
   if (inputDetails.type === 'file') {
     gallery_image.value = event.target.files[0];
-    console.log('Selected File:', gallery_image.value); // Debugging line
   }
 };
-
-
 async function handleSubmit() {
   form.Date = new Date().toLocaleDateString('en-GB');
 
@@ -75,7 +73,7 @@ async function handleSubmit() {
   const formData = new FormData();
   formData.append('name_field', form.name_field);
   formData.append('alert_field', form.alert_field);
-  formData.append('gallery_image', gallery_image.value); // Ensure key matches
+  formData.append('gallery_image', gallery_image.value);
 
   try {
     const response = await api.post('/content_manager/gallery/images/', formData, {
@@ -95,6 +93,7 @@ async function handleSubmit() {
     alert('An error occurred while submitting the form.');
   }
 }
+
 </script>
 
 <template>
@@ -107,12 +106,12 @@ async function handleSubmit() {
             <div class="info" v-for="(question, index) in uploadImageQuestions" :key="index">
               <label class="question-title" :for="question.label">{{ question.label }}</label>
               <input
-                  v-if="['text', 'file'].includes(question.type)"
+                  v-if="['text','file'].includes(question.type)"
                   :type="question.type"
                   v-model="form[question.id]"
                   :placeholder="question.placeholder"
                   :id="question.label"
-                  :accept="question.type === 'file' ? ',.jpg,.jpeg,.png' : ''"
+                  :accept="question.type === 'file' ? '.jpg,.jpeg,.png' : ''"
                   @change="(e) => handleFileUpload(e, question)"
                   @input="validateField(question.id)"
               />

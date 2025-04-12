@@ -8,7 +8,6 @@ const api = $axios()
 const props = defineProps({ show: Boolean });
 const emit = defineEmits(['update:show']);
 const closePopup = () => emit('update:show', false);
-
 const uploadVideosQuestions = [
   {
     label: 'Name',
@@ -32,17 +31,14 @@ const uploadVideosQuestions = [
     id: 'photo',
   },
 ];
-
 const formSchema = z.object({
   name: z.string().min(8, 'Name must be at least 8 characters long'),
   role: z.string().min(8, 'Role must be at least 8 characters long'),
   photo: z.any().optional('Upload must be a file'),
 });
-
 const form = reactive(Object.fromEntries(uploadVideosQuestions.map((q) => [q.id, ''])));
 const errors = reactive(Object.fromEntries(uploadVideosQuestions.map((q) => [q.id, ''])));
 const evidence_photo = ref(null);
-
 function validateField(field) {
   try {
     formSchema.shape[field].parse(form[field]);
@@ -51,15 +47,12 @@ function validateField(field) {
     errors[field] = error.errors?.[0]?.message || error.message;
   }
 }
-
 uploadVideosQuestions.forEach((question) => watch(() => form[question.id], () => validateField(question.id)));
-
 const handleFileUpload = (event, inputDetails) => {
   if (inputDetails.type === 'file') {
     evidence_photo.value = event.target.files[0];
   }
 };
-
 async function handleSubmit() {
   form.Date = new Date().toLocaleDateString('en-GB');
 

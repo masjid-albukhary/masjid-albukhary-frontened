@@ -11,7 +11,7 @@ interface ImageDetails {
   id: number;
   name_field: string;
   alert_field: string;
-  upload_image: string;
+  gallery_image: string;
 }
 
 const images = ref<ImageDetails[]>([]);
@@ -78,7 +78,7 @@ function prevPage() {
 
       <div class="images-gallery-item" v-for="image in visibleImages" :key="image.id">
         <div class="image-container">
-          <img :src="image.upload_image" :alt="image.alert_field" class="image"/>
+          <img :src="image.gallery_image" :alt="image.alert_field" class="image"/>
 
           <div class="image-details">
             <h3>{{ image.name_field }}</h3>
