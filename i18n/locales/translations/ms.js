@@ -221,6 +221,9 @@ export default {
         admin_title: "Panel Pentadbiran",
         admin: "Gambaran Keseluruhan Papan Pemuka",
 
+        member_section:"ahli",
+        member_overview_dashboard:"Gambaran Keseluruhan Ahli Papan Pemuka",
+
         booking_overview: "Pengurusan Tempahan",
         contact_messages_overview: "Pengurusan Mesej",
 

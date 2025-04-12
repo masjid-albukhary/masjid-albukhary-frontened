@@ -35,6 +35,13 @@ const groupedLinks = computed(() => [
     ]
   },
   {
+    label: t('admin_sidebar.member_section'),
+    icon: "mdi-users-plus-outline",
+    children: [
+      { link: "/admin/member-overview-dashboard", label: t('admin_sidebar.member_overview_dashboard'), icon: "mdi-users" },
+    ]
+  },
+  {
     label: t('admin_sidebar.facility_section'),
     icon: "mdi-office-building",
     children: [
@@ -50,6 +57,7 @@ const groupedLinks = computed(() => [
       { link: "/admin/news-content-dashboard", label: t('admin_sidebar.news_dashboard'), icon: "mdi-newspaper-variant-multiple" }
     ]
   },
+
   {
     label: t('admin_sidebar.services_section'),
     icon: "mdi-clipboard-text-outline",
@@ -58,7 +66,6 @@ const groupedLinks = computed(() => [
       { link: "/admin/services-overview-dashboard", label: t('admin_sidebar.service_dashboard'), icon: "mdi-clipboard-text-multiple-outline" }
     ]
   },
-
   {
     label: t('admin_sidebar.users_section'),
     icon: "mdi-account-group-outline",
