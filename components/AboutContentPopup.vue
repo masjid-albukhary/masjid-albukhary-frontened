@@ -84,7 +84,6 @@ const formFields = [
   }
 ];
 
-
 const handleImageChange = (event: Event) => {
   const target = event.target as HTMLInputElement;
   if (target.files && target.files.length > 0) {

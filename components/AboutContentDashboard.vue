@@ -40,7 +40,6 @@ const filteredAboutContent = computed(() => {
   }
   return result;
 });
-
 const totalItems = computed(() => filteredAboutContent.value.length);
 const paginatedAboutContent = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;
@@ -52,7 +51,6 @@ const handlePageChange = (newPage: number) => {
     currentPage.value = newPage;
   }
 };
-
 const showAboutContentPopup = (content: AboutContent) => {
   selectedAboutContent.value = { ...content };
   isPopupVisible.value = true;
