@@ -35,9 +35,10 @@ const labelMapping: Record<string, string> = {
   id: 'ID',
   name: 'Name',
   email: 'Email',
+  contact_number: 'Phone Number',
   subject: 'Subject',
   message: 'Message',
-  created_at: 'Created at',
+  submitted_at: 'Submitted at',
 };
 </script>
 
