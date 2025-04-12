@@ -1,173 +1,38 @@
 <script setup lang="ts">
-import {computed, ref} from "vue";
-import {useI18n} from "vue-i18n";
+import { computed, onMounted, ref } from "vue";
+import { useI18n } from "vue-i18n";
+import { useNuxtApp } from "#app";
 
-const { t } = useI18n();
+const { locale, t } = useI18n();
+const { $axios } = useNuxtApp();
+const api = $axios();
 
 interface Service {
-  id: number
-  title: string
-  facilities: string[]
-  price: string
+  id: number;
+  title_en: string;
+  title_my: string;
+  description_en: string;
+  description_my: string;
+  features_en: string;
+  features_my: string;
+  capacity: number;
+  price: number;
+  facilities?: string[];
+  [key: string]: any;
 }
 
-const services: Service[] = [
-  {
-    id: 1,
-    title: "Circumcision Event at Masjid Al-Bukhari",
-    facilities: [
-      "Pre-event briefing",
-      "Certified medical practitioners",
-      "Comfortable environment",
-      "Post-care guidance",
-      "Souvenir for participants",
-      "Refreshments provided"
-    ],
-    price: "55",
-  },
-  {
-    id: 2,
-    title: "Aqiqah with Masjid Al-Bukhari",
-    facilities: [
-      "Livestock selection",
-      "Shariah-compliant process",
-      "Meat distribution service",
-      "Certificate of completion",
-      "Dua recitation",
-      "Live event streaming option"
-    ],
-    price: "55",
-  },
-  {
-    id: 3,
-    title: "Quran Classes (6 - 18 years old)",
-    facilities: [
-      "Experienced Quran teachers",
-      "Tajweed & memorization",
-      "Small class sizes",
-      "Flexible timings",
-      "Monthly progress reports",
-      "Online & offline classes"
-    ],
-    price: "55",
-  },
-  {
-    id: 4,
-    title: "Zakat Fitrah",
-    facilities: [
-      "Official collection point",
-      "Transparent distribution",
-      "Guidance on calculations",
-      "Multiple payment options",
-      "Support for needy families",
-      "Official receipt provided"
-    ],
-    price: "55",
-  },
-  {
-    id: 5,
-    title: "Solemnisation at Al-Bukhari Mosque",
-    facilities: [
-      "Spacious & serene venue",
-      "Official marriage solemnizer",
-      "Customized wedding package",
-      "Photography services available",
-      "Marriage counseling session",
-      "Islamic legal documentation"
-    ],
-    price: "55",
-  },
-  {
-    id: 6,
-    title: "Participate in Our Qurban Event",
-    facilities: [
-      "Qurban livestock selection",
-      "Shariah-compliant slaughter",
-      "Meat distribution service",
-      "Live event participation",
-      "Certificate of Qurban",
-      "Charitable contribution option"
-    ],
-    price: "55 per share",
-  },
-  {
-    id: 7,
-    title: "Yasin & Tahlil",
-    facilities: [
-      "Dedicated prayer session",
-      "Imam-led recitation",
-      "Spiritual gathering space",
-      "Supplication for the deceased",
-      "Refreshments included",
-      "Live streaming option"
-    ],
-    price: "55",
-  },
-  {
-    id: 8,
-    title: "Jenazah or Funeral Management",
-    facilities: [
-      "24/7 service availability",
-      "Complete Islamic funeral rites",
-      "Burial arrangement",
-      "Transportation service",
-      "Family support & guidance",
-      "Funeral prayer session"
-    ],
-    price: "55",
-  },
-  {
-    id: 9,
-    title: "Catering from Our Own Kitchen",
-    facilities: [
-      "Halal-certified kitchen",
-      "Customized menu options",
-      "Event catering services",
-      "Delivery available",
-      "Freshly prepared meals",
-      "Bulk order discounts"
-    ],
-    price: "55 per pax",
-  },
-  {
-    id: 10,
-    title: "E-Wasiat",
-    facilities: [
-      "Digital will drafting",
-      "Islamic legal compliance",
-      "Secure online storage",
-      "Professional guidance",
-      "Easy document retrieval",
-      "Affordable pricing"
-    ],
-    price: "55",
-  },
-  {
-    id: 11,
-    title: "E-Khairat Kematian",
-    facilities: [
-      "Membership-based coverage",
-      "Immediate financial aid",
-      "Shariah-compliant fund",
-      "Jenazah management support",
-      "No medical check-up required",
-      "Simple registration process"
-    ],
-    price: "55 per year",
-  }
-];
-
+const services = ref<Service[]>([]);
 const currentServiceIndex = ref(0);
-
 const itemsPerPage = ref(3);
-
+const loading = ref(true);
+const error = ref<string | null>(null);
 
 const visibleService = computed(() => {
-  return services.slice(currentServiceIndex.value, currentServiceIndex.value + itemsPerPage.value);
+  return services.value.slice(currentServiceIndex.value, currentServiceIndex.value + itemsPerPage.value);
 });
 
 function nextServicePage() {
-  if (currentServiceIndex.value + itemsPerPage.value < services.length) {
+  if (currentServiceIndex.value + itemsPerPage.value < services.value.length) {
     currentServiceIndex.value += itemsPerPage.value;
   } else {
     currentServiceIndex.value = 0;
@@ -178,62 +43,84 @@ function prevServicePage() {
   if (currentServiceIndex.value - itemsPerPage.value >= 0) {
     currentServiceIndex.value -= itemsPerPage.value;
   } else {
-    currentServiceIndex.value = services.length - itemsPerPage.value;
+    currentServiceIndex.value = services.value.length - itemsPerPage.value;
   }
 }
 
-
+onMounted(async () => {
+  try {
+    const response = await api.get("/service_facility_management/services/");
+    services.value = response.data;
+    console.log(services.value);
+    console.log("Current Locale:", locale.value);
+  } catch (error: any) {
+    console.error("Failed to load about content:", error);
+    if (error.response) {
+      console.error("Error response:", error.response.data);
+      console.error("Error status:", error.response.status);
+    } else if (error.request) {
+      console.error("Error request:", error.request);
+    } else {
+      console.error("Error message:", error.message);
+    }
+    error.value = "Failed to load services. Please try again later.";
+  } finally {
+    loading.value = false;
+  }
+});
 </script>
 
 <template>
   <section class="service-section">
-
     <div class="service-header">
-      <h2 class="service-title">{{ t('service.service_title') }}</h2>
+      <h2 class="service-title">{{ t('service.title') }}</h2>
       <p class="service-description">
-        {{ t('service.service_description') }}
+        {{ t('service.description') }}
       </p>
     </div>
 
-    <div class="service-grid">
+    <div v-if="loading">Loading services...</div>
+    <div v-if="error" class="error-message">{{ error }}</div>
 
+    <div v-if="!loading && services.length > 0" class="service-grid">
       <div class="service-card" v-for="service in visibleService" :key="service.id">
-
         <div class="service-card-icon">
           <UIcon name="mdi-home-modern" class="service-icon" />
         </div>
 
         <div class="service-card-header">
-          <h3 class="service-card-title">{{ service.title }}</h3>
+          <h3 class="service-card-title">
+            {{ service['title_' + locale] || service.title_my || 'No Title Available' }}
+          </h3>
         </div>
 
         <div class="service-card-content">
           <ul class="service-facilities">
-            <li v-for="(facility, index) in service.facilities" :key="index">
+            <li v-for="(feature, index) in (service[`features_${locale}`] || service.features_my || '').split(',')" :key="index">
               <UIcon name="mdi-cogs" class="service-icon" />
-              {{ facility }}
+              {{ feature.trim() }}
             </li>
           </ul>
         </div>
 
         <div class="service-card-footer">
-
           <span class="service-price">
-            RM /
-            {{ service.price }}
+            RM / {{ service.price }}
           </span>
 
           <router-link to="/services-form" class="booking-structure-btn">
-
             {{ t('service.button') }}
             <UIcon name="mdi-arrow-right" class="register-icon" />
           </router-link>
-
         </div>
       </div>
     </div>
 
-    <div class="buttons">
+    <div v-if="!loading && services.length === 0" class="no-services-message">
+      No services available at the moment.
+    </div>
+
+    <div class="buttons" v-if="!loading && services.length > 0">
       <button @click="prevServicePage" class="nav-button">
         <UIcon name="mdi-arrow-left-circle" />
       </button>
@@ -408,4 +295,3 @@ section {
   color: var(--secondary-color);
 }
 </style>
-

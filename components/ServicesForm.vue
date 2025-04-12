@@ -144,13 +144,14 @@ async function handleSubmit() {
   } catch (error) {
     console.error("Error submitting form:", error);
     if (error.response) {
-      console.error("Response data:", error.response.data); // More detailed error info
+      console.error("Response data:", error.response.data);
       alert("There was an error while submitting the form. Please try again.");
     } else {
       alert("Unknown error occurred.");
     }
   }
 }
+
 </script>
 
 <template>
