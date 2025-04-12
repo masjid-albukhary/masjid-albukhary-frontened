@@ -5,6 +5,7 @@ import AdminSideBar from "~/components/AdminSideBar.vue";
 definePageMeta({
   middleware: 'auth'
 });
+
 </script>
 
 <template>
@@ -14,7 +15,7 @@ definePageMeta({
       <AdminSideBar />
     </aside>
     <main class="admin-main">
-
+      <UsersDashboard/>
     </main>
   </section>
   <AdminFooter />
