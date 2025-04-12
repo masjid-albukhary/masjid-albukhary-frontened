@@ -42,6 +42,7 @@ const AboutContentQuestions = [
     id: "about_image",
   },
 ]
+
 const formSchema = z.object({
   title_en: z.string().min(10, 'Title must be at least 10 characters long'),
   title_my: z.string().min(10, 'Title must be at least 15 characters long'),
@@ -104,10 +105,12 @@ const handleSubmit = async () => {
       },
     });
 
-    console.log('Form Submitted Successfully:', response.data);
     alert('Form Submitted Successfully.');
 
     location.reload();
+
+    console.log('Form Submitted Successfully:', response.data);
+
   } catch (error) {
     console.error('Failed to submit form:', error);
     alert('An error occurred while submitting the form.');

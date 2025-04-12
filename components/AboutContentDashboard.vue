@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { useNuxtApp } from '#app';
 import AboutContentPopup from '~/components/AboutContentPopup.vue';
 
@@ -10,33 +9,28 @@ interface AboutContent {
   title_my: string;
   content_en: string;
   content_my: string;
+  about_image: string;
   created_at: string;
-  file?: File | string;
 }
-
 const columns = [
-  { key: 'title_en', label: 'Title English', sortable: false },
-  { key: 'title_my', label: 'Title Malay', sortable: false },
-  { key: 'created_at', label: 'Pushed Date', sortable: false },
-  { key: 'actions', label: 'Actions', sortable: false },
+  { key: 'title_en', label: 'Title English' },
+  { key: 'title_my', label: 'Title Malay' },
+  { key: 'created_at', label: 'Pushed Date' },
+  { key: 'actions', label: 'Actions' },
 ];
-
-const contentData = ref<AboutContent[]>([]);
-const { locale } = useI18n();
+const aboutContentList = ref<AboutContent[]>([]);
 const { $axios } = useNuxtApp();
 const api = $axios();
 
 const currentPage = ref(1);
 const pageSize = ref(8);
 const searchQuery = ref('');
-const contentDetails = ref<Record<string, any>>({});
 const isPopupVisible = ref(false);
-const currentContent = ref<AboutContent | null>(null);
+const selectedAboutContent = ref<AboutContent | null>(null);
 const isLoading = ref(true);
 
-const filteredRows = computed(() => {
-  let result = contentData.value;
-
+const filteredAboutContent = computed(() => {
+  let result = aboutContentList.value;
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase();
     result = result.filter(content =>
@@ -44,16 +38,13 @@ const filteredRows = computed(() => {
         content.title_my.toLowerCase().includes(query)
     );
   }
-
   return result;
 });
 
-const totalItems = computed(() => filteredRows.value.length);
-
-const paginatedRows = computed(() => {
+const totalItems = computed(() => filteredAboutContent.value.length);
+const paginatedAboutContent = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;
-  const end = start + pageSize.value;
-  return filteredRows.value.slice(start, end);
+  return filteredAboutContent.value.slice(start, start + pageSize.value);
 });
 
 const handlePageChange = (newPage: number) => {
@@ -62,113 +53,81 @@ const handlePageChange = (newPage: number) => {
   }
 };
 
-const updateContent = async () => {
-  if (!currentContent.value) return;
+const showAboutContentPopup = (content: AboutContent) => {
+  selectedAboutContent.value = { ...content };
+  isPopupVisible.value = true;
+};
+const hideAboutContentPopup = () => {
+  isPopupVisible.value = false;
+  selectedAboutContent.value = null;
+};
+
+const submitAboutContentChanges = async (updatedContent: AboutContent) => {
+  if (!selectedAboutContent.value) return;
+
+  const formData = new FormData();
+  formData.append('title_en', updatedContent.title_en);
+  formData.append('title_my', updatedContent.title_my);
+  formData.append('content_en', updatedContent.content_en);
+  formData.append('content_my', updatedContent.content_my);
+
+  if (updatedContent.about_image instanceof File) {
+    formData.append('about_image', updatedContent.about_image);
+  } else if (updatedContent.about_image !== selectedAboutContent.value.about_image) {
+    formData.append('about_image', updatedContent.about_image);
+  }
 
   try {
-    const formData = new FormData();
+    const response = await api.put(`/content_manager/about_us_content/${updatedContent.id}/`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
 
-    for (const [key, value] of Object.entries(currentContent.value)) {
-      if (key === 'id') continue;
-
-      if (key === 'file' && value instanceof File) {
-        formData.append('file', value);
-      } else {
-        formData.append(key, value as string);
-      }
-    }
-
-    const response = await api.patch(
-        `/content_manager/about_us_content/${currentContent.value.id}/`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }
-    );
-
-    const index = contentData.value.findIndex(item => item.id === currentContent.value?.id);
+    // Update the local list with the latest data from the response
+    const index = aboutContentList.value.findIndex(c => c.id === updatedContent.id);
     if (index !== -1) {
-      contentData.value[index] = response.data;
+      // Use the response data to update the list, which will include the new image URL
+      aboutContentList.value[index] = response.data;
     }
 
     alert('Content updated successfully!');
-    closePopup();
+    hideAboutContentPopup();
   } catch (error) {
-    console.error('Failed to update content:', error);
-    alert('Failed to update content. Please try again later.');
-  }
-};
-
-const deleteContent = async () => {
-  if (!currentContent.value) return;
-
-  if (confirm('Are you sure you want to delete this content?')) {
-    try {
-      const deletedContent = currentContent.value;
-      await api.delete(`/content_manager/about_us_content/${deletedContent.id}/`);
-      console.log('Content deleted successfully');
-
-      alert('Content deleted successfully!');
-
-      contentData.value = contentData.value.filter(content => content.id !== deletedContent.id);
-      closePopup();
-    } catch (error) {
-      console.error('Failed to delete content:', error);
-      alert('Failed to delete content. Please try again later.');
+    console.error('Update failed:', error);
+    alert('Update failed. Please try again.');
+    if (error.response) {
+      console.error('Backend error:', error.response.data);
     }
   }
 };
 
-const handleFileUpload = (file: File) => {
-  if (currentContent.value) {
-    currentContent.value.file = file;
+const removeAboutContent = async () => {
+  if (!selectedAboutContent.value) return;
+  if (confirm('Are you sure you want to delete this content?')) {
+    try {
+      await api.delete(`/content_manager/about_us_content/${selectedAboutContent.value.id}/`);
+      aboutContentList.value = aboutContentList.value.filter(c => c.id !== selectedAboutContent.value?.id);
+      alert('Content deleted successfully!');
+      hideAboutContentPopup();
+    } catch (error) {
+      console.error('Delete failed:', error);
+      alert('Delete failed. Please try again.');
+    }
   }
-};
-
-const openPopup = (content: AboutContent) => {
-  currentContent.value = {...content};
-  contentDetails.value = {
-    "Title (English)": content.title_en,
-    "Title (Malay)": content.title_my,
-    "Content (English)": content.content_en,
-    "Content (Malay)": content.content_my,
-    "Created At": content.created_at,
-    "File": content.file || 'No file uploaded'
-  };
-  isPopupVisible.value = true;
-};
-
-const closePopup = () => {
-  isPopupVisible.value = false;
-  currentContent.value = null;
 };
 
 const formatDate = (dateString: string) => {
-  if (!dateString) return '';
-  const date = new Date(dateString);
-  return date.toLocaleDateString();
+  return new Date(dateString).toLocaleDateString();
 };
 
 onMounted(async () => {
-  isLoading.value = true;
   try {
     const response = await api.get("/content_manager/about_us_content/");
-    contentData.value = response.data;
-    console.log("Content loaded:", contentData.value.length, "items");
-    console.log("Current Locale:", locale.value);
-  } catch (error: any) {
-    console.error("Failed to load about content:", error);
-    if (error.response) {
-      console.error("Error response:", error.response.data);
-      console.error("Error status:", error.response.status);
-    } else if (error.request) {
-      console.error("Error request:", error.request);
-    } else {
-      console.error("Error message:", error.message);
-    }
-    alert("Error loading content. Please try again later.");
+    aboutContentList.value = response.data;
+  } catch (error) {
+    console.error("Error loading content:", error);
+    alert("Error loading content.");
   } finally {
     isLoading.value = false;
   }
@@ -179,17 +138,14 @@ onMounted(async () => {
   <section class="dashboard-wrapper">
     <div class="dashboard-container">
       <main class="content-area">
+
         <div class="content-header">
-          <input v-model="searchQuery" placeholder="Search by title..." class="search-box"/>
+          <input v-model="searchQuery" placeholder="Search by title..." class="search-box" />
         </div>
 
-        <div v-if="isLoading" class="loading-state">
-          Loading content...
-        </div>
+        <div v-if="isLoading" class="loading-state">Loading content...</div>
 
-        <div v-else-if="contentData.length === 0" class="empty-state">
-          No content available.
-        </div>
+        <div v-else-if="filteredAboutContent.length === 0" class="empty-state">No content available.</div>
 
         <div v-else class="table-wrapper">
           <table class="data-table">
@@ -199,40 +155,33 @@ onMounted(async () => {
             </tr>
             </thead>
             <tbody>
-            <tr v-for="row in paginatedRows" :key="row.id">
+            <tr v-for="row in paginatedAboutContent" :key="row.id">
               <td>{{ row.title_en }}</td>
               <td>{{ row.title_my }}</td>
               <td>{{ formatDate(row.created_at) }}</td>
               <td>
-                <button @click="openPopup(row)" class="view-button">View</button>
+                <button @click="showAboutContentPopup(row)" class="view-button">View</button>
               </td>
             </tr>
             </tbody>
           </table>
         </div>
 
-        <div v-if="!isLoading && contentData.length > 0" class="pagination-controls">
-          <button class="pagination-button" :disabled="currentPage === 1" @click="handlePageChange(currentPage - 1)">
-            ⬅ Prev
-          </button>
-          <span>Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) || 1 }}</span>
-          <button class="pagination-button" :disabled="currentPage >= Math.ceil(totalItems / pageSize)"
-                  @click="handlePageChange(currentPage + 1)">
-            Next ➡
-          </button>
+        <div class="pagination-controls" v-if="!isLoading && totalItems > 0">
+          <button class="pagination-button" :disabled="currentPage === 1" @click="handlePageChange(currentPage - 1)">⬅ Prev</button>
+          <span>Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) }}</span>
+          <button class="pagination-button" :disabled="currentPage >= Math.ceil(totalItems / pageSize)" @click="handlePageChange(currentPage + 1)">Next ➡</button>
         </div>
       </main>
     </div>
 
     <AboutContentPopup
-        v-if="isPopupVisible"
+        v-if="isPopupVisible && selectedAboutContent"
         :isPopupVisible="isPopupVisible"
-        :contentDetails="contentDetails"
-        :currentContent="currentContent"
-        @closePopup="closePopup"
-        @updateContent="updateContent"
-        @deleteContent="deleteContent"
-        @fileUploaded="handleFileUpload"
+        :selectedAboutContent="selectedAboutContent"
+        @hideAboutContentPopup="hideAboutContentPopup"
+        @submitAboutContentChanges="submitAboutContentChanges"
+        @removeAboutContent="removeAboutContent"
     />
   </section>
 </template>

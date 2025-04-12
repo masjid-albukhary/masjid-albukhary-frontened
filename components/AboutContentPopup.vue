@@ -1,203 +1,377 @@
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue';
+import {ref, reactive, watch} from 'vue';
 
-const props = defineProps({
-  isPopupVisible: Boolean,
-  contentDetails: Object,
-  currentContent: Object,
+interface AboutContent {
+  id: number;
+  title_en: string;
+  title_my: string;
+  content_en: string;
+  content_my: string;
+  about_image: string;
+  created_at: string;
+}
+
+const props = defineProps<{
+  isPopupVisible: boolean;
+  selectedAboutContent: AboutContent | null;
+}>();
+
+const emit = defineEmits([
+  'hideAboutContentPopup',
+  'submitAboutContentChanges',
+  'removeAboutContent'
+]);
+
+const formData = reactive<AboutContent>({
+  id: 0,
+  title_en: '',
+  title_my: '',
+  content_en: '',
+  content_my: '',
+  about_image: '',
+  created_at: ''
 });
 
-const emit = defineEmits(['closePopup', 'deleteContent', 'updateContent', 'fileUploaded']);
+const imageFile = ref<File | null>(null);
+const imagePreview = ref<string | null>(null);
 
-const closePopup = () => {
-  emit('closePopup');
-};
+watch(() => props.selectedAboutContent, (newContent) => {
+  if (newContent) {
+    formData.id = newContent.id;
+    formData.title_en = newContent.title_en;
+    formData.title_my = newContent.title_my;
+    formData.content_en = newContent.content_en;
+    formData.content_my = newContent.content_my;
+    formData.about_image = newContent.about_image;
+    formData.created_at = newContent.created_at;
 
-const updateContent = () => {
-  emit('updateContent');
-};
+    imagePreview.value = newContent.about_image;
+  }
+}, {immediate: true});
 
-const handleFileUpload = (event: Event) => {
-  const file = (event.target as HTMLInputElement).files?.[0];
-  if (file) {
-    emit('fileUploaded', file);
+
+const formFields = [
+  {
+    key: 'title_en',
+    label: 'English Title',
+    type: 'text',
+    required: true
+  },
+  {
+    key: 'title_my',
+    label: 'Malay Title',
+    type: 'text',
+    required: true
+  },
+  {
+    key: 'content_en',
+    label: 'English Content',
+    type: 'textarea',
+    required: true
+  },
+  {
+    key: 'content_my',
+    label: 'Malay Content',
+    type: 'textarea',
+    required: true
+  },
+  {
+    key: 'about_image',
+    label: 'Upload New Image',
+    type: 'file',
+    required: false,
+    accept: 'image/*'
+  }
+];
+
+
+const handleImageChange = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  if (target.files && target.files.length > 0) {
+    const file = target.files[0];
+    imageFile.value = file;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      imagePreview.value = e.target?.result as string;
+    };
+    reader.readAsDataURL(file);
   }
 };
 
-const deleteContent = () => {
-  emit('deleteContent');
+const handleSave = () => {
+  const updatedContent = {...formData};
+
+  if (imageFile.value) {
+    updatedContent.about_image = imageFile.value;
+  }
+
+  emit('submitAboutContentChanges', updatedContent);
+};
+
+const handleDelete = () => {
+  emit('removeAboutContent');
+};
+
+const closePopup = () => {
+  emit('hideAboutContentPopup');
 };
 </script>
 
 <template>
-  <div v-if="isPopupVisible" class="popup-overlay" @click="closePopup">
-    <div class="popup" @click.stop>
+  <div v-if="isPopupVisible" class="popup-overlay">
+    <div class="popup-container">
       <div class="popup-header">
-        <h3>Content Details</h3>
-        <button class="close-btn" @click="closePopup" aria-label="Close Popup">
-          <UIcon name="mdi-close" />
-        </button>
+        <h2>About Content Details</h2>
+        <button @click="closePopup" class="close-button">&times;</button>
       </div>
 
-      <div class="popup-detail">
-        <label>Title (English):</label>
-        <textarea
-            v-model="currentContent.title_en"
-            class="textarea"
-            rows="2"
-        ></textarea>
-      </div>
+      <div class="popup-content">
+        <form @submit.prevent="handleSave">
 
-      <div class="popup-detail">
-        <label>Title (Malay):</label>
-        <textarea
-            v-model="currentContent.title_my"
-            class="textarea"
-            rows="2"
-        ></textarea>
-      </div>
+          <div
+              class="form-group"
+              v-for="field in formFields"
+              :key="field.key"
+          >
+            <label :for="field.key">{{ field.label }}:</label>
 
-      <div class="popup-detail">
-        <label>Content (English):</label>
-        <textarea
-            v-model="currentContent.content_en"
-            class="textarea"
-            rows="4"
-        ></textarea>
-      </div>
+            <input
+                v-if="field.type === 'text'"
+                :id="field.key"
+                v-model="formData[field.key]"
+                type="text"
+                :required="field.required"
+                class="form-control"
+            />
 
-      <div class="popup-detail">
-        <label>Content (Malay):</label>
-        <textarea
-            v-model="currentContent.content_my"
-            class="textarea"
-            rows="4"
-        ></textarea>
-      </div>
+            <textarea
+                v-else-if="field.type === 'textarea'"
+                :id="field.key"
+                v-model="formData[field.key]"
+                rows="5"
+                :required="field.required"
+                class="form-control"
+            ></textarea>
 
-      <div class="popup-detail">
-        <label>File:</label>
-        <div class="file-upload-container">
-          <input
-              type="file"
-              @change="handleFileUpload"
-              class="file-input"
-          />
-          <div v-if="currentContent.file && typeof currentContent.file === 'string'" class="current-file">
-            Current file: {{ currentContent.file.split('/').pop() }}
+            <div v-else-if="field.type === 'file'">
+              <input
+                  :id="field.key"
+                  type="file"
+                  :accept="field.accept || ''"
+                  @change="handleImageChange"
+                  class="form-control-file"
+              />
+              <small class="file-help-text">Select a new image to replace the existing one (optional)</small>
+
+              <div class="image-preview-container" v-if="imagePreview">
+                <img
+                    :src="imagePreview"
+                    alt="Image preview"
+                    class="image-preview"
+                />
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-      <div class="popup-footer">
-        <button @click="updateContent" class="update-btn">Update</button>
-        <button @click="deleteContent" class="delete-btn">Delete</button>
+
+          <div class="button-group">
+            <button type="submit" class="save-button">Save Changes</button>
+            <button type="button" @click="handleDelete" class="delete-button">Delete</button>
+            <button type="button" @click="closePopup" class="cancel-button">Cancel</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+
 .popup-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   z-index: 1002;
+  padding: 1rem;
+  overflow-y: auto;
 }
 
-.popup {
-  background-color: white;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 600px;
+.popup-container {
+  background-color: var(--bg-hover-color);
+  border-radius: .5rem;
+  width: 100%;
+  max-width: 800px;
   max-height: 90vh;
-  overflow-y: auto;
-  padding: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .popup-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
+  padding: .5rem 1rem;
   border-bottom: 1px solid #eee;
+  background-color: var(--bg-color);
 }
 
-.popup-header h3 {
+.popup-header h2 {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
+  color: var(--primary-color);
 }
 
-.close-btn {
-  background: none;
+.close-button {
+  background-color: #e53935;
   border: none;
-  cursor: pointer;
-  font-size: 1.5rem;
-  color: #666;
-}
-
-.popup-detail {
-  margin-bottom: 15px;
-}
-
-.popup-detail label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 5px;
-}
-
-.textarea,
-.input {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 0.9rem;
-}
-
-.file-input {
-  width: 100%;
-  margin-top: 5px;
-}
-
-.current-file {
-  margin-top: 5px;
-  font-size: 0.9rem;
-  color: #666;
-}
-
-.popup-footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 20px;
-  padding-top: 15px;
-  border-top: 1px solid #eee;
-}
-
-.update-btn, .delete-btn {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.update-btn {
-  background-color: #4caf50;
   color: white;
+  font-size: 1.25rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
 }
 
-.delete-btn {
+.close-button:hover {
+  background-color: #c62828;
+}
+
+.popup-content {
+  padding: 5rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.form-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  margin-bottom: .5rem;
+}
+
+.form-group label {
+  flex: 1 1 100%;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.form-control,
+textarea.form-control {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 0.3s ease-in-out,;
+}
+
+.form-control:focus,
+textarea.form-control:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form-control-file {
+  margin-top: 0.5rem;
+}
+
+.image-preview-container {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background-color: var(--bg-color);
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.image-preview {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.file-help-text {
+  font-size: 0.875rem;
+  color: var(--primary-color);
+  margin-top: 0.25rem;
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.button-group button {
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.save-button {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+}
+
+.save-button:hover {
+  background-color: var(--secondary-color);
+}
+
+.delete-button {
   background-color: #f44336;
   color: white;
+}
+
+.delete-button:hover {
+  background-color: #d32f2f;
+}
+
+.cancel-button {
+  background-color: var(--bg-color);
+  color: var(--primary-color);
+}
+
+.cancel-button:hover {
+  background-color: var(--bg-hover-color);
+  color: var(--secondary-color);
+}
+
+@media (max-width: 600px) {
+  .popup-content {
+    padding: 1rem;
+  }
+  .form-group {
+    flex-direction: column;
+  }
+
+  .popup-header h2 {
+    font-size: 1rem;
+  }
+
+  .button-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .button-group button {
+    width: 100%;
+  }
 }
 </style>

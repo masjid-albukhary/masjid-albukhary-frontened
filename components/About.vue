@@ -1,22 +1,44 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
+import {onMounted, ref,} from "vue";
+import {useI18n} from "vue-i18n";
+import {useNuxtApp} from "#app";
 
-const { t } = useI18n();
+const {locale, t} = useI18n();
+const {$axios} = useNuxtApp();
+const api = $axios()
 
-const aboutItem = [
-  {
-    id: 1,
-    title: t("about.items[0].title"),
-    content: t("about.items[0].content"),
-    image: "images/Masjid-Al-Bukhary.png",
-  },
-  {
-    id: 2,
-    title: t("about.items[1].title"),
-    content: t("about.items[1].content"),
-    image: "images/Masjid-Al-Bukhary.png",
-  },
-]
+interface AboutContent {
+  id: number;
+  title_en: string;
+  title_my: string;
+  description_en: string;
+  description_my: string;
+  about_image: string;
+  [key: string]: any;
+}
+
+const aboutItem = ref<AboutContent[]>([]);
+
+onMounted(async () => {
+  try {
+    const response = await api.get("/content_manager/about_us_content/");
+    aboutItem.value = response.data;
+
+    console.log(aboutItem.value);
+    console.log("Current Locale:", locale.value);
+  } catch (error: any) {
+    console.error("Failed to load about content:", error);
+    if (error.response) {
+      console.error("Error response:", error.response.data);
+      console.error("Error status:", error.response.status);
+    } else if (error.request) {
+      console.error("Error request:", error.request);
+    } else {
+      console.error("Error message:", error.message);
+    }
+  }
+});
+
 </script>
 
 <template>
@@ -37,23 +59,41 @@ const aboutItem = [
   </section>
 
   <section class="about-section">
-    <div class="about-grid" v-for="(item, index) in aboutItem" :key="index">
+    <div class="about-grid" v-for="(item, index) in aboutItem" :key="item.id">
       <template v-if="index % 2 === 0">
         <div class="text-content">
-          <h2 class="item-title">{{ item.title }}</h2>
-          <p class="item-description">{{ item.content }}</p>
+          <h2 class="item-title">
+            {{ item['title_' + locale] || item.title_my }}
+          </h2>
+          <p class="item-description">
+            {{ item['description_' + locale] || item.content_my }}
+          </p>
         </div>
         <div class="image-content">
-          <img src="../public/images/Masjid-Al-Bukhary.png" :alt="item.title" class="image" loading="lazy"/>
+          <img
+              :src="item.about_image"
+              :alt="item.title"
+              class="image"
+              loading="lazy"
+          />
         </div>
       </template>
       <template v-else>
         <div class="image-content">
-          <img src="../public/images/Masjid-Al-Bukhary.png" :alt="item.title" class="image" loading="lazy"/>
+          <img
+              :src="item.about_image"
+              :alt="item.title"
+              class="image"
+              loading="lazy"
+          />
         </div>
         <div class="text-content">
-          <h2 class="item-title">{{ item.title }}</h2>
-          <p class="item-description">{{ item.content }}</p>
+          <h2 class="item-title">
+            {{ item['title_' + locale] || item.title_my }}
+          </h2>
+          <p class="item-description">
+            {{ item['description_' + locale] || item.content_my }}
+          </p>
         </div>
       </template>
     </div>

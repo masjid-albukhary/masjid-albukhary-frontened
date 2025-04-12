@@ -58,12 +58,13 @@ const groupedLinks = computed(() => [
       { link: "/admin/services-overview-dashboard", label: t('admin_sidebar.service_dashboard'), icon: "mdi-clipboard-text-multiple-outline" }
     ]
   },
+
   {
     label: t('admin_sidebar.users_section'),
     icon: "mdi-account-group-outline",
     children: [
-      { link: "/admin/users-dashboard", label: t('admin_sidebar.users_dashboard'), icon: "mdi-account-multiple-outline" },
-      { link: "/admin/register-new-admin", label: t('admin_sidebar.users_form'), icon: "mdi-user-plus-outline" }
+      { link: "/admin/users-overview-dashboard", label: t('admin_sidebar.users_dashboard'), icon: "mdi-account-multiple-outline" },
+      { link: "/admin/user-registration", label: t('admin_sidebar.users_form'), icon: "mdi-user-plus-outline" }
     ]
   },
   {
