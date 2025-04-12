@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AdminHeader from "~/components/AdminHeader.vue";
 import AdminSideBar from "~/components/AdminSideBar.vue";
-import SignUp from "~/components/SignUp.vue";
+import UserSignUp from "~/components/UserSignUp.vue";
 
 definePageMeta({
   middleware: 'auth'
@@ -15,7 +15,7 @@ definePageMeta({
       <AdminSideBar />
     </aside>
     <main class="admin-main">
-      <SignUp />
+      <UserSignUp />
     </main>
   </section>
   <AdminFooter />
