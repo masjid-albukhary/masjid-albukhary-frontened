@@ -243,7 +243,7 @@ const handleSubmit = async () => {
         location.reload();
       }, 2000);
 
-    }, 1000);
+    }, 2000);
 
   } catch (error) {
     console.error('Failed to submit form:', error);
