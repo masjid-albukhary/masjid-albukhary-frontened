@@ -12,7 +12,7 @@ interface VideoDetails {
   name_field: string;
   alert_field: string;
   video_link: string;
-  upload_image: string;
+  gallery_video: string;
 }
 
 const videos = ref<VideoDetails[]>([]);
@@ -80,7 +80,7 @@ function prevPage() {
     <div class="videos-gallery-container" v-if="!isLoading">
       <div class="videos-gallery-item" v-for="video in visibleVideos" :key="video.id">
         <div class="video-container">
-          <img :src="video.upload_image" :alt="video.alert_field" class="video-image"/>
+          <img :src="video.gallery_video" :alt="video.alert_field" class="video-image"/>
 
           <div class="video-details">
             <div class="box-info">

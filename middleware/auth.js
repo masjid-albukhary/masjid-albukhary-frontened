@@ -5,7 +5,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
     const bothThere = token.value && refresh.value;
 
     if (!bothThere && to.path !== '/login') {
-        return navigateTo('/login');
+        return navigateTo('/user-login');
     }
 
     if (token.value && to.path === '/login') {
