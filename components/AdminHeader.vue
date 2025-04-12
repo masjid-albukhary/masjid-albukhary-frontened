@@ -46,7 +46,7 @@ const togglePopup = (type: 'image' | 'video' | 'member' | 'logout') => {
     token.value = null
     refreshToken.value = null
 
-    navigateTo('/login')
+    navigateTo('/user-login')
   }
 
   isLinksVisible.value = false

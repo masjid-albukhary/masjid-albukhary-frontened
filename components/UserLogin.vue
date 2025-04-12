@@ -96,7 +96,7 @@ async function handleSubmit() {
     } catch (error) {
       console.error('Error during login:', error);
       alert('Login failed.');
-      // location.reload();
+      location.reload();
       errorMessage.value = error.response?.data?.message || 'Login failed.';
     }
   }
