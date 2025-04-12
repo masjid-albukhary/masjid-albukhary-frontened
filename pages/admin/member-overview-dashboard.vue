@@ -14,6 +14,7 @@ definePageMeta({
       <AdminSideBar />
     </aside>
     <main class="admin-main">
+      <MembersOverviewDashboard/>
     </main>
   </section>
   <AdminFooter />

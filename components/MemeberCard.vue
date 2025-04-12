@@ -1,64 +1,22 @@
 <script setup lang="ts">
-import {computed, ref} from "vue";
+import {onMounted, ref, computed} from "vue";
+import {useNuxtApp} from "#app";
 import {useI18n} from "vue-i18n";
 
-const { t } = useI18n();
+const {t} = useI18n();
+const {$axios} = useNuxtApp();
+const api = $axios()
 
-const members = [
-  {
-    id: 1,
-    name: "mohammed Salem",
-    role:"Emam",
-    photo:"/images/Team_member_1.png"
-  },
-  {
-    id: 2,
-    name: "mohammed Salem",
-    role:"Emam",
-    photo:"/images/Team_member_2.png"
-  },
-  {
-    id: 3,
-    name: "mohammed Salem",
-    role:"Emam",
-    photo:"/images/Team_member_1.png"
-  },
-  {
-    id: 4,
-    name: "mohammed Salem",
-    role:"Emam",
-    photo:"/images/Team_member_2.png"
-  },
-  {
-    id: 5,
-    name: "mohammed Salem",
-    role:"Emam",
-    photo:"/images/Team_member_1.png"
-  },
-  {
-    id: 6,
-    name: "mohammed Salem",
-    role:"Emam",
-    photo:"/images/Team_member_2.png"
-  },
-  {
-    id: 7,
-    name: "mohammed Salem",
-    role:"Emam",
-    photo:"/images/Team_member_2.png"
-  },
-];
-
+const members = ref<any[]>([]);
 const currentMemberIndex = ref(0);
-
 const itemsPerPage = ref(4);
 
 const visibleMember = computed(() => {
-  return members.slice(currentMemberIndex.value, currentMemberIndex.value + itemsPerPage.value);
+  return members.value.slice(currentMemberIndex.value, currentMemberIndex.value + itemsPerPage.value);
 });
 
 function nextMemberPage() {
-  if (currentMemberIndex.value + itemsPerPage.value < members.length) {
+  if (currentMemberIndex.value + itemsPerPage.value < members.value.length) {
     currentMemberIndex.value += itemsPerPage.value;
   } else {
     currentMemberIndex.value = 0;
@@ -69,10 +27,30 @@ function prevMemberPage() {
   if (currentMemberIndex.value - itemsPerPage.value >= 0) {
     currentMemberIndex.value -= itemsPerPage.value;
   } else {
-    currentMemberIndex.value = members.length - itemsPerPage.value;
+    currentMemberIndex.value = Math.max(members.value.length - itemsPerPage.value, 0);
   }
 }
 
+
+onMounted(async () => {
+  try {
+
+    const response = await api.get("/content_manager/member/");
+    members.value = response.data;
+    console.log(members.value);
+  } catch (error) {
+
+    console.error("Failed to load members:", error);
+    if (error.response) {
+      console.error("Error response:", error.response.data);
+      console.error("Error status:", error.response.status);
+    } else if (error.request) {
+      console.error("Error request:", error.request);
+    } else {
+      console.error("Error message:", error.message);
+    }
+  }
+});
 
 </script>
 
@@ -85,10 +63,10 @@ function prevMemberPage() {
     <div class="members-card-grid">
       <div class="members-card" v-for="member in visibleMember" :key="member.id">
         <div class="members-card-container">
-          <img :src="member.photo" :alt="member.name" class="image" />
+          <img :src="member.photo" :alt="member.name" class="image"/>
           <div class="overlay">
-            <span class="text-role">{{member.name}}</span>
-            <span class="text">{{member.role}}</span>
+            <span class="text-role">{{ member.name }}</span>
+            <span class="text">{{ member.role }}</span>
           </div>
         </div>
       </div>
@@ -104,6 +82,7 @@ function prevMemberPage() {
     </div>
   </section>
 </template>
+
 
 <style scoped>
 @keyframes fadeIn {
@@ -173,14 +152,18 @@ function prevMemberPage() {
 
 .members-card-container {
   position: relative;
-  width: 100%;
-  max-width: 300px;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 50%;
+  margin: 0 auto;
 }
 
 .image {
-  display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .overlay {
