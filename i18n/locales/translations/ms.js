@@ -123,6 +123,10 @@ export default {
     },
     activities: {
         title: "Aktiviti",
+        view_details:"Lihat Butiran",
+        date: "Tarikh",
+        location: "Lokasi",
+        participants: "Anggaran Peserta"
     },
     donation: {
         title: "Imbas Kod QR kami untuk menyokong aktiviti dan projek Masjid kami\n",

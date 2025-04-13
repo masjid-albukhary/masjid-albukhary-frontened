@@ -1,173 +1,44 @@
 <script setup lang="ts">
-import {computed, ref} from "vue";
-import {useI18n} from 'vue-i18n';
+import {computed, onMounted, ref} from "vue";
+import {useI18n} from "vue-i18n";
+import {useNuxtApp} from "#app";
 
-const {t} = useI18n();
-
-const Activity = ref<{
+interface Activity {
   id: number;
-  name: string;
-  description: string;
-  activity_type: string;
-  src: string;
-  alt: string;
-  date: string;
-  url: string | null;
-  location: string;
+  title_en: string;
+  title_my: string;
+  description_en: string;
+  description_my: string;
+  summary_content_en: string;
+  summary_content_my: string;
+  activity_date: string | null;
   time: string;
+  activity_type: string | null;
+  activity_status: string | null;
+  location: string;
   target_audience: string;
-  estimated_participants: number;
-  price: number;
-  amenities: string[];
-  bookingUrl: string;
-  activity_status: string;
-} | null>(null);
+  poster: string | null;
+  estimated_participants: number | null;
+  [key: string]: any;
 
-const activities = [
-  {
-    id: 1,
-    name: "Quran Recitation Competition",
-    description: "An annual competition where participants showcase their Quran recitation skills.",
-    activity_type: "Religious Event",
-    src: "/images/masjid-about-bg.png",
-    alt: "Quran Recitation Competition",
-    target_audience: "Children & Adults",
-    bookingUrl: "https://www.example.com/quran-competition",
-    location: "Masjid Al-Noor, Main Prayer Hall",
-    estimated_participants: 100,
-    price: 0,
-    date: "2024-11-15",
-    time: "10:00 AM - 2:00 PM",
-    amenities: ["Prayer Mats", "Sound System", "Seating Area"],
-    contact: { phone: "+60123456789", email: "events@masjid.com" },
-    tags: ["quran", "recitation", "competition", "islamic"],
-    activity_status: "Upcoming",
-  },
-  {
-    id: 2,
-    name: "Islamic Parenting Workshop",
-    description: "A workshop focused on raising children with Islamic values in a modern world.",
-    activity_type: "Educational Seminar",
-    src: "/images/masjid-about-bg.png",
-    alt: "Islamic Parenting Workshop",
-    target_audience: "Parents & Guardians",
-    bookingUrl: "https://www.example.com/parenting-workshop",
-    location: "Masjid Al-Falah, Community Hall",
-    estimated_participants: 80,
-    price: 10,
-    date: "2024-10-05",
-    time: "2:00 PM - 5:00 PM",
-    amenities: ["Projector", "Refreshments", "Childcare Area"],
-    contact: { phone: "+60987654321", email: "info@masjid.com" },
-    tags: ["parenting", "education", "family", "workshop"],
-    activity_status: "Open for Registration",
-  },
-  {
-    id: 3,
-    name: "Weekly Tafsir Class",
-    description: "An in-depth weekly study session on the meaning of the Quran.",
-    activity_type: "Religious Class",
-    src: "/images/masjid-about-bg.png",
-    alt: "Tafsir Class",
-    target_audience: "General Public",
-    bookingUrl: "https://www.example.com/tafsir-class",
-    location: "Masjid An-Nur, Lecture Room 2",
-    estimated_participants: 50,
-    price: 0,
-    date: "Every Friday",
-    time: "7:30 PM - 9:00 PM",
-    amenities: ["Wi-Fi", "Books & Materials", "Tea & Coffee"],
-    contact: { phone: "+6045678912", email: "classes@masjid.com" },
-    tags: ["tafsir", "quran", "study", "religious"],
-    activity_status: "Ongoing",
-  },
-  {
-    id: 4,
-    name: "Ramadan Iftar Program",
-    description: "A community event providing free iftar meals for those breaking their fast.",
-    activity_type: "Charity Event",
-    src: "/images/masjid-about-bg.png",
-    alt: "Ramadan Iftar Program",
-    target_audience: "Everyone",
-    bookingUrl: "https://www.example.com/ramadan-iftar",
-    location: "Masjid Al-Rahman, Open Courtyard",
-    estimated_participants: 300,
-    price: 0,
-    date: "2024-03-20 to 2024-04-19",
-    time: "Maghrib Time",
-    amenities: ["Food & Drinks", "Seating Area", "Volunteer Assistance"],
-    contact: { phone: "+60311223344", email: "iftar@masjid.com" },
-    tags: ["ramadan", "iftar", "charity", "community"],
-    activity_status: "Planned",
-  },
-  {
-    id: 5,
-    name: "Masjid Clean-Up Drive",
-    description: "A volunteer-driven event to clean and beautify the masjid premises.",
-    activity_type: "Community Service",
-    src: "/images/masjid-about-bg.png",
-    alt: "Masjid Clean-Up Drive",
-    target_audience: "Volunteers",
-    bookingUrl: "https://www.example.com/clean-up-drive",
-    location: "Masjid Al-Huda, Entire Premises",
-    estimated_participants: 50,
-    price: 0,
-    date: "2024-08-10",
-    time: "8:00 AM - 12:00 PM",
-    amenities: ["Cleaning Supplies", "Refreshments", "Safety Gear"],
-    contact: { phone: "+60155667788", email: "volunteer@masjid.com" },
-    tags: ["community", "cleaning", "volunteer", "service"],
-    activity_status: "Upcoming",
-  },
-  {
-    id:6,
-    name: "Ramadan Iftar Program",
-    description: "A community event providing free iftar meals for those breaking their fast.",
-    activity_type: "Charity Event",
-    src: "/images/masjid-about-bg.png",
-    alt: "Ramadan Iftar Program",
-    target_audience: "Everyone",
-    bookingUrl: "https://www.example.com/ramadan-iftar",
-    location: "Masjid Al-Rahman, Open Courtyard",
-    estimated_participants: 300,
-    price: 0,
-    date: "2024-03-20 to 2024-04-19",
-    time: "Maghrib Time",
-    amenities: ["Food & Drinks", "Seating Area", "Volunteer Assistance"],
-    contact: { phone: "+60311223344", email: "iftar@masjid.com" },
-    tags: ["ramadan", "iftar", "charity", "community"],
-    activity_status: "Planned",
-  },
-  {
-    id: 7,
-    name: "Masjid Clean-Up Drive",
-    description: "A volunteer-driven event to clean and beautify the masjid premises.",
-    activity_type: "Community Service",
-    src: "/images/masjid-about-bg.png",
-    alt: "Masjid Clean-Up Drive",
-    target_audience: "Volunteers",
-    bookingUrl: "https://www.example.com/clean-up-drive",
-    location: "Masjid Al-Huda, Entire Premises",
-    estimated_participants: 50,
-    price: 0,
-    date: "2024-08-10",
-    time: "8:00 AM - 12:00 PM",
-    amenities: ["Cleaning Supplies", "Refreshments", "Safety Gear"],
-    contact: { phone: "+60155667788", email: "volunteer@masjid.com" },
-    tags: ["community", "cleaning", "volunteer", "service"],
-    activity_status: "Upcoming",
-  },
-];
+}
+
+const {locale, t} = useI18n();
+const {$axios} = useNuxtApp();
+
+const api = $axios()
+
+const activities = ref<Activity[]>([]);
 
 const currentIndex = ref(0);
 const itemsPerPage = ref(6);
 
 const visibleActivities = computed(() => {
-  return activities.slice(currentIndex.value, currentIndex.value + itemsPerPage.value);
+  return activities.value.slice(currentIndex.value, currentIndex.value + itemsPerPage.value);
 });
 
 function nextPage() {
-  if (currentIndex.value + itemsPerPage.value < activities.length) {
+  if (currentIndex.value + itemsPerPage.value < activities.value.length) {
     currentIndex.value += itemsPerPage.value;
   } else {
     currentIndex.value = 0;
@@ -178,36 +49,93 @@ function prevPage() {
   if (currentIndex.value - itemsPerPage.value >= 0) {
     currentIndex.value -= itemsPerPage.value;
   } else {
-    currentIndex.value = activities.length - itemsPerPage.value;
+    currentIndex.value = activities.value.length - itemsPerPage.value;
   }
 }
+
+onMounted(async () => {
+  try {
+    const response = await api.get("/content_manager/activities/");
+    activities.value = response.data;
+
+    console.log(activities.value);
+    console.log("Current Locale:", locale.value);
+  } catch (error: any) {
+    console.error("Failed to load about content:", error);
+    if (error.response) {
+      console.error("Error response:", error.response.data);
+      console.error("Error status:", error.response.status);
+    } else if (error.request) {
+      console.error("Error request:", error.request);
+    } else {
+      console.error("Error message:", error.message);
+    }
+  }
+});
+
 
 </script>
 
 <template>
-
   <section class="activities">
-
     <h1 class="title">
-
       {{ t('activities.title') }}
-
     </h1>
 
-    <div class="activities-container">
-      <div class="card" v-for="activities in visibleActivities" :key="activities.id">
-        <img
-            :src="activities.src"
-            :alt="activities.alt"
-            class="card-activities"
-        />
-        <div class="overlay">
-          <UIcon name="mdi-newspaper" class="activities-icon"/>
-          <NuxtLink :to="`/activities/${activities.id}`" class="activities-title">
-            <UIcon name="mdi-information-outline"/>
-            Learn More
-          </NuxtLink>
+    <div class="activities-card-container">
+      <div
+          class="activity-card"
+          v-for="activities in visibleActivities"
+          :key="activities.id"
+      >
+        <div class="activity-card_header">
+          <div class="activity-card_title">
+            {{ activities['title_' + locale] || activities.title_en }}
+          </div>
+        </div>
+        <div class="activity-card_body">
+          <div class="activity-card_image">
+            <img
+                :src="activities.poster"
+                :alt="activities.title_my"
+                class="card-activities"
+                loading="lazy"
+            />
+          </div>
+          <div class="activity-card_description">
+            {{ activities['summary_content_' + locale] || activities.summary_content_en }}
+          </div>
+          <div class="activity-info">
 
+            <div class="box">
+              <span><UIcon name="mdi-calendar" class="activity-info-icon" /></span>
+              <span>
+                {{ t("activities.date") }} : {{ activities.activity_date }}
+              </span>
+            </div>
+
+            <div class="box">
+              <span><UIcon name="mdi-map-marker" class="activity-info-icon" /></span>
+              <span>
+                {{ t("activities.location") }} : {{ activities.location }}
+              </span>
+            </div>
+
+            <div class="box">
+              <span><UIcon name="mdi-account-group" class="activity-info-icon" /></span>
+              <span>
+                {{ t("activities.participants") }} : {{ activities.estimated_participants }}
+              </span>
+            </div>
+
+          </div>
+        </div>
+        <div class="activity-card-footer">
+          <div class="activity-btn">
+            <NuxtLink :to="`/activities/${activities.id}`">
+              {{t('activities.view_details')}}
+            </NuxtLink>
+          </div>
         </div>
       </div>
     </div>
@@ -219,120 +147,196 @@ function prevPage() {
       <button @click="nextPage" class="nav-button">
         <UIcon name="mdi-arrow-right-circle"/>
       </button>
-
     </div>
   </section>
 </template>
 
 <style scoped>
-
 section {
   width: 100%;
+  max-width: 1440px;
   padding: 3rem 1rem;
   text-align: center;
   margin: 0 auto;
 }
 
-section .title {
-  align-items: center;
-  font-size: 2rem;
+.title {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
   color: var(--primary-color);
-  margin: 0 2rem 3rem 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
 }
 
 .activities {
-  padding: 1.5rem;
-  text-align: start;
+  padding: 1rem;
 }
 
-.activities-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+.activities-card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  padding: 1rem;
+  margin: 0 auto;
 }
 
-.card {
-  flex: 1 1 calc(33.33% - 1rem);
-  max-width: 400px;
-  position: relative;
-  height: 250px;
+.activity-card {
   overflow: hidden;
-  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 2px solid var(--bg-color);
+}
+
+.activity-card_header {
+  padding: 1.25rem 1.25rem 0.75rem;
+  border-bottom: 2px solid var(--bg-color);
+}
+
+.activity-card_title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  line-height: 1.3;
+  overflow: hidden;
+}
+
+.activity-card_body {
+  padding: 1rem 1.25rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.activity-card_image {
+  margin-bottom: 1rem;
+  overflow: hidden;
 }
 
 .card-activities {
   width: 100%;
-  height: 100%;
-  transition: transform 0.3s ease-in-out;
+  height: 180px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+.activity-card_description {
+  font-size: 0.875rem;
+  color: var(--text-hover);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  font-weight: bold;
+  flex-grow: 1;
+}
+
+.activity-info {
+  display: block;
+  align-items: start;
+  text-align: start;
+}
+
+.activity-info div {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
+  align-items: space-around;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem ;
+  span:first-of-type {
+    margin-right: .5rem;
+  }
 }
 
-.card:hover .overlay {
-  opacity: 1;
+.activity-btn a {
+  display: inline-block;
+  width: 90%;
+  margin: 1rem auto;
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-color);
+  background-color: var(--primary-color);
+  padding: 0.625rem 1rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
 }
 
-.activities-icon {
-  font-size: 3rem;
-  color: white;
-}
-
-.activities-title {
-  color: white;
-  font-size: 1.2rem;
-  margin-top: 10px;
+.activity-btn a:hover {
+  background-color: var(--secondary-color);
+  color: var(--text-hover);
 }
 
 .buttons {
   display: flex;
   justify-content: center;
-  margin-top: 1.5rem;
-  gap: 2rem;
+  margin-top: 3rem;
+  gap: 1.5rem;
 }
 
 .nav-button {
-  padding: 0.5rem 1rem;
-  font-size: 1.5rem;
+  padding: 0.5rem;
+  font-size: 2rem;
   color: var(--primary-color);
+  background: transparent;
   border: none;
   outline: none;
-  border-radius: 1rem;
   cursor: pointer;
-  transition: color 0.3s ease-in-out;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .nav-button:hover {
   color: var(--secondary-color);
+  transform: scale(1.1);
+}
+
+@media (max-width: 1024px) {
+  .activities-card-container {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
 }
 
 @media (max-width: 768px) {
-  .card {
-    flex: 1 1 calc(50% - 1rem);
+  section {
+    padding: 2rem 1rem;
+  }
+
+  .activities-card-container {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.25rem;
+    padding: 0.5rem;
+  }
+
+  .activity-card_header {
+    padding: 1rem 1rem 0.5rem;
+  }
+
+  .activity-card_body {
+    padding: 0.75rem 1rem;
   }
 }
 
 @media (max-width: 480px) {
-  .card {
-    flex: 1 1 100%;
+  .title {
+    margin-bottom: 1.5rem;
+  }
+
+  .activities-card-container {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .buttons {
+    margin-top: 2rem;
+    gap: 1rem;
+  }
+
+  .nav-button {
+    font-size: 1.75rem;
   }
 }
-
-
-.activities {
-  background: var(--bg-color);
-}
-
 </style>

@@ -153,6 +153,10 @@ export default {
     },
     activities: {
         title: "Activities",
+        view_details:"View Details",
+        date: "Date",
+        location: "Location",
+        participants: "Estimated Participants",
     },
     facilities: {
         title: "Our Facilities",
