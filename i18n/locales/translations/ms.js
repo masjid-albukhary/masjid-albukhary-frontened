@@ -160,7 +160,8 @@ export default {
             title: "Tempah Tempat Perkahwinan/Upacara Anda",
             description: "Sila isi borang di bawah untuk melengkapkan tempahan anda. Kami menggalakkan anda untuk membaca terma dan syarat yang ditetapkan di sini sebelum menghantar borang.",
             button: "Daftar Minat Anda",
-        }
+        },
+        learn_more: "belajar lagi"
     },
 
     // admin side

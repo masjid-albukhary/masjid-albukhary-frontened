@@ -3,6 +3,9 @@ import {reactive, ref, watch} from 'vue';
 import {z} from 'zod';
 
 import { useI18n } from 'vue-i18n'
+import {useNuxtApp} from "#app";
+
+console.log('Initializing facility form component');
 
 const { t } = useI18n()
 
@@ -12,21 +15,21 @@ const facilityQuestions = [
     type: "text",
     placeholder: t('facility_form.placeholder.facility_name_en'),
     required: true,
-    id: "facility_name_en",
+    id: "name_en",
   },
   {
     label: t('facility_form.label.facility_name_my'),
     type: "text",
     placeholder: t('facility_form.placeholder.facility_name_my'),
     required: true,
-    id: "facility_name_my",
+    id: "name_my",
   },
   {
     label: t('facility_form.label.facility_category'),
     type: "select",
     placeholder: t('facility_form.placeholder.facility_category'),
     required: true,
-    id: "facility_category",
+    id: "category",
     options: [
       {value: "wedding_hall" , label: "Wedding Hall"},
       {value: "education" , label: "Education"},
@@ -37,107 +40,111 @@ const facilityQuestions = [
     ]
   },
   {
-    label: t('facility_form.label.location'),
+    label: t('facility_form.label.facility_location'),
     type: "text",
-    placeholder: t('facility_form.placeholder.location'),
+    placeholder: t('facility_form.placeholder.facility_location'),
     required: true,
-    id: "facility_location",
+    id: "location",
   },
   {
     label: t('facility_form.label.facility_description_en'),
     type: "textarea",
     placeholder: t('facility_form.placeholder.facility_description_en'),
     required: true,
-    id: "facility_description_en",
+    id: "description_en",
   },
   {
     label: t('facility_form.label.facility_description_my'),
     type: "textarea",
     placeholder: t('facility_form.placeholder.facility_description_my'),
     required: true,
-    id: "facility_description_my",
+    id: "description_my",
   },
   {
     label: t('facility_form.label.facility_features_en'),
     type: "textarea",
     placeholder: t('facility_form.placeholder.facility_features_en'),
-    required: false,
-    id: "facility_features_en",
+    required: true,
+    id: "features_en",
   },
   {
     label: t('facility_form.label.facility_features_my'),
     type: "textarea",
     placeholder: t('facility_form.placeholder.facility_features_my'),
-    required: false,
-    id: "facility_features_my",
+    required: true,
+    id: "features_my",
   },
   {
-    label: t('facility_form.label.capacity'),
+    label: t('facility_form.label.facility_capacity'),
     type: "number",
-    placeholder: t('facility_form.placeholder.capacity'),
+    placeholder: t('facility_form.placeholder.facility_capacity'),
     required: true,
-    id: "facility_capacity",
+    id: "capacity",
   },
   {
     label: t('facility_form.label.facility_price'),
     type: "number",
     placeholder: t('facility_form.placeholder.facility_price'),
     required: true,
-    id: "facility_price",
+    id: "price",
   },
   {
     label: t('facility_form.label.facility_photo'),
     type: "file",
     placeholder: t('facility_form.placeholder.facility_photo'),
     required: true,
-    id: "facility_photo",
+    id: "photo",
   },
 ]
 
+console.log('Facility questions initialized:', facilityQuestions);
+
 const formSchema = z.object({
-  facility_name_en: z
+  name_en: z
       .string()
       .min(5, 'Facility Name must be at least 5 characters long'),
 
-  facility_name_my: z
+  name_my: z
       .string()
       .min(5, 'Facility Name must be at least 5 characters long'),
 
-  facility_category: z
+  category: z
       .string()
       .min(3, 'Facility Type is required'),
 
-  facility_features_en: z
+  features_en: z
       .string()
       .min(30, 'Description must be at least 30 characters long'),
 
-  facility_features_my: z
+  features_my: z
       .string()
       .min(30, 'Description must be at least 30 characters long'),
 
-  facility_description_en: z
+  description_en: z
       .string()
       .min(30, 'Description must be at least 30 characters long'),
 
-  facility_description_my: z
+  description_my: z
       .string()
       .min(30, 'Description must be at least 30 characters long'),
 
-  facility_location: z
+  location: z
       .string()
       .min(5, 'Location must be at least 5 characters long'),
 
-  facility_photo: z.any().optional(),
-
-  facility_capacity: z
+  capacity: z
       .number()
       .min(1, 'Capacity must be at least 1'),
 
-  price_capacity: z
+  price: z
       .number()
       .min(1, 'Capacity must be at least 1'),
+
+  photo: z.any().optional(),
 
 });
+
+console.log('Form schema initialized');
 
 const form = reactive({});
 const errors = reactive({});
@@ -147,10 +154,14 @@ facilityQuestions.forEach((question) => {
   errors[question.id] = "";
 });
 
+console.log('Form and errors objects initialized:', {form, errors});
+
 function validateField(field) {
+  console.log(`Validating field: ${field}`, form[field]);
   try {
     formSchema.shape[field].parse(form[field]);
     errors[field] = "";
+    console.log(`Validation passed for field: ${field}`);
   } catch (error) {
     console.error(`Validation failed for field: ${field}`, error);
     errors[field] = error.errors ? error.errors[0].message : error.message;
@@ -158,37 +169,102 @@ function validateField(field) {
 }
 
 facilityQuestions.forEach((question) => {
-  watch(() => form[question.id], () => validateField(question.id));
+  watch(() => form[question.id], () => {
+    console.log(`Field ${question.id} changed to:`, form[question.id]);
+    validateField(question.id);
+  });
 });
 
-const image = ref(null);
+const {$axios} = useNuxtApp();
+const api = $axios()
+
+console.log('Axios instance initialized');
+
+const photo = ref(null);
 
 const handleFileUpload = (event, inputDetails) => {
   if (inputDetails.type !== 'file') {
     return;
   }
-  image.value = event.target.files[0];
+  console.log('File upload event:', event);
+  photo.value = event.target.files[0];
+  console.log('Selected file:', photo.value);
 };
 
-async function handleSubmit() {
-  form.Date = new Date().toLocaleDateString("en-GB");
+const handleSubmit = async () => {
+  console.log('Form submission started');
+  form.Date = new Date().toLocaleDateString('en-GB');
+
+  const originalFeaturesEn = form.features_en;
+  const originalFeaturesMy = form.features_my;
+
+  const featuresEnArray = form.features_en.trim().split("\n").filter(Boolean);
+  const featuresMyArray = form.features_my.trim().split("\n").filter(Boolean);
+
+  console.log('Processed features_en:', featuresEnArray);
+  console.log('Processed features_my:', featuresMyArray);
 
   const validationResults = formSchema.safeParse(form);
+  console.log('Form validation results:', validationResults);
 
   if (!validationResults.success) {
     console.log('Validation Errors:', validationResults.error.errors);
-    alert("Please correct the errors in the form.");
+    alert('Please correct the errors in the form.');
     return;
   }
 
-  alert("Form Submitted Successfully.");
-  // location.reload();
+  const formData = new FormData();
 
-  // If validation is successful
-  console.log("Form Submitted Successfully:", form);
+  formData.append('name_en', form.name_en);
+  formData.append('name_my', form.name_my);
+  formData.append('category', form.category);
+  formData.append('location', form.location);
+  formData.append('description_en', form.description_en);
+  formData.append('description_my', form.description_my);
+
+  formData.append('features_en', JSON.stringify(featuresEnArray));
+  formData.append('features_my', JSON.stringify(featuresMyArray));
+
+  formData.append('capacity', form.capacity);
+  formData.append('price', form.price);
+
+  if (photo.value) {
+    formData.append('photo', photo.value);
+  }
+
+  for (let [key, value] of formData.entries()) {
+    console.log(`${key}:`, value);
+  }
+
+  try {
+    console.log('Sending form data to server...');
+    const response = await api.post('/service_facility_management/facilities/', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    console.log('Server response:', response);
+
+    setTimeout(() => {
+      alert('Facility Form successfully sent to server ');
+
+      setTimeout(() => {
+        console.log('Reloading page...');
+        location.reload();
+      }, 1000);
+
+    }, 1000);
+
+  } catch (error) {
+    console.error('Failed to submit form:', error);
+    if (error.response) {
+      console.error('Server responded with:', error.response.data);
+    }
+    alert('An error occurred while submitting the form.');
+  }
 }
 </script>
-
 <template>
   <section class="facility-form-section">
     <div class="container">

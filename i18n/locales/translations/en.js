@@ -162,6 +162,7 @@ export default {
             description:"Please fill in the form below to complete your booking. We encourage you to read the stipulated terms and conditions here before submitting the form.",
             button: "Register your Interest",
         },
+        learn_more:"Learn More",
 
     },
 
@@ -280,7 +281,7 @@ export default {
             facility_category: "Facility Type / Category",
             facility_description_en: "Facility Description (English)",
             facility_description_my: "Facility Description (Bahasa Melayu)",
-            location: "Location / Block Name",
+            facility_location: "Location",
             facility_photo: "Facility Photos",
             facility_capacity: "Maximum Capacity",
             facility_price: "Price",
