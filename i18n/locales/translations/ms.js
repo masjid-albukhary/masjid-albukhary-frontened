@@ -126,7 +126,11 @@ export default {
         view_details:"Lihat Butiran",
         date: "Tarikh",
         location: "Lokasi",
-        participants: "Anggaran Peserta"
+        participants: "Anggaran Peserta",
+        time: "Masa",
+        type: "Jenis Aktiviti",
+        status: "Status",
+        target_audience: "Sasaran Audiens",
     },
     donation: {
         title: "Imbas Kod QR kami untuk menyokong aktiviti dan projek Masjid kami\n",

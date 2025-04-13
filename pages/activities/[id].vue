@@ -1,247 +1,211 @@
 <script setup lang="ts">
-import {useRoute} from "vue-router";
-import {ref, onMounted} from "vue";
+import {useI18n} from 'vue-i18n'
+import {ref, onMounted, computed} from 'vue'
+import {useRoute} from 'vue-router'
+import {useNuxtApp} from '#app'
 
-const {t} = useI18n();
-const route = useRoute();
+const {locale, t} = useI18n()
+const route = useRoute()
+const {$axios} = useNuxtApp()
+const api = $axios()
 
-const Activity = ref<{
+interface Activity {
   id: number;
-  name: string;
-  description: string;
-  activity_type: string;
-  src: string;
-  alt: string;
-  date: string;
-  url: string | null;
-  location: string;
+  title_en: string;
+  title_my: string;
+  summary_content_en: string;
+  summary_content_my: string;
+  description_en: string;
+  description_my: string;
+  activity_date: string | null;
   time: string;
+  activity_type: string | null;
+  activity_status: string | null;
+  location: string;
   target_audience: string;
-  estimated_participants: number;
-  price: number;
-  amenities: string[];
-  bookingUrl: string;
-  activity_status: string;
-} | null>(null);
+  poster: string | null;
+  estimated_participants: number | null;
 
-const activities = [
-  {
-    id: 1,
-    name: "Quran Recitation Competition",
-    description: "An annual competition where participants showcase their Quran recitation skills.",
-    activity_type: "Religious Event",
-    src: "/images/masjid-about-bg.png",
-    alt: "Quran Recitation Competition",
-    target_audience: "Children & Adults",
-    bookingUrl: "https://www.example.com/quran-competition",
-    location: "Masjid Al-Noor, Main Prayer Hall",
-    estimated_participants: 100,
-    price: 0,
-    date: "2024-11-15",
-    time: "10:00 AM - 2:00 PM",
-    amenities: ["Prayer Mats", "Sound System", "Seating Area"],
-    contact: { phone: "+60123456789", email: "events@masjid.com" },
-    tags: ["quran", "recitation", "competition", "islamic"],
-    activity_status: "Upcoming",
-  },
-  {
-    id: 2,
-    name: "Islamic Parenting Workshop",
-    description: "A workshop focused on raising children with Islamic values in a modern world.",
-    activity_type: "Educational Seminar",
-    src: "/images/masjid-about-bg.png",
-    alt: "Islamic Parenting Workshop",
-    target_audience: "Parents & Guardians",
-    bookingUrl: "https://www.example.com/parenting-workshop",
-    location: "Masjid Al-Falah, Community Hall",
-    estimated_participants: 80,
-    price: 10,
-    date: "2024-10-05",
-    time: "2:00 PM - 5:00 PM",
-    amenities: ["Projector", "Refreshments", "Childcare Area"],
-    contact: { phone: "+60987654321", email: "info@masjid.com" },
-    tags: ["parenting", "education", "family", "workshop"],
-    activity_status: "Open for Registration",
-  },
-  {
-    id: 3,
-    name: "Weekly Tafsir Class",
-    description: "An in-depth weekly study session on the meaning of the Quran.",
-    activity_type: "Religious Class",
-    src: "/images/masjid-about-bg.png",
-    alt: "Tafsir Class",
-    target_audience: "General Public",
-    bookingUrl: "https://www.example.com/tafsir-class",
-    location: "Masjid An-Nur, Lecture Room 2",
-    estimated_participants: 50,
-    price: 0,
-    date: "Every Friday",
-    time: "7:30 PM - 9:00 PM",
-    amenities: ["Wi-Fi", "Books & Materials", "Tea & Coffee"],
-    contact: { phone: "+6045678912", email: "classes@masjid.com" },
-    tags: ["tafsir", "quran", "study", "religious"],
-    activity_status: "Ongoing",
-  },
-  {
-    id: 4,
-    name: "Ramadan Iftar Program",
-    description: "A community event providing free iftar meals for those breaking their fast.",
-    activity_type: "Charity Event",
-    src: "/images/masjid-about-bg.png",
-    alt: "Ramadan Iftar Program",
-    target_audience: "Everyone",
-    bookingUrl: "https://www.example.com/ramadan-iftar",
-    location: "Masjid Al-Rahman, Open Courtyard",
-    estimated_participants: 300,
-    price: 0,
-    date: "2024-03-20 to 2024-04-19",
-    time: "Maghrib Time",
-    amenities: ["Food & Drinks", "Seating Area", "Volunteer Assistance"],
-    contact: { phone: "+60311223344", email: "iftar@masjid.com" },
-    tags: ["ramadan", "iftar", "charity", "community"],
-    activity_status: "Planned",
-  },
-  {
-    id: 5,
-    name: "Masjid Clean-Up Drive",
-    description: "A volunteer-driven event to clean and beautify the masjid premises.",
-    activity_type: "Community Service",
-    src: "/images/masjid-about-bg.png",
-    alt: "Masjid Clean-Up Drive",
-    target_audience: "Volunteers",
-    bookingUrl: "https://www.example.com/clean-up-drive",
-    location: "Masjid Al-Huda, Entire Premises",
-    estimated_participants: 50,
-    price: 0,
-    date: "2024-08-10",
-    time: "8:00 AM - 12:00 PM",
-    amenities: ["Cleaning Supplies", "Refreshments", "Safety Gear"],
-    contact: { phone: "+60155667788", email: "volunteer@masjid.com" },
-    tags: ["community", "cleaning", "volunteer", "service"],
-    activity_status: "Upcoming",
-  },
-  {
-    id:6,
-    name: "Ramadan Iftar Program",
-    description: "A community event providing free iftar meals for those breaking their fast.",
-    activity_type: "Charity Event",
-    src: "/images/masjid-about-bg.png",
-    alt: "Ramadan Iftar Program",
-    target_audience: "Everyone",
-    bookingUrl: "https://www.example.com/ramadan-iftar",
-    location: "Masjid Al-Rahman, Open Courtyard",
-    estimated_participants: 300,
-    price: 0,
-    date: "2024-03-20 to 2024-04-19",
-    time: "Maghrib Time",
-    amenities: ["Food & Drinks", "Seating Area", "Volunteer Assistance"],
-    contact: { phone: "+60311223344", email: "iftar@masjid.com" },
-    tags: ["ramadan", "iftar", "charity", "community"],
-    activity_status: "Planned",
-  },
-  {
-    id: 7,
-    name: "Masjid Clean-Up Drive",
-    description: "A volunteer-driven event to clean and beautify the masjid premises.",
-    activity_type: "Community Service",
-    src: "/images/masjid-about-bg.png",
-    alt: "Masjid Clean-Up Drive",
-    target_audience: "Volunteers",
-    bookingUrl: "https://www.example.com/clean-up-drive",
-    location: "Masjid Al-Huda, Entire Premises",
-    estimated_participants: 50,
-    price: 0,
-    date: "2024-08-10",
-    time: "8:00 AM - 12:00 PM",
-    amenities: ["Cleaning Supplies", "Refreshments", "Safety Gear"],
-    contact: { phone: "+60155667788", email: "volunteer@masjid.com" },
-    tags: ["community", "cleaning", "volunteer", "service"],
-    activity_status: "Upcoming",
-  },
-];
+  [key: string]: any;
 
-onMounted(() => {
-  const id = Number(route.params.id);
-  Activity.value = activities.find((item) => item.id === id) || null;
-});
+}
 
+const currentActivity = ref<Activity | null>(null)
+const allActivities = ref<Activity[]>([])
+const isLoading = ref(true)
+const error = ref<string | null>(null)
+
+const latestActivities = computed(() => {
+  if (!allActivities.value.length) return []
+
+  return allActivities.value
+      .filter(f => currentActivity.value ? f.id !== currentActivity.value.id : true)
+      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+      .slice(0, 5)
+})
+const featuresList = computed(() => {
+  if (!currentActivity.value) return []
+  return currentActivity.value[`features_${locale.value}`] || currentActivity.value.features_my || []
+})
+
+onMounted(async () => {
+  try {
+    console.log('Fetching activity data...')
+    const response = await api.get(`/content_manager/activities/${route.params.id}`)
+
+    const activitiesResponse = await api.get('/content_manager/activities/')
+    allActivities.value = activitiesResponse.data
+
+    console.log('API response:', response.data)
+    currentActivity.value = response.data
+    isLoading.value = false
+  } catch (err: any) {
+    console.error('Error fetching activity:', err)
+    isLoading.value = false
+    error.value = err.message || "Failed to load activity data"
+  }
+})
 </script>
 
 <template>
   <Header/>
+  <section class="activity-detail">
+    <div v-if="isLoading" class="loading">
+      <p>Loading activity information...</p>
+    </div>
 
-  <section class="activities-details" v-if="Activity">
-    <div class="activities-container">
-      <div class="activities-content">
+    <div v-else-if="error" class="error">
+      <p>Error loading activity: {{ error }}</p>
+    </div>
 
-        <h1 class="activities-title">{{ Activity.name }}</h1>
+    <div v-else-if="currentActivity" class="activity-content-container">
 
-        <img :src="Activity.src" :alt="Activity.alt" class="activities-image"/>
+      <div class="activity-content">
 
-        <div class="activities-meta">
+        <h1 class="activity-title">{{ currentActivity[`title_${locale}`] || currentActivity.title_en }}</h1>
 
-          <p>
-            <UIcon name="mdi-tag" class="activities-icon"/>
-            <span>Category:</span> {{ Activity.activity_type }}
-          </p>
-
-          <p>
-            <UIcon name="mdi-text-box-outline" class="activities-icon"/>
-            <span>Description:</span> {{ Activity.description }}
-          </p>
-
-          <p>
-            <UIcon name="mdi-map-marker" class="activities-icon"/>
-            <span>Location:</span> {{ Activity.location }}
-          </p>
-
-          <p>
-            <UIcon name="mdi-clock-time-four-outline" class="activities-icon"/>
-            <span>Time:</span> {{ Activity.time }}
-          </p>
-
-          <p>
-            <UIcon name="mdi-account-group-outline" class="activities-icon"/>
-            <span>Capacity:</span> {{ Activity.estimated_participants }} people
-          </p>
-
-          <p>
-            <UIcon name="mdi-cash-multiple" class="activities-icon"/>
-            <span>Price:</span> {{ Activity.price }} per hour
-          </p>
-
-          <p>
-            <UIcon name="mdi-calendar" class="activities-icon"/>
-            <span>Date:</span> {{ Activity.date }}
-          </p>
-
-
+        <div class="activity-image">
+          <img :src="currentActivity.poster" :alt="currentActivity[`title_${locale}`] || currentActivity.title_en"
+               class="main-image">
         </div>
 
-        <div class="amenities">
+        <div class="activity-info">
 
-          <h2 class="amenities-title">{{ t('facilities.amenities') }}</h2>
+          <div class="description">
 
-          <ul>
-            <li v-for="amenity in Activity.amenities" :key="amenity">
-              <UIcon name="mdi-checkbox-marked-circle-outline" class="activities-icon"/>
-              {{ amenity }}
-            </li>
-          </ul>
+            <h5 class="summary_content">
+              {{ currentActivity[`summary_content_${locale}`] || currentActivity.summary_content_en }}
+            </h5>
 
+            <p class="description_content">{{
+                currentActivity[`description_${locale}`] || currentActivity.description_my
+              }}
+            </p>
+
+          </div>
+
+          <div class="meta-info">
+
+            <span>
+              <UIcon name="mdi-calendar" class="activity-info-icon"/>
+              {{ t("activities.date") }} : {{ currentActivity.activity_date }}
+            </span>
+
+            <span>
+              <UIcon name="mdi-clock-time-four-outline" class="activity-info-icon"/>
+              {{ t("activities.time") }} : {{ currentActivity.time }}
+            </span>
+
+            <span>
+              <UIcon name="mdi-tag-multiple" class="activity-info-icon"/>
+              {{ t("activities.type") }} : {{ currentActivity.activity_type }}
+            </span>
+
+            <span>
+              <UIcon name="mdi-check-circle-outline" class="activity-info-icon"/>
+              {{ t("activities.status") }} : {{ currentActivity.activity_status }}
+            </span>
+
+            <span>
+              <UIcon name="mdi-map-marker" class="activity-info-icon"/>
+              {{ t("activities.location") }} : {{ currentActivity.location }}
+            </span>
+
+            <span>
+              <UIcon name="mdi-account-star-outline" class="activity-info-icon"/>
+              {{ t("activities.target_audience") }} : {{ currentActivity.target_audience }}
+            </span>
+
+            <span>
+              <UIcon name="mdi-account-group" class="activity-info-icon"/>
+              {{ t("activities.participants") }} : {{ currentActivity.estimated_participants }}
+            </span>
+
+
+          </div>
+
+          <div v-if="featuresList.length > 0" class="features-fallback">
+            <h2 class="section-title">{{ t('activities.activity.features') }}</h2>
+            <ul>
+              <li v-for="(feature, index) in featuresList" :key="index">
+                <span class="feature-icon">
+                  <UIcon
+                      name="mdi-mosque"
+                  />
+                </span>
+                {{ feature }}
+              </li>
+            </ul>
+          </div>
         </div>
 
       </div>
+
+      <div class="activities-list-section" v-if="latestActivities.length > 0">
+        <h2 class="section-title">{{ t('activities.latest_activities') }}</h2>
+
+        <div class="activities-content">
+          <div
+              class="activity-card"
+              v-for="activity in latestActivities"
+              :key="activity.id"
+              @click="$router.push(`/activities/${activity.id}`)"
+          >
+            <div class="activity-image">
+              <img
+                  :src="activity.poster"
+                  :alt="activity[`title_${locale}`|| activity.title_my ]"
+                  class="activities-image"
+              />
+            </div>
+            <div class="activity-info">
+              <h3 class="activities-title">
+                {{ activity[`title_${locale}`] || activity.title_my }}
+              </h3>
+              <p class="activity-category">{{ activity.category }}</p>
+
+              <NuxtLink :to="`/activities/${activity.id}`" class="activity-btn">
+                <UIcon name="mdi-information-outline"/>
+                Learn More
+              </NuxtLink>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div v-else class="not-found">
+      <p>activity not found</p>
     </div>
   </section>
-
-  <p v-else class="loading">Loading...</p>
-  
+  <BookingStructure/>
   <Footer/>
 </template>
 
 <style scoped>
-@keyframes fadeIn {
+@keyframes fadeInUp {
   from {
     opacity: 0;
     transform: translateY(20px);
@@ -252,138 +216,159 @@ onMounted(() => {
   }
 }
 
-@keyframes imageZoom {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(1.05);
-  }
-}
-
-.activities-details {
+.activity-detail {
+  max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
-  background: var(--bg-color);
-  display: flex;
-  justify-content: center;
-  animation: fadeIn 0.8s ease-in-out;
+  animation: fadeInUp 0.6s ease-in-out;
 }
 
-.activities-container {
-  width: 90%;
-  max-width: 1100px;
+.activity-content-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .activity-content-container {
+    grid-template-columns: 3fr 1fr;
+  }
+}
+
+.activity-content {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  animation: fadeIn 1s ease-in-out;
 }
 
-.activities-title {
-  font-size: 2.2rem;
-  color: var(--primary-color);
-  text-align: center;
-  margin-bottom: 1rem;
-  animation: fadeIn 1.2s ease-in-out;
+.activity-title {
+  font-size: 1.5rem;
+  color: var(--secondary-color);
+  margin-bottom: 2rem;
+  animation: fadeInUp 0.5s ease;
 }
 
-.activities-image {
+.activity-image img {
   width: 100%;
+  height: auto;
   max-height: 400px;
   object-fit: cover;
-  border-radius: 10px;
-  transition: transform 0.4s ease-in-out;
+  margin: 0 auto 1rem auto;
+  box-shadow: rgba(0, 0, 0, 0.16) 0 1px 4px;
+  border-radius: 12px;
+  animation: fadeInUp 0.8s ease;
 }
 
-.activities-meta{
-  margin-top: 2rem;
+.activity-info h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
 }
 
-.activities-meta p {
+.meta-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  color: var(--primary-color);
+  animation: fadeInUp 0.6s ease;
+}
+
+.meta-info span {
   display: flex;
   align-items: center;
+  gap: 0.75rem;
   font-size: 1.1rem;
+}
+
+.description {
+  margin-bottom: 1.5rem;
+  animation: fadeInUp 0.7s ease;
+}
+
+.description p,
+.features p,
+h5 {
+  font-size: 1rem;
+  line-height: 1.6;
   color: var(--primary-color);
-  margin: 0.5rem 0;
-  animation: fadeIn 1.4s ease-in-out;
 }
 
-.activities-icon {
-  margin-right: 1rem !important;
-  color: var(--secondary-color);
-  font-size: 1.3rem;
-}
-
-.activities-meta span {
-  font-weight: bold;
-  color: var(--secondary-color);
-  margin-right: 0.3rem;
-}
-
-.amenities {
-  margin-top: 1.5rem;
-  border-radius: 8px;
-  padding: 0.5rem;
-  margin-bottom: 0.5rem;
-  background: #f5f5f5;
-  animation: fadeIn 1.6s ease-in-out;
-}
-
-.amenities h2 {
+h2 {
   font-size: 1.5rem;
+  margin-bottom: 0.75rem;
   color: var(--primary-color);
-  margin-bottom: 0.5rem;
 }
 
-.amenities ul {
+ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
-.amenities li {
+ul li {
+  font-size: 1.1rem;
+  color: var(--primary-color);
   display: flex;
   align-items: center;
-  padding: 0.7rem;
-  margin-bottom: 0.5rem;
-  border-radius: 5px;
-  transition: background-color 0.3s ease-in-out;
+  gap: 0.5rem;
+  animation: fadeInUp 0.9s ease;
 }
 
-.amenities li:hover {
-  background: rgba(0, 0, 0, 0.05);
+.loading,
+.error,
+.not-found {
+  text-align: center;
+  padding: 2rem;
 }
 
-@media (max-width: 768px) {
-  .activities-title {
-    font-size: 1.8rem;
-  }
+.activities-content {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
 
-  .activities-meta p {
-    font-size: 1rem;
-    align-items: baseline;
-    text-align: justify;
-  }
+.activity-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  margin: .2rem 0;
+  border: solid 2px var(--bg-color);
+  animation: fadeInUp 1s ease;
+}
 
-  .activities-container {
-    width: 95%;
-  }
-
-  .activities-image {
-    max-height: 300px;
+@media (min-width: 768px) {
+  .activity-card {
+    flex-direction: row;
+    align-items: center;
   }
 }
 
-@media (max-width: 480px) {
-  .activities-title {
-    font-size: 1.6rem;
-  }
+.activity-card img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+}
 
-  .activities-meta p {
-    font-size: 0.95rem;
-  }
+.section-title {
+  margin: 0 auto;
+  color: var(--primary-color);
+  font-size: 1.6rem;
+  text-align: center;
+}
 
-  .activities-image {
-    max-height: 250px;
-  }
+.activity-btn {
+  color: var(--primary-color);
+  padding: 1rem 0;
+  text-decoration: none;
+  display: inline-block;
+  font-weight: bold;
+  transition: transform 0.2s ease;
+}
+
+.activity-btn:hover {
+  transform: translateY(-2px);
 }
 </style>

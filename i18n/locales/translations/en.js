@@ -157,6 +157,10 @@ export default {
         date: "Date",
         location: "Location",
         participants: "Estimated Participants",
+        time: "Time",
+        type: "Activity Type",
+        status: "Status",
+        target_audience: "Target Audience",
     },
     facilities: {
         title: "Our Facilities",
