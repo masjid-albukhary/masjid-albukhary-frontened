@@ -2,8 +2,11 @@
 import {reactive, ref, watch} from 'vue';
 import {z} from 'zod';
 import {useI18n} from 'vue-i18n'
+import {useNuxtApp} from "#app";
 
 const {t} = useI18n()
+const {$axios} = useNuxtApp();
+const api = $axios()
 
 const activityQuestions = [
   {
@@ -49,18 +52,23 @@ const activityQuestions = [
     id: "summary_content_my",
   },
   {
+    label: t("activity_form.label.activity_status"),
+    type: "select",
+    required: true,
+    placeholder: t("activity_form.placeholder.activity_status"),
+    id: "activity_status",
+    options: [
+      {label: "Upcoming", value: "upcoming"},
+      {label: "Ongoing", value: "ongoing"},
+      {label: "Completed", value: "completed"},
+    ],
+  },
+  {
     label: t("activity_form.label.activity_date"),
     type: "date",
     placeholder: t("activity_form.placeholder.activity_date"),
     required: true,
     id: "activity_date",
-  },
-  {
-    label: t("activity_form.label.time"),
-    type: "text",
-    placeholder: t("activity_form.placeholder.time"),
-    required: true,
-    id: "time",
   },
   {
     label: t("activity_form.label.activity_type"),
@@ -78,6 +86,26 @@ const activityQuestions = [
     ],
   },
   {
+    label: t("activity_form.label.target_audience"),
+    type: "text",
+    placeholder: t("activity_form.placeholder.target_audience"),
+    id: "target_audience",
+  },
+  {
+    label: t("activity_form.label.estimated_participants"),
+    type: "number",
+    placeholder: t("activity_form.placeholder.estimated_participants"),
+    required: true,
+    id: "estimated_participants",
+  },
+  {
+    label: t("activity_form.label.time"),
+    type: "text",
+    placeholder: t("activity_form.placeholder.time"),
+    required: true,
+    id: "time",
+  },
+  {
     label: t("activity_form.label.location"),
     type: "text",
     placeholder: t("activity_form.placeholder.location"),
@@ -85,38 +113,12 @@ const activityQuestions = [
     id: "location",
   },
   {
-    label: t("activity_form.label.target_audience"),
-    type: "text",
-    placeholder: t("activity_form.placeholder.target_audience"),
-    id: "target_audience",
-  },
-  {
-    label: t("activity_form.label.activity_status"),
-    type: "select",
-    required: true,
-    placeholder:  t("activity_form.placeholder.activity_status"),
-    id: "activity_status",
-    options: [
-      {label: "Upcoming", value: "upcoming"},
-      {label: "Ongoing", value: "ongoing"},
-      {label: "Completed", value: "completed"},
-    ],
-  },
-  {
     label: t("activity_form.label.poster"),
     type: "file",
     required: true,
     id: "poster",
   },
-  {
-    label: t("activity_form.label.estimated_participants"),
-    type: "number",
-    placeholder: t("activity_form.placeholder.estimated_participants"),
-    required: false,
-    id: "estimated_participants",
-  },
 ];
-
 const formSchema = z.object({
   title_en: z
       .string()
@@ -125,7 +127,6 @@ const formSchema = z.object({
   title_my: z
       .string()
       .min(8, 'Activity Title (Malay) must be at least 8 characters long'),
-
 
   description_en: z
       .string()
@@ -157,16 +158,16 @@ const formSchema = z.object({
 
   poster: z.any().optional(),
 
-  estimated_participants: z.string().optional(),
-
+  estimated_participants: z.number().optional(),
 });
-
 const form = reactive({});
 const errors = reactive({});
-
 activityQuestions.forEach((question) => {
   form[question.id] = "";
   errors[question.id] = "";
+});
+activityQuestions.forEach((question) => {
+  watch(() => form[question.id], () => validateField(question.id));
 });
 
 function validateField(field) {
@@ -179,35 +180,61 @@ function validateField(field) {
   }
 }
 
-activityQuestions.forEach((question) => {
-  watch(() => form[question.id], () => validateField(question.id));
-});
-
-const image = ref(null);
+const poster = ref(null);
 
 const handleFileUpload = (event, inputDetails) => {
   if (inputDetails.type !== 'file') {
     return;
   }
-  image.value = event.target.files[0];
+  poster.value = event.target.files[0];
 };
-
-async function handleSubmit() {
-  form.Date = new Date().toLocaleDateString("en-GB");
+const handleSubmit = async () => {
+  form.Date = new Date().toLocaleDateString('en-GB');
 
   const validationResults = formSchema.safeParse(form);
 
   if (!validationResults.success) {
     console.log('Validation Errors:', validationResults.error.errors);
-    alert("Please correct the errors in the form.");
+    alert('Please correct the errors in the form.');
     return;
   }
 
-  alert("Form Submitted Successfully.");
-  // location.reload();
+  const formData = new FormData();
 
-  // If validation is successful
-  console.log("Form Submitted Successfully:", form);
+  formData.append('title_en', form.title_en);
+  formData.append('title_my', form.title_my);
+  formData.append('description_en', form.description_en);
+  formData.append('description_my', form.description_my);
+  formData.append('summary_content_en', form.summary_content_en);
+  formData.append('summary_content_my', form.summary_content_my);
+  formData.append('activity_date', form.activity_date);
+  formData.append('time', form.time);
+  formData.append('activity_type', form.activity_type);
+  formData.append('location', form.location);
+  formData.append('target_audience', form.target_audience);
+  formData.append('activity_status', form.activity_status);
+  formData.append('estimated_participants', form.estimated_participants);
+  formData.append('poster', form.poster);
+  formData.append('poster', poster.value);
+
+  try {
+    const response = await api.post('/content_manager/activities/', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    alert("form has been added successfully.");
+
+    setTimeout(() => {
+      location.reload();
+    }, 2000);
+
+  } catch (error) {
+    // console.log('Form Data Before Validation:', form);
+    // console.error('Failed to submit form:', error);
+    alert('An error occurred while submitting the form.');
+  }
 }
 
 </script>
@@ -221,7 +248,9 @@ async function handleSubmit() {
         <h2>{{ t('activity_form.title') }}</h2>
 
         <form @submit.prevent="handleSubmit">
+
           <div class="activity-form">
+
             <div class="info" v-for="(question, index) in activityQuestions " :key="index">
               <label class="question-title" :for="question.label">{{ question.label }}</label>
 
@@ -235,7 +264,6 @@ async function handleSubmit() {
                   @change="(e) => handleFileUpload(e, question)"
                   @input="validateField(question.id)"
               />
-
 
               <select
                   v-if="question.type === 'select' ||  question.type === 'radio'"
@@ -261,6 +289,7 @@ async function handleSubmit() {
               />
 
             </div>
+
           </div>
 
           <div>
@@ -268,6 +297,7 @@ async function handleSubmit() {
           </div>
 
         </form>
+
       </div>
 
     </div>
