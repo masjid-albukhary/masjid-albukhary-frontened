@@ -69,6 +69,7 @@ onMounted(async () => {
 
 <template>
   <Header/>
+  <SubLanding/>
   <section class="activity-detail">
     <div v-if="isLoading" class="loading">
       <p>Loading activity information...</p>

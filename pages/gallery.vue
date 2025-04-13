@@ -4,6 +4,7 @@
 
 <template>
   <Header/>
+  <SubLanding/>
   <Gallery/>
   <Footer/>
 </template>

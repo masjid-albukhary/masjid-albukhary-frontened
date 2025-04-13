@@ -66,6 +66,7 @@ onMounted(async () => {
 
 <template>
   <Header/>
+  <SubLanding/>
   <section class="facility-detail">
     <div v-if="isLoading" class="loading">
       <p>Loading facility information...</p>

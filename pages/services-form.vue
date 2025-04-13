@@ -4,6 +4,7 @@
 
 <template>
   <Header/>
+  <SubLanding/>
   <BookingForm/>
   <Footer/>
 </template>

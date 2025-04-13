@@ -4,6 +4,7 @@
 
 <template>
   <Header/>
+  <SubLanding/>
   <FacilitiesCard/>
   <BookingStructure/>
   <Footer/>

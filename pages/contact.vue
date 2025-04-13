@@ -5,6 +5,7 @@ import Contact from "~/components/Contact.vue";
 
 <template>
   <Header/>
+  <SubLanding/>
   <Contact/>
   <Footer/>
 </template>
