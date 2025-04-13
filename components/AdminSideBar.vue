@@ -46,7 +46,7 @@ const groupedLinks = computed(() => [
     icon: "mdi-office-building",
     children: [
       { link: "/admin/facility-form", label: t('admin_sidebar.facility_form'), icon: "mdi-office-building-cog" },
-      { link: "/admin/facility-management-dashboard", label: t('admin_sidebar.facilities_dashboard'), icon: "mdi-domain" }
+      { link: "/admin/facilities-management-dashboard", label: t('admin_sidebar.facilities_dashboard'), icon: "mdi-domain" }
     ]
   },
   {
