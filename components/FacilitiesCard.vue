@@ -1,160 +1,39 @@
 <script setup lang="ts">
-import {computed, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
+import {useI18n} from "vue-i18n";
+import {useNuxtApp} from "#app";
 
-const {t} = useI18n();
+interface Facility {
+  name_en: string,
+  name_my: string,
+  category: string,
+  location: string,
+  description_en: string,
+  description_my: string,
+  features_en: string,
+  features_my: string,
+  capacity: string,
+  price: string,
+  photo: string,
 
-const facilities = [
-  {
-    id: 1,
-    name: "Community Hall",
-    description: "A spacious hall for events, gatherings, and conferences.",
-    category: "Event Space",
-    src: "/images/masjid-about-bg.png",
-    alt: "Community Hall",
-    url: "https://www.youtube.com/watch?v=example",
-    location: "123 Main Street, City Center",
-    capacity: 150,
-    price: 200,
-    availability: [
-      {day: "Monday-Friday", time: "9:00 AM - 9:00 PM"},
-      {day: "Saturday-Sunday", time: "10:00 AM - 11:00 PM"}
-    ],
-    amenities: ["WiFi", "Projector", "Air Conditioning", "Parking"],
-    bookingUrl: "https://www.example.com/book-community-hall",
-    contact: {
-      phone: "+123456789",
-      email: "booking@example.com"
-    },
-    tags: ["event", "hall", "conference", "wedding"],
-    status: "Available"
-  },
-  {
-    id: 2,
-    name: "Small Meeting Room",
-    description: "Perfect for business meetings and small team discussions.",
-    category: "Meeting Room",
-    src: "/images/masjid-about-bg.png",
-    alt: "Meeting Room",
-    url: null,
-    location: "456 Office Street, Business Park",
-    capacity: 10,
-    price: 50,
-    availability: [
-      {day: "Monday-Friday", time: "8:00 AM - 8:00 PM"}
-    ],
-    amenities: ["WiFi", "Whiteboard", "Air Conditioning"],
-    bookingUrl: "https://www.example.com/book-meeting-room",
-    contact: {
-      phone: "+987654321",
-      email: "contact@meetingrooms.com"
-    },
-    tags: ["business", "meeting", "office"],
-    status: "Booked"
-  },
-  {
-    id: 3,
-    name: "Community Hall",
-    description: "A spacious hall for events, gatherings, and conferences.",
-    category: "Event Space",
-    src: "/images/masjid-about-bg.png",
-    alt: "Community Hall",
-    url: "https://www.youtube.com/watch?v=example",
-    location: "123 Main Street, City Center",
-    capacity: 150,
-    price: 200,
-    availability: [
-      {day: "Monday-Friday", time: "9:00 AM - 9:00 PM"},
-      {day: "Saturday-Sunday", time: "10:00 AM - 11:00 PM"}
-    ],
-    amenities: ["WiFi", "Projector", "Air Conditioning", "Parking"],
-    bookingUrl: "https://www.example.com/book-community-hall",
-    contact: {
-      phone: "+123456789",
-      email: "booking@example.com"
-    },
-    tags: ["event", "hall", "conference", "wedding"],
-    status: "Available"
-  },
-  {
-    id: 4,
-    name: "Small Meeting Room",
-    description: "Perfect for business meetings and small team discussions.",
-    category: "Meeting Room",
-    src: "/images/masjid-about-bg.png",
-    alt: "Meeting Room",
-    url: null,
-    location: "456 Office Street, Business Park",
-    capacity: 10,
-    price: 50,
-    availability: [
-      {day: "Monday-Friday", time: "8:00 AM - 8:00 PM"}
-    ],
-    amenities: ["WiFi", "Whiteboard", "Air Conditioning"],
-    bookingUrl: "https://www.example.com/book-meeting-room",
-    contact: {
-      phone: "+987654321",
-      email: "contact@meetingrooms.com"
-    },
-    tags: ["business", "meeting", "office"],
-    status: "Booked"
-  },
-  {
-    id: 5,
-    name: "Community Hall",
-    description: "A spacious hall for events, gatherings, and conferences.",
-    category: "Event Space",
-    src: "/images/masjid-about-bg.png",
-    alt: "Community Hall",
-    url: "https://www.youtube.com/watch?v=example",
-    location: "123 Main Street, City Center",
-    capacity: 150,
-    price: 200,
-    availability: [
-      {day: "Monday-Friday", time: "9:00 AM - 9:00 PM"},
-      {day: "Saturday-Sunday", time: "10:00 AM - 11:00 PM"}
-    ],
-    amenities: ["WiFi", "Projector", "Air Conditioning", "Parking"],
-    bookingUrl: "https://www.example.com/book-community-hall",
-    contact: {
-      phone: "+123456789",
-      email: "booking@example.com"
-    },
-    tags: ["event", "hall", "conference", "wedding"],
-    status: "Available"
-  },
-  {
-    id: 6,
-    name: "Small Meeting Room",
-    description: "Perfect for business meetings and small team discussions.",
-    category: "Meeting Room",
-    src: "/images/masjid-about-bg.png",
-    alt: "Meeting Room",
-    url: null,
-    location: "456 Office Street, Business Park",
-    capacity: 10,
-    price: 50,
-    availability: [
-      {day: "Monday-Friday", time: "8:00 AM - 8:00 PM"}
-    ],
-    amenities: ["WiFi", "Whiteboard", "Air Conditioning"],
-    bookingUrl: "https://www.example.com/book-meeting-room",
-    contact: {
-      phone: "+987654321",
-      email: "contact@meetingrooms.com"
-    },
-    tags: ["business", "meeting", "office"],
-    status: "Booked"
-  },
-];
+  [key: string]: any;
+}
+
+const {locale, t} = useI18n();
+const {$axios} = useNuxtApp();
+const api = $axios()
+
+const facilities = ref<Facility[]>([]);
 
 const currentIndex = ref(0);
 const itemsPerPage = ref(3);
+
 const visibleFacilities = computed(() => {
-  return facilities.slice(currentIndex.value, currentIndex.value + itemsPerPage.value);
+  return facilities.value.slice(currentIndex.value, currentIndex.value + itemsPerPage.value);
 });
 
 function nextPage() {
-  if (currentIndex.value + itemsPerPage.value < facilities.length) {
+  if (currentIndex.value + itemsPerPage.value < facilities.value.length) {
     currentIndex.value += itemsPerPage.value;
   } else {
     currentIndex.value = 0;
@@ -165,27 +44,50 @@ function prevPage() {
   if (currentIndex.value - itemsPerPage.value >= 0) {
     currentIndex.value -= itemsPerPage.value;
   } else {
-    currentIndex.value = facilities.length - itemsPerPage.value;
+    currentIndex.value = facilities.value.length - itemsPerPage.value;
   }
 }
+
+
+onMounted(async () => {
+  try {
+    const response = await api.get("/service_facility_management/facilities/");
+    facilities.value = response.data;
+
+    console.log(facilities.value);
+    console.log("Current Locale:", locale.value);
+  } catch (error: any) {
+    console.error("Failed to load about content:", error);
+    if (error.response) {
+      console.error("Error response:", error.response.data);
+      console.error("Error status:", error.response.status);
+    } else if (error.request) {
+      console.error("Error request:", error.request);
+    } else {
+      console.error("Error message:", error.message);
+    }
+  }
+});
+
 
 </script>
 
 <template>
 
   <section class="facilities">
-    <h1 class="title"> {{t('facilities.title')}}</h1>
+    <h1 class="title"> {{ t('facilities.title') }}</h1>
     <div class="facilities-container">
       <div class="card" v-for="facility in visibleFacilities" :key="facility.id">
         <img
-            :src="facility.src"
+            :src="facility.photo"
             :alt="facility.alt"
             class="card-facilities"
         />
         <div class="overlay">
           <UIcon name="mdi-office-building" class="facilities-icon"/>
+
           <NuxtLink :to="`/facilities/${facility.id}`" class="facilities-title">
-            <UIcon name="mdi-information-outline" />
+            <UIcon name="mdi-information-outline"/>
             Learn More
           </NuxtLink>
 

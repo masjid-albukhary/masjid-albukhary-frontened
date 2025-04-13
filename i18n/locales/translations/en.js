@@ -62,9 +62,9 @@ export default {
             },
             submit: "Submit Booking"
         },
-        booking_popup:{
+        booking_popup: {
             messages: "Thank you for submitting your request. We have successfully received your application, and our team will review it within the next 3 days. We will keep you informed about the progress and let you know if any further information is needed. Al Bukhary Mosque",
-            sub_message:"Thank you for your patience."
+            sub_message: "Thank you for your patience."
         },
         booking_structure: {
             title: "How to Book a Hall",
@@ -77,7 +77,7 @@ export default {
             ]
         }
     },
-    service:{
+    service: {
         service_title: "Our Service",
         service_description: "Ar-Bukhary Mosque provides rental of our facilities. From prayer halls to conference rooms, our spaces are well-equipped and comfortable for various events.",
         button: "Book now",
@@ -109,14 +109,14 @@ export default {
             subject_placeholder: "Enter subject",
             message_placeholder: "Type your message here...",
         },
-        popup:{
+        popup: {
             title: "Thank You for Reaching Out!",
             message: "In the meantime, feel free to explore our website for more information, or reach out to us again if you have any other questions.",
-            thanksMessage:"Thanks for your patience!",
+            thanksMessage: "Thanks for your patience!",
         }
     },
-    members:{
-        title:"Meet Our Community",
+    members: {
+        title: "Meet Our Community",
     },
     map_mosque: {
         mosque_location: "Albukhary Mosque Location",
@@ -151,18 +151,23 @@ export default {
             whatsapp: "WhatsApp"
         }
     },
-    activities:{
+    activities: {
         title: "Activities",
     },
     facilities: {
-        title:"Our Facilities",
-        amenities:"Amenities",
+        title: "Our Facilities",
+        amenities: "Amenities",
+        latest_facilities:"Latest Facilities",
+        facility: {
+            description: "Facility Description",
+            features: "Facility Features",
+        },
+        learn_more: "Learn More",
         facilities_form: {
             title: "Book your Wedding/Solemnisation Venue",
-            description:"Please fill in the form below to complete your booking. We encourage you to read the stipulated terms and conditions here before submitting the form.",
+            description: "Please fill in the form below to complete your booking. We encourage you to read the stipulated terms and conditions here before submitting the form.",
             button: "Register your Interest",
         },
-        learn_more:"Learn More",
 
     },
 
@@ -227,8 +232,8 @@ export default {
         booking_overview: "Booking Management",
         contact_messages_overview: "Messages Management",
 
-        member_section:"Member",
-        member_overview_dashboard:"Member Overview Dashboard",
+        member_section: "Member",
+        member_overview_dashboard: "Member Overview Dashboard",
 
         facility_form: "New Facility",
         facilities_dashboard: "Facility Management",
@@ -316,7 +321,7 @@ export default {
             activity_type: "Activity Type",
             location: "Location",
             target_audience: "Target Audience",
-            activity_status :"Activity Status",
+            activity_status: "Activity Status",
             poster: "Upload Poster / Image",
             estimated_participants: "Estimated Participants",
         },
@@ -332,7 +337,7 @@ export default {
             activity_type: "Select Activity Type",
             location: "Enter location",
             target_audience: "Target Audience",
-            activity_status :"Activity Status",
+            activity_status: "Activity Status",
             estimated_participants: "Enter estimated number of participants",
         },
         options: {
