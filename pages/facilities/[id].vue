@@ -168,6 +168,7 @@ onMounted(async () => {
       <p>Facility not found</p>
     </div>
   </section>
+  <BookingStructure/>
   <Footer/>
 </template>
 
