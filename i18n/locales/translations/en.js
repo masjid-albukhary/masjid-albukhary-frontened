@@ -77,9 +77,10 @@ export default {
             ]
         }
     },
+
     service: {
-        service_title: "Our Service",
-        service_description: "Ar-Bukhary Mosque provides rental of our facilities. From prayer halls to conference rooms, our spaces are well-equipped and comfortable for various events.",
+        title: "Our Service",
+        description: "Masjid Albukhary Kuala Lumpur is a beautifully designed mosque that serves as a center for worship, community activities, and Islamic education. It offers daily prayers, Friday sermons, Quran classes, religious talks, and facilities for solemnization (nikah) and events. The mosque also provides charity services and community outreach programs to support those in need.",
         button: "Book now",
         booking_structure: {
             title: "Book Your Masjid Services Easily – Let Us Help You with Your Special Moments!",
@@ -92,6 +93,7 @@ export default {
         }
 
     },
+
     contact: {
         title: "Get in touch with us",
         description: "Reach out to us with any questions or concerns you may have, and we’ll be happy to help.",

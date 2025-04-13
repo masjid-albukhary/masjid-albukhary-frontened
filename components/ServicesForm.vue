@@ -66,7 +66,6 @@ const serviceQuestions = [
     id: "capacity"
   },
 ];
-
 const formSchema = z.object({
   title_en: z.string().min(8, 'Services Title (English) must be at least 8 characters long'),
   title_my: z.string().min(8, 'Services Title (Malay) must be at least 8 characters long'),
@@ -82,13 +81,10 @@ const form = reactive(serviceQuestions.reduce((acc, {id}) => {
   acc[id] = '';
   return acc;
 }, {}));
-
 const errors = reactive({});
-
 serviceQuestions.forEach((question) => {
   errors[question.id] = '';
 });
-
 function validateField(field) {
   try {
     formSchema.shape[field].parse(form[field]);
@@ -97,11 +93,9 @@ function validateField(field) {
     errors[field] = error.errors ? error.errors[0].message : error.message;
   }
 }
-
 serviceQuestions.forEach((question) => {
   watch(() => form[question.id], () => validateField(question.id));
 });
-
 async function handleSubmit() {
 
   form.Date = new Date().toLocaleDateString("en-GB");
@@ -113,7 +107,7 @@ async function handleSubmit() {
   const validationResults = formSchema.safeParse(form);
 
   if (!validationResults.success) {
-    console.log('Validation Errors:', validationResults.error.errors);
+    // console.log('Validation Errors:', validationResults.error.errors);
     alert("Please correct the errors in the form.");
     return;
   }
@@ -133,7 +127,7 @@ async function handleSubmit() {
 
     const response = await api.post("/service_facility_management/services/", payload);
 
-    console.log("Form submitted successfully:", response.data);
+    // console.log("Form submitted successfully:", response.data);
     alert("Your message has been sent successfully!");
 
     location.reload();
@@ -142,9 +136,9 @@ async function handleSubmit() {
       form[key] = "";
     });
   } catch (error) {
-    console.error("Error submitting form:", error);
+    // console.error("Error submitting form:", error);
     if (error.response) {
-      console.error("Response data:", error.response.data);
+      // console.error("Response data:", error.response.data);
       alert("There was an error while submitting the form. Please try again.");
     } else {
       alert("Unknown error occurred.");
@@ -163,6 +157,7 @@ async function handleSubmit() {
         <h2>{{ t('service_form.title') }}</h2>
 
         <form @submit.prevent="handleSubmit">
+
           <div class="service-form">
             <div class="info" v-for="(question, index) in serviceQuestions " :key="index">
               <label class="question-title" :for="question.label">{{ question.label }}</label>
@@ -175,7 +170,6 @@ async function handleSubmit() {
                   :id="question.label"
                   @input="validateField(question.id)"
               />
-
 
               <select
                   v-if="question.type === 'select' ||  question.type === 'radio'"
@@ -208,6 +202,7 @@ async function handleSubmit() {
           </div>
 
         </form>
+
       </div>
 
     </div>
@@ -351,7 +346,7 @@ section {
   color: var(--text-color);
 }
 
-.service-formservice-form-submit:hover {
+.service-form-submit:hover {
   background-color: var(--primary-color);
   transition: .3s ease-in-out;
 }

@@ -68,10 +68,12 @@ onMounted(async () => {
     loading.value = false;
   }
 });
+
 </script>
 
 <template>
   <section class="service-section">
+
     <div class="service-header">
       <h2 class="service-title">{{ t('service.title') }}</h2>
       <p class="service-description">
@@ -80,23 +82,26 @@ onMounted(async () => {
     </div>
 
     <div v-if="loading">Loading services...</div>
+
     <div v-if="error" class="error-message">{{ error }}</div>
 
     <div v-if="!loading && services.length > 0" class="service-grid">
+
       <div class="service-card" v-for="service in visibleService" :key="service.id">
+
         <div class="service-card-icon">
           <UIcon name="mdi-home-modern" class="service-icon" />
         </div>
 
         <div class="service-card-header">
           <h3 class="service-card-title">
-            {{ service['title_' + locale] || service.title_my || 'No Title Available' }}
+            {{ service['title_' + locale] || service.title_en || 'No Title Available' }}
           </h3>
         </div>
 
         <div class="service-card-content">
           <ul class="service-facilities">
-            <li v-for="(feature, index) in (service[`features_${locale}`] || service.features_my || '').split(',')" :key="index">
+            <li v-for="(feature, index) in (service[`features_${locale}`] || service.features_en || '').split(',')" :key="index">
               <UIcon name="mdi-cogs" class="service-icon" />
               {{ feature.trim() }}
             </li>
@@ -110,10 +115,11 @@ onMounted(async () => {
 
           <router-link to="/services-form" class="booking-structure-btn">
             {{ t('service.button') }}
-            <UIcon name="mdi-arrow-right" class="register-icon" />
           </router-link>
         </div>
+
       </div>
+
     </div>
 
     <div v-if="!loading && services.length === 0" class="no-services-message">
@@ -121,12 +127,15 @@ onMounted(async () => {
     </div>
 
     <div class="buttons" v-if="!loading && services.length > 0">
+
       <button @click="prevServicePage" class="nav-button">
         <UIcon name="mdi-arrow-left-circle" />
       </button>
+
       <button @click="nextServicePage" class="nav-button">
         <UIcon name="mdi-arrow-right-circle" />
       </button>
+
     </div>
 
   </section>

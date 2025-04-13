@@ -76,9 +76,10 @@ export default {
             ]
         },
     },
+
     service: {
-        service_title: "Perkhidmatan Kami",
-        service_description: "Masjid Ar-Bukhary menyediakan penyewaan kemudahan kami. Dari dewan solat ke bilik persidangan, ruang kami serba lengkap dan selesa untuk pelbagai acara.",
+        title: "Perkhidmatan Kami",
+        description: "Masjid Albukhary Kuala Lumpur ialah sebuah masjid yang indah dan menjadi pusat ibadah, aktiviti komuniti, dan pendidikan Islam. Masjid ini menyediakan solat lima waktu, khutbah Jumaat, kelas al-Quran, ceramah agama, serta kemudahan untuk akad nikah dan majlis-majlis lain. Ia juga menawarkan perkhidmatan kebajikan dan program kemasyarakatan bagi membantu golongan memerlukan.",
         button: "Tempah sekarang",
         booking_structure: {
             title: "Tempah Perkhidmatan Masjid Anda dengan Mudah – Biarkan Kami Membantu dalam Momen Istimewa Anda!",
@@ -90,6 +91,7 @@ export default {
             ]
         }
     },
+
     members: {
         title: "Bertemu komuniti kami",
     },

@@ -12,13 +12,10 @@ const emit = defineEmits(['closePopup', 'deleteContent', 'updateContent']);
 const closePopup = () => {
   emit('closePopup');
 };
-
 const deleteContent = () => {
   emit('deleteContent');
 };
-
 const editableContent = reactive({ ...props.currentContent });
-
 watch(
     () => props.currentContent,
     (newContent) => {
@@ -26,7 +23,6 @@ watch(
     },
     { deep: true, immediate: true }
 );
-
 const labelMapping = {
   title_en: 'Title (English)',
   title_my: 'Title (Malay)',
@@ -38,42 +34,49 @@ const labelMapping = {
   price: 'Price',
   created_at: 'Created At',
 };
-
 const updateContent = () => {
   emit('updateContent', { ...editableContent });
 };
+
 </script>
 
 <template>
   <div v-if="isPopupVisible" class="popup-overlay" @click="closePopup">
+
     <div class="popup" @click.stop>
+
       <div class="popup-header">
         <h3>Service Details</h3>
+
         <button class="close-btn" @click="closePopup" aria-label="Close Popup">
           <UIcon name="mdi-close" />
         </button>
+
       </div>
 
       <div class="popup-content">
 
         <div v-for="(value, key) in editableContent" :key="key" class="popup-detail">
+
           <label :for="key" class="key-label">
             {{ labelMapping[key] || key }}:
           </label>
+
           <input
               v-model="editableContent[key]"
               :id="key"
               class="popup-input"
               type="text"
           />
-        </div>
 
+        </div>
       </div>
 
       <div class="popup-footer">
         <button @click="updateContent" class="update-btn">Update</button>
         <button @click="deleteContent" class="delete-btn">Delete</button>
       </div>
+
     </div>
   </div>
 </template>

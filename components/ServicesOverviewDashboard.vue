@@ -2,7 +2,7 @@
 import { ref, computed, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useNuxtApp } from '#app';
-import ServicesOverviewPopup from '~/components/ServicesOverviewPopup.vue';
+import ServicesPopup from '~/components/ServicesPopup.vue';
 
 interface ServiceContent {
   id: number;
@@ -15,20 +15,21 @@ interface ServiceContent {
   created_at: string;
 }
 
+const { locale } = useI18n();
+const { $axios } = useNuxtApp();
+const api = $axios();
+
 const columns = [
   { key: 'title_en', label: 'Title English', sortable: false },
   { key: 'title_my', label: 'Title Malay', sortable: false },
   { key: 'created_at', label: 'Pushed Date', sortable: false },
   { key: 'actions', label: 'Actions', sortable: false },
 ];
-
 const contentData = ref<ServiceContent[]>([]);
-const { locale } = useI18n();
-const { $axios } = useNuxtApp();
-const api = $axios();
 
 const currentPage = ref(1);
 const pageSize = ref(8);
+
 const searchQuery = ref('');
 const contentDetails = ref<Record<string, any>>({});
 const isPopupVisible = ref(false);
@@ -64,11 +65,9 @@ const updateContent = async (updatedContent: ServiceContent) => {
   if (!currentContent.value) return;
 
   try {
-    // Send a PUT request to update the content
     const response = await api.put(`/service_facility_management/services/${updatedContent.id}/`, updatedContent);
-    console.log('Content updated successfully', response.data);
+    // console.log('Content updated successfully', response.data);
 
-    // Update contentData locally
     const index = contentData.value.findIndex(content => content.id === updatedContent.id);
     if (index !== -1) {
       contentData.value[index] = { ...updatedContent };
@@ -77,11 +76,10 @@ const updateContent = async (updatedContent: ServiceContent) => {
     alert('Content updated successfully!');
     closePopup();
   } catch (error) {
-    console.error('Failed to update content:', error);
+    // console.error('Failed to update content:', error);
     alert('Failed to update content. Please try again later.');
   }
 };
-
 const deleteContent = async () => {
   if (!currentContent.value) return;
 
@@ -89,32 +87,30 @@ const deleteContent = async () => {
     try {
       const deletedContent = currentContent.value;
       await api.delete(`/service_facility_management/services/${deletedContent.id}/`);
-      console.log('Content deleted successfully');
+      // console.log('Content deleted successfully');
 
       alert('Content deleted successfully!');
       contentData.value = contentData.value.filter(content => content.id !== deletedContent.id);
       closePopup();
     } catch (error) {
-      console.error('Failed to delete content:', error);
+      // console.error('Failed to delete content:', error);
       alert('Failed to delete content. Please try again later.');
     }
   }
 };
-
 const openPopup = (content: ServiceContent) => {
   currentContent.value = { ...content };
   contentDetails.value = {
-    "Title (English)": content.service_title_en,
-    "Title (Malay)": content.service_title_my,
-    "Service Description (English)": content.service_description_en,
-    "Service Description (Malay)": content.service_description_my,
-    "Capacity": content.service_capacity,
-    "Price": content.service_price,
+    "Title (English)": content.title_en,
+    "Title (Malay)": content.title_my,
+    "Service Description (English)": content.description_en,
+    "Service Description (Malay)": content.description_my,
+    "Capacity": content.capacity,
+    "Price": content.price,
     "Created At": content.created_at,
   };
   isPopupVisible.value = true;
 };
-
 const closePopup = () => {
   isPopupVisible.value = false;
   currentContent.value = null;
@@ -131,20 +127,23 @@ onMounted(async () => {
   try {
     const response = await api.get("/service_facility_management/services/");
     contentData.value = response.data;
-    console.log("Content loaded:", contentData.value.length, "items");
-    console.log("Current Locale:", locale.value);
+    // console.log("Content loaded:", contentData.value.length, "items");
+    // console.log("Current Locale:", locale.value);
   } catch (error: any) {
-    console.error("Failed to load services content:", error);
+    // console.error("Failed to load services content:", error);
     alert("Error loading content. Please try again later.");
   } finally {
     isLoading.value = false;
   }
 });
+
 </script>
 
 <template>
   <section class="dashboard-wrapper">
+
     <div class="dashboard-container">
+
       <main class="content-area">
 
         <div class="content-header">
@@ -189,10 +188,12 @@ onMounted(async () => {
             Next ➡
           </button>
         </div>
+
       </main>
+
     </div>
 
-    <ServicesOverviewPopup
+    <ServicesPopup
         v-if="isPopupVisible"
         :isPopupVisible="isPopupVisible"
         :contentDetails="contentDetails"
