@@ -9,6 +9,11 @@ export default {
         contact: "Contact"
     },
 
+    landing:{
+        title: "Step Into the Heart of Al Bukhary Mosque",
+        latest_activity:"Latest Activity",
+    },
+
     about: {
         title: "Masjid Al Bukhary Kuala Lumpur Official",
         descriptionTitle: "Get to know more about Albukhary Foundation",

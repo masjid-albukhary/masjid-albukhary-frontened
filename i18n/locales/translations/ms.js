@@ -8,6 +8,13 @@ export default {
         gallery: "Galeri",
         contact: "Hubungi"
     },
+
+
+    landing:{
+        title: "Melangkah Ke Jantung Masjid Al Bukhary",
+        latest_activity:"Aktiviti Terkini",
+    },
+
     about: {
         title: "Rasmi Masjid Al Bukhary Kuala Lumpur",
         descriptionTitle: "Kenali lebih lanjut tentang Yayasan Albukhary",

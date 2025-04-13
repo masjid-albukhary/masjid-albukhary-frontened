@@ -1,222 +1,318 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import {ref, computed, onMounted, onUnmounted} from "vue";
+import {useRoute} from 'vue-router'
+import {useNuxtApp} from '#app'
 
-interface LandingItems {
+interface Activity {
   id: number;
-  title: string;
-  content: string;
-  color: string;
-  url: string;
+  title_en: string;
+  title_my: string;
+  summary_content_en: string;
+  summary_content_my: string;
+  description_en: string;
+  description_my: string;
+  activity_date: string | null;
+  time: string;
+  activity_type: string | null;
+  activity_status: string | null;
+  location: string;
+  target_audience: string;
+  poster: string | null;
+  estimated_participants: number | null;
+  created_at: string;
+
+  [key: string]: any;
 }
 
-const landingItems: LandingItems[] = [
-  { id: 1, title: "Masjid 1", content: "This is the first masjid description.", color: "#3498db", url: "string" },
-  { id: 2, title: "Masjid 2", content: "This is the second masjid description.", color: "#2ecc71", url: "string" },
-  { id: 3, title: "Masjid 3", content: "This is the third masjid description.", color: "#e74c3c", url: "string" },
-  { id: 4, title: "Masjid 4", content: "This is the fourth masjid description.", color: "#f1c40f", url: "string" },
-  { id: 5, title: "Masjid 5", content: "This is the fifth masjid description.", color: "#9b59b6", url: "string" },
-  { id: 6, title: "Masjid 6", content: "This is the sixth masjid description.", color: "#34495e", url: "string" },
-];
+const currentActivity = ref<Activity | null>(null)
+const allActivities = ref<Activity[]>([])
+const error = ref<string | null>(null)
+const isLoading = ref(true)
+const {locale, t} = useI18n()
+const route = useRoute()
+const {$axios} = useNuxtApp()
+const api = $axios()
 
-const activeIndex = ref(0);
-let intervalId: number | null = null;
+const latestActivities = computed(() => {
+  if (!allActivities.value.length) return []
 
-// Loading state
-const isLoading = ref(true);
+  return [...allActivities.value]
+      .filter(f => currentActivity.value ? f.id !== currentActivity.value.id : true)
+      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+      .slice(0, 1)
+})
 
-const nextItem = () => {
-  activeIndex.value = (activeIndex.value + 1) % landingItems.length;
-};
+onMounted(async () => {
+  try {
+    console.log('Fetching activity data...')
+    if (route.params.id) {
+      const response = await api.get(`/content_manager/activities/${route.params.id}`)
+      currentActivity.value = response.data
+    }
 
-const prevItem = () => {
-  activeIndex.value = (activeIndex.value - 1 + landingItems.length) % landingItems.length;
-};
-
-const goToItem = (index: number) => {
-  activeIndex.value = index;
-};
-
-const getVisibleBullets = computed(() => {
-  const totalItems = landingItems.length;
-  const maxBullets = 3;
-
-  if (totalItems <= maxBullets) {
-    return landingItems.map((item, index) => ({ ...item, index }));
+    const activitiesResponse = await api.get('/content_manager/activities/')
+    allActivities.value = activitiesResponse.data
+    isLoading.value = false
+  } catch (err: any) {
+    console.error('Error fetching activity:', err)
+    isLoading.value = false
+    error.value = err.message || "Failed to load activity data"
   }
-
-  let start = Math.max(0, activeIndex.value - 1);
-  start = Math.min(start, totalItems - maxBullets);
-
-  return landingItems.slice(start, start + maxBullets).map((item, i) => ({
-    ...item,
-    index: start + i,
-  }));
-});
-
-onMounted(() => {
-
-  setTimeout(() => {
-    isLoading.value = false;
-    intervalId = setInterval(nextItem, 5000);
-  }, 1500);
-});
-
-onUnmounted(() => {
-  if (intervalId !== null) {
-    clearInterval(intervalId);
-  }
-});
+})
 </script>
 
 <template>
   <section class="landing">
+
     <div v-if="isLoading" class="loading">
       Loading...
     </div>
 
+    <div v-else-if="error" class="error">
+      {{ error }}
+    </div>
+
     <div v-else class="landing-container">
-      <div class="landing-card">
-        <h1 class="title">Landing Page</h1>
-        <h2 class="sub-title">{{ landingItems[activeIndex].title }}</h2>
-        <p class="content">{{ landingItems[activeIndex].content }}</p>
+
+      <div class="info-container">
+        <h2 class="masjid-title">
+          {{ t('landing.title', { locale }) || t('landing.title_en') }}
+        </h2>
       </div>
 
-      <div class="pagination">
-        <span @click="prevItem" class="nav-btn">
-          <UIcon name="mdi-chevron-left" />
-        </span>
+      <div class="activities-container" v-if="latestActivities.length > 0">
 
-        <div class="dots">
-          <span
-              v-for="item in getVisibleBullets"
-              :key="item.id"
-              class="dot"
-              :class="{ active: item.index === activeIndex }"
-              @click="goToItem(item.index)"
-          ></span>
+        <h3 class="section-title">
+          {{ t('landing.latest_activity', { locale }) || t('landing.latest_activity_en') }}
+        </h3>
+
+        <div class="activity-highlight">
+          <div class="activity-card">
+
+            <div class="activity-image">
+              <img
+                  :src="latestActivities[0].poster || '/images/masjid-activity-placeholder.jpg'"
+                  :alt="latestActivities[0][`title_${locale}`] || latestActivities[0].title_my"
+                  class="activity-img"
+              />
+            </div>
+
+            <div class="activity-info">
+
+              <h3 class="activity-title">
+                {{ latestActivities[0][`title_${locale}`] || latestActivities[0].title_my }}
+              </h3>
+
+              <div class="activity-meta">
+                <p class="activity-date">
+                  <UIcon name="mdi-calendar" class="icon"/>
+                  {{ latestActivities[0].activity_date }} • {{ latestActivities[0].time }}
+                </p>
+              </div>
+
+              <NuxtLink :to="`/activities/${latestActivities[0].id}`" class="activity-btn">
+                <UIcon name="mdi-information-outline"/>
+                Learn More
+              </NuxtLink>
+
+            </div>
+
+          </div>
         </div>
 
-        <span @click="nextItem" class="nav-btn">
-          <UIcon name="mdi-chevron-right" />
-        </span>
       </div>
     </div>
   </section>
 </template>
 
 <style scoped>
-section {
-  height: 100%;
-  min-height: 100vh;
+.landing {
+  padding: 2rem;
+  min-height: 80vh;
   display: flex;
-  justify-content: center;
   align-items: center;
-  text-align: center;
   background-image: url("/images/masjid-4.jpg");
-  background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  padding: 20px;
+  color: var(--text-hover);
+  height: 100vh;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: white;
 }
 
 .landing-container {
-  position: relative;
-  background-color: rgba(255, 255, 255, 0.4);
-  padding: 20px;
-  border-radius: 10px;
-  width: 60%;
-  max-width: 800px;
-  box-shadow: rgba(149, 157, 165, 0.3) 0 8px 24px;
-  display: flex;
-  flex-direction: column;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 3rem;
   align-items: center;
-  justify-content: center;
 }
 
+.info-container {
+  padding: 2rem;
+}
+
+.masjid-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--text-hover);
+  background: var(--primary-color);
+  padding: 1rem;
+  border-radius: 2rem 0;
+  font-weight: 600;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #f8f8f8;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background-color: var(--primary-color);
+}
+
+.activity-highlight {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.activity-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.activity-image {
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+}
+
+.activity-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.activity-info {
+  padding: 2rem;
+  color: var(--primary-color);
+}
+
+.activity-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+.activity-meta {
+  margin-bottom: 1rem;
+}
+
+.activity-date {
+  color: var(--primary-color);
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  margin-right: 0.5rem;
+  color: var(--primary-color);
+}
+
+.activity-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.activity-btn:hover {
+  background-color: var(--primary-color);
+}
 
 @media (max-width: 1024px) {
   .landing-container {
-    width: 80%;
+    gap: 2rem;
+  }
+
+  .activity-image {
+    height: 220px;
   }
 }
 
 @media (max-width: 768px) {
+  .landing {
+    padding: 1.5rem;
+  }
+
   .landing-container {
-    width: 90%;
-    padding: 15px;
+    grid-template-columns: 1fr;
+    gap: 2rem;
   }
 
-  .nav-btn {
-    font-size: 20px;
-    padding: 8px;
+  .info-container {
+    text-align: center;
+    padding: 1rem;
   }
 
-  .dot {
-    width: 10px;
-    height: 10px;
+  .masjid-title {
+    font-size: 2rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .section-title::after {
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
 
 @media (max-width: 480px) {
-  section {
-    padding: 10px;
+  .landing {
+    padding: 1rem;
   }
 
-  .landing-container {
-    width: 95%;
-    padding: 10px;
+  .activity-image {
+    height: 180px;
   }
 
-  .landing-card {
-    padding: 15px;
+  .activity-info {
+    padding: 1.5rem;
   }
 
-  .nav-btn {
-    font-size: 18px;
-    padding: 6px;
+  .activity-title {
+    font-size: 1.3rem;
   }
-
-  .dot {
-    width: 8px;
-    height: 8px;
-  }
-}
-
-.landing-card {
-  padding: 20px;
-  text-align: center;
-}
-
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-}
-
-.nav-btn {
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  padding: 10px;
-}
-
-.dots {
-  display: flex;
-  gap: 10px;
-}
-
-.dot {
-  width: 12px;
-  height: 12px;
-  background-color: gray;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
-}
-
-.dot.active {
-  background-color: black;
 }
 </style>
