@@ -126,6 +126,40 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+/* Base animation keyframes */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
 .landing {
   padding: 2rem;
   min-height: 80vh;
@@ -136,6 +170,27 @@ onMounted(async () => {
   background-position: center;
   color: var(--text-hover);
   height: 100vh;
+  animation: fadeIn 1.2s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Add a subtle light pulse effect to the background */
+.landing::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255,255,255,0.03);
+  animation: pulseLight 8s infinite alternate;
+  z-index: 0;
+}
+
+@keyframes pulseLight {
+  0% { background-color: rgba(255,255,255,0.03); }
+  100% { background-color: rgba(255,255,255,0.08); }
 }
 
 .loading, .error {
@@ -143,6 +198,7 @@ onMounted(async () => {
   padding: 2rem;
   font-size: 1.2rem;
   color: white;
+  animation: fadeIn 0.8s ease-out;
 }
 
 .landing-container {
@@ -153,10 +209,14 @@ onMounted(async () => {
   grid-template-columns: 2fr 1fr;
   gap: 3rem;
   align-items: center;
+  position: relative;
+  z-index: 1;
+  animation: slideUp 1s ease-out 0.3s both;
 }
 
 .info-container {
   padding: 2rem;
+  animation: fadeIn 1s ease-out 0.5s both;
 }
 
 .masjid-title {
@@ -167,6 +227,8 @@ onMounted(async () => {
   padding: 1rem;
   border-radius: 2rem 0;
   font-weight: 600;
+  animation: scaleIn 0.8s ease-out 0.7s both;
+  transform-origin: left center;
 }
 
 .section-title {
@@ -175,6 +237,7 @@ onMounted(async () => {
   color: #f8f8f8;
   position: relative;
   padding-bottom: 0.5rem;
+  animation: fadeIn 0.8s ease-out 0.8s both;
 }
 
 .section-title::after {
@@ -185,6 +248,12 @@ onMounted(async () => {
   width: 60px;
   height: 3px;
   background-color: var(--primary-color);
+  animation: growWidth 0.6s ease-out 1s both;
+}
+
+@keyframes growWidth {
+  from { width: 0; }
+  to { width: 60px; }
 }
 
 .activity-highlight {
@@ -192,7 +261,13 @@ onMounted(async () => {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease;
+  transition: all 0.4s ease;
+  animation: slideUp 0.8s ease-out 0.9s both;
+}
+
+.activity-highlight:hover {
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
 }
 
 .activity-card {
@@ -205,24 +280,46 @@ onMounted(async () => {
   width: 100%;
   height: 250px;
   overflow: hidden;
+  position: relative;
+}
+
+.activity-image::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);
 }
 
 .activity-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: all 0.6s ease;
+  animation: scaleIn 0.8s ease-out 1s both;
+}
+
+.activity-highlight:hover .activity-img {
+  transform: scale(1.05) rotate(0.5deg);
 }
 
 .activity-info {
   padding: 2rem;
   color: var(--primary-color);
+  animation: fadeIn 0.8s ease-out 1.1s both;
 }
 
 .activity-title {
   font-size: 1.5rem;
   margin-bottom: 1rem;
   color: var(--primary-color);
+  transition: all 0.3s ease;
+}
+
+.activity-highlight:hover .activity-title {
+  color: var(--primary-dark);
 }
 
 .activity-meta {
@@ -235,11 +332,17 @@ onMounted(async () => {
   margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
+  transition: all 0.3s ease;
+}
+
+.activity-highlight:hover .activity-date {
+  transform: translateX(3px);
 }
 
 .icon {
   margin-right: 0.5rem;
   color: var(--primary-color);
+  animation: float 3s ease-in-out infinite;
 }
 
 .activity-btn {
@@ -253,15 +356,20 @@ onMounted(async () => {
   text-decoration: none;
   transition: all 0.3s ease;
   font-weight: 500;
+  animation: fadeIn 0.8s ease-out 1.2s both;
 }
 
 .activity-btn:hover {
-  background-color: var(--primary-color);
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
+/* Responsive adjustments with animation timing tweaks */
 @media (max-width: 1024px) {
   .landing-container {
     gap: 2rem;
+    animation-delay: 0.2s;
   }
 
   .activity-image {
@@ -277,24 +385,39 @@ onMounted(async () => {
   .landing-container {
     grid-template-columns: 1fr;
     gap: 2rem;
+    animation: slideUp 0.8s ease-out 0.2s both;
   }
 
   .info-container {
     text-align: center;
     padding: 1rem;
+    animation-delay: 0.3s;
   }
 
   .masjid-title {
     font-size: 2rem;
+    transform-origin: center;
+    animation-delay: 0.4s;
   }
 
   .section-title {
     font-size: 1.5rem;
+    animation-delay: 0.5s;
   }
 
   .section-title::after {
     left: 50%;
     transform: translateX(-50%);
+    animation: growWidthCenter 0.6s ease-out 0.6s both;
+  }
+
+  @keyframes growWidthCenter {
+    from { width: 0; }
+    to { width: 60px; }
+  }
+
+  .activity-highlight {
+    animation-delay: 0.6s;
   }
 }
 
