@@ -54,7 +54,7 @@ const groupedLinks = computed(() => [
     icon: "mdi-newspaper",
     children: [
       { link: "/admin/activities-form", label: t('admin_sidebar.news_form'), icon: "mdi-newspaper-variant-multiple" },
-      { link: "/admin/news-content-dashboard", label: t('admin_sidebar.news_dashboard'), icon: "mdi-newspaper-variant-multiple" }
+      { link: "/admin/activities-overview-dashboard", label: t('admin_sidebar.news_dashboard'), icon: "mdi-newspaper-variant-multiple" }
     ]
   },
 
