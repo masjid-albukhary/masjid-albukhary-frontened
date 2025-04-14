@@ -4,7 +4,6 @@
 <template>
   <Header/>
   <Landing/>
-  <ActivitiesCard/>
   <FacilitiesCard/>
   <BookingStructure/>
   <DonateQRcode/>

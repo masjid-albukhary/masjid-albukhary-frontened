@@ -10,9 +10,12 @@ export default {
     },
 
 
-    landing:{
+    landing: {
         title: "Melangkah Ke Jantung Masjid Al Bukhary",
-        latest_activity:"Aktiviti Terkini",
+        latest_activity: "Acara Akan Datang di Masjid Kami",
+    },
+    prayer_time: {
+        title: "Prayer Time",
     },
 
     about: {
@@ -132,7 +135,7 @@ export default {
     },
     activities: {
         title: "Aktiviti",
-        view_details:"Lihat Butiran",
+        view_details: "Lihat Butiran",
         date: "Tarikh",
         location: "Lokasi",
         participants: "Anggaran Peserta",
@@ -244,8 +247,8 @@ export default {
         admin_title: "Panel Pentadbiran",
         admin: "Gambaran Keseluruhan Papan Pemuka",
 
-        member_section:"ahli",
-        member_overview_dashboard:"Gambaran Keseluruhan Ahli Papan Pemuka",
+        member_section: "ahli",
+        member_overview_dashboard: "Gambaran Keseluruhan Ahli Papan Pemuka",
 
         booking_overview: "Pengurusan Tempahan",
         contact_messages_overview: "Pengurusan Mesej",

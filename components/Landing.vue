@@ -20,6 +20,7 @@ interface Activity {
   poster: string | null;
   estimated_participants: number | null;
   created_at: string;
+  updated_at: string;
 
   [key: string]: any;
 }
@@ -37,10 +38,17 @@ const latestActivities = computed(() => {
   if (!allActivities.value.length) return []
 
   return [...allActivities.value]
-      .filter(f => currentActivity.value ? f.id !== currentActivity.value.id : true)
-      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-      .slice(0, 1)
+      .filter(f => {
+
+        const notCurrent = currentActivity.value ? f.id !== currentActivity.value.id : true
+
+        const isUpcoming = f.activity_status === 'upcoming'
+        return notCurrent && isUpcoming
+      })
+      .sort((a, b) => new Date(b.created_at || b.updated_at).getTime() - new Date(a.created_at || b.updated_at).getTime())
+      .slice(0, 2)
 })
+
 
 onMounted(async () => {
   try {
@@ -76,23 +84,31 @@ onMounted(async () => {
 
       <div class="info-container">
         <h2 class="masjid-title">
-          {{ t('landing.title', { locale }) || t('landing.title_en') }}
+          {{ t('landing.title', {locale}) || t('landing.title_en') }}
         </h2>
+      </div>
+
+      <div class="prayer-time">
+
+        <PrayerTime/>
       </div>
 
       <div class="activities-container" v-if="latestActivities.length > 0">
 
         <h3 class="section-title">
-          {{ t('landing.latest_activity', { locale }) || t('landing.latest_activity_en') }}
+          {{ t('landing.latest_activity', {locale}) || t('landing.latest_activity_en') }}
         </h3>
 
         <div class="activity-highlight">
-          <div class="activity-card">
-
+          <div
+              class="activity-card"
+              v-for="activity in latestActivities"
+              :key="activity.id"
+          >
             <div class="activity-image">
               <img
-                  :src="latestActivities[0].poster || '/images/masjid-activity-placeholder.jpg'"
-                  :alt="latestActivities[0][`title_${locale}`] || latestActivities[0].title_my"
+                  :src="activity.poster || '/images/masjid-activity-placeholder.jpg'"
+                  :alt="activity[`title_${locale}`] || activity.title_my"
                   class="activity-img"
               />
             </div>
@@ -100,36 +116,49 @@ onMounted(async () => {
             <div class="activity-info">
 
               <h3 class="activity-title">
-                {{ latestActivities[0][`title_${locale}`] || latestActivities[0].title_my }}
+                {{ activity[`title_${locale}`] || activity.title_my }}
               </h3>
 
               <div class="activity-meta">
-                <p class="activity-date">
+
+                <span>
                   <UIcon name="mdi-calendar" class="icon"/>
-                  {{ latestActivities[0].activity_date }} • {{ latestActivities[0].time }}
-                </p>
+                  {{ activity.activity_date }}
+                </span>
+
+                <span>
+                  <UIcon name="mdi-clock-outline" class="icon"/>
+                  {{ activity.time }}
+                </span>
+
+                <span>
+                  <UIcon name="mdi-alarm" class="icon"/>
+                  {{ activity.activity_status }}
+                </span>
+
               </div>
 
-              <NuxtLink :to="`/activities/${latestActivities[0].id}`" class="activity-btn">
+              <NuxtLink :to="`/activities/${activity.id}`" class="activity-btn">
                 <UIcon name="mdi-information-outline"/>
                 Learn More
               </NuxtLink>
-
             </div>
-
           </div>
         </div>
-
       </div>
+
     </div>
   </section>
 </template>
 
 <style scoped>
-/* Base animation keyframes */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
@@ -154,28 +183,20 @@ onMounted(async () => {
   }
 }
 
-@keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-  100% { transform: translateY(0px); }
-}
-
 .landing {
-  padding: 2rem;
-  min-height: 80vh;
+  padding: 0;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   background-image: url("/images/masjid-4.jpg");
   background-size: cover;
   background-position: center;
+  background-attachment: fixed;
   color: var(--text-hover);
-  height: 100vh;
-  animation: fadeIn 1.2s ease-out;
   position: relative;
   overflow: hidden;
 }
 
-/* Add a subtle light pulse effect to the background */
 .landing::after {
   content: '';
   position: absolute;
@@ -183,14 +204,8 @@ onMounted(async () => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255,255,255,0.03);
-  animation: pulseLight 8s infinite alternate;
+  background: rgba(0, 0, 0, 0.4);
   z-index: 0;
-}
-
-@keyframes pulseLight {
-  0% { background-color: rgba(255,255,255,0.03); }
-  100% { background-color: rgba(255,255,255,0.08); }
 }
 
 .loading, .error {
@@ -198,244 +213,179 @@ onMounted(async () => {
   padding: 2rem;
   font-size: 1.2rem;
   color: white;
-  animation: fadeIn 0.8s ease-out;
+  width: 100%;
+  margin: 0 auto;
+  z-index: 2;
 }
 
 .landing-container {
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 3rem;
-  align-items: center;
+  margin: 1rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   position: relative;
   z-index: 1;
-  animation: slideUp 1s ease-out 0.3s both;
 }
 
 .info-container {
-  padding: 2rem;
-  animation: fadeIn 1s ease-out 0.5s both;
+  text-align: center;
+  animation: fadeIn 1s ease-out;
 }
 
 .masjid-title {
-  font-size: 2rem;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
   margin-bottom: 1rem;
   color: var(--text-hover);
-  background: var(--primary-color);
-  padding: 1rem;
-  border-radius: 2rem 0;
+  background: rgba(var(--primary-color), 0.8);
+  padding: 1rem 2rem;
+  border-radius: 12px;
   font-weight: 600;
-  animation: scaleIn 0.8s ease-out 0.7s both;
-  transform-origin: left center;
+  display: inline-block;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.prayer-time {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  animation: slideUp 0.8s ease-out 0.3s both;
+}
+
+.activities-container {
+  animation: fadeIn 0.8s ease-out 0.4s both;
 }
 
 .section-title {
-  font-size: 1.8rem;
+  font-size: clamp(1.5rem, 3vw, 1.8rem);
   margin-bottom: 1.5rem;
-  color: #f8f8f8;
+  color: var(--text-hover);
+  text-align: center;
   position: relative;
-  padding-bottom: 0.5rem;
-  animation: fadeIn 0.8s ease-out 0.8s both;
 }
 
 .section-title::after {
   content: '';
   position: absolute;
-  bottom: 0;
-  left: 0;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 60px;
   height: 3px;
   background-color: var(--primary-color);
-  animation: growWidth 0.6s ease-out 1s both;
-}
-
-@keyframes growWidth {
-  from { width: 0; }
-  to { width: 60px; }
 }
 
 .activity-highlight {
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  transition: all 0.4s ease;
-  animation: slideUp 0.8s ease-out 0.9s both;
-}
-
-.activity-highlight:hover {
-  transform: translateY(-5px) scale(1.01);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .activity-card {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.activity-image {
-  width: 100%;
-  height: 250px;
-  overflow: hidden;
-  position: relative;
-}
-
-.activity-image::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-width: 350px;
+  max-height: 150px;
+  margin: 0 auto;
+  background-color: var(--bg-hover-color);
 }
 
 .activity-img {
   width: 100%;
   height: 100%;
+  max-width: 350px;
+  max-height: 150px;
   object-fit: cover;
-  transition: all 0.6s ease;
-  animation: scaleIn 0.8s ease-out 1s both;
-}
-
-.activity-highlight:hover .activity-img {
-  transform: scale(1.05) rotate(0.5deg);
+  transition: transform 0.5s ease;
 }
 
 .activity-info {
-  padding: 2rem;
-  color: var(--primary-color);
-  animation: fadeIn 0.8s ease-out 1.1s both;
+  padding: .5rem;
+  display: block;
+  max-width: calc(350px / 2);
+  color: var(--text-color);
 }
 
 .activity-title {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: var(--primary-color);
-  transition: all 0.3s ease;
-}
-
-.activity-highlight:hover .activity-title {
-  color: var(--primary-dark);
-}
-
-.activity-meta {
-  margin-bottom: 1rem;
-}
-
-.activity-date {
-  color: var(--primary-color);
-  font-size: 0.95rem;
+  font-size: 1rem;
   margin-bottom: 0.5rem;
-  display: flex;
-  align-items: center;
-  transition: all 0.3s ease;
-}
-
-.activity-highlight:hover .activity-date {
-  transform: translateX(3px);
-}
-
-.icon {
-  margin-right: 0.5rem;
   color: var(--primary-color);
-  animation: float 3s ease-in-out infinite;
+}
+
+.activity-meta span {
+  display: block;
+  margin-bottom: auto;
+  color: var(--secondary-color);
+  font-size: 0.95rem;
+  gap: 0.5rem;
+}
+
+.activity-meta span {
+  display: flex;
 }
 
 .activity-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  background-color: var(--primary-color);
-  color: var(--text-color);
-  border-radius: 6px;
+  padding: 0.25rem .5rem;
+  color: var(--primary-color);
   text-decoration: none;
+  width: fit-content;
+  margin-top: .5rem;
   transition: all 0.3s ease;
-  font-weight: 500;
-  animation: fadeIn 0.8s ease-out 1.2s both;
 }
 
 .activity-btn:hover {
-  background-color: var(--primary-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* Responsive adjustments with animation timing tweaks */
-@media (max-width: 1024px) {
-  .landing-container {
-    gap: 2rem;
-    animation-delay: 0.2s;
-  }
-
-  .activity-image {
-    height: 220px;
-  }
+  color: var(--secondary-color);
+  text-decoration: underline;
 }
 
 @media (max-width: 768px) {
   .landing {
-    padding: 1.5rem;
+    padding: 1rem;
+    min-height: auto;
+    background-attachment: scroll;
   }
 
   .landing-container {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    animation: slideUp 0.8s ease-out 0.2s both;
+    gap: 1.5rem;
+    padding: 0.5rem;
   }
 
-  .info-container {
-    text-align: center;
-    padding: 1rem;
-    animation-delay: 0.3s;
-  }
-
-  .masjid-title {
-    font-size: 2rem;
-    transform-origin: center;
-    animation-delay: 0.4s;
-  }
-
-  .section-title {
-    font-size: 1.5rem;
-    animation-delay: 0.5s;
-  }
-
-  .section-title::after {
-    left: 50%;
-    transform: translateX(-50%);
-    animation: growWidthCenter 0.6s ease-out 0.6s both;
-  }
-
-  @keyframes growWidthCenter {
-    from { width: 0; }
-    to { width: 60px; }
-  }
 
   .activity-highlight {
-    animation-delay: 0.6s;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
-}
 
-@media (max-width: 480px) {
-  .landing {
-    padding: 1rem;
+  .activity-card {
+    grid-template-columns: 1fr;
   }
 
   .activity-image {
-    height: 180px;
+    height: 200px;
   }
 
   .activity-info {
     padding: 1.5rem;
   }
+}
 
-  .activity-title {
-    font-size: 1.3rem;
+@media (max-width: 480px) {
+  .masjid-title {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.5rem;
+  }
+
+  .activity-btn {
+    width: 100%;
   }
 }
 </style>
