@@ -13,11 +13,11 @@ export default {
         title: "Step Into the Heart of Al Bukhary Mosque",
         latest_activity:"Upcoming Events at Our Masjid"
     },
-
     prayer_time: {
         title: "Prayer Time",
     },
-
+    weekly_talk:"Watch our weekly Islamic talks  simple, powerful reminders to bring you closer to Allah.",
+    watch_video:"Watch video",
     about: {
         title: "Masjid Al Bukhary Kuala Lumpur Official",
         descriptionTitle: "Get to know more about Albukhary Foundation",
@@ -86,7 +86,6 @@ export default {
             ]
         }
     },
-
     service: {
         title: "Our Service",
         description: "Masjid Albukhary Kuala Lumpur is a beautifully designed mosque that serves as a center for worship, community activities, and Islamic education. It offers daily prayers, Friday sermons, Quran classes, religious talks, and facilities for solemnization (nikah) and events. The mosque also provides charity services and community outreach programs to support those in need.",
@@ -102,7 +101,6 @@ export default {
         }
 
     },
-
     contact: {
         title: "Get in touch with us",
         description: "Reach out to us with any questions or concerns you may have, and we’ll be happy to help.",

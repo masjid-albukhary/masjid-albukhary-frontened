@@ -9,7 +9,6 @@ export default {
         contact: "Hubungi"
     },
 
-
     landing: {
         title: "Melangkah Ke Jantung Masjid Al Bukhary",
         latest_activity: "Acara Akan Datang di Masjid Kami",
@@ -17,7 +16,6 @@ export default {
     prayer_time: {
         title: "Prayer Time",
     },
-
     about: {
         title: "Rasmi Masjid Al Bukhary Kuala Lumpur",
         descriptionTitle: "Kenali lebih lanjut tentang Yayasan Albukhary",
@@ -86,7 +84,6 @@ export default {
             ]
         },
     },
-
     service: {
         title: "Perkhidmatan Kami",
         description: "Masjid Albukhary Kuala Lumpur ialah sebuah masjid yang indah dan menjadi pusat ibadah, aktiviti komuniti, dan pendidikan Islam. Masjid ini menyediakan solat lima waktu, khutbah Jumaat, kelas al-Quran, ceramah agama, serta kemudahan untuk akad nikah dan majlis-majlis lain. Ia juga menawarkan perkhidmatan kebajikan dan program kemasyarakatan bagi membantu golongan memerlukan.",
@@ -101,7 +98,6 @@ export default {
             ]
         }
     },
-
     members: {
         title: "Bertemu komuniti kami",
     },
@@ -188,6 +184,8 @@ export default {
             button: "Daftar Minat Anda",
         },
     },
+    weekly_talk:"Tonton ceramah Islam mingguan kami peringatan ringkas dan berkesan untuk mendekatkan anda kepada Allah.",
+    watch_video:"Tonton video",
 
     // admin side
 
