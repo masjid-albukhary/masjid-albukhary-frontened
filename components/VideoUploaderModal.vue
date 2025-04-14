@@ -26,6 +26,17 @@ const uploadVideosQuestions = [
     id: 'video_link'
   },
   {
+    label: 'Video Type',
+    type: 'select',
+    required: true,
+    placeholder: 'Weekly Talk',
+    options: [
+      {value: 'weekly talk', label: 'Weekly Talk'},
+      {value: 'general', label: 'General'},
+    ],
+    id: 'video_type'
+  },
+  {
     label: 'Upload Video',
     type: 'file',
     required: true,
@@ -38,6 +49,7 @@ const formSchema = z.object({
   name_field: z.string().min(8, 'Name field must be at least 8 characters long'),
   alert_field: z.string().min(8, 'Alert field must be at least 8 characters long'),
   video_link: z.string().url('Invalid URL format').optional(),
+  video_type: z.string().optional(),
   gallery_video: z.string().optional(),
 });
 
@@ -130,6 +142,19 @@ async function handleSubmit() {
                   @change="(e) => handleFileUpload(e, question)"
                   @input="validateField(question.id)"
               />
+              <select
+                  v-if="question.type === 'select'"
+                  v-model="form[question.id]"
+                  :id="question.label"
+                  @change="validateField(question.id)"
+              >
+                <option value="" disabled>{{ question.placeholder }}</option>
+                <option v-for="option in question.options" :key="option.value" :value="option.value">{{
+                    option.label
+                  }}
+                </option>
+              </select>
+
               <span v-if="errors[question.id]" class="error">{{ errors[question.id] }}</span>
             </div>
           </div>
@@ -209,6 +234,7 @@ async function handleSubmit() {
   color: var(--primary-color);
 }
 
+.upload-video-form select,
 .upload-video-form input {
   width: 100%;
   padding: 0.5rem;

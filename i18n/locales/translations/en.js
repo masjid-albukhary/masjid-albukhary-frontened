@@ -187,6 +187,7 @@ export default {
         },
 
     },
+    video_type:"Video Type",
 
     // admin side
 

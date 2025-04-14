@@ -13,6 +13,7 @@ interface VideoDetails {
   alert_field: string;
   video_link: string;
   gallery_video: string;
+  video_type: string;
 }
 
 const videos = ref<VideoDetails[]>([]);
@@ -91,6 +92,11 @@ function prevPage() {
               <span>{{ t('Link') }}:</span>
               <span><a :href="video.video_link" target="_blank">{{ t('Watch Video') }}</a></span>
             </div>
+            <div class="box-info">
+              <span>{{ t('video_type') }}:</span>
+              <span>{{ t(video.video_type) }}</span>
+            </div>
+
             <button @click="deleteVideo(video.id)" :disabled="isProcessing" class="delete-btn">{{
                 t('Delete')
               }}
