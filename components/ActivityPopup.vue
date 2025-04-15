@@ -46,7 +46,7 @@ const formData = reactive<ActivityContent>({
   estimated_participants: '',
   poster: '',
 });
-const imageFile = ref<File | null>(null);
+const poster = ref<File | null>(null);
 const imagePreview = ref<string | null>(null);
 watch(() => props.selectedActivityContent, (newContent) => {
   if (newContent) {
@@ -126,8 +126,8 @@ const formFields = [
     required: true,
     options: [
       { label: 'Talk', value: 'talk' },
-      { label: 'Quran Class', value: 'quran_class' },
-      { label: 'Community Event', value: 'community_event' },
+      { label: 'Quran Class', value: 'quran class' },
+      { label: 'Community Event', value: 'community event' },
       { label: 'Fundraising', value: 'fundraising' },
       { label: 'Volunteer', value: 'volunteer' },
       { label: 'Others', value: 'others' }
@@ -173,7 +173,7 @@ const handleImageChange = (event: Event) => {
   const target = event.target as HTMLInputElement;
   if (target.files && target.files.length > 0) {
     const file = target.files[0];
-    imageFile.value = file;
+    poster.value = file;
 
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -185,8 +185,8 @@ const handleImageChange = (event: Event) => {
 const handleSave = () => {
   const updatedContent = {...formData};
 
-  if (imageFile.value) {
-    updatedContent.poster = imageFile.value;
+  if (poster.value) {
+    updatedContent.poster = poster.value;
   }
 
 

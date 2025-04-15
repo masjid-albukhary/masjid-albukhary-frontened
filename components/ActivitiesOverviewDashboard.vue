@@ -91,11 +91,11 @@ const submitActivityContentChanges = async (updatedContent: ActivityContent) => 
   formData.append('location', updatedContent.location);
   formData.append('target_audience', updatedContent.target_audience);
   formData.append('estimated_participants', updatedContent.estimated_participants);
+
   formData.append('poster', updatedContent.poster);
 
 
   if (updatedContent.poster instanceof File) {
-    // User uploaded a new file
     formData.append('poster', updatedContent.poster);
   } else {
     try {
@@ -107,7 +107,7 @@ const submitActivityContentChanges = async (updatedContent: ActivityContent) => 
       const file = new File([blob], fileName, {type: blob.type});
       formData.append('poster', file);
     } catch (err) {
-      // console.error('Failed to fetch and resend existing image:', err);
+      console.error('Failed to fetch and resend existing image:', err);
       alert('Failed to load existing image for resubmission.');
       return;
     }
@@ -132,10 +132,10 @@ const submitActivityContentChanges = async (updatedContent: ActivityContent) => 
     alert('Content updated successfully!');
     hideActivityContentPopup();
   } catch (error) {
-    // console.error('Update failed:', error);
+    console.error('Update failed:', error);
     alert('Update failed. Please try again.');
     if (error.response) {
-      // console.error('Backend error:', error.response.data);
+      console.error('Backend error:', error.response.data);
     }
   }
 };

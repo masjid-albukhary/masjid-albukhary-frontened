@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
-import { useNuxtApp } from '#app';
+import {ref, computed, onMounted} from 'vue';
+import {useNuxtApp} from '#app';
 import BookingRequestPopup from '~/components/BookingRequestPopup.vue';
+import jsPDF from "jspdf";
+import autoTable from 'jspdf-autotable';
+
 
 interface BookingContent {
   id: number;
@@ -23,14 +26,14 @@ interface BookingContent {
 }
 
 const columns = [
-  { key: 'first_name', label: 'First Name' },
-  { key: 'last_name', label: 'Last Name' },
-  { key: 'booking_date', label: 'Booking Date' },
-  { key: 'venue', label: 'Venue' },
-  { key: 'actions', label: 'Actions' },
+  {key: 'first_name', label: 'First Name'},
+  {key: 'last_name', label: 'Last Name'},
+  {key: 'booking_date', label: 'Booking Date'},
+  {key: 'venue', label: 'Venue'},
+  {key: 'actions', label: 'Actions'},
 ];
 const bookingContentList = ref<BookingContent[]>([]);
-const { $axios } = useNuxtApp();
+const {$axios} = useNuxtApp();
 const api = $axios();
 
 const currentPage = ref(1);
@@ -65,7 +68,7 @@ const handlePageChange = (newPage: number) => {
 };
 
 const showBookingContentPopup = (content: BookingContent) => {
-  selectedBookingContent.value = { ...content };
+  selectedBookingContent.value = {...content};
   isPopupVisible.value = true;
 };
 const hideBookingContentPopup = () => {
@@ -106,7 +109,7 @@ const submitBookingContentChanges = async (updatedContent: BookingContent) => {
       const fileName = updatedContent.other_docs.split('/').pop() || 'existing_file.jpg';
 
       // Create a File object to send
-      const file = new File([blob], fileName, { type: blob.type });
+      const file = new File([blob], fileName, {type: blob.type});
       formData.append('other_docs', file);
     } catch (err) {
       console.error('Failed to fetch and resend existing image:', err);
@@ -158,6 +161,57 @@ const removeBookingContent = async () => {
   }
 };
 
+const generatePDF = () => {
+  try {
+    const doc = new jsPDF('p', 'pt', 'a4');
+
+    doc.setFontSize(16);
+    doc.setTextColor(40);
+    doc.text('Report on Booking Masjid Services', 40, 40);
+
+    doc.setFontSize(10);
+    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 40, 60);
+
+    const filteredData = filteredBookingContent.value.map((request, index) => [
+      index + 1,
+      request.first_name,
+      request.last_name,
+      request.booking_date,
+      request.phone,
+      request.venue,
+      request.services,
+      request.request_status.toUpperCase()
+    ]);
+
+    autoTable(doc, {
+      startY: 80,
+      head: [['#', 'First Name', 'Last Name', 'Date', 'Phone', 'Venue', 'Services', 'Status']],
+      body: filteredData,
+      styles: {
+        fontSize: 9,
+        cellPadding: 5,
+        overflow: 'linebreak'
+      },
+      headStyles: {
+        fillColor: [41, 128, 185],
+        textColor: 255,
+        fontStyle: 'bold'
+      },
+      alternateRowStyles: {
+        fillColor: [245, 245, 245]
+      },
+      margin: { top: 80 }
+    });
+
+    const fileName = `Booking_Report_${new Date().toISOString().slice(0, 10)}.pdf`;
+    doc.save(fileName);
+
+  } catch (error) {
+    // console.error('Error generating PDF:', error);
+    alert('Failed to generate PDF. Please check console for details.');
+  }
+};
+
 onMounted(async () => {
   try {
     const response = await api.get("/requests/booking_requests/");
@@ -177,7 +231,12 @@ onMounted(async () => {
       <main class="content-area">
 
         <div class="content-header">
-          <input v-model="searchQuery" placeholder="Search by title..." class="search-box" />
+          <input v-model="searchQuery" placeholder="Search by title..." class="search-box"/>
+
+          <div class="download-btn-wrapper">
+            <button @click="generatePDF" class="download-button">Download Report</button>
+          </div>
+
         </div>
 
         <div v-if="isLoading" class="loading-state">Loading content...</div>
@@ -206,9 +265,13 @@ onMounted(async () => {
         </div>
 
         <div class="pagination-controls" v-if="!isLoading && totalItems > 0">
-          <button class="pagination-button" :disabled="currentPage === 1" @click="handlePageChange(currentPage - 1)">⬅ Prev</button>
+          <button class="pagination-button" :disabled="currentPage === 1" @click="handlePageChange(currentPage - 1)">⬅
+            Prev
+          </button>
           <span>Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) }}</span>
-          <button class="pagination-button" :disabled="currentPage >= Math.ceil(totalItems / pageSize)" @click="handlePageChange(currentPage + 1)">Next ➡</button>
+          <button class="pagination-button" :disabled="currentPage >= Math.ceil(totalItems / pageSize)"
+                  @click="handlePageChange(currentPage + 1)">Next ➡
+          </button>
         </div>
 
       </main>
@@ -228,6 +291,7 @@ onMounted(async () => {
 <style scoped>
 .dashboard-wrapper {
   padding: 1rem;
+  background: white;
 }
 
 .dashboard-container {
@@ -239,6 +303,7 @@ onMounted(async () => {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 1rem;
+  gap: 1rem;
 }
 
 .search-box {
@@ -247,6 +312,21 @@ onMounted(async () => {
   border-radius: 4px;
   min-width: 300px;
   outline: none;
+}
+
+.download-button{
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  border-radius: 4px;
+  min-width: 200px;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.download-button:hover {
+  color: var(--text-hover);
 }
 
 .table-wrapper {
@@ -265,7 +345,7 @@ onMounted(async () => {
 }
 
 .data-table th {
-  background-color: #f5f5f5;
+  background-color: var(--bg-hover-color);
   font-weight: bold;
 }
 
