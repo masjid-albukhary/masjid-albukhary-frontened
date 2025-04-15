@@ -30,6 +30,7 @@ const columns = [
   {key: 'last_name', label: 'Last Name'},
   {key: 'booking_date', label: 'Booking Date'},
   {key: 'venue', label: 'Venue'},
+  {key: 'request_status', label: 'Status'},
   {key: 'actions', label: 'Actions'},
 ];
 const bookingContentList = ref<BookingContent[]>([]);
@@ -50,7 +51,8 @@ const filteredBookingContent = computed(() => {
     result = result.filter(content =>
         content.first_name.toLowerCase().includes(query) ||
         content.last_name.toLowerCase().includes(query) ||
-        content.venue.toLowerCase().includes(query)
+        content.venue.toLowerCase().includes(query) ||
+        content.request_status.toLowerCase().includes(query)
     );
   }
   return result;
@@ -254,8 +256,9 @@ onMounted(async () => {
             <tr v-for="row in paginatedBookingContent" :key="row.id">
               <td>{{ row.first_name }}</td>
               <td>{{ row.last_name }}</td>
-              <td>{{ row.venue }}</td>
               <td>{{ row.booking_date }}</td>
+              <td>{{ row.venue }}</td>
+              <td>{{ row.request_status }}</td>
               <td>
                 <button @click="showBookingContentPopup(row)" class="view-button">View</button>
               </td>
