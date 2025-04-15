@@ -201,7 +201,6 @@ onMounted(async () => {
       <p>activity not found</p>
     </div>
   </section>
-  <BookingStructure/>
   <Footer/>
 </template>
 
