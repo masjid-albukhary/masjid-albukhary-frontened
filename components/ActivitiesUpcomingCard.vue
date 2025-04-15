@@ -145,6 +145,12 @@ onMounted(async () => {
                 {{ t("activities.participants") }} : {{ activities.estimated_participants }}
               </span>
             </div>
+            <div class="box">
+              <span><UIcon name="mdi-alarm" class="activity-info-icon"/></span>
+              <span>
+                {{ activities.activity_status }}
+              </span>
+            </div>
 
           </div>
         </div>
@@ -158,14 +164,15 @@ onMounted(async () => {
       </div>
     </div>
 
-    <div class="buttons">
-      <button @click="prevPage" class="nav-button">
-        <UIcon name="mdi-arrow-left-circle"/>
-      </button>
-      <button @click="nextPage" class="nav-button">
-        <UIcon name="mdi-arrow-right-circle"/>
-      </button>
-    </div>
+<!--    <div class="buttons">-->
+<!--      <button @click="prevPage" class="nav-button">-->
+<!--        <UIcon name="mdi-arrow-left-circle"/>-->
+<!--      </button>-->
+<!--      <button @click="nextPage" class="nav-button">-->
+<!--        <UIcon name="mdi-arrow-right-circle"/>-->
+<!--      </button>-->
+<!--    </div>-->
+
   </section>
 </template>
 
