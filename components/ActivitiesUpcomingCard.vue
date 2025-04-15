@@ -19,19 +19,20 @@ interface Activity {
   target_audience: string;
   poster: string | null;
   estimated_participants: number | null;
+
   [key: string]: any;
 
 }
 
 const {locale, t} = useI18n();
 const {$axios} = useNuxtApp();
-
 const api = $axios()
 
 const activities = ref<Activity[]>([]);
 const currentActivity = ref<Activity | null>(null)
 const currentIndex = ref(0);
 const itemsPerPage = ref(3);
+const isLoading = ref(true);
 
 function nextPage() {
   if (currentIndex.value + itemsPerPage.value < activities.value.length) {
@@ -60,8 +61,6 @@ const latestActivities = computed(() => {
         const isUpcoming = f.activity_status === 'upcoming'
         return notCurrent && isUpcoming
       })
-      .sort((a, b) => new Date(b.created_at || b.updated_at).getTime() - new Date(a.created_at || b.updated_at).getTime())
-      .slice(0, 2)
 })
 
 onMounted(async () => {
@@ -81,6 +80,8 @@ onMounted(async () => {
     } else {
       console.error("Error message:", error.message);
     }
+  } finally {
+    isLoading.value = false;
   }
 });
 
@@ -93,7 +94,13 @@ onMounted(async () => {
       {{ t('latest_activity') }}
     </h1>
 
-    <div class="activities-card-container">
+
+    <div v-if="isLoading" class="loading-state">Loading content...</div>
+
+    <div v-else-if="latestActivities.length === 0" class="empty-state">No content available.</div>
+
+
+    <div v-else class="activities-card-container">
       <div
           class="activity-card"
           v-for="activities in latestActivities"
@@ -119,21 +126,21 @@ onMounted(async () => {
           <div class="activity-info">
 
             <div class="box">
-              <span><UIcon name="mdi-calendar" class="activity-info-icon" /></span>
+              <span><UIcon name="mdi-calendar" class="activity-info-icon"/></span>
               <span>
                 {{ t("activities.date") }} : {{ activities.activity_date }}
               </span>
             </div>
 
             <div class="box">
-              <span><UIcon name="mdi-map-marker" class="activity-info-icon" /></span>
+              <span><UIcon name="mdi-map-marker" class="activity-info-icon"/></span>
               <span>
                 {{ t("activities.location") }} : {{ activities.location }}
               </span>
             </div>
 
             <div class="box">
-              <span><UIcon name="mdi-account-group" class="activity-info-icon" /></span>
+              <span><UIcon name="mdi-account-group" class="activity-info-icon"/></span>
               <span>
                 {{ t("activities.participants") }} : {{ activities.estimated_participants }}
               </span>
@@ -144,7 +151,7 @@ onMounted(async () => {
         <div class="activity-card-footer">
           <div class="activity-btn">
             <NuxtLink :to="`/activities/${activities.id}`">
-              {{t('activities.view_details')}}
+              {{ t('activities.view_details') }}
             </NuxtLink>
           </div>
         </div>
@@ -250,7 +257,8 @@ section {
 .activity-info div {
   display: flex;
   color: var(--primary-color);
-  margin-bottom: 0.5rem ;
+  margin-bottom: 0.5rem;
+
   span:first-of-type {
     margin-right: .5rem;
   }
@@ -348,5 +356,13 @@ section {
   .nav-button {
     font-size: 1.75rem;
   }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-hover);
+  background-color: var(--primary-color);
+  border-radius: 4px;
 }
 </style>
