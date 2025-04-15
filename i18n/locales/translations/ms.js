@@ -187,6 +187,7 @@ export default {
     weekly_talk:"Tonton ceramah Islam mingguan kami peringatan ringkas dan berkesan untuk mendekatkan anda kepada Allah.",
     watch_video:"Tonton video",
     video_type:"Jenis Video",
+    latest_activity: "Acara Akan Datang di Masjid Kami",
 
     // admin side
 

@@ -187,7 +187,8 @@ export default {
         },
 
     },
-    video_type:"Video Type",
+    latest_activity:"Upcoming Events at Our Masjid",
+
 
     // admin side
 

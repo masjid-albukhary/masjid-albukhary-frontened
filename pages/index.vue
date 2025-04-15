@@ -6,7 +6,7 @@ import WeeklyTalkComponent from "~/components/WeeklyTalkComponent.vue";
   <Header/>
   <Landing/>
   <WeeklyTalkComponent/>
-  <FacilitiesCard/>
+  <ActivitiesUpcomingCard/>
   <BookingStructure/>
   <DonateQRcode/>
   <MapSection/>
