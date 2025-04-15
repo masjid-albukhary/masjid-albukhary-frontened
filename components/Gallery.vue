@@ -273,7 +273,7 @@ h1 {
 
 .popup-image {
   width: 500px;
-  max-height: 500px;
+  max-width: 500px;
   height:auto;
   max-height: 400px;
   object-fit: contain;
