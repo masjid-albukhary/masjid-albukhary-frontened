@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
-import { useI18n } from "vue-i18n";
-import { useNuxtApp } from "#app";
+import {computed, onMounted, ref} from "vue";
+import {useI18n} from "vue-i18n";
+import {useNuxtApp} from "#app";
 
-const { locale, t } = useI18n();
-const { $axios } = useNuxtApp();
+const {locale, t} = useI18n();
+const {$axios} = useNuxtApp();
 const api = $axios();
 
 interface Service {
@@ -18,12 +18,13 @@ interface Service {
   capacity: number;
   price: number;
   facilities?: string[];
+
   [key: string]: any;
 }
 
 const services = ref<Service[]>([]);
 const currentServiceIndex = ref(0);
-const itemsPerPage = ref(3);
+const itemsPerPage = ref(4);
 const loading = ref(true);
 const error = ref<string | null>(null);
 
@@ -90,8 +91,10 @@ onMounted(async () => {
       <div class="service-card" v-for="service in visibleService" :key="service.id">
 
         <div class="service-card-icon">
-          <UIcon name="mdi-home-modern" class="service-icon" />
+          <UIcon name="mdi-home-modern" class="service-icon"/>
         </div>
+
+        <hr class="service-card-divider" />
 
         <div class="service-card-header">
           <h3 class="service-card-title">
@@ -101,17 +104,21 @@ onMounted(async () => {
 
         <div class="service-card-content">
           <ul class="service-facilities">
-            <li v-for="(feature, index) in (service[`features_${locale}`] || service.features_en || '').split(',')" :key="index">
-              <UIcon name="mdi-cogs" class="service-icon" />
+            <li v-for="(feature, index) in (service[`features_${locale}`] || service.features_en || '').split(',')"
+                :key="index">
+              <UIcon name="mdi-cogs" class="service-icon"/>
               {{ feature.trim() }}
             </li>
           </ul>
         </div>
 
+
         <div class="service-card-footer">
-          <span class="service-price">
+          <div>
+            <span class="service-price">
             RM / {{ service.price }}
-          </span>
+            </span>
+          </div>
 
           <router-link to="/services-form" class="booking-structure-btn">
             {{ t('service.button') }}
@@ -129,11 +136,11 @@ onMounted(async () => {
     <div class="buttons" v-if="!loading && services.length > 0">
 
       <button @click="prevServicePage" class="nav-button">
-        <UIcon name="mdi-arrow-left-circle" />
+        <UIcon name="mdi-arrow-left-circle"/>
       </button>
 
       <button @click="nextServicePage" class="nav-button">
-        <UIcon name="mdi-arrow-right-circle" />
+        <UIcon name="mdi-arrow-right-circle"/>
       </button>
 
     </div>
@@ -157,6 +164,12 @@ section {
   margin-bottom: 2rem;
 }
 
+.service-card-divider{
+  border: 1px solid var(--bg-hover-color);
+  width: 100%;
+  margin: 1rem auto;
+}
+
 .service-title {
   font-size: 2.2rem;
   font-weight: bold;
@@ -172,7 +185,7 @@ section {
 
 .service-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 2rem;
   max-width: 1200px;
   width: 100%;
@@ -186,7 +199,6 @@ section {
   flex-direction: column;
   align-items: center;
   transition: all 0.3s ease-in-out;
-  max-width: 400px;
 }
 
 .service-card:hover {
@@ -215,8 +227,8 @@ section {
   text-align: center;
 }
 
-.service-card-content{
-  min-height: 220px;
+.service-card-content {
+  min-height: 170px;
 }
 
 .service-facilities {
@@ -228,7 +240,8 @@ section {
 .service-facilities li {
   color: var(--text-color);
   display: flex;
-  align-items: center;
+  align-items: start;
+  text-align: start;
   gap: 0.5rem;
   font-size: 1.1rem;
   margin-bottom: 0.5rem;
@@ -245,10 +258,11 @@ section {
   font-size: 1.3rem;
 }
 
-.service-card-footer{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+.service-card-footer {
+  display: block;
+  div {
+    margin-bottom: 1rem;
+  }
 }
 
 .service-price {
@@ -261,14 +275,14 @@ section {
 }
 
 .booking-structure-btn {
-  color: var(--text-color);
+  color: var(--primary-color);
   border-radius: 10px;
   text-decoration: none;
   font-size: 1rem;
   transition: all 0.3s ease-in-out;
   margin: 0 auto;
   padding: .5rem 1rem;
-  background: var(--primary-color);
+  background: var(--bg-hover-color);
 }
 
 .booking-structure-btn:hover {
