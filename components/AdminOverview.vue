@@ -1,20 +1,4 @@
 <script setup lang="ts">
-
-interface Items {
-  icon: string
-  title: string
-  count: number
-}
-
-const items: Items[] = [
-  {icon: "mdi-users", title: "Users", count: 12},
-  {icon: "mdi-book", title: "Articles", count: 20},
-  {icon: "mdi-check", title: "Activities", count: 5},
-  {icon: "mdi-user-check", title: "Volunteers", count: 8},
-  {icon: "mdi-hand", title: "Donations", count: 500},
-];
-
-
 </script>
 
 <template>
@@ -26,22 +10,7 @@ const items: Items[] = [
         <img src="../public/images/admin%20mosque.png" alt="admin mosque">
       </div>
 
-      <div class="admin-overview-overview-content">
-        <div class="box" v-for="item in items" :key="item.title">
-          <div class="box-title">
-            {{ item.count }}
-          </div>
-          <div class="box-content">
-            <span>
-              <UIcon
-                  :name="item.icon"
-                  class="icon"
-              />
-            </span>
-            <span class="count-title">{{ item.title }}</span>
-          </div>
-        </div>
-      </div>
+      <div class="admin-overview-overview-content"></div>
 
     </div>
   </section>
