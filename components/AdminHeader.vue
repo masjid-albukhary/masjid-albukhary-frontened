@@ -2,6 +2,7 @@
 import {ref, onMounted, onUnmounted} from 'vue'
 import ImageUploaderModal from '~/components/ImageUploaderModal.vue'
 import VideoUploaderModal from '~/components/VideoUploaderModal.vue'
+import UserChangePassword from '~/components/UserChangePassword.vue'
 
 import {useI18n} from 'vue-i18n'
 
@@ -9,7 +10,7 @@ interface Link {
   link?: string
   label: string
   icon: string
-  popup?: 'image' | 'video' | 'member' | 'logout'
+  popup?: 'image' | 'changePassword' | 'video' | 'member' | 'logout'
 }
 
 const {t} = useI18n()
@@ -19,12 +20,14 @@ const isImagePopupVisible = ref(false)
 
 const isVideoPopupVisible = ref(false)
 const isNewMemberPopupVisible = ref(false)
+const isChangePasswordPopupVisible = ref(false)
 
 const links: Link[] = [
-  { label: t('admin_header.upload_image'), icon: 'mdi-image', popup: 'image' },
-  { label: t('admin_header.upload_video'), icon: 'mdi-video', popup: 'video' },
-  { label: t('admin_header.upload_new_member'), icon: 'mdi-account-plus', popup: 'member' },
-  { label: t('admin_header.logout'), icon: 'mdi-logout', popup: 'logout' }
+  {label: t('admin_header.upload_image'), icon: 'mdi-image', popup: 'image'},
+  {label: t('admin_header.upload_video'), icon: 'mdi-video', popup: 'video'},
+  {label: t('admin_header.upload_video'), icon: 'mdi-video', popup: 'member'},
+  {label: t('admin_header.change_password'), icon: 'mdi-password', popup: 'changePassword'},
+  {label: t('admin_header.logout'), icon: 'mdi-logout', popup: 'logout'}
 ];
 
 
@@ -32,13 +35,15 @@ const toggleLinksVisibility = () => {
   isLinksVisible.value = !isLinksVisible.value
 }
 
-const togglePopup = (type: 'image' | 'video' | 'member' | 'logout') => {
+const togglePopup = (type: 'image' | 'video' | 'member' | 'changePassword' | 'logout') => {
   if (type === 'image') {
     isImagePopupVisible.value = !isImagePopupVisible.value
   } else if (type === 'video') {
     isVideoPopupVisible.value = !isVideoPopupVisible.value
   } else if (type === 'member') {
     isNewMemberPopupVisible.value = !isNewMemberPopupVisible.value
+  } else if (type === 'changePassword') {
+    isChangePasswordPopupVisible.value = !isChangePasswordPopupVisible.value
   } else if (type === 'logout') {
     const token = useCookie('token')
     const refreshToken = useCookie('refresh_token')
@@ -76,6 +81,7 @@ const logo = "/images/masjid_albukary_logo.png"
     <ImageUploaderModal :show="isImagePopupVisible" @update:show="isImagePopupVisible = $event"/>
     <VideoUploaderModal :show="isVideoPopupVisible" @update:show="isVideoPopupVisible = $event"/>
     <MemberUploaderModal :show="isNewMemberPopupVisible" @update:show="isNewMemberPopupVisible = $event"/>
+    <UserChangePassword :show="isChangePasswordPopupVisible" @update:show="isChangePasswordPopupVisible = $event"/>
 
 
     <div class="header-wrapper">

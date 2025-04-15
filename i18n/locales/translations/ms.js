@@ -241,6 +241,7 @@ export default {
         upload_new_member: "Tambah Ahli",
         upload_image: "Muat Naik Gambar",
         upload_video: "Muat Naik Video",
+        change_password: "Tukar Kata Laluan",
         logout: "Log Keluar"
     },
     admin_sidebar: {

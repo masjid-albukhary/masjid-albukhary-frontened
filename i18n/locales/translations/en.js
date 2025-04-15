@@ -242,6 +242,7 @@ export default {
         upload_new_member: "Add Member",
         upload_image: "Upload Image",
         upload_video: "Upload Video",
+        change_password: "Change Password",
         logout: "Logout"
     },
     admin_sidebar: {
