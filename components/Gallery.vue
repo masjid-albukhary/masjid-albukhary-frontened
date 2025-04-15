@@ -212,7 +212,6 @@ h1 {
 .card-image {
   border-radius: 5px;
   box-shadow: rgba(149, 157, 165, 0.2) 0 8px 24px;
-  transform: skew(10deg, 5deg);
   transition: transform 0.2s ease-in-out;
   width: 100%;
   height: 100%;
@@ -265,20 +264,20 @@ h1 {
   background: var(--bg-color);
   padding: 1rem;
   border-radius: 10px;
-  max-width: 80%;
-  max-height: 80%;
+  max-width: 800px;
+  max-height: 400px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .popup-image {
-  max-width: 700px;
-  max-height: 450px;
-  width: 100%;
-  height: auto;
-  border-radius: 5px;
+  width: 500px;
+  max-height: 500px;
+  height:auto;
+  max-height: 400px;
   object-fit: contain;
+  border-radius: 5px;
 }
 
 .close-btn {
