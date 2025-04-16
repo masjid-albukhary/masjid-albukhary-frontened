@@ -366,10 +366,12 @@ section {
 }
 
 .empty-state {
+  width: 100%;
   text-align: center;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 1.5rem;
   padding: 2rem;
-  color: var(--text-hover);
-  background-color: var(--primary-color);
-  border-radius: 4px;
+  color: var(--primary-color);
 }
 </style>
