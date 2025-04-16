@@ -21,6 +21,7 @@ const VIDEO_TYPE_LABELS: Record<string, string> = {
 const videos = ref<Video[]>([]);
 const currentVideoIndex = ref(0);
 const itemsPerPage = ref(4);
+const isLoading = ref(false);
 
 function nextVideoPage() {
   if (currentVideoIndex.value + itemsPerPage.value < filteredVideos.value.length) {
@@ -29,6 +30,7 @@ function nextVideoPage() {
     currentVideoIndex.value = 0;
   }
 }
+
 function prevVideoPage() {
   if (currentVideoIndex.value - itemsPerPage.value >= 0) {
     currentVideoIndex.value -= itemsPerPage.value;
@@ -36,6 +38,7 @@ function prevVideoPage() {
     currentVideoIndex.value = Math.max(0, filteredVideos.value.length - itemsPerPage.value);
   }
 }
+
 const filteredVideos = computed(() => {
   if (!videos.value.length) return [];
   return videos.value.filter(video => video.video_type === 'weekly talk');
@@ -62,6 +65,8 @@ onMounted(async () => {
     } else {
       console.error("Error message:", error.message);
     }
+  } finally {
+    isLoading.value = false;
   }
 });
 
@@ -70,7 +75,12 @@ onMounted(async () => {
   <section class="video-gallery">
     <h1 class="section-title">{{ t('weekly_talk') }}</h1>
 
-    <div class="videos-gallery-container">
+    <div v-if="isLoading" class="loading-state">Loading content...</div>
+
+    <div v-else-if="latestWeeklyTalks.length === 0" class="empty-state">No content available.</div>
+
+
+    <div v-else class="videos-gallery-container">
       <div
           class="card"
           v-for="(video, index) in latestWeeklyTalks"
@@ -297,8 +307,12 @@ onMounted(async () => {
 }
 
 @keyframes growWidth {
-  from { width: 0; }
-  to { width: 60px; }
+  from {
+    width: 0;
+  }
+  to {
+    width: 60px;
+  }
 }
 
 @media (max-width: 768px) {
