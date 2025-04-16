@@ -143,7 +143,7 @@ onMounted(async () => {
 
         <div v-if="isLoading" class="loading-state">Loading content...</div>
 
-        <div v-else-if="filteredAboutContent.length === 0" class="empty-state">No content available.</div>
+        <div v-else-if="filteredAboutContent.length === 0" class="empty-state">No About content available.</div>
 
         <div v-else class="table-wrapper">
           <table class="data-table">

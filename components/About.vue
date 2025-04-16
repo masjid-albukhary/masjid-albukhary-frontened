@@ -6,6 +6,7 @@ import {useNuxtApp} from "#app";
 const {locale, t} = useI18n();
 const {$axios} = useNuxtApp();
 const api = $axios()
+const isLoading = ref(false);
 
 interface AboutContent {
   id: number;
@@ -14,6 +15,7 @@ interface AboutContent {
   description_en: string;
   description_my: string;
   about_image: string;
+
   [key: string]: any;
 }
 
@@ -24,18 +26,20 @@ onMounted(async () => {
     const response = await api.get("/content_manager/about_us_content/");
     aboutItem.value = response.data;
 
-    console.log(aboutItem.value);
-    console.log("Current Locale:", locale.value);
+    // console.log(aboutItem.value);
+    // console.log("Current Locale:", locale.value);
   } catch (error: any) {
     console.error("Failed to load about content:", error);
     if (error.response) {
-      console.error("Error response:", error.response.data);
-      console.error("Error status:", error.response.status);
+      // console.error("Error response:", error.response.data);
+      // console.error("Error status:", error.response.status);
     } else if (error.request) {
       console.error("Error request:", error.request);
     } else {
       console.error("Error message:", error.message);
     }
+  } finally {
+    isLoading.value = false;
   }
 });
 
@@ -58,7 +62,12 @@ onMounted(async () => {
     </div>
   </section>
 
-  <section class="about-section">
+
+  <div v-if="isLoading" class="loading-state">Loading content...</div>
+
+  <div v-else-if="aboutItem.length === 0" class="empty-state">No About content available.</div>
+
+  <section v-else class="about-section">
     <div class="about-grid" v-for="(item, index) in aboutItem" :key="item.id">
       <template v-if="index % 2 === 0">
         <div class="text-content">
@@ -107,6 +116,16 @@ section {
   padding: 0 1rem;
   display: block;
   height: 100%;
+}
+
+.empty-state {
+  text-align: center;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding: 2rem;
+  color: var(--text-hover);
+  background-color: var(--primary-color);
 }
 
 .about-title {
