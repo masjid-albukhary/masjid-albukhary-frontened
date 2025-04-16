@@ -1,11 +1,11 @@
 <script setup>
-import { reactive, watch } from 'vue';
-import { z } from 'zod';
-import { useI18n } from "#i18n";
-import { useRouter } from 'vue-router';
+import {reactive, watch} from 'vue';
+import {z} from 'zod';
+import {useI18n} from "#i18n";
+import {useRouter} from 'vue-router';
 import {navigateTo, useCookie, useNuxtApp} from "#app";
 
-const { t } = useI18n();
+const {t} = useI18n();
 const loginQuestions = [
   {
     label: t('login.label.username'),
@@ -27,14 +27,19 @@ const formSchema = z.object({
       .string()
       .min(4, 'Username must be at least 8 characters long'),
   password: z
-      .string(),
+      .string()
+      .min(10, "Password must be at least 10 characters long")
+      .max(15, "Password must not exceed 15 characters")
+      .regex(/[a-zA-Z]/, "Password must include at least one letter")
+      .regex(/\d/, "Password must include at least one number")
+      .regex(/[@$!%*?&]/, "Password must include at least one special character"),
 });
 const form = reactive({});
 const errors = reactive({});
 
 const {$axios} = useNuxtApp();
 const api = $axios()
-const { setLocale, locale } = useI18n();
+const {setLocale, locale} = useI18n();
 const router = useRouter();
 const currentLang = locale.value;
 const toggleLanguage = async () => {
@@ -88,8 +93,8 @@ async function handleSubmit() {
 
       console.log('Login tokens:', response.data.access, response.data.refresh);
 
-      useCookie('token', { path: '/' }).value = response.data.access;
-      useCookie('refresh_token', { path: '/' }).value = response.data.refresh;
+      useCookie('token', {path: '/'}).value = response.data.access;
+      useCookie('refresh_token', {path: '/'}).value = response.data.refresh;
 
       navigateTo('/admin');
       console.log('Navigated to /admin');
@@ -135,7 +140,7 @@ async function handleSubmit() {
             />
             <span v-if="errors[question.id]" class="error">{{ errors[question.id] }}</span>
           </div>
-          <button class="login-submit" type="submit">{{t('login.button')}}</button>
+          <button class="login-submit" type="submit">{{ t('login.button') }}</button>
         </form>
         <button @click="toggleLanguage" class="translation-btn">
           {{ currentLang === 'en' ? 'Switch to Malay' : 'Switch to English' }}
