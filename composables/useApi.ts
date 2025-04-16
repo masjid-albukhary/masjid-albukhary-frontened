@@ -1,16 +1,15 @@
-import type { AxiosError, AxiosRequestConfig } from 'axios';
-import axios from 'axios';
-import { useCookie, navigateTo, useRuntimeConfig } from '#app';
+import type {AxiosInstance, AxiosError} from "axios";
+import axios from "axios";
 
 let isRefreshing = false;
 let failedQueue: any[] = [];
 
 const processQueue = (error: any = null) => {
-    failedQueue.forEach(promise => {
+    failedQueue.forEach(prom => {
         if (error) {
-            promise.reject(error);
+            prom.reject(error);
         } else {
-            promise.resolve();
+            prom.resolve();
         }
     });
     failedQueue = [];
@@ -18,43 +17,42 @@ const processQueue = (error: any = null) => {
 
 export function createApi() {
     const config = useRuntimeConfig();
-    const baseUrl = config.public.apiBase;
 
+    const baseUrl = config.public.isDev
+        ? 'http://127.0.0.1:8000/api'
+        : 'https://fypbackend-production-d0dd.up.railway.app/api';
+
+    return constructApi(baseUrl);
+}
+
+function constructApi(baseUrl: string): AxiosInstance {
     const api = axios.create({
         baseURL: baseUrl,
     });
 
-    api.interceptors.request.use(
-        (config) => {
-            const accessToken = useCookie('token').value;
-
-            if (accessToken) {
-                config.headers = config.headers || {};
-                config.headers['Authorization'] = `Bearer ${accessToken}`;
-            } else {
-                console.warn('No access token found. Please log in again.');
-            }
-
-            return config;
-        },
-        (error) => {
-            console.error('Request error:', error);
-            return Promise.reject(error);
+    api.interceptors.request.use((config) => {
+        const accessToken = useCookie('token').value
+        if (accessToken) {
+            config.headers = config.headers || {};
+            config.headers['Authorization'] = `Bearer ${accessToken}`;
         }
-    );
+        return config;
+    }, (error) => {
+        return Promise.reject(error);
+    });
 
     api.interceptors.response.use(
         (response) => response,
         async (error: AxiosError) => {
-            const originalRequest = error.config as AxiosRequestConfig;
+            const originalRequest: any = error.config;
 
-            if (!originalRequest || error.response?.status !== 401 || originalRequest?.url?.includes('refresh')) {
+            if (error.response?.status !== 401 || originalRequest?.url?.includes('refresh')) {
                 return Promise.reject(error);
             }
 
             if (isRefreshing) {
                 return new Promise((resolve, reject) => {
-                    failedQueue.push({ resolve, reject });
+                    failedQueue.push({resolve, reject});
                 })
                     .then(() => api(originalRequest))
                     .catch((err) => Promise.reject(err));
@@ -64,35 +62,28 @@ export function createApi() {
 
             try {
                 const refreshToken = useCookie('refresh_token').value;
+                const response = await api.post('/token/refresh/', {refresh: refreshToken});
 
-                if (!refreshToken) {
-                    console.error('No refresh token found. Redirecting to login.');
-                    navigateTo('/login');
-                    return Promise.reject(new Error('No refresh token'));
+                const accessTokenCookie = useCookie('token');
+                const refreshTokenCookie = useCookie('refresh_token');
+
+                accessTokenCookie.value = response.data.access;
+                if (response.data.refresh) {
+                    refreshTokenCookie.value = response.data.refresh;
                 }
 
-                const response = await api.post('/token/refresh/', {
-                    refresh: refreshToken,
-                });
-
-                const newAccessToken = response.data.access;
-                const newRefreshToken = response.data.refresh;
-
-                useCookie('token', { path: '/' }).value = newAccessToken;
-                useCookie('refresh_token', { path: '/' }).value = newRefreshToken;
-
-                if (originalRequest.headers) {
-                    originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-                }
+                originalRequest.headers['Authorization'] = `Bearer ${response.data.access_token}`;
 
                 processQueue();
 
                 return api(originalRequest);
             } catch (refreshError) {
-                useCookie('token', { path: '/' }).value = null;
-                useCookie('refresh_token', { path: '/' }).value = null;
+                const accessTokenCookie = useCookie('access_token');
+                const refreshTokenCookie = useCookie('refresh_token');
 
-                console.error('Token refresh failed. Redirecting to login.');
+                accessTokenCookie.value = null;
+                refreshTokenCookie.value = null;
+
                 navigateTo('/login');
 
                 return Promise.reject(refreshError);
