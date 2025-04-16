@@ -29,7 +29,7 @@ const itemsPerPage = ref(3);
 
 const selectedImage = ref<Image | null>(null);
 const selectedVideo = ref<Video | null>(null);
-
+const isLoading = ref(false);
 const visibleImages = computed(() => {
   return images.value.slice(currentImageIndex.value, currentImageIndex.value + itemsPerPage.value);
 });
@@ -98,6 +98,8 @@ onMounted(async () => {
     } else {
       console.error("Error message:", error.message);
     }
+  }finally {
+    isLoading.value = false;
   }
 });
 
@@ -112,6 +114,10 @@ onMounted(async () => {
       />
       Masjid Albukhary Images Gallery
     </h1>
+
+    <div v-if="isLoading" class="loading-state">Loading content...</div>
+
+    <div v-else-if="visibleImages.length === 0" class="empty-state">No available content at the moment.</div>
 
     <div class="images-gallery-container">
       <div class="card" v-for="image in visibleImages" :key="image.id" @click="openPopup(image)">
@@ -152,7 +158,12 @@ onMounted(async () => {
       />
       Masjid Albukhary Video Gallery
     </h1>
-    <div class="video-gallery-container">
+
+    <div v-if="isLoading" class="loading-state">Loading content...</div>
+
+    <div v-else-if="visibleImages.length === 0" class="empty-state">No available content at the moment.</div>
+
+    <div v-else class="video-gallery-container">
       <div class="card" v-for="video in visibleVideos" :key="video.id">
         <a :href="video.video_link" target="_blank" class="video-link">
           <img :src="video.gallery_video" :alt="video.alert_field" class="card-video"/>
@@ -188,6 +199,16 @@ h1 {
   font-size: 2rem;
   color: var(--primary-color);
   margin-bottom: 2rem;
+}
+
+.empty-state {
+  width: 100%;
+  text-align: center;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding: 2rem;
+  color: var(--primary-color);
 }
 
 .images-gallery-container {
