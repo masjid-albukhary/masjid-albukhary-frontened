@@ -26,6 +26,7 @@ const services = ref<Service[]>([]);
 const currentServiceIndex = ref(0);
 const itemsPerPage = ref(4);
 const loading = ref(true);
+const isLoading = ref(false);
 const error = ref<string | null>(null);
 
 const visibleService = computed(() => {
@@ -66,7 +67,7 @@ onMounted(async () => {
     }
     error.value = "Failed to load services. Please try again later.";
   } finally {
-    loading.value = false;
+    isLoading.value = false;
   }
 });
 
@@ -82,11 +83,12 @@ onMounted(async () => {
       </p>
     </div>
 
-    <div v-if="loading">Loading services...</div>
 
-    <div v-if="error" class="error-message">{{ error }}</div>
+    <div v-if="isLoading" class="loading-state">Loading content...</div>
 
-    <div v-if="!loading && services.length > 0" class="service-grid">
+    <div v-else-if="visibleService.length === 0" class="empty-state">No services available at the moment.</div>
+
+    <div v-else class="service-grid">
 
       <div class="service-card" v-for="service in visibleService" :key="service.id">
 
@@ -94,7 +96,7 @@ onMounted(async () => {
           <UIcon name="mdi-home-modern" class="service-icon"/>
         </div>
 
-        <hr class="service-card-divider" />
+        <hr class="service-card-divider"/>
 
         <div class="service-card-header">
           <h3 class="service-card-title">
@@ -159,12 +161,22 @@ section {
   margin: 0 auto;
 }
 
+.empty-state {
+  width: 100%;
+  text-align: center;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding: 2rem;
+  color: var(--primary-color);
+}
+
 .service-header {
   max-width: 800px;
   margin-bottom: 2rem;
 }
 
-.service-card-divider{
+.service-card-divider {
   border: 1px solid var(--bg-hover-color);
   width: 100%;
   margin: 1rem auto;
@@ -260,6 +272,7 @@ section {
 
 .service-card-footer {
   display: block;
+
   div {
     margin-bottom: 1rem;
   }
