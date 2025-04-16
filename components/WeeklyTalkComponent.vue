@@ -77,7 +77,7 @@ onMounted(async () => {
 
     <div v-if="isLoading" class="loading-state">Loading content...</div>
 
-    <div v-else-if="latestWeeklyTalks.length === 0" class="empty-state">No content available.</div>
+    <div v-else-if="latestWeeklyTalks.length === 0" class="empty-state">No weekly talk available at the moment.</div>
 
 
     <div v-else class="videos-gallery-container">

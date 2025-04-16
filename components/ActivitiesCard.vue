@@ -86,7 +86,7 @@ onMounted(async () => {
 
     <div v-if="isLoading" class="loading-state">Loading content...</div>
 
-    <div v-else-if="visibleActivities.length === 0" class="empty-state">No content available.</div>
+    <div v-else-if="visibleActivities.length === 0" class="empty-state">No activities available at the moment.</div>
 
 
     <div class="activities-card-container">
