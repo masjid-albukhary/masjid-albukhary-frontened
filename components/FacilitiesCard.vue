@@ -131,6 +131,16 @@ h1 {
   text-align: start;
 }
 
+.empty-state {
+  width: 100%;
+  text-align: center;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding: 2rem;
+  color: var(--primary-color);
+}
+
 .facilities {
   padding: 2rem;
   text-align: center;
