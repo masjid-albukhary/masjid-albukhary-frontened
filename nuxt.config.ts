@@ -15,6 +15,9 @@ export default defineNuxtConfig({
   nitro: {
     preset: 'github_pages'
   },
+  app: {
+    baseURL: '',
+  },
   runtimeConfig: {
     public: {
       isDev: process.env.NODE_ENV === 'development',
@@ -22,8 +25,5 @@ export default defineNuxtConfig({
   },
   colorMode: {
     preference: 'light',
-  },
-  app: {
-    baseURL: process.env.NODE_ENV === 'development' ? '' : '//',
   },
 });
