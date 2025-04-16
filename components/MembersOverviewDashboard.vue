@@ -209,6 +209,16 @@ onMounted(async () => {
   padding: 1rem;
 }
 
+.empty-state {
+  text-align: center;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding: 2rem;
+  color: var(--text-hover);
+  background-color: var(--primary-color);
+}
+
 .dashboard-container {
   max-width: 1200px;
   margin: 0 auto;

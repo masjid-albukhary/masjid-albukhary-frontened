@@ -119,6 +119,18 @@ onMounted(async () => {
   align-items: center;
   margin: 0 auto;
   max-width: 100%;
+
+  .empty-state {
+    width: 100%;
+    text-align: center;
+    font-style: italic;
+    font-weight: bold;
+    font-size: 1.5rem;
+    padding: 2rem;
+    color: var(--text-hover);
+    background-color: var(--primary-color);
+  }
+
 }
 
 .members-card-header {
