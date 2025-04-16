@@ -10,7 +10,7 @@ const api = $axios()
 const members = ref<any[]>([]);
 const currentMemberIndex = ref(0);
 const itemsPerPage = ref(4);
-
+const isLoading = ref(false);
 const visibleMember = computed(() => {
   return members.value.slice(currentMemberIndex.value, currentMemberIndex.value + itemsPerPage.value);
 });
@@ -49,6 +49,8 @@ onMounted(async () => {
     } else {
       console.error("Error message:", error.message);
     }
+  } finally {
+    isLoading.value = false;
   }
 });
 
@@ -60,7 +62,11 @@ onMounted(async () => {
       <h2 class="member-name">{{ t('members.title') }}</h2>
     </div>
 
-    <div class="members-card-grid">
+    <div v-if="isLoading" class="loading-state">Loading content...</div>
+
+    <div v-else-if="visibleMember.length === 0" class="empty-state">No content available.</div>
+
+    <div v-else class="members-card-grid">
       <div class="members-card" v-for="member in visibleMember" :key="member.id">
         <div class="members-card-container">
           <img :src="member.photo" :alt="member.name" class="image"/>
