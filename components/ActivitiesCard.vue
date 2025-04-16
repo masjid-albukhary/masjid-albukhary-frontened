@@ -19,15 +19,15 @@ interface Activity {
   target_audience: string;
   poster: string | null;
   estimated_participants: number | null;
+
   [key: string]: any;
 
 }
 
 const {locale, t} = useI18n();
 const {$axios} = useNuxtApp();
-
+const isLoading = ref(false);
 const api = $axios()
-
 const activities = ref<Activity[]>([]);
 
 const currentIndex = ref(0);
@@ -70,6 +70,8 @@ onMounted(async () => {
     } else {
       console.error("Error message:", error.message);
     }
+  } finally {
+    isLoading.value = false;
   }
 });
 
@@ -81,6 +83,11 @@ onMounted(async () => {
     <h1 class="title">
       {{ t('activities.title') }}
     </h1>
+
+    <div v-if="isLoading" class="loading-state">Loading content...</div>
+
+    <div v-else-if="visibleActivities.length === 0" class="empty-state">No content available.</div>
+
 
     <div class="activities-card-container">
       <div
@@ -108,21 +115,21 @@ onMounted(async () => {
           <div class="activity-info">
 
             <div class="box">
-              <span><UIcon name="mdi-calendar" class="activity-info-icon" /></span>
+              <span><UIcon name="mdi-calendar" class="activity-info-icon"/></span>
               <span>
                 {{ t("activities.date") }} : {{ activities.activity_date }}
               </span>
             </div>
 
             <div class="box">
-              <span><UIcon name="mdi-map-marker" class="activity-info-icon" /></span>
+              <span><UIcon name="mdi-map-marker" class="activity-info-icon"/></span>
               <span>
                 {{ t("activities.location") }} : {{ activities.location }}
               </span>
             </div>
 
             <div class="box">
-              <span><UIcon name="mdi-account-group" class="activity-info-icon" /></span>
+              <span><UIcon name="mdi-account-group" class="activity-info-icon"/></span>
               <span>
                 {{ t("activities.participants") }} : {{ activities.estimated_participants }}
               </span>
@@ -133,7 +140,7 @@ onMounted(async () => {
         <div class="activity-card-footer">
           <div class="activity-btn">
             <NuxtLink :to="`/activities/${activities.id}`">
-              {{t('activities.view_details')}}
+              {{ t('activities.view_details') }}
             </NuxtLink>
           </div>
         </div>
@@ -158,6 +165,16 @@ section {
   padding: 3rem 1rem;
   text-align: center;
   margin: 0 auto;
+}
+
+.empty-state {
+  width: 100%;
+  text-align: center;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding: 2rem;
+  color: var(--primary-color);
 }
 
 .title {
@@ -240,7 +257,8 @@ section {
   display: flex;
   align-items: space-around;
   color: var(--primary-color);
-  margin-bottom: 0.5rem ;
+  margin-bottom: 0.5rem;
+
   span:first-of-type {
     margin-right: .5rem;
   }
