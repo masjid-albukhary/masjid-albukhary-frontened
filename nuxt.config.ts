@@ -1,4 +1,3 @@
-
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
@@ -21,6 +20,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       isDev: process.env.NODE_ENV === 'development',
+      apiBase: process.env.API_BASE_URL || 'https://masjid-albukhary-backend-production.up.railway.app/api'
     },
   },
   colorMode: {
