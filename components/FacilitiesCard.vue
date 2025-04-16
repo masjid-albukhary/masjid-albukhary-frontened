@@ -22,7 +22,7 @@ interface Facility {
 const {locale, t} = useI18n();
 const {$axios} = useNuxtApp();
 const api = $axios()
-
+const isLoading = ref(false);
 const facilities = ref<Facility[]>([]);
 
 const currentIndex = ref(0);
@@ -66,6 +66,8 @@ onMounted(async () => {
     } else {
       console.error("Error message:", error.message);
     }
+  } finally {
+    isLoading.value = false;
   }
 });
 
@@ -76,7 +78,13 @@ onMounted(async () => {
 
   <section class="facilities">
     <h1 class="title"> {{ t('facilities.title') }}</h1>
-    <div class="facilities-container">
+
+    <div v-if="isLoading" class="loading-state">Loading content...</div>
+
+    <div v-else-if="visibleFacilities.length === 0" class="empty-state">No services available at the moment.</div>
+
+
+    <div v-else class="facilities-container">
       <div class="card" v-for="facility in visibleFacilities" :key="facility.id">
         <img
             :src="facility.photo"
