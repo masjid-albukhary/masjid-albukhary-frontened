@@ -148,6 +148,16 @@ onMounted(async () => {
   overflow: hidden;
 }
 
+.empty-state {
+  width: 100%;
+  text-align: center;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding: 2rem;
+  color: var(--primary-color);
+}
+
 .section-title {
   font-size: clamp(1.5rem, 4vw, 2.5rem);
   color: var(--primary-color);
