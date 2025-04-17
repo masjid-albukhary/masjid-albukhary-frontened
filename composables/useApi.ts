@@ -1,6 +1,6 @@
-import type { AxiosError, AxiosRequestConfig } from 'axios';
+import type {AxiosError, AxiosRequestConfig} from 'axios';
 import axios from 'axios';
-import { useCookie, navigateTo } from '#app';
+import {useCookie, navigateTo} from '#app';
 
 let isRefreshing = false;
 let failedQueue: any[] = [];
@@ -16,16 +16,17 @@ const processQueue = (error: any = null) => {
     failedQueue = [];
 };
 
+// Cookie configuration - centralized for consistency
 const TOKEN_COOKIE_CONFIG = {
     path: '/',
-    maxAge: 60 * 60 * 24 * 7, // 7 days
+    maxAge: 60 * 60 * 24 * 7,
     sameSite: 'strict' as const,
     secure: process.env.NODE_ENV === 'production',
 };
 
 const REFRESH_TOKEN_COOKIE_CONFIG = {
     ...TOKEN_COOKIE_CONFIG,
-    maxAge: 60 * 60 * 24 * 30, // 30 days
+    maxAge: 60 * 60 * 24 * 30,
 };
 
 function getBaseUrl() {
@@ -36,23 +37,8 @@ function getBaseUrl() {
             ? 'http://127.0.0.1:8001/api'
             : 'https://masjid-albukhary-backend-production.up.railway.app/api';
     }
+
     return process.env.API_BASE_URL || 'http://127.0.0.1:8001/api';
-}
-
-// Helper function to safely get cookies
-function getCookie(name: string) {
-    if (process.client) {
-        return useCookie(name).value;
-    }
-    return null;
-}
-
-// Helper function to set cookies
-function setCookie(name: string, value: string | null, config: any = TOKEN_COOKIE_CONFIG) {
-    if (process.client) {
-        const cookie = useCookie(name, config);
-        cookie.value = value;
-    }
 }
 
 export function createApi() {
@@ -71,7 +57,7 @@ export function createApi() {
                 return config;
             }
 
-            const accessToken = getCookie('token');
+            const accessToken = useCookie('token').value;
             if (accessToken) {
                 config.headers = config.headers || {};
                 config.headers['Authorization'] = `Bearer ${accessToken}`;
@@ -96,8 +82,9 @@ export function createApi() {
             }
 
             if (isRefreshing) {
+
                 return new Promise((resolve, reject) => {
-                    failedQueue.push({ resolve, reject });
+                    failedQueue.push({resolve, reject});
                 }).then(() => api(originalRequest))
                     .catch(err => Promise.reject(err));
             }
@@ -106,7 +93,7 @@ export function createApi() {
             isRefreshing = true;
 
             try {
-                const refreshToken = getCookie('refresh_token');
+                const refreshToken = useCookie('refresh_token').value;
                 if (!refreshToken) {
                     throw new Error('No refresh token');
                 }
@@ -118,8 +105,11 @@ export function createApi() {
                 const newAccessToken = response.data.access;
                 const newRefreshToken = response.data.refresh;
 
-                setCookie('token', newAccessToken);
-                setCookie('refresh_token', newRefreshToken, REFRESH_TOKEN_COOKIE_CONFIG);
+                const tokenCookie = useCookie('token', TOKEN_COOKIE_CONFIG);
+                const refreshTokenCookie = useCookie('refresh_token', REFRESH_TOKEN_COOKIE_CONFIG);
+
+                tokenCookie.value = newAccessToken;
+                refreshTokenCookie.value = newRefreshToken;
 
                 if (originalRequest.headers) {
                     originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
@@ -128,13 +118,14 @@ export function createApi() {
                 processQueue();
                 return api(originalRequest);
             } catch (refreshError) {
-                setCookie('token', null);
-                setCookie('refresh_token', null);
 
-                if (process.client) {
-                    navigateTo('/user-login');
-                }
+                const tokenCookie = useCookie('token', TOKEN_COOKIE_CONFIG);
+                const refreshTokenCookie = useCookie('refresh_token', REFRESH_TOKEN_COOKIE_CONFIG);
 
+                tokenCookie.value = null;
+                refreshTokenCookie.value = null;
+
+                navigateTo('/user-login');
                 processQueue(refreshError);
                 return Promise.reject(refreshError);
             } finally {
@@ -148,24 +139,4 @@ export function createApi() {
 
 export function useApi() {
     return createApi();
-}
-
-// Optional: Client-side initialization check
-if (process.client) {
-    const token = getCookie('token');
-    const refreshToken = getCookie('refresh_token');
-
-    if (!token && refreshToken) {
-        const api = createApi();
-        api.post('/token/refresh/', { refresh: refreshToken })
-            .then(response => {
-                setCookie('token', response.data.access);
-                setCookie('refresh_token', response.data.refresh, REFRESH_TOKEN_COOKIE_CONFIG);
-            })
-            .catch(() => {
-                setCookie('token', null);
-                setCookie('refresh_token', null);
-                navigateTo('/user-login');
-            });
-    }
 }
