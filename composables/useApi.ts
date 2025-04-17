@@ -17,12 +17,9 @@ const processQueue = (error: any = null) => {
 };
 
 function getBaseUrl() {
-    // Check if we're in a browser environment
     if (typeof window !== 'undefined') {
-        // Check if we're running on localhost
         const isLocalhost = window.location.hostname === 'localhost' ||
             window.location.hostname === '127.0.0.1';
-
         return isLocalhost
             ? 'http://127.0.0.1:8001/api'
             : 'https://masjid-albukhary-backend-production.up.railway.app/api';
@@ -40,8 +37,8 @@ export function createApi() {
 
     api.interceptors.request.use(
         (config) => {
-            // Skip auth header for public endpoints
-            const publicEndpoints = ['/public', '/news']; // Add your public endpoints
+            const publicEndpoints = ['', ''];
+
             if (publicEndpoints.some(endpoint => config.url?.includes(endpoint))) {
                 return config;
             }
@@ -63,8 +60,7 @@ export function createApi() {
         async (error: AxiosError) => {
             const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
 
-            // Skip interception for public endpoints or non-401 errors
-            const publicEndpoints = ['/public', '/news'];
+            const publicEndpoints = ['/', '/'];
             if (!originalRequest ||
                 error.response?.status !== 401 ||
                 originalRequest._retry ||
@@ -95,8 +91,8 @@ export function createApi() {
                 const newAccessToken = response.data.access;
                 const newRefreshToken = response.data.refresh;
 
-                useCookie('token', { path: '/' }).value = newAccessToken;
-                useCookie('refresh_token', { path: '/' }).value = newRefreshToken;
+                useCookie('token', { path: '/', maxAge: 60 * 60 * 24 * 7 }).value = newAccessToken;
+                useCookie('refresh_token', { path: '/', maxAge: 60 * 60 * 24 * 30 }).value = newRefreshToken;
 
                 if (originalRequest.headers) {
                     originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
@@ -105,9 +101,16 @@ export function createApi() {
                 processQueue();
                 return api(originalRequest);
             } catch (refreshError) {
-                useCookie('token', { path: '/' }).value = null;
-                useCookie('refresh_token', { path: '/' }).value = null;
-                navigateTo('/user-login');
+                if (
+                    (refreshError as AxiosError).response?.status === 401 ||
+                    (refreshError as AxiosError).response?.status === 403
+                ) {
+                    useCookie('token', { path: '/' }).value = null;
+                    useCookie('refresh_token', { path: '/' }).value = null;
+                    navigateTo('/user-login');
+                } else {
+                    console.error('Token refresh failed but keeping session:', refreshError);
+                }
                 processQueue(refreshError);
                 return Promise.reject(refreshError);
             } finally {
