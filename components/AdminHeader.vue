@@ -25,7 +25,7 @@ const isChangePasswordPopupVisible = ref(false)
 const links: Link[] = [
   {label: t('admin_header.upload_image'), icon: 'mdi-image', popup: 'image'},
   {label: t('admin_header.upload_video'), icon: 'mdi-video', popup: 'video'},
-  {label: t('admin_header.upload_video'), icon: 'mdi-video', popup: 'member'},
+  {label: t('admin_header.upload_new_member'), icon: 'mdi-video', popup: 'member'},
   {label: t('admin_header.change_password'), icon: 'mdi-password', popup: 'changePassword'},
   {label: t('admin_header.logout'), icon: 'mdi-logout', popup: 'logout'}
 ];
