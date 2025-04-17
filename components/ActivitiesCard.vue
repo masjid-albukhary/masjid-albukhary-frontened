@@ -97,7 +97,7 @@ onMounted(async () => {
       >
         <div class="activity-card_header">
           <div class="activity-card_title">
-            {{ activities['title_' + locale] || activities.title_en }}
+            {{ activities['title_' + locale] || activities.title_my }}
           </div>
         </div>
         <div class="activity-card_body">
@@ -110,7 +110,7 @@ onMounted(async () => {
             />
           </div>
           <div class="activity-card_description">
-            {{ activities['summary_content_' + locale] || activities.summary_content_en }}
+            {{ activities['summary_content_' + locale] || activities.summary_content_my }}
           </div>
           <div class="activity-info">
 
@@ -132,6 +132,12 @@ onMounted(async () => {
               <span><UIcon name="mdi-account-group" class="activity-info-icon"/></span>
               <span>
                 {{ t("activities.participants") }} : {{ activities.estimated_participants }}
+              </span>
+            </div>
+            <div class="box">
+              <span><UIcon name="mdi-alarm" class="activity-info-icon"/></span>
+              <span>
+                  {{ activities.activity_status }}
               </span>
             </div>
 
