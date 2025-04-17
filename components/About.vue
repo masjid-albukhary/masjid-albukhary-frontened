@@ -12,8 +12,8 @@ interface AboutContent {
   id: number;
   title_en: string;
   title_my: string;
-  description_en: string;
-  description_my: string;
+  content_en: string;
+  content_my: string;
   about_image: string;
 
   [key: string]: any;
@@ -75,7 +75,7 @@ onMounted(async () => {
             {{ item['title_' + locale] || item.title_my }}
           </h2>
           <p class="item-description">
-            {{ item['description_' + locale] || item.content_my }}
+            {{ item['content_' + locale] || item.content_my }}
           </p>
         </div>
         <div class="image-content">
@@ -101,7 +101,7 @@ onMounted(async () => {
             {{ item['title_' + locale] || item.title_my }}
           </h2>
           <p class="item-description">
-            {{ item['description_' + locale] || item.content_my }}
+            {{ item['content_' + locale] || item.content_my }}
           </p>
         </div>
       </template>
