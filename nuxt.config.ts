@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxt/ui', '@nuxtjs/i18n'],
   app: {
-    baseURL: process.env.NODE_ENV === 'development' ? '' : '',
+    baseURL: '',
   },
   i18n: {
     locales: [
