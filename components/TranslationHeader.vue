@@ -9,19 +9,22 @@ const switchLanguage = async (lang) => {
   await setLocale(lang);
 
   const currentPath = router.currentRoute.value.path;
-  const pathWithoutLang = currentPath.replace(/^\/(en|ms)/, '');
 
-  const newPath = lang === 'ms' ? `/ms${pathWithoutLang}` : `${pathWithoutLang}`;
+  const pathWithoutLang = currentPath.replace(/^\/(ms|en)/, '');
+
+
+  const newPath = lang === 'en'
+      ? `/en${pathWithoutLang || '/'}`
+      : `${pathWithoutLang || '/'}`;
 
   router.push(newPath);
-
 };
 </script>
 
 <template>
   <nav class="translate-navbar">
     <div class="translate-navbar-container">
-      <button @click="switchLanguage('')" aria-label="English">
+      <button @click="switchLanguage('en')" aria-label="English">
         <UIcon name="twemoji-flag-united-kingdom" class="flag-icon" />
         English
       </button>
@@ -32,7 +35,6 @@ const switchLanguage = async (lang) => {
     </div>
   </nav>
 </template>
-
 <style scoped>
 .translate-navbar {
   width: 100%;
