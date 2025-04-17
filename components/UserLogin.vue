@@ -85,7 +85,6 @@ async function handleSubmit() {
 
   if (!errors.username && !errors.password) {
     try {
-
       const response = await api.post('/token/', {
         username: form.username,
         password: form.password,
@@ -93,11 +92,11 @@ async function handleSubmit() {
 
       console.log('Login tokens:', response.data.access, response.data.refresh);
 
-      useCookie('token', {path: '/'}).value = response.data.access;
-      useCookie('refresh_token', {path: '/'}).value = response.data.refresh;
+      // Use the same cookie config as in your API client
+      useCookie('token', TOKEN_COOKIE_CONFIG).value = response.data.access;
+      useCookie('refresh_token', REFRESH_TOKEN_COOKIE_CONFIG).value = response.data.refresh;
 
       navigateTo('/admin');
-      console.log('Navigated to /admin');
     } catch (error) {
       console.error('Error during login:', error);
       alert('Login failed.');
@@ -106,7 +105,6 @@ async function handleSubmit() {
     }
   }
 }
-
 </script>
 
 <template>
