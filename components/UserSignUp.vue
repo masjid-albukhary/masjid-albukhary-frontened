@@ -144,6 +144,15 @@ adminQuestions.forEach((question) => {
   watch(() => form[question.id], () => validateField(question.id));
 });
 
+const resetForm = () => {
+  adminQuestions.forEach((question) => {
+    form[question.id] = "";
+    errors[question.id] = "";
+  });
+  profile_picture.value = null;
+};
+
+
 const handleSubmit = async () => {
   const validationResults = formSchema.safeParse(form);
   if (!validationResults.success) {
@@ -172,11 +181,11 @@ const handleSubmit = async () => {
       },
     });
 
-    console.log('Form Submitted Successfully:', response.data);
+    // console.log('Form Submitted Successfully:', response.data);
     alert('You have registered the manager successfully.');
-    location.reload();
+    window.location.reload();
   } catch (error) {
-    console.error('Failed to submit form:', error.response?.data || error.message);
+    // console.error('Failed to submit form:', error.response?.data || error.message);
     alert('An error occurred while submitting the form.');
   }
 };
