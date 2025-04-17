@@ -43,17 +43,20 @@ const {setLocale, locale} = useI18n();
 const router = useRouter();
 const currentLang = locale.value;
 const toggleLanguage = async () => {
-  const newLang = currentLang === 'en' ? 'ms' : 'en';
+  const newLang = currentLang === 'ms' ? 'en' : 'ms';
 
   await setLocale(newLang);
 
   const currentPath = router.currentRoute.value.path;
   const pathWithoutLang = currentPath.replace(/^\/(en|ms)/, '');
 
-  const newPath = newLang === 'ms' ? `/ms${pathWithoutLang}` : `${pathWithoutLang}`;
+  const cleanPath = pathWithoutLang.startsWith('/') ? pathWithoutLang : `/${pathWithoutLang}`;
+
+  const newPath = newLang === 'ms' ? `${cleanPath}` : `/en${cleanPath}`;
 
   router.push(newPath);
 };
+
 
 loginQuestions.forEach((question) => {
   form[question.id] = "";
