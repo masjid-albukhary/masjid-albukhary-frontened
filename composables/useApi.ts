@@ -16,19 +16,6 @@ const processQueue = (error: any = null) => {
     failedQueue = [];
 };
 
-// Cookie configuration - centralized for consistency
-const TOKEN_COOKIE_CONFIG = {
-    path: '/',
-    maxAge: 60 * 60 * 24 * 7,
-    sameSite: 'strict' as const,
-    secure: process.env.NODE_ENV === 'production',
-};
-
-const REFRESH_TOKEN_COOKIE_CONFIG = {
-    ...TOKEN_COOKIE_CONFIG,
-    maxAge: 60 * 60 * 24 * 30,
-};
-
 function getBaseUrl() {
     if (typeof window !== 'undefined') {
         const isLocalhost = window.location.hostname === 'localhost' ||
@@ -46,13 +33,13 @@ export function createApi() {
 
     const api = axios.create({
         baseURL: baseUrl,
-        withCredentials: true,
     });
-
-    const publicEndpoints = ['/public', '/news', '/login', '/token/refresh'];
 
     api.interceptors.request.use(
         (config) => {
+
+            const publicEndpoints = ['', ''];
+
             if (publicEndpoints.some(endpoint => config.url?.includes(endpoint))) {
                 return config;
             }
@@ -74,6 +61,7 @@ export function createApi() {
         async (error: AxiosError) => {
             const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
 
+            const publicEndpoints = ['/public', '/news'];
             if (!originalRequest ||
                 error.response?.status !== 401 ||
                 originalRequest._retry ||
@@ -82,7 +70,6 @@ export function createApi() {
             }
 
             if (isRefreshing) {
-
                 return new Promise((resolve, reject) => {
                     failedQueue.push({ resolve, reject });
                 }).then(() => api(originalRequest))
@@ -105,11 +92,8 @@ export function createApi() {
                 const newAccessToken = response.data.access;
                 const newRefreshToken = response.data.refresh;
 
-                const tokenCookie = useCookie('token', TOKEN_COOKIE_CONFIG);
-                const refreshTokenCookie = useCookie('refresh_token', REFRESH_TOKEN_COOKIE_CONFIG);
-
-                tokenCookie.value = newAccessToken;
-                refreshTokenCookie.value = newRefreshToken;
+                useCookie('token', { path: '/admin', maxAge: 60 * 60 * 24 * 7 }).value = newAccessToken;
+                useCookie('refresh_token', { path: '/admin', maxAge: 60 * 60 * 24 * 30 }).value = newRefreshToken;
 
                 if (originalRequest.headers) {
                     originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
@@ -118,13 +102,8 @@ export function createApi() {
                 processQueue();
                 return api(originalRequest);
             } catch (refreshError) {
-                // Clear tokens with the same path configuration used to set them
-                const tokenCookie = useCookie('token', TOKEN_COOKIE_CONFIG);
-                const refreshTokenCookie = useCookie('refresh_token', REFRESH_TOKEN_COOKIE_CONFIG);
-
-                tokenCookie.value = null;
-                refreshTokenCookie.value = null;
-
+                useCookie('token', { path: '/' }).value = null;
+                useCookie('refresh_token', { path: '/' }).value = null;
                 navigateTo('/user-login');
                 processQueue(refreshError);
                 return Promise.reject(refreshError);
