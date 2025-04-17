@@ -107,8 +107,6 @@ const handleSubmit = async () => {
 
     alert('Form Submitted Successfully.');
 
-    window.location.reload();
-
     console.log('Form Submitted Successfully:', response.data);
 
   } catch (error) {
