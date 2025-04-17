@@ -16,7 +16,6 @@ const processQueue = (error: any = null) => {
     failedQueue = [];
 };
 
-// Function to determine the base URL based on environment
 function getBaseUrl() {
     // Check if we're in a browser environment
     if (typeof window !== 'undefined') {
