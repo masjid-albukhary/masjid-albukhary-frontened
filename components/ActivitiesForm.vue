@@ -77,12 +77,13 @@ const activityQuestions = [
     id: "activity_type",
     placeholder: t("activity_form.placeholder.activity_type"),
     options: [
-      {label: t("activity_form.options.talk"), value: "talk"},
-      {label: t("activity_form.options.quran_class"), value: "quran_class"},
-      {label: t("activity_form.options.community_event"), value: "community_event"},
-      {label: t("activity_form.options.fundraising"), value: "fundraising"},
-      {label: t("activity_form.options.volunteer"), value: "volunteer"},
-      {label: t("activity_form.options.others"), value: "others"},
+
+      {label: "talk", value: "Talk"},
+      {label: "quran class", value: "Quran Class"},
+      {label: "community event", value: "Community Event"},
+      {label: "fundraising", value: "Fundraising"},
+      {label: "volunteer", value: "Volunteer"},
+      {label: "others", value: "Others"},
     ],
   },
   {
