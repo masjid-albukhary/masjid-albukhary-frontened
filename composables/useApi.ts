@@ -92,8 +92,9 @@ export function createApi() {
                 const newAccessToken = response.data.access;
                 const newRefreshToken = response.data.refresh;
 
-                useCookie('token', { path: '/' }).value = newAccessToken;
-                useCookie('refresh_token', { path: '/' }).value = newRefreshToken;
+
+                useCookie('token', { path: '/admin', maxAge: 60 * 60 * 24 * 7 }).value = newAccessToken;
+                useCookie('refresh_token', { path: '/admin', maxAge: 60 * 60 * 24 * 30 }).value = newRefreshToken;
 
                 if (originalRequest.headers) {
                     originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
