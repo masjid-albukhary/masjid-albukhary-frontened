@@ -16,8 +16,24 @@ const processQueue = (error: any = null) => {
     failedQueue = [];
 };
 
+// Function to determine the base URL based on environment
+function getBaseUrl() {
+    // Check if we're in a browser environment
+    if (typeof window !== 'undefined') {
+        // Check if we're running on localhost
+        const isLocalhost = window.location.hostname === 'localhost' ||
+            window.location.hostname === '127.0.0.1';
+
+        return isLocalhost
+            ? 'http://127.0.0.1:8001/api'
+            : 'https://masjid-albukhary-backend-production.up.railway.app/api';
+    }
+
+    return process.env.API_BASE_URL || 'http://127.0.0.1:8001/api';
+}
+
 export function createApi() {
-    const baseUrl = process.env.API_BASE_URL || 'http://127.0.0.1:8001/api';
+    const baseUrl = getBaseUrl();
 
     const api = axios.create({
         baseURL: baseUrl,
@@ -92,7 +108,7 @@ export function createApi() {
             } catch (refreshError) {
                 useCookie('token', { path: '/' }).value = null;
                 useCookie('refresh_token', { path: '/' }).value = null;
-                navigateTo('/user-login'); // Changed from '/login' to '/user-login'
+                navigateTo('/user-login');
                 processQueue(refreshError);
                 return Promise.reject(refreshError);
             } finally {
