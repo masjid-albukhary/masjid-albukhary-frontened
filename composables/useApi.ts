@@ -1,6 +1,6 @@
-import type {AxiosError, AxiosRequestConfig} from 'axios';
+import type { AxiosError, AxiosRequestConfig } from 'axios';
 import axios from 'axios';
-import {useCookie, navigateTo} from '#app';
+import { useCookie, navigateTo } from '#app';
 
 let isRefreshing = false;
 let failedQueue: any[] = [];
@@ -84,7 +84,7 @@ export function createApi() {
             if (isRefreshing) {
 
                 return new Promise((resolve, reject) => {
-                    failedQueue.push({resolve, reject});
+                    failedQueue.push({ resolve, reject });
                 }).then(() => api(originalRequest))
                     .catch(err => Promise.reject(err));
             }
@@ -118,7 +118,7 @@ export function createApi() {
                 processQueue();
                 return api(originalRequest);
             } catch (refreshError) {
-
+                // Clear tokens with the same path configuration used to set them
                 const tokenCookie = useCookie('token', TOKEN_COOKIE_CONFIG);
                 const refreshTokenCookie = useCookie('refresh_token', REFRESH_TOKEN_COOKIE_CONFIG);
 
