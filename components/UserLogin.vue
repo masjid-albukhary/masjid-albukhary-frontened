@@ -80,31 +80,38 @@ function validateForm() {
   validateField("password");
 }
 
+
 async function handleSubmit() {
   validateForm();
 
   if (!errors.username && !errors.password) {
     try {
+      isLoading.value = true;
       const response = await api.post('/token/', {
         username: form.username,
         password: form.password,
       });
 
-      console.log('Login tokens:', response.data.access, response.data.refresh);
+      // alert("Login successful");
 
-      // Use the same cookie config as in your API client
-      useCookie('token', TOKEN_COOKIE_CONFIG).value = response.data.access;
-      useCookie('refresh_token', REFRESH_TOKEN_COOKIE_CONFIG).value = response.data.refresh;
+      console.log('Response:', response.data);
+      console.log('Token from response:', response.data.access);
+
+      useCookie('token').value = response.data.access;
+      useCookie('refresh_token').value = response.data.refresh;
 
       navigateTo('/admin');
+      console.log('Navigated to /admin');
     } catch (error) {
       console.error('Error during login:', error);
-      alert('Login failed.');
-      location.reload();
       errorMessage.value = error.response?.data?.message || 'Login failed.';
+    } finally {
+      isLoading.value = false;
     }
   }
 }
+
+
 </script>
 
 <template>
