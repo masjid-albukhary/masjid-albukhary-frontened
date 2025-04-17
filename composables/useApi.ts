@@ -1,6 +1,6 @@
-import type { AxiosError, AxiosRequestConfig } from 'axios';
+import type {AxiosError, AxiosRequestConfig} from 'axios';
 import axios from 'axios';
-import { useCookie, navigateTo } from '#app';
+import {useCookie, navigateTo} from '#app';
 
 let isRefreshing = false;
 let failedQueue: any[] = [];
@@ -18,15 +18,15 @@ const processQueue = (error: any = null) => {
 
 // Cookie configuration - centralized for consistency
 const TOKEN_COOKIE_CONFIG = {
-    path: '/', // Use root path for all cookies to ensure accessibility
-    maxAge: 60 * 60 * 24 * 7, // 7 days for access token
+    path: '/',
+    maxAge: 60 * 60 * 24 * 7,
     sameSite: 'strict' as const,
     secure: process.env.NODE_ENV === 'production',
 };
 
 const REFRESH_TOKEN_COOKIE_CONFIG = {
     ...TOKEN_COOKIE_CONFIG,
-    maxAge: 60 * 60 * 24 * 30, // 30 days for refresh token
+    maxAge: 60 * 60 * 24 * 30,
 };
 
 function getBaseUrl() {
@@ -46,10 +46,9 @@ export function createApi() {
 
     const api = axios.create({
         baseURL: baseUrl,
-        withCredentials: true, // Important for cookies to be sent with requests
+        withCredentials: true,
     });
 
-    // Public endpoints that don't need authentication
     const publicEndpoints = ['/public', '/news', '/login', '/token/refresh'];
 
     api.interceptors.request.use(
@@ -75,7 +74,6 @@ export function createApi() {
         async (error: AxiosError) => {
             const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
 
-            // Don't attempt refresh for non-401 errors, already retried requests, or public endpoints
             if (!originalRequest ||
                 error.response?.status !== 401 ||
                 originalRequest._retry ||
@@ -84,9 +82,9 @@ export function createApi() {
             }
 
             if (isRefreshing) {
-                // Queue this request while refresh is in progress
+
                 return new Promise((resolve, reject) => {
-                    failedQueue.push({ resolve, reject });
+                    failedQueue.push({resolve, reject});
                 }).then(() => api(originalRequest))
                     .catch(err => Promise.reject(err));
             }
@@ -107,14 +105,12 @@ export function createApi() {
                 const newAccessToken = response.data.access;
                 const newRefreshToken = response.data.refresh;
 
-                // Set cookies consistently with the same path
                 const tokenCookie = useCookie('token', TOKEN_COOKIE_CONFIG);
                 const refreshTokenCookie = useCookie('refresh_token', REFRESH_TOKEN_COOKIE_CONFIG);
 
                 tokenCookie.value = newAccessToken;
                 refreshTokenCookie.value = newRefreshToken;
 
-                // Update the current request's authorization header
                 if (originalRequest.headers) {
                     originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
                 }
@@ -122,7 +118,7 @@ export function createApi() {
                 processQueue();
                 return api(originalRequest);
             } catch (refreshError) {
-                // Clear tokens with the same path configuration used to set them
+
                 const tokenCookie = useCookie('token', TOKEN_COOKIE_CONFIG);
                 const refreshTokenCookie = useCookie('refresh_token', REFRESH_TOKEN_COOKIE_CONFIG);
 
