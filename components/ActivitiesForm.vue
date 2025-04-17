@@ -77,7 +77,6 @@ const activityQuestions = [
     id: "activity_type",
     placeholder: t("activity_form.placeholder.activity_type"),
     options: [
-
       {label: "talk", value: "Talk"},
       {label: "quran class", value: "Quran Class"},
       {label: "community event", value: "Community Event"},
