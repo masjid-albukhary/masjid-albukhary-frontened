@@ -11,7 +11,7 @@ export default defineNuxtConfig({
       {code: 'en', iso: 'en-US', file: 'translations/en.js'},
       {code: 'ms', iso: 'ms-MY', file: 'translations/ms.js'}
     ],
-    defaultLocale: 'en',
+    defaultLocale: 'ms',
     detectBrowserLanguage: false,
     strategy: 'prefix_except_default'
   },
