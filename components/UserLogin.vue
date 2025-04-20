@@ -87,24 +87,27 @@ async function handleSubmit() {
 
   if (!errors.username && !errors.password) {
     try {
+      isLoading.value = true;
       const response = await api.post('/token/', {
         username: form.username,
         password: form.password,
       });
 
-      console.log('Login tokens:', response.data.access, response.data.refresh);
+      // alert("Login successful");
 
-      // Set cookies with consistent paths and maxAge
-      useCookie('token', {path: '/', maxAge: 60 * 60 * 24 * 7}).value = response.data.access;
-      useCookie('refresh_token', {path: '/', maxAge: 60 * 60 * 24 * 30}).value = response.data.refresh;
+      console.log('Response:', response.data);
+      console.log('Token from response:', response.data.access);
+
+      useCookie('token').value = response.data.access;
+      useCookie('refresh_token').value = response.data.refresh;
 
       navigateTo('/admin');
       console.log('Navigated to /admin');
     } catch (error) {
       console.error('Error during login:', error);
-      alert('Login failed.');
-      location.reload();
       errorMessage.value = error.response?.data?.message || 'Login failed.';
+    } finally {
+      isLoading.value = false;
     }
   }
 }
