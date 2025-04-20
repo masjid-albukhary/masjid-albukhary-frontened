@@ -87,7 +87,6 @@ async function handleSubmit() {
 
   if (!errors.username && !errors.password) {
     try {
-      isLoading.value = true;
       const response = await api.post('/token/', {
         username: form.username,
         password: form.password,
