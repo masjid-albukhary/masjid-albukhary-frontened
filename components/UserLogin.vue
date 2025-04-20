@@ -106,8 +106,6 @@ async function handleSubmit() {
     } catch (error) {
       console.error('Error during login:', error);
       errorMessage.value = error.response?.data?.message || 'Login failed.';
-    } finally {
-      isLoading.value = false;
     }
   }
 }
