@@ -92,23 +92,37 @@ async function handleSubmit() {
         password: form.password,
       });
 
-      // alert("Login successful");
+      // Configure cookies with proper attributes
+      const tokenCookie = useCookie('token', {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7, // 7 days
+        sameSite: 'strict',
+        secure: process.env.NODE_ENV === 'production'
+      });
 
-      console.log('Response:', response.data);
-      console.log('Token from response:', response.data.access);
+      const refreshCookie = useCookie('refresh_token', {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 30, // 30 days
+        sameSite: 'strict',
+        secure: process.env.NODE_ENV === 'production'
+      });
 
-      useCookie('token').value = response.data.access;
-      useCookie('refresh_token').value = response.data.refresh;
+      tokenCookie.value = response.data.access;
+      refreshCookie.value = response.data.refresh;
+
+      // Also store in localStorage as fallback
+      if (process.client) {
+        localStorage.setItem('token', response.data.access);
+        localStorage.setItem('refresh_token', response.data.refresh);
+      }
 
       navigateTo('/admin');
-      console.log('Navigated to /admin');
     } catch (error) {
       console.error('Error during login:', error);
       errorMessage.value = error.response?.data?.message || 'Login failed.';
     }
   }
 }
-
 
 </script>
 

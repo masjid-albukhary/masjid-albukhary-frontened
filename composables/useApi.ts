@@ -151,19 +151,17 @@ export function createApi() {
 }
 
 function constructApi(baseUrl: string): AxiosInstance {
-    const api = axios.create({
-        baseURL: baseUrl,
-    });
+    const api = axios.create({ baseURL: baseUrl });
 
     api.interceptors.request.use((config) => {
-        const accessToken = useCookie('token').value
-        if (accessToken) {
+        const token = useCookie('token').value ||
+            (process.client ? localStorage.getItem('token') : null);
+
+        if (token) {
             config.headers = config.headers || {};
-            config.headers['Authorization'] = `Bearer ${accessToken}`;
+            config.headers['Authorization'] = `Bearer ${token}`;
         }
         return config;
-    }, (error) => {
-        return Promise.reject(error);
     });
 
     api.interceptors.response.use(
@@ -171,46 +169,67 @@ function constructApi(baseUrl: string): AxiosInstance {
         async (error: AxiosError) => {
             const originalRequest: any = error.config;
 
-            if (error.response?.status !== 401 || originalRequest?.url?.includes('refresh')) {
+            // Skip if not 401 or refresh request
+            if (error.response?.status !== 401 || originalRequest?.url?.includes('token/refresh')) {
                 return Promise.reject(error);
             }
 
             if (isRefreshing) {
                 return new Promise((resolve, reject) => {
-                    failedQueue.push({resolve, reject});
+                    failedQueue.push({ resolve, reject });
                 })
-                    .then(() => api(originalRequest))
-                    .catch((err) => Promise.reject(err));
+                    .then(() => {
+                        const token = useCookie('token').value;
+                        if (token) {
+                            originalRequest.headers['Authorization'] = `Bearer ${token}`;
+                        }
+                        return api(originalRequest);
+                    })
+                    .catch(err => Promise.reject(err));
             }
 
             isRefreshing = true;
+            const refreshToken = useCookie('refresh_token').value ||
+                (process.client ? localStorage.getItem('refresh_token') : null);
+
+            if (!refreshToken) {
+                clearAuth();
+                return Promise.reject(error);
+            }
 
             try {
-                const refreshToken = useCookie('refresh_token').value;
-                const response = await api.post('/token/refresh/', {refresh: refreshToken});
+                const response = await api.post('/token/refresh/', { refresh: refreshToken });
 
-                const accessTokenCookie = useCookie('token');
-                const refreshTokenCookie = useCookie('refresh_token');
+                // Update tokens
+                const tokenCookie = useCookie('token', {
+                    path: '/',
+                    maxAge: 60 * 60 * 24 * 7
+                });
+                const refreshCookie = useCookie('refresh_token', {
+                    path: '/',
+                    maxAge: 60 * 60 * 24 * 30
+                });
 
-                accessTokenCookie.value = response.data.access;
+                tokenCookie.value = response.data.access;
                 if (response.data.refresh) {
-                    refreshTokenCookie.value = response.data.refresh;
+                    refreshCookie.value = response.data.refresh;
                 }
 
-                originalRequest.headers['Authorization'] = `Bearer ${response.data.access_token}`;
+                // Update localStorage if available
+                if (process.client) {
+                    localStorage.setItem('token', response.data.access);
+                    if (response.data.refresh) {
+                        localStorage.setItem('refresh_token', response.data.refresh);
+                    }
+                }
 
+                // Retry original request
+                originalRequest.headers['Authorization'] = `Bearer ${response.data.access}`;
                 processQueue();
-
                 return api(originalRequest);
             } catch (refreshError) {
-                const accessTokenCookie = useCookie('access_token');
-                const refreshTokenCookie = useCookie('refresh_token');
-
-                accessTokenCookie.value = null;
-                refreshTokenCookie.value = null;
-
-                navigateTo('/login');
-
+                clearAuth();
+                processQueue(refreshError);
                 return Promise.reject(refreshError);
             } finally {
                 isRefreshing = false;
@@ -221,6 +240,22 @@ function constructApi(baseUrl: string): AxiosInstance {
     return api;
 }
 
+function clearAuth() {
+    // Clear cookies
+    useCookie('token').value = null;
+    useCookie('refresh_token').value = null;
+
+    // Clear localStorage
+    if (process.client) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('refresh_token');
+    }
+
+    // Redirect to login
+    if (process.client) {
+        navigateTo('/user-login');
+    }
+}
 export function useApi() {
     return createApi();
 }
