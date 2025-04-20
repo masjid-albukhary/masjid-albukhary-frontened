@@ -103,7 +103,7 @@ export function createApi() {
                 return api(originalRequest);
             } catch (refreshError) {
                 useCookie('token', {path: '/'}).value = null;
-                useCookie('refresh_token', {path: '/'}).value = null;
+                // useCookie('refresh_token', {path: '/'}).value = null;
                 navigateTo('/user-login');
                 processQueue(refreshError);
                 return Promise.reject(refreshError);
