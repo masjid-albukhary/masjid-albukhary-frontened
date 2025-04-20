@@ -92,23 +92,29 @@ async function handleSubmit() {
         password: form.password,
       });
 
-      // alert("Login successful");
+      // Set cookies with proper attributes
+      const tokenCookie = useCookie('token', {
+        secure: true, // Ensures cookie is only sent over HTTPS
+        sameSite: 'strict', // or 'lax' depending on your needs
+        maxAge: 60 * 15, // 15 minutes for access token (example)
+      });
 
-      console.log('Response:', response.data);
-      console.log('Token from response:', response.data.access);
+      const refreshTokenCookie = useCookie('refresh_token', {
+        secure: true,
+        sameSite: 'strict',
+        maxAge: 60 * 60 * 24 * 7, // 7 days for refresh token (example)
+      });
 
-      useCookie('token').value = response.data.access;
-      useCookie('refresh_token').value = response.data.refresh;
+      tokenCookie.value = response.data.access;
+      refreshTokenCookie.value = response.data.refresh;
 
       navigateTo('/admin');
-      console.log('Navigated to /admin');
     } catch (error) {
       console.error('Error during login:', error);
       errorMessage.value = error.response?.data?.message || 'Login failed.';
     }
   }
 }
-
 </script>
 
 <template>
@@ -121,8 +127,7 @@ async function handleSubmit() {
         </div>
         <div class="login-info">
           <router-link to="/">{{ t('login.navigation.home') }}</router-link>
-          <span> | </span>
-          <router-link to="/admin/user-registration">{{ t('login.navigation.sign_up') }}</router-link>
+
         </div>
       </div>
 
