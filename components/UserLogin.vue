@@ -92,21 +92,13 @@ async function handleSubmit() {
         password: form.password,
       });
 
-      // Set cookies with proper attributes
-      const tokenCookie = useCookie('token', {
-        secure: true, // Ensures cookie is only sent over HTTPS
-        sameSite: 'strict', // or 'lax' depending on your needs
-        maxAge: 60 * 15, // 15 minutes for access token (example)
-      });
-
-      const refreshTokenCookie = useCookie('refresh_token', {
-        secure: true,
-        sameSite: 'strict',
-        maxAge: 60 * 60 * 24 * 7, // 7 days for refresh token (example)
-      });
-
-      tokenCookie.value = response.data.access;
-      refreshTokenCookie.value = response.data.refresh;
+      // Set token cookie with consistent settings
+      useCookie('token', {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7, // 7 days persistence
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production'
+      }).value = response.data.access;
 
       navigateTo('/admin');
     } catch (error) {
