@@ -87,7 +87,6 @@ async function handleSubmit() {
 
   if (!errors.username && !errors.password) {
     try {
-      isLoading.value = true;
       const response = await api.post('/token/', {
         username: form.username,
         password: form.password,
@@ -106,8 +105,6 @@ async function handleSubmit() {
     } catch (error) {
       console.error('Error during login:', error);
       errorMessage.value = error.response?.data?.message || 'Login failed.';
-    } finally {
-      isLoading.value = false;
     }
   }
 }
