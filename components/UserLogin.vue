@@ -122,7 +122,8 @@ async function handleSubmit() {
       errorMessage.value = error.response?.data?.message || 'Login failed.';
     }
   }
-}</script>
+}
+</script>
 
 <template>
   <section class="login-section">
