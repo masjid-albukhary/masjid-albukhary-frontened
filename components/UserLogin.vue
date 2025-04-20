@@ -28,11 +28,11 @@ const formSchema = z.object({
       .min(4, 'Username must be at least 8 characters long'),
   password: z
       .string()
-      .min(10, "Password must be at least 10 characters long")
-      .max(15, "Password must not exceed 15 characters")
-      .regex(/[a-zA-Z]/, "Password must include at least one letter")
-      .regex(/\d/, "Password must include at least one number")
-      .regex(/[@$!%*?&]/, "Password must include at least one special character"),
+      // .min(10, "Password must be at least 10 characters long")
+      // .max(15, "Password must not exceed 15 characters")
+      // .regex(/[a-zA-Z]/, "Password must include at least one letter")
+      // .regex(/\d/, "Password must include at least one number")
+      // .regex(/[@$!%*?&]/, "Password must include at least one special character"),
 });
 const form = reactive({});
 const errors = reactive({});
@@ -87,7 +87,6 @@ async function handleSubmit() {
 
   if (!errors.username && !errors.password) {
     try {
-
       const response = await api.post('/token/', {
         username: form.username,
         password: form.password,
@@ -95,8 +94,9 @@ async function handleSubmit() {
 
       console.log('Login tokens:', response.data.access, response.data.refresh);
 
-      useCookie('token', {path: '/'}).value = response.data.access;
-      useCookie('refresh_token', {path: '/'}).value = response.data.refresh;
+      // Set cookies with consistent paths and maxAge
+      useCookie('token', {path: '/', maxAge: 60 * 60 * 24 * 7}).value = response.data.access;
+      useCookie('refresh_token', {path: '/', maxAge: 60 * 60 * 24 * 30}).value = response.data.refresh;
 
       navigateTo('/admin');
       console.log('Navigated to /admin');
