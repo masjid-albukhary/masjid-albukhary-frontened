@@ -92,15 +92,15 @@ async function handleSubmit() {
         password: form.password,
       });
 
-      // Set token cookie with consistent settings
-      useCookie('token', {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7, // 7 days persistence
-        sameSite: 'lax',
-        secure: process.env.NODE_ENV === 'production'
-      }).value = response.data.access;
+      console.log('Response:', response.data);
+      console.log('Token from response:', response.data.access);
+
+      // Store tokens in localStorage
+      localStorage.setItem('token', response.data.access);
+      localStorage.setItem('refresh_token', response.data.refresh);
 
       navigateTo('/admin');
+      console.log('Navigated to /admin');
     } catch (error) {
       console.error('Error during login:', error);
       errorMessage.value = error.response?.data?.message || 'Login failed.';
@@ -119,7 +119,6 @@ async function handleSubmit() {
         </div>
         <div class="login-info">
           <router-link to="/">{{ t('login.navigation.home') }}</router-link>
-
         </div>
       </div>
 
