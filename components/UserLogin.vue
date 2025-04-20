@@ -92,29 +92,29 @@ async function handleSubmit() {
         password: form.password,
       });
 
-      // Configure cookies with proper attributes
+      // Store tokens in localStorage
+      localStorage.setItem('token', response.data.access);
+      localStorage.setItem('refresh_token', response.data.refresh);
+
+      // Optional: Also store in cookies as fallback
       const tokenCookie = useCookie('token', {
         path: '/',
         maxAge: 60 * 60 * 24 * 7, // 7 days
-        sameSite: 'strict',
-        secure: process.env.NODE_ENV === 'production'
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
+        httpOnly: false
       });
 
       const refreshCookie = useCookie('refresh_token', {
         path: '/',
         maxAge: 60 * 60 * 24 * 30, // 30 days
-        sameSite: 'strict',
-        secure: process.env.NODE_ENV === 'production'
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
+        httpOnly: false
       });
 
       tokenCookie.value = response.data.access;
       refreshCookie.value = response.data.refresh;
-
-      // Also store in localStorage as fallback
-      if (process.client) {
-        localStorage.setItem('token', response.data.access);
-        localStorage.setItem('refresh_token', response.data.refresh);
-      }
 
       navigateTo('/admin');
     } catch (error) {
@@ -122,9 +122,7 @@ async function handleSubmit() {
       errorMessage.value = error.response?.data?.message || 'Login failed.';
     }
   }
-}
-
-</script>
+}</script>
 
 <template>
   <section class="login-section">
