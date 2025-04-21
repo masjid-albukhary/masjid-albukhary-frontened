@@ -132,8 +132,6 @@
 // }
 //
 
-
-
 import type {AxiosInstance, AxiosError} from "axios";
 import axios from "axios";
 
@@ -167,6 +165,7 @@ function constructApi(baseUrl: string): AxiosInstance {
     });
 
     api.interceptors.request.use((config) => {
+        // Get token from cookie with consistent name
         const accessToken = useCookie('token').value
         if (accessToken) {
             config.headers = config.headers || {};
@@ -182,6 +181,7 @@ function constructApi(baseUrl: string): AxiosInstance {
         async (error: AxiosError) => {
             const originalRequest: any = error.config;
 
+            // Don't retry if not a 401 or if this is already a refresh token request
             if (error.response?.status !== 401 || originalRequest?.url?.includes('refresh')) {
                 return Promise.reject(error);
             }
@@ -200,26 +200,42 @@ function constructApi(baseUrl: string): AxiosInstance {
                 const refreshToken = useCookie('refresh_token').value;
                 const response = await api.post('/token/refresh/', {refresh: refreshToken});
 
-                const accessTokenCookie = useCookie('token');
-                const refreshTokenCookie = useCookie('refresh_token');
+                // Create cookies with proper settings to persist
+                const accessTokenCookie = useCookie('token', {
+                    maxAge: 60 * 60 * 24, // 1 day
+                    path: '/',
+                    sameSite: 'strict'
+                });
 
+                const refreshTokenCookie = useCookie('refresh_token', {
+                    maxAge: 60 * 60 * 24 * 7, // 7 days
+                    path: '/',
+                    sameSite: 'strict'
+                });
+
+                // Set the token values
                 accessTokenCookie.value = response.data.access;
                 if (response.data.refresh) {
                     refreshTokenCookie.value = response.data.refresh;
                 }
 
-                originalRequest.headers['Authorization'] = `Bearer ${response.data.access_token}`;
+                // Fix: Use response.data.access instead of access_token
+                originalRequest.headers['Authorization'] = `Bearer ${response.data.access}`;
 
                 processQueue();
 
                 return api(originalRequest);
             } catch (refreshError) {
-                const accessTokenCookie = useCookie('access_token');
+                // Fix: Use consistent cookie names when clearing
+                const accessTokenCookie = useCookie('token');
                 const refreshTokenCookie = useCookie('refresh_token');
 
                 accessTokenCookie.value = null;
                 refreshTokenCookie.value = null;
 
+                processQueue(refreshError);
+
+                // Navigate to login page
                 navigateTo('/login');
 
                 return Promise.reject(refreshError);
