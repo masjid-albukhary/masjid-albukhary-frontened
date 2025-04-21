@@ -111,10 +111,8 @@ const submitBookingContentChanges = async (updatedContent: BookingContent) => {
       },
     });
 
-    // Update the local list with the latest data from the response
     const index = bookingContentList.value.findIndex(c => c.id === updatedContent.id);
     if (index !== -1) {
-      // Use the response data to update the list, which will include the new image URL
       bookingContentList.value[index] = response.data;
     }
 
