@@ -4,9 +4,9 @@ import AdminHeader from "~/components/AdminHeader.vue";
 import AdminSideBar from "~/components/AdminSideBar.vue";
 import AdminOverview from "~/components/AdminOverview.vue";
 
-definePageMeta({
-  middleware: 'auth'
-})
+// definePageMeta({
+//   middleware: 'auth'
+// })
 
 </script>
 
