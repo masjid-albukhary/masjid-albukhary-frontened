@@ -1,10 +1,8 @@
 export default defineNuxtRouteMiddleware((to, from) => {
-    const event = useRequestEvent(); // works in middleware
+    const token = useCookie('token', { sameSite: 'lax' });
+    const refresh = useCookie('refresh_token', { sameSite: 'lax' });
 
-    const token = getCookie(event, 'token');
-    const refresh = getCookie(event, 'refresh_token');
-
-    const isAuthenticated = !!token && !!refresh;
+    const isAuthenticated = !!token.value && !!refresh.value;
 
     if (!isAuthenticated && to.path !== '/user-login') {
         return navigateTo('/user-login');
