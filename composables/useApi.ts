@@ -92,8 +92,19 @@ export function createApi() {
                 const newRefreshToken = response.data.refresh;
 
                 // Updated to use the same path as the login function
-                useCookie('token', { path: '/', maxAge: 60 * 60 * 24 * 7 }).value = newAccessToken;
-                useCookie('refresh_token', { path: '/', maxAge: 60 * 60 * 24 * 30 }).value = newRefreshToken;
+                useCookie('token', {
+                    path: '/',
+                    maxAge: 60 * 60 * 24 * 7,
+                    secure: process.env.NODE_ENV === 'production',
+                    sameSite: 'lax', // or 'strict' if appropriate
+                }).value = newAccessToken;
+
+                useCookie('refresh_token', {
+                    path: '/',
+                    maxAge: 60 * 60 * 24 * 30,
+                    secure: process.env.NODE_ENV === 'production',
+                    sameSite: 'lax',
+                }).value = newRefreshToken;
 
                 if (originalRequest.headers) {
                     originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
