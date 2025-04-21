@@ -28,11 +28,11 @@ const formSchema = z.object({
       .min(4, 'Username must be at least 8 characters long'),
   password: z
       .string()
-      // .min(10, "Password must be at least 10 characters long")
-      // .max(15, "Password must not exceed 15 characters")
-      // .regex(/[a-zA-Z]/, "Password must include at least one letter")
-      // .regex(/\d/, "Password must include at least one number")
-      // .regex(/[@$!%*?&]/, "Password must include at least one special character"),
+  .min(10, "Password must be at least 10 characters long")
+  .max(15, "Password must not exceed 15 characters")
+  .regex(/[a-zA-Z]/, "Password must include at least one letter")
+  .regex(/\d/, "Password must include at least one number")
+  .regex(/[@$!%*?&]/, "Password must include at least one special character"),
 });
 const form = reactive({});
 const errors = reactive({});
@@ -92,37 +92,24 @@ async function handleSubmit() {
         password: form.password,
       });
 
-      // Store tokens in localStorage
-      localStorage.setItem('token', response.data.access);
-      localStorage.setItem('refresh_token', response.data.refresh);
+      // alert("Login successful");
 
-      // Optional: Also store in cookies as fallback
-      const tokenCookie = useCookie('token', {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7, // 7 days
-        sameSite: 'lax',
-        secure: process.env.NODE_ENV === 'production',
-        httpOnly: false
-      });
+      console.log('Response:', response.data);
+      console.log('Token from response:', response.data.access);
 
-      const refreshCookie = useCookie('refresh_token', {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 30, // 30 days
-        sameSite: 'lax',
-        secure: process.env.NODE_ENV === 'production',
-        httpOnly: false
-      });
-
-      tokenCookie.value = response.data.access;
-      refreshCookie.value = response.data.refresh;
+      useCookie('token').value = response.data.access;
+      useCookie('refresh_token').value = response.data.refresh;
 
       navigateTo('/admin');
+      console.log('Navigated to /admin');
     } catch (error) {
       console.error('Error during login:', error);
       errorMessage.value = error.response?.data?.message || 'Login failed.';
     }
   }
 }
+
+
 </script>
 
 <template>
