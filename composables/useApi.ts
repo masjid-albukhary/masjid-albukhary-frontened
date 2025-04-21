@@ -1,6 +1,6 @@
-import type { AxiosError, AxiosRequestConfig } from 'axios';
+import type {AxiosError, AxiosRequestConfig} from 'axios';
 import axios from 'axios';
-import { useCookie, navigateTo } from '#app';
+import {useCookie, navigateTo} from '#app';
 
 let isRefreshing = false;
 let failedQueue: any[] = [];
@@ -70,7 +70,7 @@ export function createApi() {
 
             if (isRefreshing) {
                 return new Promise((resolve, reject) => {
-                    failedQueue.push({ resolve, reject });
+                    failedQueue.push({resolve, reject});
                 }).then(() => api(originalRequest))
                     .catch(err => Promise.reject(err));
             }
@@ -92,8 +92,8 @@ export function createApi() {
                 const newRefreshToken = response.data.refresh;
 
                 // Updated to use the same path as the login function
-                useCookie('token', { path: '/', maxAge: 60 * 60 * 24 * 7 }).value = newAccessToken;
-                useCookie('refresh_token', { path: '/', maxAge: 60 * 60 * 24 * 30 }).value = newRefreshToken;
+                useCookie('token', {path: '/', maxAge: 60 * 60 * 24 * 7}).value = newAccessToken;
+                useCookie('refresh_token', {path: '/', maxAge: 60 * 60 * 24 * 30}).value = newRefreshToken;
 
                 if (originalRequest.headers) {
                     originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
@@ -102,8 +102,8 @@ export function createApi() {
                 processQueue();
                 return api(originalRequest);
             } catch (refreshError) {
-                useCookie('token', { path: '/' }).value = null;
-                useCookie('refresh_token', { path: '/' }).value = null;
+                useCookie('token', {path: '/'}).value = null;
+                useCookie('refresh_token', {path: '/'}).value = null;
                 navigateTo('/user-login');
                 processQueue(refreshError);
                 return Promise.reject(refreshError);
@@ -119,4 +119,3 @@ export function createApi() {
 export function useApi() {
     return createApi();
 }
-
