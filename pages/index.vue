@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import WeeklyTalkComponent from "~/components/WeeklyTalkComponent.vue";
 
-// definePageMeta({
-//   middleware: 'auth'
-// })
+
 </script>
 
 <template>
