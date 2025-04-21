@@ -97,43 +97,24 @@ const submitBookingContentChanges = async (updatedContent: BookingContent) => {
   formData.append('other_requests', updatedContent.other_requests);
   formData.append('submitted_at', updatedContent.submitted_at);
 
-  // Handle other_docs (new upload or re-send existing file)
+
   if (updatedContent.other_docs instanceof File) {
-    // User uploaded a new file
     formData.append('other_docs', updatedContent.other_docs);
-  } else {
-    // User did not upload a new file — resend the existing one
-    try {
-      const response = await fetch(updatedContent.other_docs); // should be a valid URL
-      const blob = await response.blob();
-
-      // Extract filename from URL or fallback
-      const fileName = updatedContent.other_docs.split('/').pop() || 'existing_file.jpg';
-
-      // Create a File object to send
-      const file = new File([blob], fileName, {type: blob.type});
-      formData.append('other_docs', file);
-    } catch (err) {
-      console.error('Failed to fetch and resend existing image:', err);
-      alert('Failed to load existing image for resubmission.');
-      return;
-    }
+  } else if (updatedContent.other_docs !== selectedBookingContent.value.other_docs) {
+    formData.append('other_docs', updatedContent.other_docs);
   }
 
   try {
-    const response = await api.put(
-        `/requests/booking_requests/${updatedContent.id}/`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-    );
+    const response = await api.put(`/content_manager/about_us_content/${updatedContent.id}/`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
 
     // Update the local list with the latest data from the response
     const index = bookingContentList.value.findIndex(c => c.id === updatedContent.id);
     if (index !== -1) {
+      // Use the response data to update the list, which will include the new image URL
       bookingContentList.value[index] = response.data;
     }
 
