@@ -1,168 +1,122 @@
-import type {AxiosInstance, AxiosError} from "axios";
-import axios from "axios";
+import type {AxiosError, AxiosRequestConfig} from 'axios';
+import axios from 'axios';
+import {useCookie, navigateTo} from '#app';
 
 let isRefreshing = false;
 let failedQueue: any[] = [];
 
 const processQueue = (error: any = null) => {
-    failedQueue.forEach(prom => {
+    failedQueue.forEach(promise => {
         if (error) {
-            prom.reject(error);
+            promise.reject(error);
         } else {
-            prom.resolve();
+            promise.resolve();
         }
     });
     failedQueue = [];
 };
 
-// Token management utilities
-const TokenService = {
-    getToken: () => {
-        // Try to get from cookie first
-        const tokenCookie = useCookie('token');
-        if (tokenCookie.value) return tokenCookie.value;
-
-        // Fallback to localStorage if cookie is not available
-        if (process.client) {
-            return localStorage.getItem('auth_token');
-        }
-        return null;
-    },
-
-    getRefreshToken: () => {
-        // Try to get from cookie first
-        const refreshTokenCookie = useCookie('refresh_token');
-        if (refreshTokenCookie.value) return refreshTokenCookie.value;
-
-        // Fallback to localStorage if cookie is not available
-        if (process.client) {
-            return localStorage.getItem('auth_refresh_token');
-        }
-        return null;
-    },
-
-    saveTokens: (accessToken: string, refreshToken: string) => {
-        // Save in cookies with proper settings
-        const accessTokenCookie = useCookie('token', {
-            maxAge: 60 * 60 * 24, // 1 day
-            path: '/',
-            sameSite: 'lax', // Changed to lax for better compatibility
-        });
-
-        const refreshTokenCookie = useCookie('refresh_token', {
-            maxAge: 60 * 60 * 24 * 7, // 7 days
-            path: '/',
-            sameSite: 'lax', // Changed to lax for better compatibility
-        });
-
-        accessTokenCookie.value = accessToken;
-        refreshTokenCookie.value = refreshToken;
-
-        // Also save in localStorage as backup
-        if (process.client) {
-            localStorage.setItem('auth_token', accessToken);
-            localStorage.setItem('auth_refresh_token', refreshToken);
-        }
-    },
-
-    clearTokens: () => {
-        // Clear cookies
-        const accessTokenCookie = useCookie('token', { path: '/' });
-        const refreshTokenCookie = useCookie('refresh_token', { path: '/' });
-
-        accessTokenCookie.value = null;
-        refreshTokenCookie.value = null;
-
-        // Clear localStorage
-        if (process.client) {
-            localStorage.removeItem('auth_token');
-            localStorage.removeItem('auth_refresh_token');
-        }
+function getBaseUrl() {
+    if (typeof window !== 'undefined') {
+        const isLocalhost = window.location.hostname === 'localhost' ||
+            window.location.hostname === '127.0.0.1';
+        return isLocalhost
+            ? 'http://127.0.0.1:8001/api'
+            : 'https://masjid-albukhary-backend-production.up.railway.app/api';
     }
-};
 
-export function createApi() {
-    const config = useRuntimeConfig();
-
-    const baseUrl = config.public.isDev
-        ? 'http://127.0.0.1:8000/api'
-        : 'https://masjid-albukhary-backend-production.up.railway.app/api';
-
-    return constructApi(baseUrl);
+    return process.env.API_BASE_URL || 'http://127.0.0.1:8001/api';
 }
 
-function constructApi(baseUrl: string): AxiosInstance {
+export function createApi() {
+    const baseUrl = getBaseUrl();
+
     const api = axios.create({
         baseURL: baseUrl,
-        withCredentials: true, // Important for cross-domain cookie transmission
     });
 
-    api.interceptors.request.use((config) => {
-        const accessToken = TokenService.getToken();
-        if (accessToken) {
-            config.headers = config.headers || {};
-            config.headers['Authorization'] = `Bearer ${accessToken}`;
+    api.interceptors.request.use(
+        (config) => {
+            const publicEndpoints = ['', ''];
+
+            if (publicEndpoints.some(endpoint => config.url?.includes(endpoint))) {
+                return config;
+            }
+
+            const accessToken = useCookie('token').value;
+            if (accessToken) {
+                config.headers = config.headers || {};
+                config.headers['Authorization'] = `Bearer ${accessToken}`;
+            }
+            return config;
+        },
+        (error) => {
+            return Promise.reject(error);
         }
-        return config;
-    }, (error) => {
-        return Promise.reject(error);
-    });
+    );
 
     api.interceptors.response.use(
         (response) => response,
         async (error: AxiosError) => {
-            const originalRequest: any = error.config;
+            const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
 
-            // Add a flag to prevent infinite loops
-            if (originalRequest?._retry) {
-                return Promise.reject(error);
-            }
-
-            if (error.response?.status !== 401 || originalRequest?.url?.includes('refresh')) {
+            const publicEndpoints = ['/public', '/news'];
+            if (!originalRequest ||
+                error.response?.status !== 401 ||
+                originalRequest._retry ||
+                publicEndpoints.some(endpoint => originalRequest.url?.includes(endpoint))) {
                 return Promise.reject(error);
             }
 
             if (isRefreshing) {
                 return new Promise((resolve, reject) => {
                     failedQueue.push({resolve, reject});
-                })
-                    .then(() => api(originalRequest))
-                    .catch((err) => Promise.reject(err));
+                }).then(() => api(originalRequest))
+                    .catch(err => Promise.reject(err));
             }
 
             originalRequest._retry = true;
             isRefreshing = true;
 
             try {
-                const refreshToken = TokenService.getRefreshToken();
-
+                const refreshToken = useCookie('refresh_token').value;
                 if (!refreshToken) {
-                    throw new Error('No refresh token available');
+                    throw new Error('No refresh token');
                 }
 
-                const response = await api.post('/token/refresh/', {refresh: refreshToken});
+                const response = await api.post('/token/refresh/', {
+                    refresh: refreshToken,
+                });
 
-                // Save tokens to both cookies and localStorage
-                TokenService.saveTokens(
-                    response.data.access,
-                    response.data.refresh || refreshToken // Use new refresh if provided, otherwise keep existing
-                );
+                const newAccessToken = response.data.access;
+                const newRefreshToken = response.data.refresh;
 
-                // Update authorization header for the original request
-                originalRequest.headers['Authorization'] = `Bearer ${response.data.access}`;
+                // Updated to use the same path as the login function
+                useCookie('token', {
+                    path: '/',
+                    maxAge: 60 * 60 * 24 * 7,
+                    secure: process.env.NODE_ENV === 'production',
+                    sameSite: 'lax', // or 'strict' if appropriate
+                }).value = newAccessToken;
+
+                useCookie('refresh_token', {
+                    path: '/',
+                    maxAge: 60 * 60 * 24 * 30,
+                    secure: process.env.NODE_ENV === 'production',
+                    sameSite: 'lax',
+                }).value = newRefreshToken;
+
+                if (originalRequest.headers) {
+                    originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+                }
 
                 processQueue();
                 return api(originalRequest);
             } catch (refreshError) {
-                // Clear auth data and redirect to login
-                TokenService.clearTokens();
+                useCookie('token', {path: '/'}).value = null;
+                useCookie('refresh_token', {path: '/'}).value = null;
+                navigateTo('/user-login');
                 processQueue(refreshError);
-
-                // Only navigate to login if in client side
-                if (process.client) {
-                    navigateTo('/user-login');
-                }
-
                 return Promise.reject(refreshError);
             } finally {
                 isRefreshing = false;
@@ -176,31 +130,3 @@ function constructApi(baseUrl: string): AxiosInstance {
 export function useApi() {
     return createApi();
 }
-
-// Add this auth plugin for global state management
-export const useAuth = () => {
-    const isAuthenticated = ref(!!TokenService.getToken());
-
-    const login = (accessToken: string, refreshToken: string) => {
-        TokenService.saveTokens(accessToken, refreshToken);
-        isAuthenticated.value = true;
-    };
-
-    const logout = () => {
-        TokenService.clearTokens();
-        isAuthenticated.value = false;
-        navigateTo('/user-login');
-    };
-
-    const checkAuth = () => {
-        isAuthenticated.value = !!TokenService.getToken();
-        return isAuthenticated.value;
-    };
-
-    return {
-        isAuthenticated,
-        login,
-        logout,
-        checkAuth
-    };
-};
