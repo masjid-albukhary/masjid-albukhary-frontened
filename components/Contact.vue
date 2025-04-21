@@ -129,9 +129,9 @@ async function handleSubmit() {
 
       setTimeout(() => {
         location.reload();
-      }, 3000);
+      }, 2000);
 
-    }, 3000);
+    }, 1000);
 
   } catch (error) {
     console.error("Error submitting form:", error);
