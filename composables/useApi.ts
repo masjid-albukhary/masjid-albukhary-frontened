@@ -89,22 +89,22 @@ export function createApi() {
                 });
 
                 const newAccessToken = response.data.access;
-                const newRefreshToken = response.data.refresh;
+                // const newRefreshToken = response.data.refresh;
 
                 // Updated to use the same path as the login function
-                useCookie('token', {
-                    path: '/',
-                    maxAge: 60 * 60 * 24 * 7,
-                    secure: process.env.NODE_ENV === 'production',
-                    sameSite: 'lax', // or 'strict' if appropriate
-                }).value = newAccessToken;
+                // useCookie('token', {
+                //     path: '/',
+                //     maxAge: 60 * 60 * 24 * 7,
+                //     secure: process.env.NODE_ENV === 'production',
+                //     sameSite: 'lax', // or 'strict' if appropriate
+                // }).value = newAccessToken;
 
-                useCookie('refresh_token', {
-                    path: '/',
-                    maxAge: 60 * 60 * 24 * 30,
-                    secure: process.env.NODE_ENV === 'production',
-                    sameSite: 'lax',
-                }).value = newRefreshToken;
+                // useCookie('refresh_token', {
+                //     path: '/',
+                //     maxAge: 60 * 60 * 24 * 30,
+                //     secure: process.env.NODE_ENV === 'production',
+                //     sameSite: 'lax',
+                // }).value = newRefreshToken;
 
                 if (originalRequest.headers) {
                     originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
