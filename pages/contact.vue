@@ -2,9 +2,7 @@
 
 import Contact from "~/components/Contact.vue";
 
-definePageMeta({
-  middleware: 'auth'
-})
+
 </script>
 
 <template>

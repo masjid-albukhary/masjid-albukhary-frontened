@@ -2,9 +2,6 @@
 
 import Header from "~/components/Header.vue";
 
-definePageMeta({
-  middleware: 'auth'
-})
 </script>
 
 <template>
