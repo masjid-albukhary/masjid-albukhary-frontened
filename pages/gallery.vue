@@ -7,6 +7,7 @@
   <Header/>
   <SubLanding/>
   <Gallery/>
+  <WeeklyTalkComponent/>
   <Footer/>
 </template>
 
