@@ -200,7 +200,6 @@ const handleFileUpload = (event, inputDetails) => {
 
 const isPopupVisible = ref(false)
 
-
 const handleSubmit = async () => {
   form.Date = new Date().toLocaleDateString('en-GB');
 
