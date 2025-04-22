@@ -136,12 +136,15 @@ onMounted(async () => {
                   {{ activity.activity_status }}
                 </span>
 
+                <span>
+                  <NuxtLink :to="`/activities/${activity.id}`" class="activity-btn">
+                    <UIcon name="mdi-information-outline"/>
+                    {{ t('landing.learn_more_btn')}}
+                  </NuxtLink>
+                </span>
+
               </div>
 
-              <NuxtLink :to="`/activities/${activity.id}`" class="activity-btn">
-                <UIcon name="mdi-information-outline"/>
-                Learn More
-              </NuxtLink>
             </div>
           </div>
         </div>
@@ -334,11 +337,9 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.25rem .5rem;
   color: var(--primary-color);
   text-decoration: none;
   width: fit-content;
-  margin-top: .5rem;
   transition: all 0.3s ease;
 }
 

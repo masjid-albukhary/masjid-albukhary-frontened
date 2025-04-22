@@ -12,6 +12,7 @@ export default {
     landing: {
         title: "Melangkah Ke Jantung Masjid Al Bukhary",
         latest_activity: "Acara Akan Datang di Masjid Kami",
+        learn_more_btn: "Ketahui Lebih Lanjut",
     },
     prayer_time: {
         title: "Prayer Time",

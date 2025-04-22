@@ -11,7 +11,8 @@ export default {
 
     landing:{
         title: "Step Into the Heart of Al Bukhary Mosque",
-        latest_activity:"Upcoming Events at Our Masjid"
+        latest_activity:"Upcoming Events at Our Masjid",
+        learn_more_btn: "Learn More",
     },
     prayer_time: {
         title: "Prayer Time",
