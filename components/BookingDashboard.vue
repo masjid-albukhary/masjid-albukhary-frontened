@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import {ref, computed, onMounted} from 'vue';
-import {useNuxtApp} from '#app';
+import { ref, computed, onMounted } from 'vue';
+import { useNuxtApp } from '#app';
 import BookingRequestPopup from '~/components/BookingRequestPopup.vue';
-import jsPDF from "jspdf";
-import autoTable from 'jspdf-autotable';
 
-
-interface BookingContent {
+interface BookingRequestContent {
   id: number;
   first_name: string;
   last_name: string;
@@ -19,13 +16,12 @@ interface BookingContent {
   time_slot: string;
   venue: string;
   services: string;
-  other_docs: string;
+  other_docs: string | File;
   request_status: string;
   other_requests: string;
   submitted_at: string;
 }
-
-const columns = [
+const columns =  [
   {key: 'first_name', label: 'First Name'},
   {key: 'last_name', label: 'Last Name'},
   {key: 'booking_date', label: 'Booking Date'},
@@ -33,53 +29,53 @@ const columns = [
   {key: 'request_status', label: 'Status'},
   {key: 'actions', label: 'Actions'},
 ];
-const bookingContentList = ref<BookingContent[]>([]);
-const {$axios} = useNuxtApp();
+const bookingRequestContentList = ref<BookingRequestContent[]>([]);
+const { $axios } = useNuxtApp();
 const api = $axios();
 
 const currentPage = ref(1);
 const pageSize = ref(8);
 const searchQuery = ref('');
 const isPopupVisible = ref(false);
-const selectedBookingContent = ref<BookingContent | null>(null);
+const selectedBookingRequestContent = ref<BookingRequestContent | null>(null);
 const isLoading = ref(true);
 
-const filteredBookingContent = computed(() => {
-  let result = bookingContentList.value;
+const filteredBookingRequestContent = computed(() => {
+  let result = bookingRequestContentList.value;
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase();
     result = result.filter(content =>
         content.first_name.toLowerCase().includes(query) ||
-        content.last_name.toLowerCase().includes(query) ||
-        content.venue.toLowerCase().includes(query) ||
+        content.last_name.toLowerCase().includes(query)  ||
+        content.venue.toLowerCase().includes(query)  ||
+        content.booking_date.toLowerCase().includes(query)  ||
         content.request_status.toLowerCase().includes(query)
     );
   }
   return result;
 });
-
-const totalItems = computed(() => filteredBookingContent.value.length);
-const paginatedBookingContent = computed(() => {
+const totalItems = computed(() => filteredBookingRequestContent.value.length);
+const paginatedBookingRequestContent = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;
-  return filteredBookingContent.value.slice(start, start + pageSize.value);
+  return filteredBookingRequestContent.value.slice(start, start + pageSize.value);
 });
+
 const handlePageChange = (newPage: number) => {
   if (newPage > 0 && newPage <= Math.ceil(totalItems.value / pageSize.value)) {
     currentPage.value = newPage;
   }
 };
-
-const showBookingContentPopup = (content: BookingContent) => {
-  selectedBookingContent.value = {...content};
+const showBookingRequestPopup = (content: BookingRequestContent) => {
+  selectedBookingRequestContent.value = { ...content };
   isPopupVisible.value = true;
 };
-const hideBookingContentPopup = () => {
+const hideBookingRequestPopup = () => {
   isPopupVisible.value = false;
-  selectedBookingContent.value = null;
+  selectedBookingRequestContent.value = null;
 };
 
-const submitBookingContentChanges = async (updatedContent: BookingContent) => {
-  if (!selectedBookingContent.value) return;
+const submitBookingRequestContentChanges = async (updatedContent: BookingRequestContent) => {
+  if (!selectedBookingRequestContent.value) return;
 
   const formData = new FormData();
   formData.append('first_name', updatedContent.first_name);
@@ -95,29 +91,46 @@ const submitBookingContentChanges = async (updatedContent: BookingContent) => {
   formData.append('services', updatedContent.services);
   formData.append('request_status', updatedContent.request_status);
   formData.append('other_requests', updatedContent.other_requests);
-  formData.append('submitted_at', updatedContent.submitted_at);
 
+  formData.append('other_docs', updatedContent.other_docs);
+  formData.append('submitted_at', updatedContent.submitted_at);
 
   if (updatedContent.other_docs instanceof File) {
     formData.append('other_docs', updatedContent.other_docs);
-  } else if (updatedContent.other_docs !== selectedBookingContent.value.other_docs) {
-    formData.append('other_docs', updatedContent.other_docs);
+  } else {
+    try {
+      const response = await fetch(updatedContent.other_docs);
+      const blob = await response.blob();
+
+      const fileName = updatedContent.other_docs.split('/').pop() || 'existing_file.jpg';
+
+      const file = new File([blob], fileName, { type: blob.type });
+      formData.append('other_docs', file);
+    } catch (err) {
+      console.error('Failed to fetch and resend existing image:', err);
+      alert('Failed to load existing image for resubmission.');
+      return;
+    }
   }
 
   try {
-    const response = await api.put(`/content_manager/about_us_content/${updatedContent.id}/`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    const response = await api.put(
+        `/requests/booking_requests/${updatedContent.id}/`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+    );
 
-    const index = bookingContentList.value.findIndex(c => c.id === updatedContent.id);
+    const index = bookingRequestContentList.value.findIndex(c => c.id === updatedContent.id);
     if (index !== -1) {
-      bookingContentList.value[index] = response.data;
+      bookingRequestContentList.value[index] = response.data;
     }
 
     alert('Content updated successfully!');
-    hideBookingContentPopup();
+    hideBookingRequestPopup();
   } catch (error) {
     console.error('Update failed:', error);
     alert('Update failed. Please try again.');
@@ -127,14 +140,15 @@ const submitBookingContentChanges = async (updatedContent: BookingContent) => {
   }
 };
 
-const removeBookingContent = async () => {
-  if (!selectedBookingContent.value) return;
+
+const removeBookingRequestContent = async () => {
+  if (!selectedBookingRequestContent.value) return;
   if (confirm('Are you sure you want to delete this content?')) {
     try {
-      await api.delete(`/requests/booking_requests/${selectedBookingContent.value.id}/`);
-      bookingContentList.value = bookingContentList.value.filter(c => c.id !== selectedBookingContent.value?.id);
+      await api.delete(`/requests/booking_requests/${selectedBookingRequestContent.value.id}/`);
+      bookingRequestContentList.value = bookingRequestContentList.value.filter(c => c.id !== selectedBookingRequestContent.value?.id);
       alert('Content deleted successfully!');
-      hideBookingContentPopup();
+      hideBookingRequestPopup();
     } catch (error) {
       console.error('Delete failed:', error);
       alert('Delete failed. Please try again.');
@@ -142,61 +156,10 @@ const removeBookingContent = async () => {
   }
 };
 
-const generatePDF = () => {
-  try {
-    const doc = new jsPDF('p', 'pt', 'a4');
-
-    doc.setFontSize(16);
-    doc.setTextColor(40);
-    doc.text('Report on Booking Masjid Services', 40, 40);
-
-    doc.setFontSize(10);
-    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 40, 60);
-
-    const filteredData = filteredBookingContent.value.map((request, index) => [
-      index + 1,
-      request.first_name,
-      request.last_name,
-      request.booking_date,
-      request.phone,
-      request.venue,
-      request.services,
-      request.request_status.toUpperCase()
-    ]);
-
-    autoTable(doc, {
-      startY: 80,
-      head: [['#', 'First Name', 'Last Name', 'Date', 'Phone', 'Venue', 'Services', 'Status']],
-      body: filteredData,
-      styles: {
-        fontSize: 9,
-        cellPadding: 5,
-        overflow: 'linebreak'
-      },
-      headStyles: {
-        fillColor: [41, 128, 185],
-        textColor: 255,
-        fontStyle: 'bold'
-      },
-      alternateRowStyles: {
-        fillColor: [245, 245, 245]
-      },
-      margin: { top: 80 }
-    });
-
-    const fileName = `Booking_Report_${new Date().toISOString().slice(0, 10)}.pdf`;
-    doc.save(fileName);
-
-  } catch (error) {
-    // console.error('Error generating PDF:', error);
-    alert('Failed to generate PDF. Please check console for details.');
-  }
-};
-
 onMounted(async () => {
   try {
     const response = await api.get("/requests/booking_requests/");
-    bookingContentList.value = response.data;
+    bookingRequestContentList.value = response.data;
   } catch (error) {
     console.error("Error loading content:", error);
     alert("Error loading content.");
@@ -212,17 +175,12 @@ onMounted(async () => {
       <main class="content-area">
 
         <div class="content-header">
-          <input v-model="searchQuery" placeholder="Search by title..." class="search-box"/>
-
-          <div class="download-btn-wrapper">
-            <button @click="generatePDF" class="download-button">Download Report</button>
-          </div>
-
+          <input v-model="searchQuery" placeholder="Search by title..." class="search-box" />
         </div>
 
         <div v-if="isLoading" class="loading-state">Loading content...</div>
 
-        <div v-else-if="filteredBookingContent.length === 0" class="empty-state">No content available.</div>
+        <div v-else-if="filteredBookingRequestContent.length === 0" class="empty-state">No About content available.</div>
 
         <div v-else class="table-wrapper">
           <table class="data-table">
@@ -232,14 +190,14 @@ onMounted(async () => {
             </tr>
             </thead>
             <tbody>
-            <tr v-for="row in paginatedBookingContent" :key="row.id">
+            <tr v-for="row in paginatedBookingRequestContent" :key="row.id">
               <td>{{ row.first_name }}</td>
               <td>{{ row.last_name }}</td>
-              <td>{{ row.booking_date }}</td>
-              <td>{{ row.venue }}</td>
+              <td>{{row.booking_date }}</td>
+              <td>{{row.venue }}</td>
               <td>{{ row.request_status }}</td>
               <td>
-                <button @click="showBookingContentPopup(row)" class="view-button">View</button>
+                <button @click="showBookingRequestPopup(row)" class="view-button">View</button>
               </td>
             </tr>
             </tbody>
@@ -247,25 +205,20 @@ onMounted(async () => {
         </div>
 
         <div class="pagination-controls" v-if="!isLoading && totalItems > 0">
-          <button class="pagination-button" :disabled="currentPage === 1" @click="handlePageChange(currentPage - 1)">⬅
-            Prev
-          </button>
+          <button class="pagination-button" :disabled="currentPage === 1" @click="handlePageChange(currentPage - 1)">⬅ Prev</button>
           <span>Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) }}</span>
-          <button class="pagination-button" :disabled="currentPage >= Math.ceil(totalItems / pageSize)"
-                  @click="handlePageChange(currentPage + 1)">Next ➡
-          </button>
+          <button class="pagination-button" :disabled="currentPage >= Math.ceil(totalItems / pageSize)" @click="handlePageChange(currentPage + 1)">Next ➡</button>
         </div>
-
       </main>
     </div>
 
     <BookingRequestPopup
-        v-if="isPopupVisible && selectedBookingContent"
+        v-if="isPopupVisible && selectedBookingRequestContent"
         :isPopupVisible="isPopupVisible"
-        :selectedBookingContent="selectedBookingContent"
-        @hideBookingContentPopup="hideBookingContentPopup"
-        @submitBookingContentChanges="submitBookingContentChanges"
-        @removeBookingContent="removeBookingContent"
+        :selectedBookingRequestContent="selectedBookingRequestContent"
+        @hideBookingRequestPopup="hideBookingRequestPopup"
+        @submitBookingRequestContentChanges="submitBookingRequestContentChanges"
+        @removeBookingRequestContent="removeBookingRequestContent"
     />
   </section>
 </template>
@@ -273,7 +226,6 @@ onMounted(async () => {
 <style scoped>
 .dashboard-wrapper {
   padding: 1rem;
-  background: white;
 }
 
 .dashboard-container {
@@ -285,7 +237,6 @@ onMounted(async () => {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 1rem;
-  gap: 1rem;
 }
 
 .search-box {
@@ -294,21 +245,6 @@ onMounted(async () => {
   border-radius: 4px;
   min-width: 300px;
   outline: none;
-}
-
-.download-button{
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  background-color: var(--primary-color);
-  color: var(--text-color);
-  border-radius: 4px;
-  min-width: 200px;
-  outline: none;
-  transition: all 0.3s ease-in-out;
-}
-
-.download-button:hover {
-  color: var(--text-hover);
 }
 
 .table-wrapper {
@@ -327,7 +263,7 @@ onMounted(async () => {
 }
 
 .data-table th {
-  background-color: var(--bg-hover-color);
+  background-color: #f5f5f5;
   font-weight: bold;
 }
 

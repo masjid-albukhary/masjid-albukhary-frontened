@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {ref, reactive, watch} from 'vue';
 
-interface BookingContent {
+interface BookingRequestContent {
   id: number;
   first_name: string;
   last_name: string;
@@ -14,7 +14,7 @@ interface BookingContent {
   time_slot: string;
   venue: string;
   services: string;
-  other_docs: string;
+  other_docs: string | File;
   request_status: string;
   other_requests: string;
   submitted_at: string;
@@ -22,20 +22,17 @@ interface BookingContent {
 
 const props = defineProps<{
   isPopupVisible: boolean;
-  selectedBookingContent: BookingContent | null;
+  selectedBookingRequestContent: BookingRequestContent | null;
 }>();
-
 const emit = defineEmits([
-  'hideBookingContentPopup',
-  'submitBookingContentChanges',
-  'removeBookingContent'
+  'hideBookingRequestPopup',
+  'submitBookingRequestContentChanges',
+  'removeBookingRequestContent'
 ]);
-
-const formData = reactive<BookingContent>({
+const formData = reactive<BookingRequestContent>({
   id: 0,
   first_name: '',
   last_name: '',
-  other_docs: '',
   email: '',
   phone: '',
   address: '',
@@ -45,14 +42,15 @@ const formData = reactive<BookingContent>({
   time_slot: '',
   venue: '',
   services: '',
+  other_docs: '',
   request_status: '',
   other_requests: '',
   submitted_at: '',
 });
-
 const imageFile = ref<File | null>(null);
 const imagePreview = ref<string | null>(null);
-watch(() => props.selectedBookingContent, (newContent) => {
+
+watch(() => props.selectedBookingRequestContent, (newContent) => {
   if (newContent) {
     formData.id = newContent.id;
     formData.first_name = newContent.first_name;
@@ -66,10 +64,10 @@ watch(() => props.selectedBookingContent, (newContent) => {
     formData.time_slot = newContent.time_slot;
     formData.venue = newContent.venue;
     formData.services = newContent.services;
-    formData.request_status = newContent.request_status;
-    formData.other_requests = newContent.other_requests;
-    formData.submitted_at = newContent.submitted_at;
     formData.other_docs = newContent.other_docs;
+    formData.other_requests = newContent.other_requests;
+    formData.other_docs = newContent.other_docs;
+    formData.submitted_at = newContent.submitted_at;
 
     imagePreview.value = newContent.other_docs;
   }
@@ -80,49 +78,49 @@ const formFields = [
     key: 'first_name',
     label: 'First Name',
     type: 'text',
-    required: true
+    required: true,
   },
   {
     key: 'last_name',
     label: 'Last Name',
     type: 'text',
-    required: true
+    required: true,
   },
   {
     key: 'email',
     label: 'Email',
     type: 'email',
-    required: true
+    required: true,
   },
   {
     key: 'phone',
     label: 'Phone',
     type: 'text',
-    required: true
+    required: true,
   },
   {
     key: 'address',
     label: 'Address',
     type: 'text',
-    required: true
+    required: true,
   },
   {
     key: 'postal_code',
     label: 'Postal Code',
     type: 'text',
-    required: true
+    required: true,
   },
   {
     key: 'booking_date',
     label: 'Booking Date',
     type: 'date',
-    required: true
+    required: true,
   },
   {
     key: 'guests',
-    label: 'Number of Guests',
+    label: 'Guests',
     type: 'number',
-    required: true
+    required: true,
   },
   {
     key: 'time_slot',
@@ -130,11 +128,11 @@ const formFields = [
     type: 'select',
     required: true,
     options: [
-      {value: "10 AM", label: "10 AM"},
-      {value: "11 AM", label: "11 AM"},
-      {value: "2 PM (Mon-Thurs)", label: "2 PM (Mon-Thurs)"},
-      {value: "3 PM (Mon-Thurs)", label: "3 PM (Mon-Thurs)"},
-    ]
+      { value: '10 AM', label: '10 AM' },
+      { value: '11 AM', label: '11 AM' },
+      { value: '2 PM (Mon-Thurs)', label: '2 PM (Mon-Thurs)' },
+      { value: '3 PM (Mon-Thurs)', label: '3 PM (Mon-Thurs)' },
+    ],
   },
   {
     key: 'venue',
@@ -142,23 +140,29 @@ const formFields = [
     type: 'select',
     required: true,
     options: [
-      {value: "venue_1", label: "Venue 1"},
-      {value: "venue_2", label: "Venue 2"},
-      {value: "other", label: "Other"},
-    ]
+      { value: 'venue_1', label: 'Venue 1' },
+      { value: 'venue_2', label: 'Venue 2' },
+      { value: 'other', label: 'Other' },
+    ],
   },
   {
     key: 'services',
     label: 'Services',
-    type: 'text',
-    required: true
-  },
-  {
-    key: 'other_docs',
-    label: 'Upload New Image',
-    type: 'file',
-    required: false,
-    accept: 'image/*'
+    type: 'select',
+    required: true,
+    options: [
+      { value: 'circumcision event', label: 'Circumcision Event at Masjid Al-Bukhari' },
+      { value: 'aqiqah', label: 'Aqiqah with Masjid Al-Bukhari' },
+      { value: 'quran classes', label: 'Quran Classes (6 - 18 years old)' },
+      { value: 'solemnisation', label: 'Solemnisation at Al-Bukhari Mosque' },
+      { value: 'qurban event', label: 'Participate in Our Qurban Event' },
+      { value: 'yasin tahlil', label: 'Yasin & Tahlil' },
+      { value: 'funeral management', label: 'Jenazah or Funeral Management' },
+      { value: 'catering', label: 'Catering from Our Own Kitchen' },
+      { value: 'e wasiat', label: 'E-Wasiat' },
+      { value: 'e khairat kematian', label: 'E-Khairat Kematian' },
+      { value: 'other', label: 'Other' },
+    ],
   },
   {
     key: 'request_status',
@@ -166,24 +170,25 @@ const formFields = [
     type: 'select',
     required: true,
     options: [
-      {value: 'pending', label: "Pending"},
-      {value: 'in_progress', label: "In Progress"},
-      {value: 'confirmed', label: "Confirmed"},
-      {value: 'cancelled', label: "Cancelled"},
-    ]
+      {value: 'pending', label: 'Pending' },
+      {value: 'in_progress', label: 'In Progress' },
+      {value: 'confirmed', label: 'Confirmed' },
+      {value: 'completed', label: 'Completed' },
+      {value: 'cancelled', label: 'Cancelled' },
+    ],
+  },
+  {
+    key: 'other_docs',
+    label: 'Other Documents',
+    type: 'file',
+    required: true,
   },
   {
     key: 'other_requests',
     label: 'Other Requests',
     type: 'textarea',
-    required: false
+    required: false,
   },
-  {
-    key: 'submitted_at',
-    label: 'Submitted At',
-    type: 'date',
-    required: false
-  }
 ];
 
 const handleImageChange = (event: Event) => {
@@ -199,6 +204,7 @@ const handleImageChange = (event: Event) => {
     reader.readAsDataURL(file);
   }
 };
+
 const handleSave = () => {
   const updatedContent = {...formData};
 
@@ -206,16 +212,15 @@ const handleSave = () => {
     updatedContent.other_docs = imageFile.value;
   }
 
-
-  emit('submitBookingContentChanges', updatedContent);
+  emit('submitBookingRequestContentChanges', updatedContent);
 };
-
 const handleDelete = () => {
-  emit('removeBookingContent');
+  emit('removeBookingRequestContent');
 };
-
 const closePopup = () => {
-  emit('hideBookingContentPopup');
+  imageFile.value = null;
+  imagePreview.value = null;
+  emit('hideBookingRequestPopup');
 };
 </script>
 
