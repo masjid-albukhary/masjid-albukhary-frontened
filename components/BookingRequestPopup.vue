@@ -66,6 +66,7 @@ watch(() => props.selectedBookingRequestContent, (newContent) => {
     formData.services = newContent.services;
     formData.other_docs = newContent.other_docs;
     formData.other_requests = newContent.other_requests;
+    formData.request_status = newContent.request_status;
     formData.other_docs = newContent.other_docs;
     formData.submitted_at = newContent.submitted_at;
 
@@ -171,8 +172,8 @@ const formFields = [
     required: true,
     options: [
       {value: 'pending', label: 'Pending' },
-      {value: 'in_progress', label: 'In Progress' },
       {value: 'confirmed', label: 'Confirmed' },
+      {value: 'in_progress', label: 'In Progress' },
       {value: 'completed', label: 'Completed' },
       {value: 'cancelled', label: 'Cancelled' },
     ],

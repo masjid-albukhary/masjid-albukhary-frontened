@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
-import { useNuxtApp } from '#app';
+import {ref, computed, onMounted} from 'vue';
+import {useNuxtApp} from '#app';
 import BookingRequestPopup from '~/components/BookingRequestPopup.vue';
+import {useI18n} from "vue-i18n";
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+
 
 interface BookingRequestContent {
   id: number;
@@ -21,7 +25,8 @@ interface BookingRequestContent {
   other_requests: string;
   submitted_at: string;
 }
-const columns =  [
+
+const columns = [
   {key: 'first_name', label: 'First Name'},
   {key: 'last_name', label: 'Last Name'},
   {key: 'booking_date', label: 'Booking Date'},
@@ -30,9 +35,9 @@ const columns =  [
   {key: 'actions', label: 'Actions'},
 ];
 const bookingRequestContentList = ref<BookingRequestContent[]>([]);
-const { $axios } = useNuxtApp();
+const {$axios} = useNuxtApp();
 const api = $axios();
-
+const {t} = useI18n();
 const currentPage = ref(1);
 const pageSize = ref(8);
 const searchQuery = ref('');
@@ -46,9 +51,9 @@ const filteredBookingRequestContent = computed(() => {
     const query = searchQuery.value.toLowerCase();
     result = result.filter(content =>
         content.first_name.toLowerCase().includes(query) ||
-        content.last_name.toLowerCase().includes(query)  ||
-        content.venue.toLowerCase().includes(query)  ||
-        content.booking_date.toLowerCase().includes(query)  ||
+        content.last_name.toLowerCase().includes(query) ||
+        content.venue.toLowerCase().includes(query) ||
+        content.booking_date.toLowerCase().includes(query) ||
         content.request_status.toLowerCase().includes(query)
     );
   }
@@ -66,7 +71,7 @@ const handlePageChange = (newPage: number) => {
   }
 };
 const showBookingRequestPopup = (content: BookingRequestContent) => {
-  selectedBookingRequestContent.value = { ...content };
+  selectedBookingRequestContent.value = {...content};
   isPopupVisible.value = true;
 };
 const hideBookingRequestPopup = () => {
@@ -104,7 +109,7 @@ const submitBookingRequestContentChanges = async (updatedContent: BookingRequest
 
       const fileName = updatedContent.other_docs.split('/').pop() || 'existing_file.jpg';
 
-      const file = new File([blob], fileName, { type: blob.type });
+      const file = new File([blob], fileName, {type: blob.type});
       formData.append('other_docs', file);
     } catch (err) {
       console.error('Failed to fetch and resend existing image:', err);
@@ -140,6 +145,58 @@ const submitBookingRequestContentChanges = async (updatedContent: BookingRequest
   }
 };
 
+const generatePDF = () => {
+  try {
+    const doc = new jsPDF('p', 'pt', 'a4');
+
+    doc.setFontSize(16);
+    doc.setTextColor(40);
+    doc.text('Report on Booking Masjid Services', 40, 40);
+
+    doc.setFontSize(10);
+    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 40, 60);
+
+    const filteredData = filteredBookingRequestContent.value.map((request, index) => [
+      index + 1,
+      request.first_name,
+      request.last_name,
+      request.booking_date,
+      request.phone,
+      request.venue,
+      request.services,
+      request.request_status.toUpperCase()
+    ]);
+
+    autoTable(doc, {
+      startY: 80,
+      head: [['#', 'First Name', 'Last Name', 'Date', 'Phone', 'Venue', 'Services', 'Status']],
+      body: filteredData,
+      styles: {
+        fontSize: 9,
+        cellPadding: 5,
+        overflow: 'linebreak'
+      },
+      headStyles: {
+        fillColor: [41, 128, 185],
+        textColor: 255,
+        fontStyle: 'bold'
+      },
+      alternateRowStyles: {
+        fillColor: [245, 245, 245]
+      },
+      margin: {top: 80}
+    });
+
+    const fileName = `Booking_Report_${new Date().toISOString().slice(0, 10)}.pdf`;
+    doc.save(fileName);
+
+  }
+  catch (error) {
+    console.error('Error loading PDF libraries:', error);
+    alert('Failed to generate PDF. Please check console for details.');
+
+  }
+};
 
 const removeBookingRequestContent = async () => {
   if (!selectedBookingRequestContent.value) return;
@@ -175,12 +232,14 @@ onMounted(async () => {
       <main class="content-area">
 
         <div class="content-header">
-          <input v-model="searchQuery" placeholder="Search by title..." class="search-box" />
+          <input v-model="searchQuery" placeholder="Search by title..." class="search-box"/>
+          <button @click="generatePDF" class="download-btn">{{ t('admin_header.download') }}</button>
         </div>
 
         <div v-if="isLoading" class="loading-state">Loading content...</div>
 
-        <div v-else-if="filteredBookingRequestContent.length === 0" class="empty-state">No About content available.</div>
+        <div v-else-if="filteredBookingRequestContent.length === 0" class="empty-state">No About content available.
+        </div>
 
         <div v-else class="table-wrapper">
           <table class="data-table">
@@ -193,8 +252,8 @@ onMounted(async () => {
             <tr v-for="row in paginatedBookingRequestContent" :key="row.id">
               <td>{{ row.first_name }}</td>
               <td>{{ row.last_name }}</td>
-              <td>{{row.booking_date }}</td>
-              <td>{{row.venue }}</td>
+              <td>{{ row.booking_date }}</td>
+              <td>{{ row.venue }}</td>
               <td>{{ row.request_status }}</td>
               <td>
                 <button @click="showBookingRequestPopup(row)" class="view-button">View</button>
@@ -205,9 +264,13 @@ onMounted(async () => {
         </div>
 
         <div class="pagination-controls" v-if="!isLoading && totalItems > 0">
-          <button class="pagination-button" :disabled="currentPage === 1" @click="handlePageChange(currentPage - 1)">⬅ Prev</button>
+          <button class="pagination-button" :disabled="currentPage === 1" @click="handlePageChange(currentPage - 1)">⬅
+            Prev
+          </button>
           <span>Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) }}</span>
-          <button class="pagination-button" :disabled="currentPage >= Math.ceil(totalItems / pageSize)" @click="handlePageChange(currentPage + 1)">Next ➡</button>
+          <button class="pagination-button" :disabled="currentPage >= Math.ceil(totalItems / pageSize)"
+                  @click="handlePageChange(currentPage + 1)">Next ➡
+          </button>
         </div>
       </main>
     </div>
@@ -237,6 +300,7 @@ onMounted(async () => {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 1rem;
+  gap: 1rem;
 }
 
 .search-box {
@@ -245,6 +309,22 @@ onMounted(async () => {
   border-radius: 4px;
   min-width: 300px;
   outline: none;
+}
+
+.download-btn {
+  padding: 0.5rem;
+  border: 1px solid var(--bg-color);
+  border-radius: 4px;
+  min-width: 200px;
+  outline: none;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  transition: all 0.4s ease-in-out;
+}
+
+.download-btn:hover {
+  border: 1px solid var(--bg-hover-color);
+  background-color: var(--secondary-color);
 }
 
 .table-wrapper {

@@ -243,7 +243,8 @@ export default {
         upload_image: "Upload Image",
         upload_video: "Upload Video",
         change_password: "Change Password",
-        logout: "Logout"
+        logout: "Logout",
+        download: "Download Report",
     },
     admin_sidebar: {
         admin_title: "Administration Panel",

@@ -242,7 +242,8 @@ export default {
         upload_image: "Muat Naik Gambar",
         upload_video: "Muat Naik Video",
         change_password: "Tukar Kata Laluan",
-        logout: "Log Keluar"
+        logout: "Log Keluar",
+        download: "Muat Turun Laporan",
     },
     admin_sidebar: {
         admin_title: "Panel Pentadbiran",
