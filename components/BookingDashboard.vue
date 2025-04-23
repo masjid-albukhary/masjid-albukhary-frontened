@@ -3,9 +3,7 @@ import {ref, computed, onMounted} from 'vue';
 import {useNuxtApp} from '#app';
 import BookingRequestPopup from '~/components/BookingRequestPopup.vue';
 import {useI18n} from "vue-i18n";
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
-
+import { jsPDF } from 'jspdf';
 
 interface BookingRequestContent {
   id: number;
@@ -79,6 +77,48 @@ const hideBookingRequestPopup = () => {
   selectedBookingRequestContent.value = null;
 };
 
+
+const generatePDF = () => {
+  // Create new PDF document
+  const doc = new jsPDF();
+
+  // Add title
+  doc.setFontSize(18);
+  doc.text('Booking Requests Report', 15, 15);
+
+  // Add date
+  doc.setFontSize(12);
+  doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 15, 25);
+
+  // Prepare table data
+  const tableData = filteredBookingRequestContent.value.map(item => [
+    item.first_name,
+    item.last_name,
+    item.booking_date,
+    item.venue,
+    item.request_status
+  ]);
+
+  // Add table
+  doc.autoTable({
+    head: [['First Name', 'Last Name', 'Booking Date', 'Venue', 'Status']],
+    body: tableData,
+    startY: 35,
+    styles: {
+      fontSize: 10,
+      cellPadding: 3,
+    },
+    headStyles: {
+      fillColor: [41, 128, 185],
+      textColor: [255, 255, 255],
+      fontStyle: 'bold'
+    }
+  });
+
+  // Save the PDF
+  doc.save(`booking_requests_${new Date().toISOString().split('T')[0]}.pdf`);
+};
+
 const submitBookingRequestContentChanges = async (updatedContent: BookingRequestContent) => {
   if (!selectedBookingRequestContent.value) return;
 
@@ -144,60 +184,6 @@ const submitBookingRequestContentChanges = async (updatedContent: BookingRequest
     }
   }
 };
-
-const generatePDF = () => {
-  try {
-    const doc = new jsPDF('p', 'pt', 'a4');
-
-    doc.setFontSize(16);
-    doc.setTextColor(40);
-    doc.text('Report on Booking Masjid Services', 40, 40);
-
-    doc.setFontSize(10);
-    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 40, 60);
-
-    const filteredData = filteredBookingRequestContent.value.map((request, index) => [
-      index + 1,
-      request.first_name,
-      request.last_name,
-      request.booking_date,
-      request.phone,
-      request.venue,
-      request.services,
-      request.request_status.toUpperCase()
-    ]);
-
-    autoTable(doc, {
-      startY: 80,
-      head: [['#', 'First Name', 'Last Name', 'Date', 'Phone', 'Venue', 'Services', 'Status']],
-      body: filteredData,
-      styles: {
-        fontSize: 9,
-        cellPadding: 5,
-        overflow: 'linebreak'
-      },
-      headStyles: {
-        fillColor: [41, 128, 185],
-        textColor: 255,
-        fontStyle: 'bold'
-      },
-      alternateRowStyles: {
-        fillColor: [245, 245, 245]
-      },
-      margin: {top: 80}
-    });
-
-    const fileName = `Booking_Report_${new Date().toISOString().slice(0, 10)}.pdf`;
-    doc.save(fileName);
-
-  }
-  catch (error) {
-    console.error('Error loading PDF libraries:', error);
-    alert('Failed to generate PDF. Please check console for details.');
-
-  }
-};
-
 const removeBookingRequestContent = async () => {
   if (!selectedBookingRequestContent.value) return;
   if (confirm('Are you sure you want to delete this content?')) {
