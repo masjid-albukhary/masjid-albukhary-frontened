@@ -17,6 +17,7 @@ interface FacilityContent {
   submitted_at: string;
 }
 
+const {t} = useI18n();
 const props = defineProps<{
   isPopupVisible: boolean;
   selectedFacilityContent: FacilityContent | null;
@@ -122,12 +123,12 @@ const formFields = [
     type: 'select',
     required: true,
     options: [
-      {value: "wedding_hall" , label: "Wedding Hall"},
-      {value: "education" , label: "Education"},
-      {value: "quran_class" , label: "Quran Class"},
-      {value: "sports" , label: "Sports"},
-      {value: "community_event" , label: "Community Event"},
-      {value: "others" , label: "Others"},
+      {value: "wedding_hall", label: "Wedding Hall"},
+      {value: "education", label: "Education"},
+      {value: "quran_class", label: "Quran Class"},
+      {value: "sports", label: "Sports"},
+      {value: "community_event", label: "Community Event"},
+      {value: "others", label: "Others"},
     ]
   },
   {
@@ -188,7 +189,8 @@ const closePopup = () => {
     <div class="popup-container">
 
       <div class="popup-header">
-        <h2>About Booking Details</h2>
+        <h2>{{t('admin.popup.facility_title')}}</h2>
+
         <button @click="closePopup" class="close-button">&times;</button>
       </div>
 

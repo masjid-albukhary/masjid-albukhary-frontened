@@ -11,6 +11,7 @@ interface VideoGalleryContent {
   created_at: string;
 }
 
+const {t} = useI18n();
 const props = defineProps<{
   isPopupVisible: boolean;
   selectedVideoGalleryContent: VideoGalleryContent | null;
@@ -122,7 +123,7 @@ const closePopup = () => {
     <div class="popup-container">
 
       <div class="popup-header">
-        <h2>About Booking Details</h2>
+        <h2>{{t('admin.popup.video_gallery_title')}}</h2>
         <button @click="closePopup" class="close-button">&times;</button>
       </div>
 

@@ -18,7 +18,7 @@ interface ActivityContent {
   poster: File | null;
   estimated_participants: string;
 }
-
+const {t} = useI18n();
 const props = defineProps<{
   isPopupVisible: boolean;
   selectedActivityContent: ActivityContent | null;
@@ -206,7 +206,7 @@ const closePopup = () => {
     <div class="popup-container">
 
       <div class="popup-header">
-        <h2>About Booking Details</h2>
+        <h2>{{ t('admin.popup.activity_title') }}</h2>
         <button @click="closePopup" class="close-button">&times;</button>
       </div>
 

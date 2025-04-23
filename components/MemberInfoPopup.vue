@@ -9,17 +9,16 @@ interface MemberDetails {
   submitted_at: string;
 }
 
+const {t} = useI18n();
 const props = defineProps<{
   isPopupVisible: boolean;
   selectedMemberDetails: MemberDetails | null;
 }>();
-
 const emit = defineEmits([
   'hideMemberDetailsPopup',
   'submitMemberDetailsChanges',
   'removeMemberDetails'
 ]);
-
 const formData = reactive<MemberDetails>({
   id: 0,
   name: '',
@@ -27,7 +26,6 @@ const formData = reactive<MemberDetails>({
   photo: '',
   submitted_at: '',
 });
-
 const imageFile = ref<File | null>(null);
 const imagePreview = ref<string | null>(null);
 watch(() => props.selectedMemberDetails, (newContent) => {
@@ -106,7 +104,8 @@ const closePopup = () => {
     <div class="popup-container">
 
       <div class="popup-header">
-        <h2>About Booking Details</h2>
+
+        <h2>{{t('admin.popup.member_title')}}</h2>
         <button @click="closePopup" class="close-button">&times;</button>
       </div>
 

@@ -9,16 +9,16 @@ export default {
         contact: "Contact"
     },
 
-    landing:{
+    landing: {
         title: "Step Into the Heart of Al Bukhary Mosque",
-        latest_activity:"Upcoming Events at Our Masjid",
+        latest_activity: "Upcoming Events at Our Masjid",
         learn_more_btn: "Learn More",
     },
     prayer_time: {
         title: "Prayer Time",
     },
-    weekly_talk:"Watch our weekly Islamic talks  simple, powerful reminders to bring you closer to Allah.",
-    watch_video:"Watch video",
+    weekly_talk: "Watch our weekly Islamic talks  simple, powerful reminders to bring you closer to Allah.",
+    watch_video: "Watch video",
     about: {
         title: "Masjid Al Bukhary Kuala Lumpur Official",
         descriptionTitle: "Get to know more about Albukhary Foundation",
@@ -163,7 +163,7 @@ export default {
     },
     activities: {
         title: "Activities",
-        view_details:"View Details",
+        view_details: "View Details",
         date: "Date",
         location: "Location",
         participants: "Estimated Participants",
@@ -175,7 +175,7 @@ export default {
     facilities: {
         title: "Our Facilities",
         amenities: "Amenities",
-        latest_facilities:"Latest Facilities",
+        latest_facilities: "Latest Facilities",
         facility: {
             description: "Facility Description",
             features: "Facility Features",
@@ -188,7 +188,7 @@ export default {
         },
 
     },
-    latest_activity:"Upcoming Events at Our Masjid",
+    latest_activity: "Upcoming Events at Our Masjid",
 
 
     // admin side
@@ -239,11 +239,18 @@ export default {
         home_btn: "Go to Home",
         login_btn: "Back to Login",
     },
-    admin:{
-        view_details:"View Details",
-        popup:{
-            image_gallery_title:"image_gallery_title",
-            video_gallery_title:"video_gallery_title",
+    admin: {
+        view_details: "View Details",
+        popup: {
+            image_gallery_title: "Image Gallery Details",
+            video_gallery_title: "Video Gallery Details",
+            about_title: "About This Organization",
+            activity_title: "Activity Details",
+            booking_title: "Booking Information",
+            member_title: "Member Profile",
+            service_title: "Service Details",
+            facility_title: "Facility Information",
+            user_title: "User Profile",
         }
     },
     admin_header: {

@@ -184,9 +184,9 @@ export default {
             button: "Daftar Minat Anda",
         },
     },
-    weekly_talk:"Tonton ceramah Islam mingguan kami peringatan ringkas dan berkesan untuk mendekatkan anda kepada Allah.",
-    watch_video:"Tonton video",
-    video_type:"Jenis Video",
+    weekly_talk: "Tonton ceramah Islam mingguan kami peringatan ringkas dan berkesan untuk mendekatkan anda kepada Allah.",
+    watch_video: "Tonton video",
+    video_type: "Jenis Video",
     latest_activity: "Acara Akan Datang di Masjid Kami",
 
     // admin side
@@ -237,11 +237,19 @@ export default {
         home_btn: "Pergi ke Laman Utama",
         login_btn: "Kembali ke Log Masuk",
     },
-    admin:{
-      view_details:"Lihat Butiran",
-        popup:{
-          image_gallery_title:""
-        }
+    admin: {
+        view_details: "Lihat Butiran",
+        popup: {
+            image_gallery_title: "Butiran Galeri Gambar",
+            video_gallery_title: "Butiran Galeri Video",
+            about_title: "Tentang Organisasi Ini",
+            activity_title: "Butiran Aktiviti",
+            booking_title: "Maklumat Tempahan",
+            member_title: "Profil Ahli",
+            service_title: "Butiran Perkhidmatan",
+            facility_title: "Maklumat Kemudahan",
+            user_title: "Profil Pengguna",
+        },
     },
     admin_header: {
         upload_new_member: "Tambah Ahli",

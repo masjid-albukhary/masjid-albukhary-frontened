@@ -1,27 +1,26 @@
 <script setup lang="ts">
-import { defineProps, defineEmits, reactive, watch } from 'vue';
+import {defineProps, defineEmits, reactive, watch} from 'vue';
 
+const {t} = useI18n();
 const props = defineProps({
   isPopupVisible: Boolean,
   contentDetails: Object,
   currentContent: Object,
 });
-
 const emit = defineEmits(['closePopup', 'deleteContent', 'updateContent']);
-
 const closePopup = () => {
   emit('closePopup');
 };
 const deleteContent = () => {
   emit('deleteContent');
 };
-const editableContent = reactive({ ...props.currentContent });
+const editableContent = reactive({...props.currentContent});
 watch(
     () => props.currentContent,
     (newContent) => {
       Object.assign(editableContent, newContent);
     },
-    { deep: true, immediate: true }
+    {deep: true, immediate: true}
 );
 const labelMapping = {
   title_en: 'Title (English)',
@@ -35,7 +34,7 @@ const labelMapping = {
   created_at: 'Created At',
 };
 const updateContent = () => {
-  emit('updateContent', { ...editableContent });
+  emit('updateContent', {...editableContent});
 };
 
 </script>
@@ -46,10 +45,11 @@ const updateContent = () => {
     <div class="popup" @click.stop>
 
       <div class="popup-header">
-        <h3>Service Details</h3>
+
+        <h3>{{t('admin.popup.service_title')}}</h3>
 
         <button class="close-btn" @click="closePopup" aria-label="Close Popup">
-          <UIcon name="mdi-close" />
+          <UIcon name="mdi-close"/>
         </button>
 
       </div>
@@ -137,7 +137,7 @@ const updateContent = () => {
   word-wrap: break-word;
 }
 
-.popup-input{
+.popup-input {
   outline: none;
   border: 5px solid var(--bg-color);
   padding: .5rem;

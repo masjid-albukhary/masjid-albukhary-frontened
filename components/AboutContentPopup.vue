@@ -11,6 +11,7 @@ interface AboutContent {
   created_at: string;
 }
 
+const {t} = useI18n();
 const props = defineProps<{
   isPopupVisible: boolean;
   selectedAboutContent: AboutContent | null;
@@ -121,7 +122,7 @@ const closePopup = () => {
   <div v-if="isPopupVisible" class="popup-overlay">
     <div class="popup-container">
       <div class="popup-header">
-        <h2>About Content Details</h2>
+        <h2>{{ t('admin.popup.about_title') }}</h2>
         <button @click="closePopup" class="close-button">&times;</button>
       </div>
 
@@ -356,6 +357,7 @@ textarea.form-control {
   .popup-content {
     padding: 1rem;
   }
+
   .form-group {
     flex-direction: column;
   }

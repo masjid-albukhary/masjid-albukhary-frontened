@@ -7,8 +7,8 @@ const props = defineProps({
   currentContent: Object,
 });
 
+const {t} = useI18n();
 const emit = defineEmits(['closePopup', 'deleteContent', 'updateContent']);
-
 const editableContent = ref({ ...props.currentContent });
 
 watch(
@@ -46,7 +46,8 @@ const labelMapping: Record<string, string> = {
   <div v-if="isPopupVisible" class="popup-overlay" @click="closePopup">
     <div class="popup" @click.stop>
       <div class="popup-header">
-        <h3>Users Details</h3>
+
+        <h3>{{t('admin.popup.user_title')}}</h3>
         <button class="close-btn" @click="closePopup" aria-label="Close Popup">
           <UIcon name="mdi-close" />
         </button>
