@@ -92,7 +92,7 @@ async function handleSubmit() {
         password: form.password,
       });
 
-      alert("Login successful");
+      alert("Login successful to admin dashboard");
 
       // console.log('Response:', response.data);
       // console.log('Token from response:', response.data.access);
@@ -103,7 +103,8 @@ async function handleSubmit() {
       navigateTo('/admin');
       console.log('Navigated to /admin');
     } catch (error) {
-      console.error('Error during login:', error);
+      alert('Error during login:', error.message);
+      // console.error('Error during login:', error);
       errorMessage.value = error.response?.data?.message || 'Login failed.';
     }
   }
