@@ -92,10 +92,10 @@ async function handleSubmit() {
         password: form.password,
       });
 
-      // alert("Login successful");
+      alert("Login successful");
 
-      console.log('Response:', response.data);
-      console.log('Token from response:', response.data.access);
+      // console.log('Response:', response.data);
+      // console.log('Token from response:', response.data.access);
 
       useCookie('token').value = response.data.access;
       useCookie('refresh_token').value = response.data.refresh;
