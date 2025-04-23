@@ -1,6 +1,6 @@
-import type {AxiosError, AxiosRequestConfig} from 'axios';
+import type { AxiosError, AxiosRequestConfig } from 'axios';
 import axios from 'axios';
-import {useCookie, navigateTo} from '#app';
+import { useCookie, navigateTo } from '#app';
 
 let isRefreshing = false;
 let failedQueue: any[] = [];
@@ -33,21 +33,41 @@ export function createApi() {
 
     const api = axios.create({
         baseURL: baseUrl,
+        headers: {
+            'Content-Type': 'application/json',
+        },
     });
 
     api.interceptors.request.use(
         (config) => {
-            const publicEndpoints = ['', ''];
+            // Add all your public endpoints here
+            const publicEndpoints = [
+                'about',
+                'contact',
+                'gallery',
+                'index',
+                'services-form',
+                'user-login',
+                'facilities',
+                'activities',
+                'auth/login',
+                'auth/register',
+                'public',
+                'news'
+            ];
 
             if (publicEndpoints.some(endpoint => config.url?.includes(endpoint))) {
                 return config;
             }
 
-            const accessToken = useCookie('token').value;
-            if (accessToken) {
-                config.headers = config.headers || {};
-                config.headers['Authorization'] = `Bearer ${accessToken}`;
+            if (process.client) {
+                const accessToken = useCookie('token').value;
+                if (accessToken) {
+                    config.headers = config.headers || {};
+                    config.headers['Authorization'] = `Bearer ${accessToken}`;
+                }
             }
+
             return config;
         },
         (error) => {
@@ -60,17 +80,35 @@ export function createApi() {
         async (error: AxiosError) => {
             const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
 
-            const publicEndpoints = ['/public', '/news'];
+            // Skip interception for these cases
             if (!originalRequest ||
                 error.response?.status !== 401 ||
-                originalRequest._retry ||
-                publicEndpoints.some(endpoint => originalRequest.url?.includes(endpoint))) {
+                originalRequest._retry) {
+                return Promise.reject(error);
+            }
+
+            // Add endpoints that shouldn't trigger refresh
+            const skipRefreshEndpoints = [
+                'about',
+                'contact',
+                'gallery',
+                'index',
+                'services-form',
+                'user-login',
+                'facilities',
+                'activities',
+                'auth/login',
+                'auth/register',
+                'auth/logout'
+            ];
+
+            if (skipRefreshEndpoints.some(endpoint => originalRequest.url?.includes(endpoint))) {
                 return Promise.reject(error);
             }
 
             if (isRefreshing) {
                 return new Promise((resolve, reject) => {
-                    failedQueue.push({resolve, reject});
+                    failedQueue.push({ resolve, reject });
                 }).then(() => api(originalRequest))
                     .catch(err => Promise.reject(err));
             }
@@ -81,19 +119,30 @@ export function createApi() {
             try {
                 const refreshToken = useCookie('refresh_token').value;
                 if (!refreshToken) {
-                    throw new Error('No refresh token');
+                    throw new Error('No refresh token available');
                 }
 
-                const response = await api.post('/token/refresh/', {
+                const response = await api.post('/auth/refresh/', {
                     refresh: refreshToken,
                 });
 
                 const newAccessToken = response.data.access;
                 const newRefreshToken = response.data.refresh;
 
-                // Updated to use the same path as the login function
-                useCookie('token', {path: '/', maxAge: 60 * 60 * 24 * 7}).value = newAccessToken;
-                useCookie('refresh_token', {path: '/', maxAge: 60 * 60 * 24 * 30}).value = newRefreshToken;
+                // Set cookies with consistent configuration
+                useCookie('token', {
+                    path: '/',
+                    maxAge: 60 * 60 * 24 * 7, // 1 week
+                    sameSite: 'lax',
+                    secure: process.env.NODE_ENV === 'production',
+                }).value = newAccessToken;
+
+                useCookie('refresh_token', {
+                    path: '/',
+                    maxAge: 60 * 60 * 24 * 30, // 1 month
+                    sameSite: 'lax',
+                    secure: process.env.NODE_ENV === 'production',
+                }).value = newRefreshToken;
 
                 if (originalRequest.headers) {
                     originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
@@ -102,9 +151,14 @@ export function createApi() {
                 processQueue();
                 return api(originalRequest);
             } catch (refreshError) {
-                useCookie('token', {path: '/'}).value = null;
-                useCookie('refresh_token', {path: '/'}).value = null;
-                navigateTo('/user-login');
+                // Clear cookies on refresh failure
+                useCookie('token', { path: '/' }).value = null;
+                useCookie('refresh_token', { path: '/' }).value = null;
+
+                if (process.client) {
+                    navigateTo('/user-login');
+                }
+
                 processQueue(refreshError);
                 return Promise.reject(refreshError);
             } finally {
