@@ -238,7 +238,10 @@ export default {
         login_btn: "Kembali ke Log Masuk",
     },
     admin:{
-      view_details:"Lihat Butiran"
+      view_details:"Lihat Butiran",
+        popup:{
+          image_gallery_title:""
+        }
     },
     admin_header: {
         upload_new_member: "Tambah Ahli",

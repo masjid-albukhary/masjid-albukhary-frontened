@@ -1,220 +1,296 @@
 <script setup lang="ts">
-import {computed, onMounted, ref} from "vue";
-import {useI18n} from "vue-i18n";
-import {useNuxtApp} from "#app";
+import {ref, computed, onMounted} from 'vue';
+import {useNuxtApp} from '#app';
+import ImageGalleryContentPopup from '~/components/ImageGalleryContentPopup.vue';
 
-const {t} = useI18n();
-const {$axios} = useNuxtApp();
-const api = $axios();
-
-interface ImageDetails {
+interface ImageGalleryContent {
   id: number;
   name_field: string;
   alert_field: string;
   gallery_image: string;
+  created_at: string;
 }
 
-const images = ref<ImageDetails[]>([]);
-const isProcessing = ref(false);
+const columns = [
+  {key: 'gallery_image', label: 'Image '},
+  {key: 'name_field', label: 'Name Field'},
+  {key: 'alert_field', label: 'Alert Field'},
+  {key: 'created_at', label: 'Pushed Date'},
+  {key: 'actions', label: 'Actions'},
+];
+const videoGalleryContentList = ref<ImageGalleryContent[]>([]);
+const {$axios} = useNuxtApp();
+const api = $axios();
+const {t} = useI18n();
+
+const currentPage = ref(1);
+const pageSize = ref(8);
+const searchQuery = ref('');
+const isPopupVisible = ref(false);
+const selectedImageGalleryContent = ref<ImageGalleryContent | null>(null);
 const isLoading = ref(true);
 
-const deleteImage = async (id: number) => {
-  if (isProcessing.value) return;
+const filteredImageGalleryContent = computed(() => {
+  let result = videoGalleryContentList.value;
+  if (searchQuery.value) {
+    const query = searchQuery.value.toLowerCase();
+    result = result.filter(content =>
+        content.name_field.toLowerCase().includes(query) ||
+        content.name_field.toLowerCase().includes(query) ||
+        content.created_at.toLowerCase().includes(query)
+    );
+  }
+  return result;
+});
+const totalItems = computed(() => filteredImageGalleryContent.value.length);
+const paginatedImageGalleryContent = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  return filteredImageGalleryContent.value.slice(start, start + pageSize.value);
+});
 
-  const isConfirmed = confirm(t('Are you sure you want to delete this image?'));
-  if (!isConfirmed) return;
+const handlePageChange = (newPage: number) => {
+  if (newPage > 0 && newPage <= Math.ceil(totalItems.value / pageSize.value)) {
+    currentPage.value = newPage;
+  }
+};
+const showImageGalleryContentPopup = (content: ImageGalleryContent) => {
+  selectedImageGalleryContent.value = {...content};
+  isPopupVisible.value = true;
+};
+const hideImageGalleryContentPopup = () => {
+  isPopupVisible.value = false;
+  selectedImageGalleryContent.value = null;
+};
 
-  isProcessing.value = true;
+const submitImageGalleryContentChanges = async (updatedContent: ImageGalleryContent) => {
+  if (!selectedImageGalleryContent.value) return;
+
+  const formData = new FormData();
+  formData.append('name_field', updatedContent.name_field);
+  formData.append('alert_field', updatedContent.alert_field);
+
+  if (updatedContent.gallery_image instanceof File) {
+    formData.append('gallery_image', updatedContent.gallery_image);
+  } else if (updatedContent.gallery_image !== selectedImageGalleryContent.value.gallery_image) {
+    formData.append('gallery_image', updatedContent.gallery_image);
+  }
 
   try {
-    await api.delete(`/content_manager/gallery/images/${id}/`);
-    images.value = images.value.filter(image => image.id !== id);
+    const response = await api.put(`/content_manager/gallery/images/${updatedContent.id}/`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    // Update the local list with the latest data from the response
+    const index = videoGalleryContentList.value.findIndex(c => c.id === updatedContent.id);
+    if (index !== -1) {
+      // Use the response data to update the list, which will include the new image URL
+      videoGalleryContentList.value[index] = response.data;
+    }
+
+    alert('Content updated successfully!');
+    hideImageGalleryContentPopup();
   } catch (error) {
-    console.error("Failed to delete the image:", error);
-  } finally {
-    isProcessing.value = false;
+    console.error('Update failed:', error);
+    alert('Update failed. Please try again.');
+    if (error.response) {
+      console.error('Backend error:', error.response.data);
+    }
   }
+};
+
+const removeImageGalleryContent = async () => {
+  if (!selectedImageGalleryContent.value) return;
+  if (confirm('Are you sure you want to delete this content?')) {
+    try {
+      await api.delete(`/content_manager/gallery/images/${selectedImageGalleryContent.value.id}/`);
+      videoGalleryContentList.value = videoGalleryContentList.value.filter(c => c.id !== selectedImageGalleryContent.value?.id);
+      alert('Content deleted successfully!');
+      hideImageGalleryContentPopup();
+    } catch (error) {
+      console.error('Delete failed:', error);
+      alert('Delete failed. Please try again.');
+    }
+  }
+};
+
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString();
 };
 
 onMounted(async () => {
   try {
     const response = await api.get("/content_manager/gallery/images/");
-    images.value = response.data;
-  } catch (error: any) {
-    console.error("Failed to load about content:", error);
+    videoGalleryContentList.value = response.data;
+  } catch (error) {
+    console.error("Error loading content:", error);
+    alert("Error loading content.");
   } finally {
     isLoading.value = false;
   }
 });
-
-const currentIndex = ref(0);
-const itemsPerPage = ref(6);
-
-const visibleImages = computed(() => {
-  return images.value.slice(currentIndex.value, currentIndex.value + itemsPerPage.value);
-});
-
-function nextPage() {
-  if (currentIndex.value + itemsPerPage.value < images.value.length) {
-    currentIndex.value += itemsPerPage.value;
-  } else {
-    currentIndex.value = 0;
-  }
-}
-
-function prevPage() {
-  if (currentIndex.value - itemsPerPage.value >= 0) {
-    currentIndex.value -= itemsPerPage.value;
-  } else {
-    currentIndex.value = images.value.length - itemsPerPage.value;
-  }
-}
-
 </script>
 
 <template>
-  <section class="images-gallery">
-    <div class="images-gallery-container" v-if="!isLoading">
+  <section class="dashboard-wrapper">
+    <div class="dashboard-container">
+      <main class="content-area">
 
-      <div class="images-gallery-item" v-for="image in visibleImages" :key="image.id">
-        <div class="image-container">
-          <img :src="image.gallery_image" :alt="image.alert_field" class="image"/>
-
-          <div class="image-details">
-            <h3>{{ image.name_field }}</h3>
-            <button @click="deleteImage(image.id)" :disabled="isProcessing" class="delete-btn">Delete</button>
-          </div>
+        <div class="content-header">
+          <input v-model="searchQuery" placeholder="Search by title..." class="search-box"/>
         </div>
-      </div>
 
+        <div v-if="isLoading" class="loading-state">Loading content...</div>
+
+        <div v-else-if="filteredImageGalleryContent.length === 0" class="empty-state">No About content available.</div>
+
+        <div v-else class="table-wrapper">
+          <table class="data-table">
+            <thead>
+            <tr>
+              <th v-for="col in columns" :key="col.key">{{ col.label }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="row in paginatedImageGalleryContent" :key="row.id">
+              <td>
+                <img :src="row.gallery_image" :alt="row.alert_field" class="image-container">
+
+              </td>
+              <td>{{ row.name_field }}</td>
+              <td>{{ row.alert_field }}</td>
+              <td>{{ formatDate(row.created_at) }}</td>
+              <td>
+                <button @click="showImageGalleryContentPopup(row)" class="view-button">
+                  {{ t('admin.view_details') }}
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pagination-controls" v-if="!isLoading && totalItems > 0">
+          <button class="pagination-button" :disabled="currentPage === 1" @click="handlePageChange(currentPage - 1)">⬅
+            Prev
+          </button>
+          <span>Page {{ currentPage }} of {{ Math.ceil(totalItems / pageSize) }}</span>
+          <button class="pagination-button" :disabled="currentPage >= Math.ceil(totalItems / pageSize)"
+                  @click="handlePageChange(currentPage + 1)">Next ➡
+          </button>
+        </div>
+      </main>
     </div>
 
-    <div v-else class="loader-wrapper">
-      <div class="spinner"></div>
-      <p>Loading images... </p>
-    </div>
-
+    <ImageGalleryContentPopup
+        v-if="isPopupVisible && selectedImageGalleryContent"
+        :isPopupVisible="isPopupVisible"
+        :selectedImageGalleryContent="selectedImageGalleryContent"
+        @hideImageGalleryContentPopup="hideImageGalleryContentPopup"
+        @submitImageGalleryContentChanges="submitImageGalleryContentChanges"
+        @removeImageGalleryContent="removeImageGalleryContent"
+    />
   </section>
-  <div class="images-gallery-buttons">
-    <button @click="prevPage" class="nav-button">
-      <UIcon name="mdi-arrow-left-circle"/>
-    </button>
-    <button @click="nextPage" class="nav-button">
-      <UIcon name="mdi-arrow-right-circle"/>
-    </button>
-  </div>
-
 </template>
 
 <style scoped>
-.images-gallery {
-  padding: 20px;
-  display: flex;
-  justify-content: center;
-}
-
-.images-gallery-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-  width: 100%;
-}
-
-.images-gallery-item {
-  overflow: hidden;
-  transition: transform 0.3s ease-in-out;
-}
-
-.image-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  text-align: center;
-  width: 100%;
-  overflow: hidden;
-  margin: 1rem;
-  background: var(--bg-color);
+.dashboard-wrapper {
   padding: 1rem;
 }
 
-.image-container img {
-  width: 100px;
-  height: 100px;
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.content-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.search-box {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  min-width: 300px;
+  outline: none;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th, .data-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.data-table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+.image-container {
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  object-fit: cover;
-  border-bottom: 2px solid #f1f1f1;
 }
 
-.image-details {
-  padding: 10px;
-  display: block;
-  align-items: start;
-  text-align: start;
-}
-
-.image-details h3 {
-  font-size: 1rem;
-  margin: .5rem auto;
-  color: var(--primary-color);
-}
-
-.delete-btn {
-  background-color: #ff4d4f;
+.view-button {
+  background-color: var(--primary-color);
   color: var(--text-color);
   border: none;
-  padding: 6px 12px;
+  padding: 0.5rem 1rem;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.3s;
+  transition: all 0.2s ease-in-out;
 }
 
-.delete-btn:hover {
-  background-color: #dc0f0b;
+.view-button:hover {
+  background-color: var(--secondary-color);
+  color: var(--text-hover);
 }
 
-.delete-btn:disabled {
-  background-color: #d3d3d3;
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  gap: 1rem;
+}
+
+.pagination-button {
+  padding: 0.5rem 1rem;
+  color: var(--primary-color);
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pagination-button:disabled {
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
-@media (max-width: 768px) {
-  .images-gallery-container {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  }
-
-  .image-details h3 {
-    font-size: 1rem;
-  }
-
-  .delete-btn {
-    font-size: 0.8rem;
-  }
+.loading-state {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
 }
 
-
-.images-gallery-buttons {
-  display: flex;
-  justify-content: center;
-  margin: 1.5rem auto;
-  gap: 2rem;
-  align-items: center;
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-hover);
+  background-color: var(--primary-color);
+  border-radius: 4px;
 }
-
-.nav-button {
-  padding: 0.5rem 1rem;
-  font-size: 1.5rem;
-  background: transparent;
-  color: var(--primary-color);
-  border: none;
-  outline: none;
-  border-radius: 1rem;
-  cursor: pointer;
-  transition: color 0.3s ease-in-out;
-}
-
-.nav-button:hover {
-  color: var(--secondary-color);
-}
-
 </style>

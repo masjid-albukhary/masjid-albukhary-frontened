@@ -241,6 +241,10 @@ export default {
     },
     admin:{
         view_details:"View Details",
+        popup:{
+            image_gallery_title:"image_gallery_title",
+            video_gallery_title:"video_gallery_title",
+        }
     },
     admin_header: {
         upload_new_member: "Add Member",
