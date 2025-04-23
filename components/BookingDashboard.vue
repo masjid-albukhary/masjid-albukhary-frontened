@@ -4,6 +4,7 @@ import {useNuxtApp} from '#app';
 import BookingRequestPopup from '~/components/BookingRequestPopup.vue';
 import {useI18n} from "vue-i18n";
 import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
 
 interface BookingRequestContent {
   id: number;
@@ -23,7 +24,6 @@ interface BookingRequestContent {
   other_requests: string;
   submitted_at: string;
 }
-
 const columns = [
   {key: 'first_name', label: 'First Name'},
   {key: 'last_name', label: 'Last Name'},
@@ -41,8 +41,8 @@ const pageSize = ref(8);
 const searchQuery = ref('');
 const isPopupVisible = ref(false);
 const selectedBookingRequestContent = ref<BookingRequestContent | null>(null);
-const isLoading = ref(true);
 
+const isLoading = ref(true);
 const filteredBookingRequestContent = computed(() => {
   let result = bookingRequestContentList.value;
   if (searchQuery.value) {
@@ -58,11 +58,11 @@ const filteredBookingRequestContent = computed(() => {
   return result;
 });
 const totalItems = computed(() => filteredBookingRequestContent.value.length);
+
 const paginatedBookingRequestContent = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;
   return filteredBookingRequestContent.value.slice(start, start + pageSize.value);
 });
-
 const handlePageChange = (newPage: number) => {
   if (newPage > 0 && newPage <= Math.ceil(totalItems.value / pageSize.value)) {
     currentPage.value = newPage;
@@ -72,53 +72,68 @@ const showBookingRequestPopup = (content: BookingRequestContent) => {
   selectedBookingRequestContent.value = {...content};
   isPopupVisible.value = true;
 };
+
+
 const hideBookingRequestPopup = () => {
   isPopupVisible.value = false;
   selectedBookingRequestContent.value = null;
 };
 
-
 const generatePDF = () => {
-  // Create new PDF document
-  const doc = new jsPDF();
+  try {
+    const doc = new jsPDF();
 
-  // Add title
-  doc.setFontSize(18);
-  doc.text('Booking Requests Report', 15, 15);
+    doc.setFontSize(18);
+    doc.setTextColor(40);
+    doc.text('Booking Requests Report', 105, 15, { align: 'center' });
 
-  // Add date
-  doc.setFontSize(12);
-  doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 15, 25);
+    doc.setFontSize(10);
+    doc.setTextColor(100);
+    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 105, 23, { align: 'center' });
 
-  // Prepare table data
-  const tableData = filteredBookingRequestContent.value.map(item => [
-    item.first_name,
-    item.last_name,
-    item.booking_date,
-    item.venue,
-    item.request_status
-  ]);
+    const tableData = filteredBookingRequestContent.value.map(item => [
+      item.first_name,
+      item.last_name,
+      item.booking_date,
+      item.venue,
+      item.request_status
+    ]);
 
-  // Add table
-  doc.autoTable({
-    head: [['First Name', 'Last Name', 'Booking Date', 'Venue', 'Status']],
-    body: tableData,
-    startY: 35,
-    styles: {
-      fontSize: 10,
-      cellPadding: 3,
-    },
-    headStyles: {
-      fillColor: [41, 128, 185],
-      textColor: [255, 255, 255],
-      fontStyle: 'bold'
+    (doc as any).autoTable({
+      head: [['First Name', 'Last Name', 'Booking Date', 'Venue', 'Status']],
+      body: tableData,
+      startY: 30,
+      margin: { top: 20 },
+      styles: {
+        fontSize: 9,
+        cellPadding: 2,
+        overflow: 'linebreak',
+      },
+      headStyles: {
+        fillColor: [41, 128, 185],
+        textColor: [255, 255, 255],
+        fontStyle: 'bold',
+        fontSize: 10
+      },
+      alternateRowStyles: {
+        fillColor: [245, 245, 245]
+      }
+    });
+
+    const pageCount = (doc as any).internal.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setFontSize(8);
+      doc.setTextColor(150);
+      doc.text(`Page ${i} of ${pageCount}`, 105, doc.internal.pageSize.height - 10, { align: 'center' });
     }
-  });
 
-  // Save the PDF
-  doc.save(`booking_requests_${new Date().toISOString().split('T')[0]}.pdf`);
+    doc.save(`booking_requests_${new Date().toISOString().split('T')[0]}.pdf`);
+  } catch (error) {
+    console.error('Error generating PDF:', error);
+    alert('Failed to generate PDF. Please try again.');
+  }
 };
-
 const submitBookingRequestContentChanges = async (updatedContent: BookingRequestContent) => {
   if (!selectedBookingRequestContent.value) return;
 
