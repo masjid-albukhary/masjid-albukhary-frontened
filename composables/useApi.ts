@@ -24,7 +24,6 @@ function getBaseUrl() {
             ? 'http://127.0.0.1:8001/api'
             : 'https://masjid-albukhary-backend-production.up.railway.app/api';
     }
-
     return process.env.API_BASE_URL || 'http://127.0.0.1:8001/api';
 }
 
@@ -33,41 +32,24 @@ export function createApi() {
 
     const api = axios.create({
         baseURL: baseUrl,
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        withCredentials: true, // Ensure cookies are sent with requests
     });
 
     api.interceptors.request.use(
         (config) => {
-            // Add all your public endpoints here
-            const publicEndpoints = [
-                'about',
-                'contact',
-                'gallery',
-                'index',
-                'services-form',
-                'user-login',
-                'facilities',
-                'activities',
-                'auth/login',
-                'auth/register',
-                'public',
-                'news'
-            ];
+            const publicEndpoints = ['', ''];
 
             if (publicEndpoints.some(endpoint => config.url?.includes(endpoint))) {
                 return config;
             }
 
-            if (process.client) {
-                const accessToken = useCookie('token').value;
-                if (accessToken) {
-                    config.headers = config.headers || {};
-                    config.headers['Authorization'] = `Bearer ${accessToken}`;
-                }
-            }
+            // Use universal cookies that work in both server and client
+            const token = process.client ? useCookie('token').value : useRequestHeaders(['cookie']).cookie?.match(/token=([^;]+)/)?.[1];
 
+            if (token) {
+                config.headers = config.headers || {};
+                config.headers['Authorization'] = `Bearer ${token}`;
+            }
             return config;
         },
         (error) => {
@@ -80,29 +62,11 @@ export function createApi() {
         async (error: AxiosError) => {
             const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
 
-            // Skip interception for these cases
+            const publicEndpoints = ['/public', '/news'];
             if (!originalRequest ||
                 error.response?.status !== 401 ||
-                originalRequest._retry) {
-                return Promise.reject(error);
-            }
-
-            // Add endpoints that shouldn't trigger refresh
-            const skipRefreshEndpoints = [
-                'about',
-                'contact',
-                'gallery',
-                'index',
-                'services-form',
-                'user-login',
-                'facilities',
-                'activities',
-                'auth/login',
-                'auth/register',
-                'auth/logout'
-            ];
-
-            if (skipRefreshEndpoints.some(endpoint => originalRequest.url?.includes(endpoint))) {
+                originalRequest._retry ||
+                publicEndpoints.some(endpoint => originalRequest.url?.includes(endpoint))) {
                 return Promise.reject(error);
             }
 
@@ -117,32 +81,43 @@ export function createApi() {
             isRefreshing = true;
 
             try {
-                const refreshToken = useCookie('refresh_token').value;
+                const refreshToken = process.client
+                    ? useCookie('refresh_token').value
+                    : useRequestHeaders(['cookie']).cookie?.match(/refresh_token=([^;]+)/)?.[1];
+
                 if (!refreshToken) {
-                    throw new Error('No refresh token available');
+                    throw new Error('No refresh token');
                 }
 
-                const response = await api.post('/auth/refresh/', {
+                const response = await axios.post(`${baseUrl}/token/refresh/`, {
                     refresh: refreshToken,
+                }, {
+                    // Don't use the interceptor for this request to avoid infinite loop
+                    baseURL: '',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
                 });
 
                 const newAccessToken = response.data.access;
                 const newRefreshToken = response.data.refresh;
 
-                // Set cookies with consistent configuration
-                useCookie('token', {
-                    path: '/',
-                    maxAge: 60 * 60 * 24 * 7, // 1 week
-                    sameSite: 'lax',
-                    secure: process.env.NODE_ENV === 'production',
-                }).value = newAccessToken;
+                // Set cookies with proper attributes
+                if (process.client) {
+                    useCookie('token', {
+                        path: '/',
+                        maxAge: 60 * 60 * 24 * 7,
+                        sameSite: 'lax',
+                        secure: process.env.NODE_ENV === 'production'
+                    }).value = newAccessToken;
 
-                useCookie('refresh_token', {
-                    path: '/',
-                    maxAge: 60 * 60 * 24 * 30, // 1 month
-                    sameSite: 'lax',
-                    secure: process.env.NODE_ENV === 'production',
-                }).value = newRefreshToken;
+                    useCookie('refresh_token', {
+                        path: '/',
+                        maxAge: 60 * 60 * 24 * 30,
+                        sameSite: 'lax',
+                        secure: process.env.NODE_ENV === 'production'
+                    }).value = newRefreshToken;
+                }
 
                 if (originalRequest.headers) {
                     originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
@@ -151,14 +126,11 @@ export function createApi() {
                 processQueue();
                 return api(originalRequest);
             } catch (refreshError) {
-                // Clear cookies on refresh failure
-                useCookie('token', { path: '/' }).value = null;
-                useCookie('refresh_token', { path: '/' }).value = null;
-
                 if (process.client) {
+                    useCookie('token').value = null;
+                    useCookie('refresh_token').value = null;
                     navigateTo('/user-login');
                 }
-
                 processQueue(refreshError);
                 return Promise.reject(refreshError);
             } finally {
