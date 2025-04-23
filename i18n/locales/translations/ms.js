@@ -8,7 +8,6 @@ export default {
         gallery: "Galeri",
         contact: "Hubungi"
     },
-
     landing: {
         title: "Melangkah Ke Jantung Masjid Al Bukhary",
         latest_activity: "Acara Akan Datang di Masjid Kami",
@@ -237,6 +236,9 @@ export default {
         submit: "Daftar",
         home_btn: "Pergi ke Laman Utama",
         login_btn: "Kembali ke Log Masuk",
+    },
+    admin:{
+      view_details:"Lihat Butiran"
     },
     admin_header: {
         upload_new_member: "Tambah Ahli",

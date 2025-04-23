@@ -239,6 +239,9 @@ export default {
         home_btn: "Go to Home",
         login_btn: "Back to Login",
     },
+    admin:{
+        view_details:"View Details",
+    },
     admin_header: {
         upload_new_member: "Add Member",
         upload_image: "Upload Image",
