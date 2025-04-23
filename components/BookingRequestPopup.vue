@@ -20,6 +20,7 @@ interface BookingRequestContent {
   submitted_at: string;
 }
 
+const {t} = useI18n();
 const props = defineProps<{
   isPopupVisible: boolean;
   selectedBookingRequestContent: BookingRequestContent | null;
@@ -230,7 +231,7 @@ const closePopup = () => {
     <div class="popup-container">
 
       <div class="popup-header">
-        <h2>About Booking Details</h2>
+        <h2>{{ t('admin.popup.booking_title') }}</h2>
         <button @click="closePopup" class="close-button">&times;</button>
       </div>
 
