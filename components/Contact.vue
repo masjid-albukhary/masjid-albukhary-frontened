@@ -1,12 +1,12 @@
 <script setup>
 import {reactive, watch} from 'vue';
 import {z} from 'zod';
-import { useI18n } from 'vue-i18n';
+import {useI18n} from 'vue-i18n';
 import {useNuxtApp} from "#app";
 import SubmitMessagePopup from '~/components/SubmitMessagePopup.vue';
 
 
-const { t } = useI18n();
+const {t} = useI18n();
 const {$axios} = useNuxtApp();
 const api = $axios()
 const showPopup = ref(false);
@@ -155,8 +155,8 @@ const contactImage = "/images/contact-image.jpg"
         </div>
 
         <div class="contact-info">
-          <h3>{{t('contact.title')}}</h3>
-          <span>{{t('contact.description')}}</span>
+          <h3>{{ t('contact.title') }}</h3>
+          <span>{{ t('contact.description') }}</span>
         </div>
       </div>
 
@@ -193,10 +193,10 @@ const contactImage = "/images/contact-image.jpg"
 
           <div>
             <button @click.once="isPopupVisible = true" class="contact-submit" type="submit">
-              {{t('contact.send_message')}}
+              {{ t('contact.send_message') }}
             </button>
 
-            <SubmitMessagePopup :show="showPopup" @update:show="showPopup = $event" >
+            <SubmitMessagePopup :show="showPopup" @update:show="showPopup = $event">
 
             </SubmitMessagePopup>
 
@@ -260,7 +260,7 @@ const contactImage = "/images/contact-image.jpg"
 
 .contact-info-container .contact-info h3 {
   color: var(--secondary-color);
-  font-size: var(--text-size-h6);
+  font-size: 1.5rem;
 }
 
 .contact-info-container .contact-info span {

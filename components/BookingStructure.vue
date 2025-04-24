@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
+import {useI18n} from 'vue-i18n'
 
-const { t } = useI18n()
+const {t} = useI18n()
 
 const booking_steps = [
   {
@@ -35,19 +35,19 @@ const booking_steps = [
       <div class="steps-booking-structure-container">
         <ul class="booking-structure-list">
           <li v-for="step in booking_steps" :key="step.step">
-            <UIcon :name="step.icon" class="booking-structure-icon" />
+            <UIcon :name="step.icon" class="booking-structure-icon"/>
             <span>{{ step.content }}</span>
           </li>
         </ul>
       </div>
 
       <div class="image-booking-structure-container">
-        <img src="/images/booking-image.png" alt="booking-structure-image" class="booking-structure-image" />
+        <img src="/images/booking-image.png" alt="booking-structure-image" class="booking-structure-image"/>
       </div>
     </div>
 
     <router-link to="/services-form" class="booking-structure-btn">
-      <UIcon name="mdi-register" class="register-icon" />
+      <UIcon name="mdi-register" class="register-icon"/>
       {{ t('booking.booking_structure.button') }}
     </router-link>
   </section>
@@ -73,8 +73,8 @@ section {
 
 .booking-structure h2 {
   text-align: center;
-  margin-bottom: var(--text-size-h2);
-  font-size: var(--text-size-h2);
+  margin-bottom: 2rem;
+  font-size: 2rem;
   padding-top: 2rem;
   color: var(--primary-color);
 }

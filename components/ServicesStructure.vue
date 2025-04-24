@@ -68,7 +68,7 @@ section {
 
 .booking-structure h2 {
   text-align: center;
-  margin-bottom: var(--text-size-h2);
+  margin-bottom: 2rem;
   font-size: 2rem;
   padding-top: 2rem;
   color: var(--primary-color);
