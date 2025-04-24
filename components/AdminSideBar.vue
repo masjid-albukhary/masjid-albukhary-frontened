@@ -1,8 +1,8 @@
 <script setup>
-import { useRouter } from 'nuxt/app'
-import { useI18n } from 'vue-i18n'
-import { computed } from 'vue'
-import { ref } from 'vue'
+import {useRouter} from 'nuxt/app'
+import {useI18n} from 'vue-i18n'
+import {computed} from 'vue'
+import {ref} from 'vue'
 
 const expandedGroups = ref(new Set())
 
@@ -14,47 +14,67 @@ const toggleGroup = (groupLabel) => {
   }
 }
 
-const { t } = useI18n()
+const {t} = useI18n()
 const router = useRouter()
 const groupedLinks = computed(() => [
   {
     label: t('admin_sidebar.dashboard_section'),
     icon: "mdi-view-dashboard-outline",
     children: [
-      { link: "/admin/", label: t('admin_sidebar.admin'), icon: "mdi-account-cog-outline" },
-      { link: "/admin/booking-dashboard", label: t('admin_sidebar.booking_overview'), icon: "mdi-calendar-clock" },
-      { link: "/admin/contact-messages-dashboard", label: t('admin_sidebar.contact_messages_overview'), icon: "mdi-phone" }
+      {link: "/admin/", label: t('admin_sidebar.admin'), icon: "mdi-account-cog-outline"},
+      {link: "/admin/booking-dashboard", label: t('admin_sidebar.booking_overview'), icon: "mdi-calendar-clock"},
+      {
+        link: "/admin/contact-messages-dashboard",
+        label: t('admin_sidebar.contact_messages_overview'),
+        icon: "mdi-phone"
+      }
     ]
   },
   {
     label: t('admin_sidebar.about_section'),
     icon: "mdi-information-outline",
     children: [
-      { link: "/admin/about-content-dashboard", label: t('admin_sidebar.about_content_dashboard'), icon: "mdi-file-document-edit-outline" },
-      { link: "/admin/about-form", label: t('admin_sidebar.about_content_form'), icon: "mdi-file-document-edit-outline" }
+      {
+        link: "/admin/about-content-dashboard",
+        label: t('admin_sidebar.about_content_dashboard'),
+        icon: "mdi-file-document-edit-outline"
+      },
+      {link: "/admin/about-form", label: t('admin_sidebar.about_content_form'), icon: "mdi-file-document-edit-outline"}
     ]
   },
   {
     label: t('admin_sidebar.member_section'),
     icon: "mdi-users-plus-outline",
     children: [
-      { link: "/admin/member-overview-dashboard", label: t('admin_sidebar.member_overview_dashboard'), icon: "mdi-users" },
+      {
+        link: "/admin/member-overview-dashboard",
+        label: t('admin_sidebar.member_overview_dashboard'),
+        icon: "mdi-users"
+      },
     ]
   },
   {
     label: t('admin_sidebar.facility_section'),
     icon: "mdi-office-building",
     children: [
-      { link: "/admin/facility-form", label: t('admin_sidebar.facility_form'), icon: "mdi-office-building-cog" },
-      { link: "/admin/facilities-management-dashboard", label: t('admin_sidebar.facilities_dashboard'), icon: "mdi-domain" }
+      {link: "/admin/facility-form", label: t('admin_sidebar.facility_form'), icon: "mdi-office-building-cog"},
+      {
+        link: "/admin/facilities-management-dashboard",
+        label: t('admin_sidebar.facilities_dashboard'),
+        icon: "mdi-domain"
+      }
     ]
   },
   {
     label: t('admin_sidebar.news_section'),
     icon: "mdi-newspaper",
     children: [
-      { link: "/admin/activities-form", label: t('admin_sidebar.news_form'), icon: "mdi-newspaper-variant-multiple" },
-      { link: "/admin/activities-overview-dashboard", label: t('admin_sidebar.news_dashboard'), icon: "mdi-newspaper-variant-multiple" }
+      {link: "/admin/activities-form", label: t('admin_sidebar.news_form'), icon: "mdi-newspaper-variant-multiple"},
+      {
+        link: "/admin/activities-overview-dashboard",
+        label: t('admin_sidebar.news_dashboard'),
+        icon: "mdi-newspaper-variant-multiple"
+      }
     ]
   },
 
@@ -62,24 +82,32 @@ const groupedLinks = computed(() => [
     label: t('admin_sidebar.services_section'),
     icon: "mdi-clipboard-text-outline",
     children: [
-      { link: "/admin/services-form", label: t('admin_sidebar.service_form'), icon: "mdi-clipboard-plus-outline" },
-      { link: "/admin/services-overview-dashboard", label: t('admin_sidebar.service_dashboard'), icon: "mdi-clipboard-text-multiple-outline" }
+      {link: "/admin/services-form", label: t('admin_sidebar.service_form'), icon: "mdi-clipboard-plus-outline"},
+      {
+        link: "/admin/services-overview-dashboard",
+        label: t('admin_sidebar.service_dashboard'),
+        icon: "mdi-clipboard-text-multiple-outline"
+      }
     ]
   },
   {
     label: t('admin_sidebar.users_section'),
     icon: "mdi-account-group-outline",
     children: [
-      { link: "/admin/users-overview-dashboard", label: t('admin_sidebar.users_dashboard'), icon: "mdi-account-multiple-outline" },
-      { link: "/admin/user-registration", label: t('admin_sidebar.users_form'), icon: "mdi-user-plus-outline" }
+      {
+        link: "/admin/users-overview-dashboard",
+        label: t('admin_sidebar.users_dashboard'),
+        icon: "mdi-account-multiple-outline"
+      },
+      {link: "/admin/user-registration", label: t('admin_sidebar.users_form'), icon: "mdi-user-plus-outline"}
     ]
   },
   {
     label: t('admin_sidebar.media_section'),
     icon: "mdi-folder-multiple-image",
     children: [
-      { link: "/admin/image-gallery-dashboard", label: t('admin_sidebar.images_dashboard'), icon: "mdi-images" },
-      { link: "/admin/video-gallery-dashboard", label: t('admin_sidebar.videos_dashboard'), icon: "mdi-video" }
+      {link: "/admin/image-gallery-dashboard", label: t('admin_sidebar.images_dashboard'), icon: "mdi-images"},
+      {link: "/admin/video-gallery-dashboard", label: t('admin_sidebar.videos_dashboard'), icon: "mdi-video"}
     ]
   }
 ])
@@ -96,20 +124,20 @@ const groupedLinks = computed(() => [
         <li v-for="group in groupedLinks" :key="group.label" class="admin-group">
           <div class="admin-nav-item group-toggle" @click="toggleGroup(group.label)">
             <span class="icon">
-              <UIcon :name="group.icon" />
+              <UIcon :name="group.icon"/>
             </span>
             <span class="label">{{ group.label }}</span>
           </div>
 
-          <ul v-if="expandedGroups.has(group.label)">
+          <ul v-if="expandedGroups.has(group.label)" class="nested-link">
             <li
                 v-for="link in group.children"
                 :key="link.label"
                 class="admin-nav-item child"
                 @click="router.push(link.link)"
             >
-              <span class="icon">
-                <UIcon :name="link.icon" />
+              <span class="icon-child">
+                <UIcon :name="link.icon"/>
               </span>
               <span class="label">{{ link.label }}</span>
             </li>
@@ -147,7 +175,7 @@ const groupedLinks = computed(() => [
 .admin-nav-item {
   display: flex;
   align-items: center;
-  padding: 10px 12px;
+  padding: 5px;
   color: var(--text-color);
   font-size: 1rem;
   transition: color 0.3s ease-in-out;
@@ -166,5 +194,13 @@ const groupedLinks = computed(() => [
 
 .label {
   flex-grow: 1;
+}
+
+.child {
+  margin-left: 1rem;
+
+  .icon-child {
+    margin-right: 0.5rem;
+  }
 }
 </style>
