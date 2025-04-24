@@ -4,8 +4,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
     const isAuthenticated = !!token.value && !!refresh.value;
 
-    console.log(isAuthenticated);
-
     if (!isAuthenticated && to.path !== '/user-login') {
         return navigateTo('/user-login');
     }
