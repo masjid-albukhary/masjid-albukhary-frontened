@@ -2,8 +2,7 @@
   <nuxt-page/>
 </template>
 
-
-<style >
+<style>
 :root {
   --primary-color: #0b78d2;
   --secondary-color: #489fe7;
@@ -13,31 +12,40 @@
   --text-color: #ffffff;
   --text-hover: #b5b9bf;
 
-  --transition: all 0.3s ease-in-out;
-  --spacing-unit: 1rem;
-  --primary-border-radius: 15px;
+  font-family: 'Times New Roman', Times, serif !important;
+}
 
-  --text-size-h1: clamp(3rem, 5vw, 4rem);
-  --text-size-h2: clamp(2.5rem, 4vw, 3.5rem);
-  --text-size-h3: clamp(2rem, 3.5vw, 3rem);
-  --text-size-h4: clamp(1.75rem, 3vw, 2.5rem);
-  --text-size-h5: clamp(1.5rem, 2.5vw, 2rem);
-  --text-size-h6: clamp(1rem, 2vw, 1.5rem);
 
-  --text-size-body: 1rem;
-  --text-size-small: 0.875rem;
+html, body {
+  font-family: 'Times New Roman', Times, serif !important;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-
-  button {
-    border: none;
-    outline: none;
-    cursor: pointer;
-  }
+  font-family: inherit !important;
 }
 
+*::before,
+*::after {
+  font-family: inherit !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Times New Roman', Times, serif !important;
+  margin: 0;
+  line-height: 1.2;
+}
+
+button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-family: inherit !important;
+}
+
+input, textarea, select {
+  font-family: inherit !important;
+}
 </style>
