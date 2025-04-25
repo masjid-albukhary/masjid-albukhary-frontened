@@ -128,7 +128,6 @@ onMounted(async () => {
                   class="prayer-time-box"
               >
                 <span class="time-data">
-                  <UIcon name="mdi-mosque" class="mosque-icon" aria-hidden="true" />
                   {{ prayer.name }}
                 </span>
                 <hr class="prayer-time-divider" />
@@ -148,6 +147,7 @@ onMounted(async () => {
     </div>
   </section>
 </template>
+
 
 
 <style scoped>
@@ -223,7 +223,7 @@ onMounted(async () => {
 
 .time-prayer-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   gap: 1rem;
   margin-top: 2rem;
   z-index: 1;
@@ -239,14 +239,9 @@ onMounted(async () => {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.mosque-icon {
-  margin-right: 0.5rem;
-}
-
 .map {
   height: 350px;
   width: 100%;
-  border-radius: 1rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
