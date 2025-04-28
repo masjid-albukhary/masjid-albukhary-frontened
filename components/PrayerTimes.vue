@@ -144,6 +144,7 @@ onMounted(() => {
   margin: 0 auto;
   background-color: var(--bg-color);
   padding: 0.5rem;
+  z-index: 1002;
 }
 
 .time-prayer-content {

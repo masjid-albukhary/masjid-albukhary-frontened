@@ -13,6 +13,8 @@ export default {
         title: "Step Into the Heart of Al Bukhary Mosque",
         latest_activity: "Upcoming Events at Our Masjid",
         learn_more_btn: "Learn More",
+        discover_projects:"Discover Our Upcoming Events",
+        learn_more: "Learn More",
     },
     prayer_time: {
         title: "Prayer Time",
