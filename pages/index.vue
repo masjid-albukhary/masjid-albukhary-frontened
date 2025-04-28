@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import WeeklyTalkComponent from "~/components/WeeklyTalkComponent.vue";
+import PrayerTimes from "~/components/PrayerTimes.vue";
+import TestLanding from "~/components/TestLanding.vue";
 
 
 </script>
 
 <template>
-  <Header/>
-  <Landing/>
+  <PrayerTimes/>
+  <TestLanding/>
   <WeeklyTalkComponent/>
   <ActivitiesUpcomingCard/>
   <BookingStructure/>
