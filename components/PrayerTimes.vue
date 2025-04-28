@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import {ref, computed, onMounted} from 'vue';
 
 const city = ref('Kuala Lumpur');
 const country = ref('Malaysia');
@@ -40,7 +40,7 @@ const fetchPrayerTimes = async () => {
     const response = await fetch(
         `https://api.aladhan.com/v1/timingsByCity?city=${city.value}&country=${country.value}&method=${method.value}`
     );
-    const { data } = await response.json();
+    const {data} = await response.json();
 
     prayerTimes.value = mainPrayers.reduce((times, prayer) => {
       if (data.timings[prayer]) {
@@ -69,7 +69,7 @@ const formatTime = (time) =>
 const addMinutes = (time, minutes) => {
   const date = new Date(`1970-01-01T${time}`);
   date.setMinutes(date.getMinutes() + minutes);
-  return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true });
+  return date.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", hour12: true});
 };
 
 const updateTime = () => {
@@ -114,6 +114,7 @@ onMounted(() => {
 <template>
   <div class="prayer-time">
     <div class="time-prayer-content">
+
       <div class="time-box-title">
         <span class="section-title city">{{ city }}</span>
         <span class="section-title time">{{ fullDate }} {{ currentTime }}</span>
@@ -135,6 +136,7 @@ onMounted(() => {
     </div>
   </div>
 </template>
+
 <style scoped>
 .prayer-time {
   display: block;
@@ -147,10 +149,11 @@ onMounted(() => {
 .time-prayer-content {
   max-width: 1200px;
   margin: 0 auto;
+  gap: 0;
+  padding: 0;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  gap: 1rem;
   align-items: center;
 }
 
@@ -166,7 +169,7 @@ onMounted(() => {
 }
 
 .section-title {
-  font-size: 1rem;
+  font-size: 1.2rem;
   color: var(--primary-color);
   font-weight: 600;
   line-height: 1.2;
@@ -188,46 +191,64 @@ onMounted(() => {
   gap: 0.3rem;
   animation: fadeIn 0.5s ease forwards;
   opacity: 0;
-  margin: 0 .5rem ;
+  margin: 0 .5rem;
 }
 
-.prayer-name {
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.time-data {
-  font-size: 1.1rem;
-  font-weight: 500;
-}
-
-.loading {
-  text-align: center;
-  font-size: 1.2rem;
-  color: var(--primary-color);
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
+@media (max-width: 1200px) {
+  .time-prayer-content {
+    flex-direction: column;
+    align-items: flex-start;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  .time-prayer-container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
 }
 
-@keyframes pulse {
-  0% {
-    opacity: 0.6;
+@media (max-width: 1024px) {
+  .time-prayer-content {
+    flex-direction: column;
+    padding: 1rem;
   }
-  50% {
-    opacity: 1;
+
+  .prayer-time-container {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
-  100% {
-    opacity: 0.6;
+
+  .section-title {
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  .time-prayer-box {
+    box-shadow: rgba(149, 157, 165, 0.2) 0 8px 24px;
+  }
+}
+
+@media (max-width: 800px) {
+  .time-prayer-content {
+    margin: 1rem auto;
+    display: block;
+  }
+
+  .section-title {
+    text-align: center;
+    font-size: 1.4rem;
+  }
+
+  .time-prayer-container {
+    width: 90%;
+    margin: 0 auto;
+    gap: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+
+  .prayer-time-box {
+    box-shadow: rgba(149, 157, 165, 0.2) 0 8px 24px;
   }
 }
 
@@ -256,8 +277,8 @@ onMounted(() => {
 }
 
 @media (max-width: 480px) {
-  .time-prayer-container {
-    gap: 0.5rem;
+  .time-prayer-content {
+    padding: 0.5rem;
   }
 
   .prayer-time-box {
@@ -271,6 +292,29 @@ onMounted(() => {
 
   .loading {
     font-size: 1rem;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
   }
 }
 
