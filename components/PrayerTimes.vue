@@ -240,16 +240,16 @@ onMounted(() => {
   }
 
   .time-prayer-container {
-    width: 90%;
+    width: 95%;
     margin: 0 auto;
     gap: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
   }
 
   .prayer-time-box {
-    box-shadow: rgba(149, 157, 165, 0.2) 0 8px 24px;
+    box-shadow: none;
   }
 }
 
