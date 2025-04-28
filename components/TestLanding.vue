@@ -86,7 +86,7 @@ onBeforeUnmount(() => {
           <div class="logo-container">
             <div class="logo">
               <router-link to="/" aria-label="Masjid Albukary Home">
-                <img src="/images/masjid_albukary_logo.png" alt="Masjid Albukary Logo" width="70" height="50" />
+                <img src="/images/masjid_albukary_logo.png" alt="Masjid Albukary Logo"/>
               </router-link>
             </div>
 
@@ -193,9 +193,10 @@ onBeforeUnmount(() => {
   display: none;
   background: transparent;
   border: none;
+  outline: none;
   cursor: pointer;
   font-size: 1.5rem;
-  color: var(--primary-color);
+  color: var(--text-hover);
   padding: 0.5rem;
   transition: transform 0.2s ease;
 }
@@ -268,7 +269,6 @@ onBeforeUnmount(() => {
 .translation-btn {
   border: none;
   outline: none;
-  margin: .5rem;
   padding: 0.5rem;
   font-size: 1rem;
   text-decoration: none;
@@ -459,7 +459,7 @@ onBeforeUnmount(() => {
 
   .navigation-links li {
     width: 100%;
-    text-align: center;
+    text-align: start;
     padding: 0.5rem 0;
   }
 
