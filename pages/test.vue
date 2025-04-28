@@ -7,6 +7,8 @@ import TestLanding from "~/components/TestLanding.vue";
 <template>
   <PrayerTimes/>
   <TestLanding/>
+  <ActivitiesUpcomingCard/>
+  <Footer/>
 </template>
 
 <style scoped>
