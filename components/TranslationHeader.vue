@@ -35,6 +35,7 @@ const switchLanguage = async (lang) => {
     </div>
   </nav>
 </template>
+
 <style scoped>
 .translate-navbar {
   width: 100%;

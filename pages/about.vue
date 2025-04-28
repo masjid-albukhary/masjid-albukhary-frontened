@@ -1,14 +1,13 @@
 <script setup lang="ts">
 
-import Header from "~/components/Header.vue";
-definePageMeta({
-  middleware: 'auth'
-})
+import PrayerTimes from "~/components/PrayerTimes.vue";
+import TestLanding from "~/components/TestLanding.vue";
+
 </script>
 
 <template>
-  <Header/>
-  <landing/>
+  <PrayerTimes/>
+  <TestLanding/>
   <About/>
   <MemeberCard/>
   <Contact/>

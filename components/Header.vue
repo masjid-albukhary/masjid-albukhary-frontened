@@ -19,7 +19,6 @@ const links = computed(() => [
   {link: "/contact", label: t('menu.contact'), icon: "mdi-email"}
 ]);
 
-
 function toggleLinksVisibility() {
   isLinksVisible.value = !isLinksVisible.value;
   console.log('Links visibility toggled:', isLinksVisible.value);

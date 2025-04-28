@@ -1,15 +1,15 @@
 <script setup lang="ts">
-definePageMeta({
-  middleware: 'auth'
-})
+
 import Contact from "~/components/Contact.vue";
+import PrayerTimes from "~/components/PrayerTimes.vue";
+import TestLanding from "~/components/TestLanding.vue";
 
 
 </script>
 
 <template>
-  <Header/>
-  <SubLanding/>
+  <PrayerTimes/>
+  <TestLanding/>
   <Contact/>
   <Footer/>
 </template>
