@@ -118,9 +118,9 @@ onMounted(() => {
             {{ t(`landing.title`, { locale }) || t('landing.title_en') }}
           </h1>
           <div class="cta-buttons">
-            <button @click="scrollToSection('ActivitiesUpcomingCard')" class="cta-button primary-btn">
+            <a href="#upcomingActivitiesCard" class="cta-button primary-btn">
               {{ t('landing.discover_projects') || 'Discover my Projects' }}
-            </button>
+            </a>
             <router-link to="/about" class="cta-button secondary-btn">
               {{ t('landing.learn_more') || 'Learn More' }}
             </router-link>

@@ -89,7 +89,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <section class="activities">
+  <section class="activities" id="upcomingActivitiesCard">
     <h1 class="title">
       {{ t('latest_activity') }}
     </h1>
@@ -163,15 +163,6 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-
-<!--    <div class="buttons">-->
-<!--      <button @click="prevPage" class="nav-button">-->
-<!--        <UIcon name="mdi-arrow-left-circle"/>-->
-<!--      </button>-->
-<!--      <button @click="nextPage" class="nav-button">-->
-<!--        <UIcon name="mdi-arrow-right-circle"/>-->
-<!--      </button>-->
-<!--    </div>-->
 
   </section>
 </template>
