@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, onBeforeUnmount } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useI18n } from "#i18n";
 import { useRouter } from 'vue-router';
 
-const { t, locale } = useI18n();
-const router = useRouter();
-
+const { t } = useI18n();
 const isLinksVisible = ref(false);
 const isMobile = ref(false);
 const isScrolled = ref(false);
@@ -23,13 +21,11 @@ const links = computed(() => [
 const toggleLinksVisibility = () => {
   isLinksVisible.value = !isLinksVisible.value;
 };
-
 const closeMenu = () => {
   if (isMobile.value && isLinksVisible.value) {
     isLinksVisible.value = false;
   }
 };
-
 const scrollToSection = (elementId: string) => {
   closeMenu();
   const element = document.getElementById(elementId);
@@ -37,20 +33,32 @@ const scrollToSection = (elementId: string) => {
     element.scrollIntoView({ behavior: 'smooth' });
   }
 };
-
 const navigateTo = (path: string) => {
   closeMenu();
   router.push(path);
+};
+const {setLocale, locale} = useI18n();
+const router = useRouter();
+const currentLang = locale.value;
+const toggleLanguage = async () => {
+  const newLang = currentLang === 'ms' ? 'en' : 'ms';
+
+  await setLocale(newLang);
+
+  const currentPath = router.currentRoute.value.path;
+  const pathWithoutLang = currentPath.replace(/^\/(en|ms)/, '');
+
+  const cleanPath = pathWithoutLang.startsWith('/') ? pathWithoutLang : `/${pathWithoutLang}`;
+
+  const newPath = newLang === 'ms' ? `${cleanPath}` : `/en${cleanPath}`;
+
+  router.push(newPath);
 };
 
 onMounted(() => {
   const checkMobileSize = () => {
     isMobile.value = window.innerWidth <= 1200;
-    if (!isMobile.value) {
-      isLinksVisible.value = true;
-    } else {
-      isLinksVisible.value = false;
-    }
+    isLinksVisible.value = !isMobile.value;
   };
 
   const handleScroll = () => {
@@ -62,11 +70,11 @@ onMounted(() => {
 
   window.addEventListener('resize', checkMobileSize);
   window.addEventListener('scroll', handleScroll);
+});
 
-  onBeforeUnmount(() => {
-    window.removeEventListener('resize', checkMobileSize);
-    window.removeEventListener('scroll', handleScroll);
-  });
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', () => {});
+  window.removeEventListener('scroll', () => {});
 });
 </script>
 
@@ -107,8 +115,14 @@ onMounted(() => {
                   </a>
                 </li>
               </ul>
+
+              <button @click="toggleLanguage" class="translation-btn">
+                {{ currentLang === 'en' ? 'Malay' : 'English' }}
+              </button>
+
             </nav>
           </Transition>
+
         </div>
       </header>
 
@@ -249,6 +263,22 @@ onMounted(() => {
 .navigation-links a:focus {
   outline: 2px solid var(--secondary-color);
   outline-offset: 2px;
+}
+
+.translation-btn {
+  border: none;
+  outline: none;
+  margin: .5rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  text-decoration: none;
+  color: var(--text-color);
+  background: transparent;
+  font-weight: bold;
+  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
 
 .landing-sec {
@@ -412,7 +442,7 @@ onMounted(() => {
   .menu {
     display: block;
     width: 100%;
-    background-color: var(--bg-color);
+    background-color: var(--primary-color);
     position: absolute;
     top: 100%;
     left: 0;
