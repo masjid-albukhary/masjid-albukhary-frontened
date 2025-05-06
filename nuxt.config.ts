@@ -8,7 +8,7 @@ export default defineNuxtConfig({
     ],
 
     app: {
-        baseURL: process.env.NODE_ENV === 'development' ? '' : '/masjid-frontend/',
+        baseURL: process.env.NODE_ENV === '' ? '' : '/masjid-frontend/',
     },
 
     i18n: {
