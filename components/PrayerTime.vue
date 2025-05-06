@@ -6,11 +6,10 @@ import 'leaflet/dist/leaflet.css';
 const {t} = useI18n();
 const mapContainer = ref(null);
 
-const city = ref('Kuala Lumpur');
-const country = ref('Malaysia');
+const city = ref('Gaza');
+const country = ref('Palestine');
 const method = ref(2);
 const prayerTimes = ref(null);
-const currentTime = ref(new Date().toLocaleTimeString());
 
 const mainPrayers = [
   {value: "Fajr", label: "Subuh"},
@@ -54,9 +53,12 @@ const addMinutes = (time, minutes) => {
   return date.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", hour12: true});
 };
 
+const currentTime = ref(new Date().toLocaleTimeString('en-GB', { timeZone: 'Asia/Gaza' }));
+
 const updateTime = () => {
-  currentTime.value = new Date().toLocaleTimeString();
+  currentTime.value = new Date().toLocaleTimeString('en-GB', { timeZone: 'Asia/Gaza' });
 };
+
 
 const formattedPrayerTimes = computed(() => {
   if (!prayerTimes.value) return null;
@@ -73,6 +75,7 @@ const formattedPrayerTimes = computed(() => {
 const getFormattedDate = () => {
   const today = new Date();
   return today.toLocaleDateString('en-GB', {
+    timeZone: 'Asia/Gaza',
     day: 'numeric',
     month: 'long',
     year: 'numeric'
@@ -92,7 +95,7 @@ const setupMap = async () => {
   }).addTo(map);
   L.marker([lat, lng])
       .addTo(map)
-      .bindPopup('<b>Al Bukhary Mosque</b><br>Jln Hang Tuah, Kuala Lumpur')
+      .bindPopup('<b>Al Awda Mosque </b><br> Gaza , Rafah')
       .openPopup();
 };
 

@@ -1,11 +1,12 @@
 <script setup>
 import {ref, computed, onMounted} from 'vue';
 
-const city = ref('Kuala Lumpur');
-const country = ref('Malaysia');
+const city = ref('Gaza');
+const country = ref('Palestine');
+
 const method = ref(2);
 const prayerTimes = ref(null);
-const currentTime = ref(new Date().toLocaleTimeString());
+const currentTime = ref(new Date().toLocaleTimeString('en-GB', { timeZone: 'Asia/Gaza' }));
 const mainPrayers = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
 const prayerNamesMap = {
   Fajr: "Subuh",
@@ -73,7 +74,7 @@ const addMinutes = (time, minutes) => {
 };
 
 const updateTime = () => {
-  currentTime.value = new Date().toLocaleTimeString();
+  currentTime.value = new Date().toLocaleTimeString('en-GB', { timeZone: 'Asia/Gaza' });
 };
 
 const formattedPrayerTimes = computed(() => {
@@ -88,6 +89,7 @@ const formattedPrayerTimes = computed(() => {
 const getFormattedDate = () => {
   const today = new Date();
   return today.toLocaleDateString('en-GB', {
+    timeZone: 'Asia/Gaza',
     day: 'numeric',
     month: 'long',
     year: 'numeric'
