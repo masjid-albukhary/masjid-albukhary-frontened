@@ -4,9 +4,9 @@
 
 <style>
 :root {
-  --primary-color: #0b78d2;
-  --secondary-color: #489fe7;
-  --background-color: #217ec2;
+  --primary-color: #0f9d58;
+  --secondary-color: #34a853;
+  --background-color: #ffffff;
   --bg-color: #eeeeee;
   --bg-hover-color: #f5f5f5;
   --text-color: #ffffff;
