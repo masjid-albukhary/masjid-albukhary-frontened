@@ -394,6 +394,7 @@ section {
   color: var(--primary-color);
 }
 
+
 .activity-form input,
 .activity-form select {
   width: 100%;
