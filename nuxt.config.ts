@@ -6,9 +6,11 @@ export default defineNuxtConfig({
     css: [
         '~/assets/css/fonts.css'
     ],
+
     app: {
-        baseURL: '',
+        baseURL: process.env.NODE_ENV === 'development' ? '' : '/masjid-frontend/',
     },
+
     i18n: {
         locales: [
             {code: 'en', iso: 'en-US', file: 'translations/en.js'},
