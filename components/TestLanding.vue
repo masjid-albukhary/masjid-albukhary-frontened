@@ -163,7 +163,6 @@ onBeforeUnmount(() => {
 .header-scrolled {
   position: fixed;
   background-color: var(--bg-color);
-  color: var(--text-color);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 0.3rem 1rem;
   animation: slideDown 0.3s ease-out;
