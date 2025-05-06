@@ -83,9 +83,9 @@ const currentYear = new Date().getFullYear()
 
 <style scoped>
 .footer {
-  background-color: var(--background-color);
+  background-color: var(--bg-color);
   padding: 2rem 1rem;
-  color: var(--text-color);
+  color: var(--primary-color);
 }
 
 .container {
@@ -123,7 +123,7 @@ const currentYear = new Date().getFullYear()
 }
 
 .footer-section a {
-  color: var(--text-color);
+  color: var(--primary-color);
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -132,7 +132,7 @@ const currentYear = new Date().getFullYear()
 }
 
 .footer-section a:hover {
-  color: var(--text-hover);
+  color: var(--secondary-color);
 }
 
 .logo-img {
@@ -148,7 +148,7 @@ const currentYear = new Date().getFullYear()
 
 .divider {
   border: none;
-  border-top: 1px solid var(--text-color);
+  border-top: 1px solid var(--primary-color);
   margin: 2rem 0;
 }
 
@@ -158,12 +158,12 @@ const currentYear = new Date().getFullYear()
 }
 
 .footer-bottom a {
-  color: var(--text-color);
+  color: var(--primary-color);
   text-decoration: underline;
 }
 
 .footer-bottom a:hover {
-  color: var(--text-hover);
+  color: var(--secondary-color);
 }
 
 @media (max-width: 768px) {
