@@ -1,4 +1,5 @@
 export default {
+
     menu: {
         home: "Home",
         about: "About",
@@ -10,33 +11,37 @@ export default {
     },
 
     landing: {
-        title: "Step Into the Heart of Al Bukhary Mosque",
+        title: "Step Into the Heart of Al Awda Mosque, Gaza",
         latest_activity: "Upcoming Events at Our Masjid",
         learn_more_btn: "Learn More",
-        discover_projects:"Discover Our Upcoming Events",
-        learn_more: "Learn More",
+        discover_projects: "Discover Our Upcoming Events",
+        learn_more: "Learn More"
     },
+
     prayer_time: {
-        title: "Prayer Time",
+        title: "Prayer Time"
     },
-    weekly_talk: "Watch our weekly Islamic talks  simple, powerful reminders to bring you closer to Allah.",
+
+    weekly_talk: "Watch our weekly Islamic talks – simple, powerful reminders to bring you closer to Allah.",
     watch_video: "Watch video",
+
     about: {
-        title: "Masjid Al Bukhary Kuala Lumpur Official",
-        descriptionTitle: "Get to know more about Albukhary Foundation",
+        title: "Al Awda Mosque Gaza Rafah Official",
+        descriptionTitle: "Get to Know More About Al Awda Mosque",
         descriptionText:
-            "One simple act of kindness that took place four decades ago marked the beginning of Albukhary Foundation’s journey. When Syed Mokhtar brought home his first salary of RM1,500 as a rice trader in 1974, his mother, Sharifah Rokiah, reminded him that while they lived a humble life, there were others in the community who were poorer. She encouraged him to keep half for the family, and distribute the remaining RM750 to 15 needy families in their community.",
+            "Located in the heart of Rafah, Gaza, Al Awda Mosque stands as a symbol of faith, resilience, and community unity. For years, the mosque has served as a place for spiritual growth, learning, and support for families in need. It continues to offer a safe and welcoming environment for worship and community empowerment.",
         items: [
             {
                 title: "Our Vision",
-                content: "To be a beacon of Islamic knowledge, spirituality, and community service, fostering unity and inclusivity while upholding the principles of faith, education, and social welfare."
+                content: "To be a beacon of Islamic knowledge, spirituality, and service in Rafah, nurturing faith, unity, and resilience in our community."
             },
             {
                 title: "Our Mission",
-                content: "Spiritual Growth: Provide a welcoming space for prayer, worship, and reflection, promoting a deep connection with Allah.\nEducation & Knowledge: Offer Islamic teachings, Quranic studies, and community learning programs to nurture faith and understanding.\nCommunity Service: Engage in charitable activities, supporting those in need and strengthening community bonds.\nYouth & Leadership Development: Empower the younger generation with guidance, mentorship, and leadership programs.\nInterfaith Harmony: Promote mutual respect and understanding among diverse communities through dialogue and collaboration."
+                content: "Spiritual Growth: Foster a deep connection with Allah through prayer and reflection.\nEducation & Knowledge: Provide Quranic learning, Islamic courses, and community education.\nCommunity Service: Support vulnerable families and promote charitable work.\nYouth Development: Guide youth through mentorship and educational opportunities.\nCommunity Unity: Encourage harmony and cooperation among all residents of Rafah."
             }
         ]
     },
+
     booking: {
         title: "Booking Form",
         description: "Please fill in the form below to make your booking. Fields marked with an asterisk (*) are required.",
@@ -49,13 +54,13 @@ export default {
                 phone: "Contact Number",
                 address: "Address",
                 postal_code: "Postal Code",
-                booking_date: "Booking dates",
-                time_slot: "Choose your time slot",
+                booking_date: "Booking Dates",
+                time_slot: "Choose Your Time Slot",
                 venue: "Select Venue",
                 guests: "Guests",
                 services: "Select Services",
                 other_docs: "Other Requests/Inquiries",
-                other_requests: "Other Requests/Inquiries",
+                other_requests: "Other Requests/Inquiries"
             },
             placeholder: {
                 first_name: "Enter your first name",
@@ -68,45 +73,46 @@ export default {
                 guests: "Enter number of guests",
                 time_slot: "Choose your time slot",
                 venue: "Select a venue",
-                services: "Select a services",
+                services: "Select a service",
                 other_docs: "Upload any requests or inquiries",
-                other_requests: "Enter any requests or inquiries",
+                other_requests: "Enter any requests or inquiries"
             },
             submit: "Submit Booking"
         },
         booking_popup: {
-            messages: "Thank you for submitting your request. We have successfully received your application, and our team will review it within the next 3 days. We will keep you informed about the progress and let you know if any further information is needed. Al Bukhary Mosque",
+            messages: "Thank you for submitting your request. We have successfully received your application. Our team at Al Awda Mosque in Rafah will review it within the next 3 days. We will contact you if further information is needed.",
             sub_message: "Thank you for your patience."
         },
         booking_structure: {
             title: "How to Book a Hall",
             button: "Book Now",
             steps: [
-                {content: "Fill out the hall booking form with your details and preferred hall."},
-                {content: "Our team will review your request within 3 days."},
-                {content: "If approved, we will contact you through WhatsApp message."},
-                {content: "Finalize your arrangements and get ready for a memorable event!"}
+                { content: "Fill out the booking form with your event details." },
+                { content: "Our team will review your request within 3 days." },
+                { content: "If approved, you will be contacted via WhatsApp." },
+                { content: "Finalize your arrangements for a blessed event!" }
             ]
         }
     },
-    service: {
-        title: "Our Service",
-        description: "Masjid Albukhary Kuala Lumpur is a beautifully designed mosque that serves as a center for worship, community activities, and Islamic education. It offers daily prayers, Friday sermons, Quran classes, religious talks, and facilities for solemnization (nikah) and events. The mosque also provides charity services and community outreach programs to support those in need.",
-        button: "Book now",
-        booking_structure: {
-            title: "Book Your Masjid Services Easily – Let Us Help You with Your Special Moments!",
-            steps: [
-                {content: "Fill out the hall booking form with your details and preferred date."},
-                {content: "Our team will review your request within 3 days."},
-                {content: "If approved, we will contact you via WhatsApp for confirmation"},
-                {content: "Finalize your arrangements and prepare for a smooth and blessed event"}
-            ]
-        }
 
+    service: {
+        title: "Our Services",
+        description: "Al Awda Mosque in Rafah is a vibrant center for worship, learning, and social support. We offer daily prayers, Jumu'ah khutbahs, Quran classes, community programs, Nikah services, and charity initiatives to assist those in need.",
+        button: "Book Now",
+        booking_structure: {
+            title: "Book Our Mosque Services – Make Your Event Memorable and Blessed!",
+            steps: [
+                { content: "Fill out the form with your details and preferred date." },
+                { content: "Our team will review your request within 3 days." },
+                { content: "If approved, we will confirm via WhatsApp." },
+                { content: "Prepare for a meaningful and well-organized event." }
+            ]
+        }
     },
+
     contact: {
-        title: "Get in touch with us",
-        description: "Reach out to us with any questions or concerns you may have, and we’ll be happy to help.",
+        title: "Get in Touch With Us",
+        description: "If you have questions or concerns, feel free to reach out. We're here to help.",
         your_details: "Your Details",
         send_message: "Send Message",
         form: {
@@ -119,33 +125,37 @@ export default {
             email_placeholder: "Enter your email",
             phone_placeholder: "Enter your phone number",
             subject_placeholder: "Enter subject",
-            message_placeholder: "Type your message here...",
+            message_placeholder: "Type your message here..."
         },
         popup: {
             title: "Thank You for Reaching Out!",
-            message: "In the meantime, feel free to explore our website for more information, or reach out to us again if you have any other questions.",
-            thanksMessage: "Thanks for your patience!",
+            message: "Feel free to explore our website for more information, or contact us again if you have other inquiries.",
+            thanksMessage: "Thanks for your patience!"
         }
     },
+
     members: {
-        title: "Meet Our Community",
+        title: "Meet Our Community"
     },
+
     map_mosque: {
-        mosque_location: "Albukhary Mosque Location",
-        prayer_time: "Prayer Time",
+        mosque_location: "Al Awda Mosque Location – Rafah, Gaza",
+        prayer_time: "Prayer Time"
     },
+
     donation: {
-        title: "Scan our QR Code to support our Masjid activities and projects",
+        title: "Scan the QR Code to Support Al Awda Mosque Activities and Projects"
     },
+
     footer: {
         quickLinks: "Quick Links",
         socialMedia: "Social Media",
         bankDetails: "Bank Details",
         accountNo: "Account No",
         generalInfo: {
-            address: "Jln Hang Tuah, Bukit Bintang, 55200 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur",
+            address: "Al Awda Mosque, Rafah, Gaza Strip",
             phone: "Phone Number",
-            email: "Email Address",
+            email: "Email Address"
         },
         links: {
             home: "Home",
@@ -163,6 +173,7 @@ export default {
             whatsapp: "WhatsApp"
         }
     },
+
     activities: {
         title: "Activities",
         view_details: "View Details",
@@ -172,26 +183,26 @@ export default {
         time: "Time",
         type: "Activity Type",
         status: "Status",
-        target_audience: "Target Audience",
+        target_audience: "Target Audience"
     },
+
     facilities: {
         title: "Our Facilities",
         amenities: "Amenities",
         latest_facilities: "Latest Facilities",
         facility: {
             description: "Facility Description",
-            features: "Facility Features",
+            features: "Facility Features"
         },
         learn_more: "Learn More",
         facilities_form: {
-            title: "Book your Wedding/Solemnisation Venue",
-            description: "Please fill in the form below to complete your booking. We encourage you to read the stipulated terms and conditions here before submitting the form.",
-            button: "Register your Interest",
-        },
-
+            title: "Book Your Wedding/Solemnisation Venue",
+            description: "Please fill in the form below to book. Read the terms and conditions before submitting.",
+            button: "Register Your Interest"
+        }
     },
-    latest_activity: "Upcoming Events at Our Masjid",
 
+    latest_activity: "Upcoming Events at Our Masjid",
 
     // admin side
 

@@ -1,111 +1,117 @@
 export default {
     menu: {
-        home: "Utama",
-        about: "Kira-Kira",
+        home: "Laman Utama",
+        about: "Tentang",
         news: "Aktiviti",
-        services: "perkhidmatan",
+        services: "Perkhidmatan",
         facilities: "Kemudahan",
         gallery: "Galeri",
         contact: "Hubungi"
     },
+
     landing: {
-        title: "Melangkah Ke Jantung Masjid Al Bukhary",
+        title: "Selami Hati Masjid Al Awda, Gaza",
         latest_activity: "Acara Akan Datang di Masjid Kami",
         learn_more_btn: "Ketahui Lebih Lanjut",
-        discover_projects:"Temui Acara Akan Datang Kami",
-        learn_more: "Ketahui lebih lanjut",
+        discover_projects: "Terokai Acara Akan Datang",
+        learn_more: "Ketahui Lebih Lanjut"
     },
+
     prayer_time: {
-        title: "Prayer Time",
+        title: "Waktu Solat"
     },
+
+    weekly_talk: "Tonton kuliah mingguan kami – peringatan ringkas dan penuh makna untuk mendekatkan diri kepada Allah.",
+    watch_video: "Tonton Video",
+
     about: {
-        title: "Rasmi Masjid Al Bukhary Kuala Lumpur",
-        descriptionTitle: "Kenali lebih lanjut tentang Yayasan Albukhary",
+        title: "Rasmi Masjid Al Awda Gaza Rafah",
+        descriptionTitle: "Kenali Masjid Al Awda dengan Lebih Dekat",
         descriptionText:
-            "Satu perbuatan baik yang mudah empat dekad lalu menjadi permulaan perjalanan Yayasan Albukhary. Apabila Syed Mokhtar membawa pulang gaji pertamanya sebanyak RM1,500 sebagai peniaga beras pada tahun 1974, ibunya, Sharifah Rokiah, mengingatkannya bahawa walaupun mereka hidup sederhana, ada yang lebih susah. Beliau menggalakkannya menyimpan separuh untuk keluarga dan mengagihkan RM750 kepada 15 keluarga miskin di komuniti mereka.",
+            "Terletak di tengah-tengah Rafah, Gaza, Masjid Al Awda menjadi simbol keimanan, ketabahan dan perpaduan masyarakat. Selama bertahun-tahun, masjid ini menjadi tempat pertumbuhan rohani, pembelajaran, dan sokongan kepada keluarga yang memerlukan. Ia kekal sebagai tempat ibadah yang selamat dan menyatukan komuniti.",
         items: [
             {
                 title: "Visi Kami",
-                content: "Menjadi mercu tanda ilmu Islam, kerohanian, dan khidmat masyarakat, memupuk perpaduan dan keterangkuman sambil menegakkan prinsip keimanan, pendidikan, dan kebajikan sosial."
+                content: "Menjadi mercu tanda ilmu Islam, kerohanian dan khidmat masyarakat di Rafah, memupuk iman, perpaduan dan ketabahan."
             },
             {
                 title: "Misi Kami",
-                content: "Pertumbuhan Rohani: Menyediakan ruang mesra untuk solat, ibadah, dan refleksi, menggalakkan hubungan mendalam dengan Allah.\nPendidikan & Ilmu: Menawarkan pengajaran Islam, pengajian Al-Quran, dan program pembelajaran masyarakat untuk memupuk keimanan dan pemahaman.\nKhidmat Masyarakat: Terlibat dalam aktiviti kebajikan, menyokong golongan memerlukan dan memperkukuh ikatan masyarakat.\nPembangunan Belia & Kepimpinan: Memberi kuasa kepada generasi muda dengan bimbingan, mentorship, dan program kepimpinan.\nHarmoni Antara Agama: Menggalakkan rasa hormat dan pemahaman antara komuniti pelbagai melalui dialog dan kerjasama."
+                content: "Pertumbuhan Rohani: Memupuk hubungan mendalam dengan Allah melalui solat dan renungan.\nPendidikan & Ilmu: Menyediakan pembelajaran Al-Quran, kursus Islam dan pendidikan masyarakat.\nKhidmat Masyarakat: Membantu keluarga yang memerlukan dan menggalakkan amalan kebajikan.\nPembangunan Belia: Membimbing belia melalui bimbingan dan peluang pendidikan.\nPerpaduan Komuniti: Menggalakkan keharmonian dan kerjasama dalam kalangan penduduk Rafah."
             }
         ]
     },
+
     booking: {
         title: "Borang Tempahan",
-        description: "Sila isi borang di bawah untuk membuat tempahan anda. Ruangan yang ditandakan dengan tanda asterisk (*) adalah wajib diisi.",
+        description: "Sila isi borang di bawah untuk membuat tempahan anda. Ruangan yang bertanda * adalah wajib diisi.",
         form_title: "Buat Tempahan Anda",
         booking_form: {
             label: {
-                first_name: "Nama Orang Hubungan",
+                first_name: "Nama Pertama",
                 last_name: "Nama Akhir",
                 email: "Emel",
                 phone: "Nombor Telefon",
                 address: "Alamat",
                 postal_code: "Poskod",
-                booking_date: "Tarikh tempahan",
-                guests: "Tetamu",
-                time_slot: "Pilih slot masa anda",
+                booking_date: "Tarikh Tempahan",
+                time_slot: "Pilih Slot Masa",
                 venue: "Pilih Tempat",
-                services: "Pilih perkhidmatan",
-                other_docs: "Permintaan/Pertanyaan Lain",
-                other_requests: "Permintaan/Pertanyaan Lain",
+                guests: "Bilangan Tetamu",
+                services: "Pilih Perkhidmatan",
+                other_docs: "Permintaan/Lampiran Lain",
+                other_requests: "Permintaan/Lampiran Lain"
             },
             placeholder: {
                 first_name: "Masukkan nama pertama anda",
                 last_name: "Masukkan nama akhir anda",
                 email: "Masukkan emel anda",
-                phone: "Masukkan nombor telefon anda",
+                phone: "Masukkan nombor telefon",
                 address: "Masukkan alamat anda",
                 postal_code: "Masukkan poskod",
-                booking_date: "HH-Bulan-TTTT (contoh: 10 Sept 2022)",
+                booking_date: "DD-Bulan-Tahun (cth: 10 Sept 2022)",
                 guests: "Masukkan bilangan tetamu",
-                time_slot: "Pilih slot masa anda",
+                time_slot: "Pilih slot masa",
                 venue: "Pilih tempat",
                 services: "Pilih perkhidmatan",
-                other_docs: "Muat naik sebarang permintaan atau pertanyaan",
-                other_requests: "Masukkan sebarang permintaan atau pertanyaan",
+                other_docs: "Muat naik sebarang permintaan/lampiran",
+                other_requests: "Masukkan permintaan/lampiran lain"
             },
-            submit: "Hantar Tempahan",
+            submit: "Hantar Tempahan"
         },
         booking_popup: {
-            messages: "Terima kasih kerana menghantar permohonan anda. Kami telah menerima permohonan anda dengan jayanya dan pasukan kami akan menyemaknya dalam masa 3 hari. Kami akan memaklumkan kepada anda tentang perkembangan permohonan dan sekiranya maklumat tambahan diperlukan. Masjid Al-Bukhary.",
+            messages: "Terima kasih kerana menghantar permohonan anda. Kami telah menerima borang anda dengan jayanya. Pihak Masjid Al Awda di Rafah akan menyemak dalam tempoh 3 hari. Kami akan menghubungi anda sekiranya maklumat tambahan diperlukan.",
             sub_message: "Terima kasih atas kesabaran anda."
         },
         booking_structure: {
-            title: "Cara Tempahan Dewan",
+            title: "Cara Menempah Dewan",
             button: "Tempah Sekarang",
             steps: [
-                {content: "Isi borang tempahan dewan dengan maklumat dan dewan pilihan anda."},
-                {content: "Pasukan kami akan menyemak permintaan anda dalam masa 3 hari."},
-                {content: "Jika diluluskan, kami akan menghubungi anda melalui mesej WhatsApp."},
-                {content: "Lengkapkan persiapan anda dan bersedia untuk acara yang bermakna!"}
-            ]
-        },
-    },
-    service: {
-        title: "Perkhidmatan Kami",
-        description: "Masjid Albukhary Kuala Lumpur ialah sebuah masjid yang indah dan menjadi pusat ibadah, aktiviti komuniti, dan pendidikan Islam. Masjid ini menyediakan solat lima waktu, khutbah Jumaat, kelas al-Quran, ceramah agama, serta kemudahan untuk akad nikah dan majlis-majlis lain. Ia juga menawarkan perkhidmatan kebajikan dan program kemasyarakatan bagi membantu golongan memerlukan.",
-        button: "Tempah sekarang",
-        booking_structure: {
-            title: "Tempah Perkhidmatan Masjid Anda dengan Mudah – Biarkan Kami Membantu dalam Momen Istimewa Anda!",
-            steps: [
-                {content: "Isi borang tempahan dewan dengan butiran dan tarikh pilihan anda."},
-                {content: "Pasukan kami akan menyemak permohonan anda dalam masa 3 hari."},
-                {content: "Jika diluluskan, kami akan menghubungi anda melalui WhatsApp untuk pengesahan."},
-                {content: "Selesaikan persiapan anda dan bersedia untuk acara yang lancar dan diberkati."}
+                { content: "Isi borang tempahan dengan maklumat acara anda." },
+                { content: "Pihak kami akan semak permohonan dalam 3 hari." },
+                { content: "Jika diluluskan, anda akan dihubungi melalui WhatsApp." },
+                { content: "Sedia untuk acara yang diberkati!" }
             ]
         }
     },
-    members: {
-        title: "Bertemu komuniti kami",
+
+    service: {
+        title: "Perkhidmatan Kami",
+        description: "Masjid Al Awda di Rafah adalah pusat aktif untuk ibadah, pembelajaran dan sokongan sosial. Kami menawarkan solat harian, khutbah Jumaat, kelas Al-Quran, program komuniti, perkhidmatan nikah dan inisiatif kebajikan untuk membantu yang memerlukan.",
+        button: "Tempah Sekarang",
+        booking_structure: {
+            title: "Tempah Perkhidmatan Masjid – Jadikan Acara Anda Berkat dan Bermakna!",
+            steps: [
+                { content: "Isi borang dengan maklumat anda dan tarikh pilihan." },
+                { content: "Kami akan semak permohonan anda dalam masa 3 hari." },
+                { content: "Kami akan sahkan melalui WhatsApp." },
+                { content: "Bersedia untuk acara yang teratur dan bermakna." }
+            ]
+        }
     },
+
     contact: {
         title: "Hubungi Kami",
-        description: "Hubungi kami untuk sebarang pertanyaan atau kebimbangan, kami sedia membantu.",
+        description: "Jika anda ada pertanyaan atau kebimbangan, sila hubungi kami. Kami sedia membantu.",
         your_details: "Maklumat Anda",
         send_message: "Hantar Mesej",
         form: {
@@ -115,51 +121,46 @@ export default {
             subject: "Subjek",
             message: "Mesej",
             name_placeholder: "Masukkan nama penuh anda",
-            email_placeholder: "Masukkan emel anda",
-            phone_placeholder: "Masukkan nombor telefon anda",
+            email_placeholder: "Masukkan alamat emel",
+            phone_placeholder: "Masukkan nombor telefon",
             subject_placeholder: "Masukkan subjek",
-            message_placeholder: "Tulis mesej anda di sini...",
+            message_placeholder: "Taip mesej anda di sini..."
         },
         popup: {
-            title: "Terima Kasih kerana Menghubungi Kami!",
-            message: "Sementara itu, sila luangkan masa untuk meneroka laman web kami untuk maklumat lanjut, atau hubungi kami semula jika anda mempunyai sebarang pertanyaan lain.",
-            thanksMessage: "Terima kasih atas kesabaran anda!",
+            title: "Terima Kasih Kerana Menghubungi Kami!",
+            message: "Sila lawati laman web kami untuk maklumat lanjut, atau hubungi kami semula jika ada pertanyaan lain.",
+            thanksMessage: "Terima kasih atas kesabaran anda!"
         }
+    },
 
+    members: {
+        title: "Kenali Komuniti Kami"
     },
+
     map_mosque: {
-        mosque_location: "Lokasi Masjid Albukhary",
-        prayer_time: "Waktu Solat",
+        mosque_location: "Lokasi Masjid Al Awda – Rafah, Gaza",
+        prayer_time: "Waktu Solat"
     },
-    activities: {
-        title: "Aktiviti",
-        view_details: "Lihat Butiran",
-        date: "Tarikh",
-        location: "Lokasi",
-        participants: "Anggaran Peserta",
-        time: "Masa",
-        type: "Jenis Aktiviti",
-        status: "Status",
-        target_audience: "Sasaran Audiens",
-    },
+
     donation: {
-        title: "Imbas Kod QR kami untuk menyokong aktiviti dan projek Masjid kami\n",
+        title: "Imbas Kod QR untuk Menyokong Aktiviti dan Projek Masjid Al Awda"
     },
+
     footer: {
         quickLinks: "Pautan Pantas",
         socialMedia: "Media Sosial",
         bankDetails: "Maklumat Bank",
-        accountNo: "No Akaun",
+        accountNo: "Nombor Akaun",
         generalInfo: {
-            address: "Jln Hang Tuah, Bukit Bintang, 55200 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur",
-            phone: "telefon Nombor",
-            email: "alamat e-mel"
+            address: "Masjid Al Awda, Rafah, Gaza",
+            phone: "Nombor Telefon",
+            email: "Alamat Emel"
         },
         links: {
-            home: "Utama",
-            about: "Kira-Kira",
-            news: "Aktiviti",
-            services: "perkhidmatan",
+            home: "Laman Utama",
+            about: "Tentang",
+            news: "Berita",
+            services: "Perkhidmatan",
             facilities: "Kemudahan",
             gallery: "Galeri",
             contact: "Hubungi"
@@ -171,24 +172,35 @@ export default {
             whatsapp: "WhatsApp"
         }
     },
+
+    activities: {
+        title: "Aktiviti",
+        view_details: "Lihat Butiran",
+        date: "Tarikh",
+        location: "Lokasi",
+        participants: "Anggaran Peserta",
+        time: "Masa",
+        type: "Jenis Aktiviti",
+        status: "Status",
+        target_audience: "Sasaran Peserta"
+    },
+
     facilities: {
         title: "Kemudahan Kami",
-        amenities: "Kemudahan Asas",
+        amenities: "Kemudahan",
         latest_facilities: "Kemudahan Terkini",
         facility: {
             description: "Deskripsi Kemudahan",
-            features: "Ciri-ciri Kemudahan",
+            features: "Ciri-ciri Kemudahan"
         },
         learn_more: "Ketahui Lebih Lanjut",
         facilities_form: {
-            title: "Tempah Tempat Perkahwinan/Akad Nikah Anda",
-            description: "Sila isi borang di bawah untuk melengkapkan tempahan anda. Kami menggalakkan anda membaca terma dan syarat yang ditetapkan di sini sebelum menghantar borang.",
-            button: "Daftar Minat Anda",
-        },
+            title: "Tempah Tempat Majlis Perkahwinan/Akad Nikah Anda",
+            description: "Sila isi borang di bawah untuk menempah. Sila baca terma dan syarat sebelum menghantar.",
+            button: "Daftar Minat"
+        }
     },
-    weekly_talk: "Tonton ceramah Islam mingguan kami peringatan ringkas dan berkesan untuk mendekatkan anda kepada Allah.",
-    watch_video: "Tonton video",
-    video_type: "Jenis Video",
+
     latest_activity: "Acara Akan Datang di Masjid Kami",
 
     // admin side
