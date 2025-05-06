@@ -13,6 +13,7 @@ import TestLanding from "~/components/TestLanding.vue";
   <ActivitiesUpcomingCard/>
   <BookingStructure/>
   <DonateQRcode/>
+  <PrayerTime/>
   <MapSection/>
   <Footer/>
 </template>
