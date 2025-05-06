@@ -14,7 +14,7 @@ const links = [
 ]
 
 const media = [
-  { icon: "mdi-facebook", link: "https://www.facebook.com/mabkl.fb/", labelKey: "footer.media.facebook" },
+  { icon: "mdi-facebook", link: "https://www.facebook.com/", labelKey: "footer.media.facebook" },
   { icon: "mdi-youtube", link: "https://www.youtube.com", labelKey: "footer.media.youtube" },
   { icon: "mdi-whatsapp", link: "https://www.whatsapp.com", labelKey: "footer.media.whatsapp" }
 ]
@@ -60,7 +60,7 @@ const currentYear = new Date().getFullYear()
 
         <div class="footer-section">
           <h2>{{ t('footer.bankDetails') }}</h2>
-          <img src="/images/bank-muamalat-logo.png" alt="Muamalat Bank logo" class="bank-img" />
+          <img src="/images/bank-palestine-logo.png" alt="Bank Palestine logo" class="bank-img" />
           <h4>{{ t('footer.accountNo') }}: 9823 7939 2402</h4>
         </div>
 
@@ -71,7 +71,7 @@ const currentYear = new Date().getFullYear()
       <div class="footer-bottom">
         <p>
           &copy; {{ currentYear }}
-          <a href="http://www.masjidalbukharykl.com/" target="_blank">
+          <a href="" target="_blank">
             Al Bukhary Mosque
           </a>. All rights reserved.
         </p>
