@@ -162,7 +162,8 @@ onBeforeUnmount(() => {
 
 .header-scrolled {
   position: fixed;
-  background-color: var(--primary-color);
+  background-color: var(--bg-color);
+  color: var(--primary-color);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 0.3rem 1rem;
   animation: slideDown 0.3s ease-out;
@@ -196,7 +197,7 @@ onBeforeUnmount(() => {
   outline: none;
   cursor: pointer;
   font-size: 1.5rem;
-  color: var(--text-hover);
+  color: var(--primary-color);
   padding: 0.5rem;
   transition: transform 0.2s ease;
 }
@@ -231,7 +232,7 @@ onBeforeUnmount(() => {
   padding: 0.5rem;
   font-size: 1rem;
   text-decoration: none;
-  color: var(--text-color);
+  color: var(--secondary-color);
   font-weight: bold;
   position: relative;
   transition: color 0.3s ease;
@@ -247,13 +248,13 @@ onBeforeUnmount(() => {
   height: 2px;
   bottom: 0;
   left: 0;
-  color: var(--text-hover);
-  background-color: var(--text-hover);
+  color: var(--primary-color);
+  background-color: var(--primary-color);
   transition: width 0.3s ease-in-out;
 }
 
 .navigation-links a:hover {
-  color: var(--text-hover);
+  color: var(--primary-color);
 }
 
 .navigation-links a:hover::after,
@@ -272,7 +273,7 @@ onBeforeUnmount(() => {
   padding: 0.5rem;
   font-size: 1rem;
   text-decoration: none;
-  color: var(--text-color);
+  color: var(--secondary-color);
   background: transparent;
   font-weight: bold;
   transition: color 0.3s ease;
@@ -335,7 +336,7 @@ onBeforeUnmount(() => {
   font-size:  2.5rem;
   font-weight: 700;
   margin: 0;
-  color: var(--text-hover);
+  color: var(--text-color);
   line-height: 1.2;
 }
 
@@ -363,18 +364,17 @@ onBeforeUnmount(() => {
 }
 
 .primary-btn {
-  background-color: var(--primary-color);
-  color: var(--text-hover);
+  background-color: var(--text-color);
+  color: var(--primary-color);
 }
 
 .secondary-btn {
   background-color: transparent;
-  color: var(--primary-color);
-  border: 2px solid var(--primary-color);
+  color: var(--text-hover);
+  border: 2px solid var(--text-hover);
 }
 
 .primary-btn:hover {
-  background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
   transform: translateY(-3px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
